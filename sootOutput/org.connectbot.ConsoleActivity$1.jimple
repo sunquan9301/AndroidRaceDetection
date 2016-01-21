@@ -1,0 +1,194 @@
+class org.connectbot.ConsoleActivity$1 extends java.lang.Object implements android.content.ServiceConnection
+{
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$1 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$1;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onServiceConnected(android.content.ComponentName, android.os.IBinder)
+    {
+        org.connectbot.ConsoleActivity$1 $r0;
+        android.content.ComponentName $r1;
+        android.os.IBinder $r2;
+        java.lang.Exception $r3;
+        org.connectbot.service.TerminalBridge $r4, $r11;
+        int $i0, $i1;
+        java.lang.String $r5, $r13;
+        org.connectbot.ConsoleActivity $r6;
+        org.connectbot.service.TerminalManager $r7;
+        org.connectbot.service.TerminalManager$TerminalBinder $r8;
+        android.os.Handler $r9;
+        android.net.Uri $r10;
+        java.lang.Object[] $r12;
+        org.connectbot.ConsoleActivity$TerminalPagerAdapter $r14;
+        java.util.ArrayList $r15;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$1;
+
+        $r1 := @parameter0: android.content.ComponentName;
+
+        $r2 := @parameter1: android.os.IBinder;
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r8 = (org.connectbot.service.TerminalManager$TerminalBinder) $r2;
+
+        $r7 = virtualinvoke $r8.<org.connectbot.service.TerminalManager$TerminalBinder: org.connectbot.service.TerminalManager getService()>();
+
+        $r6.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalManager bound> = $r7;
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r7 = $r6.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalManager bound>;
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r9 = $r6.<org.connectbot.ConsoleActivity: android.os.Handler disconnectHandler>;
+
+        $r7.<org.connectbot.service.TerminalManager: android.os.Handler disconnectHandler> = $r9;
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r7 = $r6.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalManager bound>;
+
+        virtualinvoke $r7.<org.connectbot.service.TerminalManager: void setResizeAllowed(boolean)>(1);
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r10 = $r6.<org.connectbot.ConsoleActivity: android.net.Uri requested>;
+
+        if $r10 == null goto label6;
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r10 = $r6.<org.connectbot.ConsoleActivity: android.net.Uri requested>;
+
+        $r5 = virtualinvoke $r10.<android.net.Uri: java.lang.String getFragment()>();
+
+     label1:
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r7 = $r6.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalManager bound>;
+
+        $r11 = virtualinvoke $r7.<org.connectbot.service.TerminalManager: org.connectbot.service.TerminalBridge getConnectedBridge(java.lang.String)>($r5);
+
+        $r4 = $r11;
+
+        if $r5 == null goto label4;
+
+        if $r11 != null goto label4;
+
+     label2:
+        $r12 = newarray (java.lang.Object)[2];
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r10 = $r6.<org.connectbot.ConsoleActivity: android.net.Uri requested>;
+
+        $r13 = virtualinvoke $r10.<android.net.Uri: java.lang.String toString()>();
+
+        $r12[0] = $r13;
+
+        $r12[1] = $r5;
+
+        $r13 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("We couldnt find an existing bridge with URI=%s (nickname=%s), so creating one now", $r12);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.ConsoleActivity", $r13);
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r7 = $r6.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalManager bound>;
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r10 = $r6.<org.connectbot.ConsoleActivity: android.net.Uri requested>;
+
+        $r11 = virtualinvoke $r7.<org.connectbot.service.TerminalManager: org.connectbot.service.TerminalBridge openConnection(android.net.Uri)>($r10);
+
+     label3:
+        $r4 = $r11;
+
+     label4:
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r14 = $r6.<org.connectbot.ConsoleActivity: org.connectbot.ConsoleActivity$TerminalPagerAdapter adapter>;
+
+        virtualinvoke $r14.<org.connectbot.ConsoleActivity$TerminalPagerAdapter: void notifyDataSetChanged()>();
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r7 = $r6.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalManager bound>;
+
+        $r15 = virtualinvoke $r7.<org.connectbot.service.TerminalManager: java.util.ArrayList getBridges()>();
+
+        $i1 = virtualinvoke $r15.<java.util.ArrayList: int indexOf(java.lang.Object)>($r4);
+
+        $i0 = $i1;
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        if $i1 != -1 goto label5;
+
+        $i0 = 0;
+
+     label5:
+        staticinvoke <org.connectbot.ConsoleActivity: void access$000(org.connectbot.ConsoleActivity,int)>($r6, $i0);
+
+        return;
+
+     label6:
+        $r5 = null;
+
+        goto label1;
+
+     label7:
+        $r3 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.ConsoleActivity", "Problem while trying to create new requested bridge from URI", $r3);
+
+        goto label4;
+
+        catch java.lang.Exception from label2 to label3 with label7;
+    }
+
+    public void onServiceDisconnected(android.content.ComponentName)
+    {
+        org.connectbot.ConsoleActivity$1 $r0;
+        android.content.ComponentName $r1;
+        org.connectbot.ConsoleActivity $r2;
+        org.connectbot.ConsoleActivity$TerminalPagerAdapter $r3;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$1;
+
+        $r1 := @parameter0: android.content.ComponentName;
+
+        $r2 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r3 = $r2.<org.connectbot.ConsoleActivity: org.connectbot.ConsoleActivity$TerminalPagerAdapter adapter>;
+
+        virtualinvoke $r3.<org.connectbot.ConsoleActivity$TerminalPagerAdapter: void notifyDataSetChanged()>();
+
+        $r2 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        virtualinvoke $r2.<org.connectbot.ConsoleActivity: void updateEmptyVisible()>();
+
+        $r2 = $r0.<org.connectbot.ConsoleActivity$1: org.connectbot.ConsoleActivity this$0>;
+
+        $r2.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalManager bound> = null;
+
+        return;
+    }
+}

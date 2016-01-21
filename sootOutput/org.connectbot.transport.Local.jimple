@@ -1,0 +1,481 @@
+public class org.connectbot.transport.Local extends org.connectbot.transport.AbsTransport
+{
+    private java.io.FileInputStream is;
+    private java.io.FileOutputStream os;
+    private java.io.FileDescriptor shellFd;
+
+    public void <init>()
+    {
+        org.connectbot.transport.Local $r0;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        specialinvoke $r0.<org.connectbot.transport.AbsTransport: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String getFormatHint(android.content.Context)
+    {
+        android.content.Context $r0;
+        java.lang.String $r1;
+
+        $r0 := @parameter0: android.content.Context;
+
+        $r1 = virtualinvoke $r0.<android.content.Context: java.lang.String getString(int)>(2131165287);
+
+        return $r1;
+    }
+
+    public static java.lang.String getProtocolName()
+    {
+        return "local";
+    }
+
+    public static android.net.Uri getUri(java.lang.String)
+    {
+        java.lang.String $r0;
+        android.net.Uri $r1;
+        int $i0;
+        android.net.Uri$Builder $r2;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>("local:#Local");
+
+        if $r0 == null goto label1;
+
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label2;
+
+        $r2 = virtualinvoke $r1.<android.net.Uri: android.net.Uri$Builder buildUpon()>();
+
+        $r2 = virtualinvoke $r2.<android.net.Uri$Builder: android.net.Uri$Builder fragment(java.lang.String)>($r0);
+
+        $r1 = virtualinvoke $r2.<android.net.Uri$Builder: android.net.Uri build()>();
+
+        return $r1;
+
+     label1:
+        return $r1;
+
+     label2:
+        return $r1;
+    }
+
+    public void close()
+    {
+        org.connectbot.transport.Local $r0;
+        java.io.IOException $r1;
+        java.io.FileOutputStream $r2;
+        java.io.FileInputStream $r3;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+        if $r2 == null goto label3;
+
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+     label1:
+        virtualinvoke $r2.<java.io.FileOutputStream: void close()>();
+
+     label2:
+        $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os> = null;
+
+     label3:
+        $r3 = $r0.<org.connectbot.transport.Local: java.io.FileInputStream is>;
+
+        if $r3 == null goto label7;
+
+     label4:
+        $r3 = $r0.<org.connectbot.transport.Local: java.io.FileInputStream is>;
+
+        virtualinvoke $r3.<java.io.FileInputStream: void close()>();
+
+     label5:
+        $r0.<org.connectbot.transport.Local: java.io.FileInputStream is> = null;
+
+        return;
+
+     label6:
+        $r1 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.Local", "Couldn\'t close shell", $r1);
+
+        return;
+
+     label7:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label6;
+        catch java.io.IOException from label4 to label5 with label6;
+    }
+
+    public void connect()
+    {
+        org.connectbot.transport.Local $r0;
+        java.lang.Exception $r1;
+        org.connectbot.transport.Local$1 $r2;
+        java.lang.Thread $r3;
+        int[] $r4;
+        int $i0;
+        java.io.FileDescriptor $r5;
+        java.io.FileInputStream $r6;
+        java.io.FileOutputStream $r7;
+        org.connectbot.service.TerminalBridge $r8;
+        org.connectbot.service.TerminalManager $r9;
+        android.content.res.Resources $r10;
+        java.lang.String $r11;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r4 = newarray (int)[1];
+
+     label1:
+        $r5 = staticinvoke <com.google.ase.Exec: java.io.FileDescriptor createSubprocess(java.lang.String,java.lang.String,java.lang.String,int[])>("/system/bin/sh", "-", null, $r4);
+
+        $r0.<org.connectbot.transport.Local: java.io.FileDescriptor shellFd> = $r5;
+
+     label2:
+        $i0 = $r4[0];
+
+        $r2 = new org.connectbot.transport.Local$1;
+
+        specialinvoke $r2.<org.connectbot.transport.Local$1: void <init>(org.connectbot.transport.Local,int)>($r0, $i0);
+
+        $r3 = new java.lang.Thread;
+
+        specialinvoke $r3.<java.lang.Thread: void <init>(java.lang.Runnable)>($r2);
+
+        virtualinvoke $r3.<java.lang.Thread: void setName(java.lang.String)>("LocalExitWatcher");
+
+        virtualinvoke $r3.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r3.<java.lang.Thread: void start()>();
+
+        $r6 = new java.io.FileInputStream;
+
+        $r5 = $r0.<org.connectbot.transport.Local: java.io.FileDescriptor shellFd>;
+
+        specialinvoke $r6.<java.io.FileInputStream: void <init>(java.io.FileDescriptor)>($r5);
+
+        $r0.<org.connectbot.transport.Local: java.io.FileInputStream is> = $r6;
+
+        $r7 = new java.io.FileOutputStream;
+
+        $r5 = $r0.<org.connectbot.transport.Local: java.io.FileDescriptor shellFd>;
+
+        specialinvoke $r7.<java.io.FileOutputStream: void <init>(java.io.FileDescriptor)>($r5);
+
+        $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os> = $r7;
+
+        $r8 = $r0.<org.connectbot.transport.Local: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r8.<org.connectbot.service.TerminalBridge: void onConnected()>();
+
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        $r8 = $r0.<org.connectbot.transport.Local: org.connectbot.service.TerminalBridge bridge>;
+
+        $r9 = $r0.<org.connectbot.transport.Local: org.connectbot.service.TerminalManager manager>;
+
+        $r10 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r11 = virtualinvoke $r10.<android.content.res.Resources: java.lang.String getString(int)>(2131165320);
+
+        virtualinvoke $r8.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r11);
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.Local", "Cannot start local shell", $r1);
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public org.connectbot.bean.HostBean createHost(android.net.Uri)
+    {
+        org.connectbot.transport.Local $r0;
+        android.net.Uri $r1;
+        org.connectbot.bean.HostBean $r2;
+        java.lang.String $r3, $r4;
+        int $i0;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r1 := @parameter0: android.net.Uri;
+
+        $r2 = new org.connectbot.bean.HostBean;
+
+        specialinvoke $r2.<org.connectbot.bean.HostBean: void <init>()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setProtocol(java.lang.String)>("local");
+
+        $r3 = virtualinvoke $r1.<android.net.Uri: java.lang.String getFragment()>();
+
+        if $r3 == null goto label1;
+
+        $i0 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label2;
+
+     label1:
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getUsername()>();
+
+        $r4 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getHostname()>();
+
+        $i0 = virtualinvoke $r2.<org.connectbot.bean.HostBean: int getPort()>();
+
+        $r4 = virtualinvoke $r0.<org.connectbot.transport.Local: java.lang.String getDefaultNickname(java.lang.String,java.lang.String,int)>($r3, $r4, $i0);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setNickname(java.lang.String)>($r4);
+
+        return $r2;
+
+     label2:
+        $r4 = virtualinvoke $r1.<android.net.Uri: java.lang.String getFragment()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setNickname(java.lang.String)>($r4);
+
+        return $r2;
+    }
+
+    public void flush() throws java.io.IOException
+    {
+        org.connectbot.transport.Local $r0;
+        java.io.FileOutputStream $r1;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r1 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+        virtualinvoke $r1.<java.io.FileOutputStream: void flush()>();
+
+        return;
+    }
+
+    public java.lang.String getDefaultNickname(java.lang.String, java.lang.String, int)
+    {
+        org.connectbot.transport.Local $r0;
+        java.lang.String $r1, $r2;
+        int $i0;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $i0 := @parameter2: int;
+
+        return "local:#Local";
+    }
+
+    public void getSelectionArgs(android.net.Uri, java.util.Map)
+    {
+        org.connectbot.transport.Local $r0;
+        android.net.Uri $r1;
+        java.util.Map $r2;
+        java.lang.String $r3;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r1 := @parameter0: android.net.Uri;
+
+        $r2 := @parameter1: java.util.Map;
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("protocol", "local");
+
+        $r3 = virtualinvoke $r1.<android.net.Uri: java.lang.String getFragment()>();
+
+        interfaceinvoke $r2.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>("nickname", $r3);
+
+        return;
+    }
+
+    public boolean isConnected()
+    {
+        org.connectbot.transport.Local $r0;
+        java.io.FileInputStream $r1;
+        java.io.FileOutputStream $r2;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r1 = $r0.<org.connectbot.transport.Local: java.io.FileInputStream is>;
+
+        if $r1 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+        if $r2 == null goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isSessionOpen()
+    {
+        org.connectbot.transport.Local $r0;
+        java.io.FileInputStream $r1;
+        java.io.FileOutputStream $r2;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r1 = $r0.<org.connectbot.transport.Local: java.io.FileInputStream is>;
+
+        if $r1 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+        if $r2 == null goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public int read(byte[], int, int) throws java.io.IOException
+    {
+        org.connectbot.transport.Local $r0;
+        byte[] $r1;
+        int $i0, $i1;
+        java.io.FileInputStream $r2;
+        org.connectbot.service.TerminalBridge $r3;
+        java.io.IOException $r4;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileInputStream is>;
+
+        if $r2 != null goto label1;
+
+        $r3 = $r0.<org.connectbot.transport.Local: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r3.<org.connectbot.service.TerminalBridge: void dispatchDisconnect(boolean)>(0);
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("session closed");
+
+        throw $r4;
+
+     label1:
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileInputStream is>;
+
+        $i1 = virtualinvoke $r2.<java.io.FileInputStream: int read(byte[],int,int)>($r1, $i0, $i1);
+
+        return $i1;
+    }
+
+    public void setDimensions(int, int, int, int)
+    {
+        org.connectbot.transport.Local $r0;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Exception $r1;
+        java.io.FileDescriptor $r2;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileDescriptor shellFd>;
+
+        if $r2 != null goto label1;
+
+        return;
+
+     label1:
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileDescriptor shellFd>;
+
+        staticinvoke <com.google.ase.Exec: void setPtyWindowSize(java.io.FileDescriptor,int,int,int,int)>($r2, $i1, $i0, $i2, $i3);
+
+     label2:
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.Local", "Couldn\'t resize pty", $r1);
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public boolean usesNetwork()
+    {
+        org.connectbot.transport.Local $r0;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        return 0;
+    }
+
+    public void write(int) throws java.io.IOException
+    {
+        org.connectbot.transport.Local $r0;
+        int $i0;
+        java.io.FileOutputStream $r1;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+        virtualinvoke $r1.<java.io.FileOutputStream: void write(int)>($i0);
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void write(byte[]) throws java.io.IOException
+    {
+        org.connectbot.transport.Local $r0;
+        byte[] $r1;
+        java.io.FileOutputStream $r2;
+
+        $r0 := @this: org.connectbot.transport.Local;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.transport.Local: java.io.FileOutputStream os>;
+
+        virtualinvoke $r2.<java.io.FileOutputStream: void write(byte[])>($r1);
+
+        return;
+
+     label1:
+        return;
+    }
+}

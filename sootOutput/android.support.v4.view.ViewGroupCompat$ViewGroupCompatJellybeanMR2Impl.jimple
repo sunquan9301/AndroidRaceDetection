@@ -1,0 +1,14 @@
+class android.support.v4.view.ViewGroupCompat$ViewGroupCompatJellybeanMR2Impl extends android.support.v4.view.ViewGroupCompat$ViewGroupCompatIcsImpl
+{
+
+    void <init>()
+    {
+        android.support.v4.view.ViewGroupCompat$ViewGroupCompatJellybeanMR2Impl $r0;
+
+        $r0 := @this: android.support.v4.view.ViewGroupCompat$ViewGroupCompatJellybeanMR2Impl;
+
+        specialinvoke $r0.<android.support.v4.view.ViewGroupCompat$ViewGroupCompatIcsImpl: void <init>()>();
+
+        return;
+    }
+}

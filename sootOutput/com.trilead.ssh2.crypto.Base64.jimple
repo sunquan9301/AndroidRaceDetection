@@ -1,0 +1,479 @@
+public class com.trilead.ssh2.crypto.Base64 extends java.lang.Object
+{
+    static final char[] alphabet;
+
+    static void <clinit>()
+    {
+        java.lang.String $r0;
+        char[] $r1;
+
+        $r0 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+        $r1 = virtualinvoke $r0.<java.lang.String: char[] toCharArray()>();
+
+        <com.trilead.ssh2.crypto.Base64: char[] alphabet> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.trilead.ssh2.crypto.Base64 $r0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.Base64;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static byte[] decode(char[]) throws java.io.IOException
+    {
+        char[] $r0;
+        int $i0, $i1, $i3, $i4, $i5, $i7;
+        byte[] $r1, $r2;
+        char $c2;
+        byte $b6;
+        java.io.IOException $r3;
+
+        $r0 := @parameter0: char[];
+
+        $r1 = newarray (byte)[4];
+
+        $i4 = lengthof $r0;
+
+        $r2 = newarray (byte)[$i4];
+
+        $i0 = 0;
+
+        $i3 = 0;
+
+        $i4 = 0;
+
+     label01:
+        $i1 = lengthof $r0;
+
+        if $i4 >= $i1 goto label05;
+
+        $c2 = $r0[$i4];
+
+        if $c2 == 10 goto label02;
+
+        if $c2 == 13 goto label02;
+
+        if $c2 == 32 goto label02;
+
+        if $c2 != 9 goto label03;
+
+     label02:
+        $i4 = $i4 + 1;
+
+        goto label01;
+
+     label03:
+        if $c2 < 65 goto label06;
+
+        if $c2 > 90 goto label06;
+
+        $i5 = $c2 + -65;
+
+        $b6 = (byte) $i5;
+
+        $r1[$i0] = $b6;
+
+        $i0 = $i0 + 1;
+
+     label04:
+        if $i0 != 4 goto label02;
+
+        $i0 = 0;
+
+        $b6 = $r1[0];
+
+        if $b6 != 64 goto label12;
+
+     label05:
+        $r1 = newarray (byte)[$i3];
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r1, 0, $i3);
+
+        return $r1;
+
+     label06:
+        if $c2 < 97 goto label07;
+
+        if $c2 > 122 goto label07;
+
+        $i1 = $c2 + -97;
+
+        $i1 = $i1 + 26;
+
+        $b6 = (byte) $i1;
+
+        $r1[$i0] = $b6;
+
+        $i0 = $i0 + 1;
+
+        goto label04;
+
+     label07:
+        if $c2 < 48 goto label08;
+
+        if $c2 > 57 goto label08;
+
+        $i1 = $c2 + -48;
+
+        $i1 = $i1 + 52;
+
+        $b6 = (byte) $i1;
+
+        $r1[$i0] = $b6;
+
+        $i0 = $i0 + 1;
+
+        goto label04;
+
+     label08:
+        if $c2 != 43 goto label09;
+
+        $r1[$i0] = 62;
+
+        $i0 = $i0 + 1;
+
+        goto label04;
+
+     label09:
+        if $c2 != 47 goto label10;
+
+        $r1[$i0] = 63;
+
+        $i0 = $i0 + 1;
+
+        goto label04;
+
+     label10:
+        if $c2 != 61 goto label11;
+
+        $r1[$i0] = 64;
+
+        $i0 = $i0 + 1;
+
+        goto label04;
+
+     label11:
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Illegal char in base64 code.");
+
+        throw $r3;
+
+     label12:
+        $b6 = $r1[1];
+
+        if $b6 != 64 goto label13;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Unexpected \'=\' in base64 code.");
+
+        throw $r3;
+
+     label13:
+        $b6 = $r1[2];
+
+        if $b6 != 64 goto label14;
+
+        $b6 = $r1[0];
+
+        $b6 = $b6 & 63;
+
+        $i5 = $b6 << 6;
+
+        $b6 = $r1[1];
+
+        $b6 = $b6 & 63;
+
+        $i4 = $i5 | $b6;
+
+        $i5 = $i4 >> 4;
+
+        $b6 = (byte) $i5;
+
+        $r2[$i3] = $b6;
+
+        $i3 = $i3 + 1;
+
+        goto label05;
+
+     label14:
+        $b6 = $r1[3];
+
+        if $b6 != 64 goto label15;
+
+        $b6 = $r1[0];
+
+        $b6 = $b6 & 63;
+
+        $i5 = $b6 << 12;
+
+        $b6 = $r1[1];
+
+        $b6 = $b6 & 63;
+
+        $i4 = $b6 << 6;
+
+        $i5 = $i5 | $i4;
+
+        $b6 = $r1[2];
+
+        $b6 = $b6 & 63;
+
+        $i5 = $i5 | $b6;
+
+        $i4 = $i3 + 1;
+
+        $i1 = $i5 >> 10;
+
+        $b6 = (byte) $i1;
+
+        $r2[$i3] = $b6;
+
+        $i3 = $i4 + 1;
+
+        $i5 = $i5 >> 2;
+
+        $b6 = (byte) $i5;
+
+        $r2[$i4] = $b6;
+
+        goto label05;
+
+     label15:
+        $b6 = $r1[0];
+
+        $b6 = $b6 & 63;
+
+        $i5 = $b6 << 18;
+
+        $b6 = $r1[1];
+
+        $b6 = $b6 & 63;
+
+        $i1 = $b6 << 12;
+
+        $i5 = $i5 | $i1;
+
+        $b6 = $r1[2];
+
+        $b6 = $b6 & 63;
+
+        $i1 = $b6 << 6;
+
+        $i5 = $i5 | $i1;
+
+        $b6 = $r1[3];
+
+        $b6 = $b6 & 63;
+
+        $i5 = $i5 | $b6;
+
+        $i1 = $i3 + 1;
+
+        $i7 = $i5 >> 16;
+
+        $b6 = (byte) $i7;
+
+        $r2[$i3] = $b6;
+
+        $i7 = $i1 + 1;
+
+        $i3 = $i5 >> 8;
+
+        $b6 = (byte) $i3;
+
+        $r2[$i1] = $b6;
+
+        $b6 = (byte) $i5;
+
+        $r2[$i7] = $b6;
+
+        $i3 = $i7 + 1;
+
+        goto label02;
+    }
+
+    public static char[] encode(byte[])
+    {
+        byte[] $r0;
+        java.io.CharArrayWriter $r1;
+        int $i0, $i1, $i2, $i3;
+        char[] $r2;
+        byte $b4;
+        short $s5;
+        char $c6;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 = new java.io.CharArrayWriter;
+
+        $i2 = lengthof $r0;
+
+        $i2 = $i2 * 4;
+
+        $i2 = $i2 / 3;
+
+        specialinvoke $r1.<java.io.CharArrayWriter: void <init>(int)>($i2);
+
+        $i1 = 0;
+
+        $i2 = 0;
+
+        $i0 = 0;
+
+     label1:
+        $i3 = lengthof $r0;
+
+        if $i0 >= $i3 goto label6;
+
+        if $i1 != 0 goto label4;
+
+        $b4 = $r0[$i0];
+
+        $s5 = $b4 & 255;
+
+        $i2 = $s5 << 16;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        if $i1 != 3 goto label3;
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i1 = $i2 >> 18;
+
+        $c6 = $r2[$i1];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i3 = $i2 >> 12;
+
+        $i3 = $i3 & 63;
+
+        $c6 = $r2[$i3];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i3 = $i2 >> 6;
+
+        $i3 = $i3 & 63;
+
+        $c6 = $r2[$i3];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i3 = $i2 & 63;
+
+        $c6 = $r2[$i3];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        $i1 = 0;
+
+     label3:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label4:
+        if $i1 != 1 goto label5;
+
+        $b4 = $r0[$i0];
+
+        $s5 = $b4 & 255;
+
+        $i3 = $s5 << 8;
+
+        $i2 = $i2 | $i3;
+
+        goto label2;
+
+     label5:
+        $b4 = $r0[$i0];
+
+        $s5 = $b4 & 255;
+
+        $i2 = $i2 | $s5;
+
+        goto label2;
+
+     label6:
+        if $i1 != 1 goto label7;
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i3 = $i2 >> 18;
+
+        $c6 = $r2[$i3];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i3 = $i2 >> 12;
+
+        $i3 = $i3 & 63;
+
+        $c6 = $r2[$i3];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>(61);
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>(61);
+
+     label7:
+        if $i1 != 2 goto label8;
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i3 = $i2 >> 18;
+
+        $c6 = $r2[$i3];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i3 = $i2 >> 12;
+
+        $i3 = $i3 & 63;
+
+        $c6 = $r2[$i3];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        $r2 = <com.trilead.ssh2.crypto.Base64: char[] alphabet>;
+
+        $i3 = $i2 >> 6;
+
+        $i3 = $i3 & 63;
+
+        $c6 = $r2[$i3];
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>($c6);
+
+        virtualinvoke $r1.<java.io.CharArrayWriter: void write(int)>(61);
+
+     label8:
+        $r2 = virtualinvoke $r1.<java.io.CharArrayWriter: char[] toCharArray()>();
+
+        return $r2;
+    }
+}

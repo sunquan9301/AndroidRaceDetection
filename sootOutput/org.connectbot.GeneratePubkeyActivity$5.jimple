@@ -1,0 +1,201 @@
+class org.connectbot.GeneratePubkeyActivity$5 extends java.lang.Object implements java.lang.Runnable
+{
+    final org.connectbot.GeneratePubkeyActivity this$0;
+
+    void <init>(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity$5 $r0;
+        org.connectbot.GeneratePubkeyActivity $r1;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$5;
+
+        $r1 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.GeneratePubkeyActivity$5 $r0;
+        java.lang.Exception $r1;
+        boolean $z0;
+        org.connectbot.bean.PubkeyBean $r2;
+        org.connectbot.util.PubkeyDatabase $r3;
+        java.security.SecureRandom $r4;
+        org.connectbot.GeneratePubkeyActivity $r5;
+        java.lang.StringBuilder $r6;
+        byte[] $r7;
+        java.lang.String $r8, $r15;
+        java.security.KeyPairGenerator $r9;
+        int $i0;
+        java.security.KeyPair $r10;
+        java.security.PrivateKey $r11;
+        java.security.PublicKey $r12;
+        android.widget.EditText $r13;
+        android.text.Editable $r14;
+        android.widget.CheckBox $r16;
+        org.connectbot.GeneratePubkeyActivity$5$1 $r17;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$5;
+
+        $z0 = 0;
+
+        $r4 = new java.security.SecureRandom;
+
+     label1:
+        specialinvoke $r4.<java.security.SecureRandom: void <init>()>();
+
+        virtualinvoke $r4.<java.security.SecureRandom: int nextInt()>();
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.GeneratePubkeyActivity: byte[] access$800(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        virtualinvoke $r4.<java.security.SecureRandom: void setSeed(byte[])>($r7);
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r8 = staticinvoke <org.connectbot.GeneratePubkeyActivity: java.lang.String access$300(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        $r9 = staticinvoke <java.security.KeyPairGenerator: java.security.KeyPairGenerator getInstance(java.lang.String)>($r8);
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i0 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$400(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        virtualinvoke $r9.<java.security.KeyPairGenerator: void initialize(int,java.security.SecureRandom)>($i0, $r4);
+
+        $r10 = virtualinvoke $r9.<java.security.KeyPairGenerator: java.security.KeyPair generateKeyPair()>();
+
+        $r11 = virtualinvoke $r10.<java.security.KeyPair: java.security.PrivateKey getPrivate()>();
+
+        $r12 = virtualinvoke $r10.<java.security.KeyPair: java.security.PublicKey getPublic()>();
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r13 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$900(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        $r14 = virtualinvoke $r13.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r8 = virtualinvoke $r14.<java.lang.Object: java.lang.String toString()>();
+
+        $i0 = virtualinvoke $r8.<java.lang.String: int length()>();
+
+     label2:
+        if $i0 <= 0 goto label3;
+
+        $z0 = 1;
+
+     label3:
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("private: ");
+
+        $r15 = staticinvoke <org.connectbot.util.PubkeyUtils: java.lang.String formatKey(java.security.Key)>($r11);
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+
+        $r15 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.GeneratePubkeyAct", $r15);
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("public: ");
+
+        $r15 = staticinvoke <org.connectbot.util.PubkeyUtils: java.lang.String formatKey(java.security.Key)>($r12);
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r15);
+
+        $r15 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.GeneratePubkeyAct", $r15);
+
+        $r2 = new org.connectbot.bean.PubkeyBean;
+
+        specialinvoke $r2.<org.connectbot.bean.PubkeyBean: void <init>()>();
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r13 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$1000(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        $r14 = virtualinvoke $r13.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r15 = virtualinvoke $r14.<java.lang.Object: java.lang.String toString()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setNickname(java.lang.String)>($r15);
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r15 = staticinvoke <org.connectbot.GeneratePubkeyActivity: java.lang.String access$300(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setType(java.lang.String)>($r15);
+
+        $r7 = staticinvoke <org.connectbot.util.PubkeyUtils: byte[] getEncodedPrivate(java.security.PrivateKey,java.lang.String)>($r11, $r8);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setPrivateKey(byte[])>($r7);
+
+        $r7 = interfaceinvoke $r12.<java.security.PublicKey: byte[] getEncoded()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setPublicKey(byte[])>($r7);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setEncrypted(boolean)>($z0);
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r16 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.CheckBox access$1100(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        $z0 = virtualinvoke $r16.<android.widget.CheckBox: boolean isChecked()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setStartup(boolean)>($z0);
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r16 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.CheckBox access$1200(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        $z0 = virtualinvoke $r16.<android.widget.CheckBox: boolean isChecked()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setConfirmUse(boolean)>($z0);
+
+        $r3 = new org.connectbot.util.PubkeyDatabase;
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        specialinvoke $r3.<org.connectbot.util.PubkeyDatabase: void <init>(android.content.Context)>($r5);
+
+        virtualinvoke $r3.<org.connectbot.util.PubkeyDatabase: org.connectbot.bean.PubkeyBean savePubkey(org.connectbot.bean.PubkeyBean)>($r2);
+
+        virtualinvoke $r3.<org.connectbot.util.PubkeyDatabase: void close()>();
+
+     label4:
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$5: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r17 = new org.connectbot.GeneratePubkeyActivity$5$1;
+
+        specialinvoke $r17.<org.connectbot.GeneratePubkeyActivity$5$1: void <init>(org.connectbot.GeneratePubkeyActivity$5)>($r0);
+
+        virtualinvoke $r5.<org.connectbot.GeneratePubkeyActivity: void runOnUiThread(java.lang.Runnable)>($r17);
+
+        return;
+
+     label5:
+        $r1 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("CB.GeneratePubkeyAct", "Could not generate key pair");
+
+        virtualinvoke $r1.<java.lang.Exception: void printStackTrace()>();
+
+        goto label4;
+
+        catch java.lang.Exception from label1 to label2 with label5;
+        catch java.lang.Exception from label3 to label4 with label5;
+    }
+}

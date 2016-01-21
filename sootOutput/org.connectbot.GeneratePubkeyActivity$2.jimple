@@ -1,0 +1,131 @@
+class org.connectbot.GeneratePubkeyActivity$2 extends java.lang.Object implements android.widget.SeekBar$OnSeekBarChangeListener
+{
+    final org.connectbot.GeneratePubkeyActivity this$0;
+
+    void <init>(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity$2 $r0;
+        org.connectbot.GeneratePubkeyActivity $r1;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$2;
+
+        $r1 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onProgressChanged(android.widget.SeekBar, int, boolean)
+    {
+        org.connectbot.GeneratePubkeyActivity$2 $r0;
+        android.widget.SeekBar $r1;
+        int $i0, $i1;
+        boolean $z0;
+        java.lang.String $r2, $r4;
+        org.connectbot.GeneratePubkeyActivity $r3, $r5, $r6;
+        android.widget.EditText $r7;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$2;
+
+        $r1 := @parameter0: android.widget.SeekBar;
+
+        $i0 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 = "EC";
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.GeneratePubkeyActivity: java.lang.String access$300(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label2;
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $i1 = $i1 + $i0;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$500(org.connectbot.GeneratePubkeyActivity,int)>($r6, $i1);
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$402(org.connectbot.GeneratePubkeyActivity,int)>($r5, $i1);
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$400(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i0 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+        $i1 = $i1 - $i0;
+
+        virtualinvoke $r1.<android.widget.SeekBar: void setProgress(int)>($i1);
+
+     label1:
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$400(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+
+        virtualinvoke $r7.<android.widget.EditText: void setText(java.lang.CharSequence)>($r4);
+
+        return;
+
+     label2:
+        $i1 = $i0 % 8;
+
+        $i0 = $i0 - $i1;
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity$2: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r5);
+
+        $i1 = $i1 + $i0;
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$402(org.connectbot.GeneratePubkeyActivity,int)>($r6, $i1);
+
+        goto label1;
+    }
+
+    public void onStartTrackingTouch(android.widget.SeekBar)
+    {
+        org.connectbot.GeneratePubkeyActivity$2 $r0;
+        android.widget.SeekBar $r1;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$2;
+
+        $r1 := @parameter0: android.widget.SeekBar;
+
+        return;
+    }
+
+    public void onStopTrackingTouch(android.widget.SeekBar)
+    {
+        org.connectbot.GeneratePubkeyActivity$2 $r0;
+        android.widget.SeekBar $r1;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$2;
+
+        $r1 := @parameter0: android.widget.SeekBar;
+
+        return;
+    }
+}

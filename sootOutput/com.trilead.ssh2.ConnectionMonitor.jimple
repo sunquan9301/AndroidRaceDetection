@@ -1,0 +1,5 @@
+public interface  com.trilead.ssh2.ConnectionMonitor extends java.lang.Object
+{
+
+    public abstract void connectionLost(java.lang.Throwable);
+}

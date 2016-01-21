@@ -1,0 +1,2034 @@
+public class org.connectbot.service.TerminalManager extends android.app.Service implements android.content.SharedPreferences$OnSharedPreferenceChangeListener, org.connectbot.service.BridgeDisconnectedListener
+{
+    private final long IDLE_TIMEOUT;
+    private final android.os.IBinder binder;
+    private java.util.ArrayList bridges;
+    private org.connectbot.service.ConnectivityReceiver connectivityManager;
+    public org.connectbot.service.TerminalBridge defaultBridge;
+    public android.os.Handler disconnectHandler;
+    public java.util.List disconnected;
+    public boolean hardKeyboardHidden;
+    public org.connectbot.util.HostDatabase hostdb;
+    private java.util.Timer idleTimer;
+    public java.util.Map loadedKeypairs;
+    public java.util.Map mHostBridgeMap;
+    public java.util.Map mNicknameBridgeMap;
+    protected java.util.List mPendingReconnect;
+    private android.media.MediaPlayer mediaPlayer;
+    protected android.content.SharedPreferences prefs;
+    private java.util.Timer pubkeyTimer;
+    public org.connectbot.util.PubkeyDatabase pubkeydb;
+    public android.content.res.Resources res;
+    private boolean resizeAllowed;
+    private boolean savingKeys;
+    private android.os.Vibrator vibrator;
+    private boolean wantBellVibration;
+    private volatile boolean wantKeyVibration;
+
+    public void <init>()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.util.ArrayList $r1;
+        java.util.HashMap $r2;
+        java.util.LinkedList $r3;
+        org.connectbot.service.TerminalManager$TerminalBinder $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        specialinvoke $r0.<android.app.Service: void <init>()>();
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges> = $r1;
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.Map mHostBridgeMap> = $r2;
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.Map mNicknameBridgeMap> = $r2;
+
+        $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.TerminalBridge defaultBridge> = null;
+
+        $r3 = new java.util.LinkedList;
+
+        specialinvoke $r3.<java.util.LinkedList: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.List disconnected> = $r3;
+
+        $r0.<org.connectbot.service.TerminalManager: android.os.Handler disconnectHandler> = null;
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs> = $r2;
+
+        $r4 = new org.connectbot.service.TerminalManager$TerminalBinder;
+
+        specialinvoke $r4.<org.connectbot.service.TerminalManager$TerminalBinder: void <init>(org.connectbot.service.TerminalManager)>($r0);
+
+        $r0.<org.connectbot.service.TerminalManager: android.os.IBinder binder> = $r4;
+
+        $r0.<org.connectbot.service.TerminalManager: long IDLE_TIMEOUT> = 300000L;
+
+        $r0.<org.connectbot.service.TerminalManager: boolean resizeAllowed> = 1;
+
+        $r3 = new java.util.LinkedList;
+
+        specialinvoke $r3.<java.util.LinkedList: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.List mPendingReconnect> = $r3;
+
+        return;
+    }
+
+    static void access$200(org.connectbot.service.TerminalManager)
+    {
+        org.connectbot.service.TerminalManager $r0;
+
+        $r0 := @parameter0: org.connectbot.service.TerminalManager;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void reconnectPending()>();
+
+        return;
+    }
+
+    private void disableMediaPlayer()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.media.MediaPlayer $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        virtualinvoke $r1.<android.media.MediaPlayer: void release()>();
+
+        $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer> = null;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    private void enableMediaPlayer()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.media.MediaPlayer $r1;
+        java.io.IOException $r2;
+        float $f0;
+        android.content.SharedPreferences $r3;
+        org.connectbot.service.TerminalManager$BeepListener $r4;
+        android.content.res.Resources $r5;
+        android.content.res.AssetFileDescriptor $r6;
+        java.io.FileDescriptor $r7;
+        long $l0, $l1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = new android.media.MediaPlayer;
+
+        specialinvoke $r1.<android.media.MediaPlayer: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer> = $r1;
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $f0 = interfaceinvoke $r3.<android.content.SharedPreferences: float getFloat(java.lang.String,float)>("bellVolume", 0.25F);
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        virtualinvoke $r1.<android.media.MediaPlayer: void setAudioStreamType(int)>(5);
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        $r4 = new org.connectbot.service.TerminalManager$BeepListener;
+
+        specialinvoke $r4.<org.connectbot.service.TerminalManager$BeepListener: void <init>(org.connectbot.service.TerminalManager$1)>(null);
+
+        virtualinvoke $r1.<android.media.MediaPlayer: void setOnCompletionListener(android.media.MediaPlayer$OnCompletionListener)>($r4);
+
+        $r5 = $r0.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r6 = virtualinvoke $r5.<android.content.res.Resources: android.content.res.AssetFileDescriptor openRawResourceFd(int)>(2131099648);
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+     label1:
+        $r7 = virtualinvoke $r6.<android.content.res.AssetFileDescriptor: java.io.FileDescriptor getFileDescriptor()>();
+
+        $l0 = virtualinvoke $r6.<android.content.res.AssetFileDescriptor: long getStartOffset()>();
+
+        $l1 = virtualinvoke $r6.<android.content.res.AssetFileDescriptor: long getLength()>();
+
+        virtualinvoke $r1.<android.media.MediaPlayer: void setDataSource(java.io.FileDescriptor,long,long)>($r7, $l0, $l1);
+
+        virtualinvoke $r6.<android.content.res.AssetFileDescriptor: void close()>();
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        virtualinvoke $r1.<android.media.MediaPlayer: void setVolume(float,float)>($f0, $f0);
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        virtualinvoke $r1.<android.media.MediaPlayer: void prepare()>();
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.TerminalManager", "Error setting up bell media player", $r2);
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    private void keepServiceAlive()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.Intent $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void stopIdleTimer()>();
+
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/service/TerminalManager");
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: android.content.ComponentName startService(android.content.Intent)>($r1);
+
+        return;
+    }
+
+    private org.connectbot.service.TerminalBridge openConnection(org.connectbot.bean.HostBean) throws java.lang.IllegalArgumentException, java.io.IOException
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.bean.HostBean $r1, $r4;
+        org.connectbot.service.TerminalBridge $r2;
+        java.lang.ref.WeakReference $r3;
+        java.lang.IllegalArgumentException $r5;
+        java.util.ArrayList $r6, $r7;
+        java.util.Map $r8;
+        java.lang.String $r9;
+        java.util.List $r10, $r11;
+        boolean $z0;
+        org.connectbot.service.ConnectivityReceiver $r12;
+        android.content.SharedPreferences $r13;
+        org.connectbot.service.ConnectionNotifier $r14;
+        java.lang.Throwable $r15, $r16;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.TerminalBridge getConnectedBridge(org.connectbot.bean.HostBean)>($r1);
+
+        if $r2 == null goto label01;
+
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Connection already open for that nickname");
+
+        throw $r5;
+
+     label01:
+        $r2 = new org.connectbot.service.TerminalBridge;
+
+        specialinvoke $r2.<org.connectbot.service.TerminalBridge: void <init>(org.connectbot.service.TerminalManager,org.connectbot.bean.HostBean)>($r0, $r1);
+
+        virtualinvoke $r2.<org.connectbot.service.TerminalBridge: void setOnDisconnectedListener(org.connectbot.service.BridgeDisconnectedListener)>($r0);
+
+        virtualinvoke $r2.<org.connectbot.service.TerminalBridge: void startConnection()>();
+
+        $r6 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        entermonitor $r6;
+
+     label02:
+        $r7 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        virtualinvoke $r7.<java.util.ArrayList: boolean add(java.lang.Object)>($r2);
+
+        $r3 = new java.lang.ref.WeakReference;
+
+        specialinvoke $r3.<java.lang.ref.WeakReference: void <init>(java.lang.Object)>($r2);
+
+        $r8 = $r0.<org.connectbot.service.TerminalManager: java.util.Map mHostBridgeMap>;
+
+        $r4 = $r2.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        interfaceinvoke $r8.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r3);
+
+        $r8 = $r0.<org.connectbot.service.TerminalManager: java.util.Map mNicknameBridgeMap>;
+
+        $r4 = $r2.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r9 = virtualinvoke $r4.<org.connectbot.bean.HostBean: java.lang.String getNickname()>();
+
+        interfaceinvoke $r8.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r9, $r3);
+
+        exitmonitor $r6;
+
+     label03:
+        $r10 = $r0.<org.connectbot.service.TerminalManager: java.util.List disconnected>;
+
+        entermonitor $r10;
+
+     label04:
+        $r11 = $r0.<org.connectbot.service.TerminalManager: java.util.List disconnected>;
+
+        $r4 = $r2.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        interfaceinvoke $r11.<java.util.List: boolean remove(java.lang.Object)>($r4);
+
+        exitmonitor $r10;
+
+     label05:
+        $z0 = virtualinvoke $r2.<org.connectbot.service.TerminalBridge: boolean isUsingNetwork()>();
+
+        if $z0 == 0 goto label06;
+
+        $r12 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.ConnectivityReceiver connectivityManager>;
+
+        virtualinvoke $r12.<org.connectbot.service.ConnectivityReceiver: void incRef()>();
+
+     label06:
+        $r13 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r13.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("connPersist", 1);
+
+        if $z0 == 0 goto label07;
+
+        $r14 = staticinvoke <org.connectbot.service.ConnectionNotifier: org.connectbot.service.ConnectionNotifier getInstance()>();
+
+        virtualinvoke $r14.<org.connectbot.service.ConnectionNotifier: void showRunningNotification(android.app.Service)>($r0);
+
+     label07:
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void touchHost(org.connectbot.bean.HostBean)>($r1);
+
+        return $r2;
+
+     label08:
+        $r15 := @caughtexception;
+
+     label09:
+        exitmonitor $r6;
+
+     label10:
+        throw $r15;
+
+     label11:
+        $r16 := @caughtexception;
+
+     label12:
+        exitmonitor $r10;
+
+     label13:
+        throw $r16;
+
+        catch java.lang.Throwable from label02 to label03 with label08;
+        catch java.lang.Throwable from label04 to label05 with label11;
+        catch java.lang.Throwable from label09 to label10 with label08;
+        catch java.lang.Throwable from label12 to label13 with label11;
+    }
+
+    private void reconnectPending()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.util.List $r1, $r2;
+        java.util.Iterator $r3;
+        boolean $z0;
+        java.lang.Object $r4;
+        java.lang.ref.WeakReference $r5;
+        org.connectbot.service.TerminalBridge $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.List mPendingReconnect>;
+
+        entermonitor $r2;
+
+     label1:
+        $r1 = $r0.<org.connectbot.service.TerminalManager: java.util.List mPendingReconnect>;
+
+        $r3 = interfaceinvoke $r1.<java.util.List: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r3.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r4 = interfaceinvoke $r3.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.lang.ref.WeakReference) $r4;
+
+        $r4 = virtualinvoke $r5.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r6 = (org.connectbot.service.TerminalBridge) $r4;
+
+        if $r6 == null goto label2;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void startConnection()>();
+
+        goto label2;
+
+     label3:
+        $r7 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label4:
+        throw $r7;
+
+     label5:
+        $r1 = $r0.<org.connectbot.service.TerminalManager: java.util.List mPendingReconnect>;
+
+        interfaceinvoke $r1.<java.util.List: void clear()>();
+
+        exitmonitor $r2;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label4 with label3;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    private void stopIdleTimer()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.util.Timer $r1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer idleTimer>;
+
+        if $r1 == null goto label2;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer idleTimer>;
+
+        virtualinvoke $r1.<java.util.Timer: void cancel()>();
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.Timer idleTimer> = null;
+
+     label2:
+        exitmonitor $r0;
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    private void stopWithDelay()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.util.Map $r1;
+        int $i0;
+        java.util.Timer $r2;
+        org.connectbot.service.TerminalManager$IdleTask $r3;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs>;
+
+        $i0 = interfaceinvoke $r1.<java.util.Map: int size()>();
+
+        if $i0 <= 0 goto label6;
+
+        entermonitor $r0;
+
+     label1:
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer idleTimer>;
+
+        if $r2 != null goto label2;
+
+        $r2 = new java.util.Timer;
+
+        specialinvoke $r2.<java.util.Timer: void <init>(java.lang.String,boolean)>("idleTimer", 1);
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.Timer idleTimer> = $r2;
+
+     label2:
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer idleTimer>;
+
+        $r3 = new org.connectbot.service.TerminalManager$IdleTask;
+
+        specialinvoke $r3.<org.connectbot.service.TerminalManager$IdleTask: void <init>(org.connectbot.service.TerminalManager,org.connectbot.service.TerminalManager$1)>($r0, null);
+
+        virtualinvoke $r2.<java.util.Timer: void schedule(java.util.TimerTask,long)>($r3, 300000L);
+
+        exitmonitor $r0;
+
+     label3:
+        return;
+
+     label4:
+        $r4 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label5:
+        throw $r4;
+
+     label6:
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.TerminalManager", "Stopping service immediately");
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: void stopSelf()>();
+
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    private void touchHost(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.bean.HostBean $r1;
+        org.connectbot.util.HostDatabase $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        virtualinvoke $r2.<org.connectbot.util.HostDatabase: void touchHost(org.connectbot.bean.HostBean)>($r1);
+
+        return;
+    }
+
+    private void updateSavingKeys()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.SharedPreferences $r1;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("memkeys", 1);
+
+        $r0.<org.connectbot.service.TerminalManager: boolean savingKeys> = $z0;
+
+        return;
+    }
+
+    private void vibrate()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.os.Vibrator $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.os.Vibrator vibrator>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.os.Vibrator vibrator>;
+
+        virtualinvoke $r1.<android.os.Vibrator: void vibrate(long)>(30L);
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void addKey(org.connectbot.bean.PubkeyBean, java.security.KeyPair)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.bean.PubkeyBean $r1;
+        java.security.KeyPair $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: org.connectbot.bean.PubkeyBean;
+
+        $r2 := @parameter1: java.security.KeyPair;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: void addKey(org.connectbot.bean.PubkeyBean,java.security.KeyPair,boolean)>($r1, $r2, 0);
+
+        return;
+    }
+
+    public void addKey(org.connectbot.bean.PubkeyBean, java.security.KeyPair, boolean)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.bean.PubkeyBean $r1;
+        java.security.KeyPair $r2;
+        boolean $z0, $z1;
+        org.connectbot.service.TerminalManager$KeyHolder $r3;
+        long $l0;
+        java.lang.String $r4;
+        byte[] $r5;
+        java.util.Map $r6;
+        int $i1;
+        java.util.Timer $r7;
+        org.connectbot.service.TerminalManager$1 $r8;
+        java.lang.Object[] $r9;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: org.connectbot.bean.PubkeyBean;
+
+        $r2 := @parameter1: java.security.KeyPair;
+
+        $z0 := @parameter2: boolean;
+
+        $z1 = $r0.<org.connectbot.service.TerminalManager: boolean savingKeys>;
+
+        if $z1 != 0 goto label1;
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r4 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: boolean removeKey(java.lang.String)>($r4);
+
+        $r5 = staticinvoke <org.connectbot.util.PubkeyUtils: byte[] extractOpenSSHPublic(java.security.KeyPair)>($r2);
+
+        $r3 = new org.connectbot.service.TerminalManager$KeyHolder;
+
+        specialinvoke $r3.<org.connectbot.service.TerminalManager$KeyHolder: void <init>()>();
+
+        $r3.<org.connectbot.service.TerminalManager$KeyHolder: org.connectbot.bean.PubkeyBean bean> = $r1;
+
+        $r3.<org.connectbot.service.TerminalManager$KeyHolder: java.security.KeyPair pair> = $r2;
+
+        $r3.<org.connectbot.service.TerminalManager$KeyHolder: byte[] openSSHPubkey> = $r5;
+
+        $r6 = $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs>;
+
+        $r4 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        interfaceinvoke $r6.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r4, $r3);
+
+        $i1 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: int getLifetime()>();
+
+        if $i1 <= 0 goto label2;
+
+        $r4 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        $r7 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer pubkeyTimer>;
+
+        $r8 = new org.connectbot.service.TerminalManager$1;
+
+        specialinvoke $r8.<org.connectbot.service.TerminalManager$1: void <init>(org.connectbot.service.TerminalManager,java.lang.String)>($r0, $r4);
+
+        $i1 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: int getLifetime()>();
+
+        $i1 = $i1 * 1000;
+
+        $l0 = (long) $i1;
+
+        virtualinvoke $r7.<java.util.Timer: void schedule(java.util.TimerTask,long)>($r8, $l0);
+
+     label2:
+        $r9 = newarray (java.lang.Object)[1];
+
+        $r4 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        $r9[0] = $r4;
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Added key \'%s\' to in-memory cache", $r9);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.TerminalManager", $r4);
+
+        return;
+    }
+
+    public void disconnectAll(boolean, boolean)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        boolean $z0, $z1, $z2;
+        int $i0, $i1;
+        org.connectbot.service.TerminalBridge[] $r1;
+        java.util.ArrayList $r2, $r3, $r4;
+        java.lang.Object[] $r5;
+        org.connectbot.service.TerminalBridge $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $z0 := @parameter0: boolean;
+
+        $z1 := @parameter1: boolean;
+
+        $r1 = null;
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        entermonitor $r3;
+
+     label01:
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $i0 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+
+        if $i0 <= 0 goto label02;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $i0 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+
+        $r1 = newarray (org.connectbot.service.TerminalBridge)[$i0];
+
+        $r5 = virtualinvoke $r4.<java.util.ArrayList: java.lang.Object[] toArray(java.lang.Object[])>($r1);
+
+        $r1 = (org.connectbot.service.TerminalBridge[]) $r5;
+
+     label02:
+        exitmonitor $r3;
+
+     label03:
+        if $r1 == null goto label10;
+
+        $i0 = 0;
+
+     label04:
+        $i1 = lengthof $r1;
+
+        if $i0 >= $i1 goto label11;
+
+        if $z1 == 0 goto label09;
+
+        $r6 = $r1[$i0];
+
+        $z2 = virtualinvoke $r6.<org.connectbot.service.TerminalBridge: boolean isUsingNetwork()>();
+
+        if $z2 != 0 goto label09;
+
+     label05:
+        $i0 = $i0 + 1;
+
+        goto label04;
+
+     label06:
+        $r7 := @caughtexception;
+
+     label07:
+        exitmonitor $r3;
+
+     label08:
+        throw $r7;
+
+     label09:
+        $r6 = $r1[$i0];
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void dispatchDisconnect(boolean)>($z0);
+
+        goto label05;
+
+     label10:
+        return;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label01 to label03 with label06;
+        catch java.lang.Throwable from label07 to label08 with label06;
+    }
+
+    public java.util.ArrayList getBridges()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.util.ArrayList $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        return $r1;
+    }
+
+    public org.connectbot.service.TerminalBridge getConnectedBridge(java.lang.String)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.lang.String $r1;
+        org.connectbot.service.TerminalBridge $r2;
+        java.util.Map $r3;
+        java.lang.Object $r4;
+        java.lang.ref.WeakReference $r5;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.Map mNicknameBridgeMap>;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r5 = (java.lang.ref.WeakReference) $r4;
+
+        if $r5 == null goto label2;
+
+        $r4 = virtualinvoke $r5.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r2 = (org.connectbot.service.TerminalBridge) $r4;
+
+        return $r2;
+
+     label2:
+        return null;
+    }
+
+    public org.connectbot.service.TerminalBridge getConnectedBridge(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.bean.HostBean $r1;
+        java.util.Map $r2;
+        java.lang.Object $r3;
+        java.lang.ref.WeakReference $r4;
+        org.connectbot.service.TerminalBridge $r5;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.Map mHostBridgeMap>;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r4 = (java.lang.ref.WeakReference) $r3;
+
+        if $r4 == null goto label1;
+
+        $r3 = virtualinvoke $r4.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r5 = (org.connectbot.service.TerminalBridge) $r3;
+
+        return $r5;
+
+     label1:
+        return null;
+    }
+
+    public java.lang.String getEmulation()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.SharedPreferences $r1;
+        java.lang.String $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $r2 = interfaceinvoke $r1.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("emulation", "screen");
+
+        return $r2;
+    }
+
+    public java.security.KeyPair getKey(java.lang.String)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.lang.String $r1;
+        java.util.Map $r2;
+        boolean $z0;
+        java.lang.Object $r3;
+        org.connectbot.service.TerminalManager$KeyHolder $r4;
+        java.security.KeyPair $r5;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs>;
+
+        $z0 = interfaceinvoke $r2.<java.util.Map: boolean containsKey(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs>;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r4 = (org.connectbot.service.TerminalManager$KeyHolder) $r3;
+
+        $r5 = $r4.<org.connectbot.service.TerminalManager$KeyHolder: java.security.KeyPair pair>;
+
+        return $r5;
+
+     label1:
+        return null;
+    }
+
+    public java.lang.String getKeyNickname(byte[])
+    {
+        org.connectbot.service.TerminalManager $r0;
+        byte[] $r1, $r8;
+        java.util.Map $r2;
+        java.util.Set $r3;
+        java.util.Iterator $r4;
+        boolean $z0;
+        java.lang.Object $r5;
+        java.util.Map$Entry $r6;
+        org.connectbot.service.TerminalManager$KeyHolder $r7;
+        java.lang.String $r9;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs>;
+
+        $r3 = interfaceinvoke $r2.<java.util.Map: java.util.Set entrySet()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r7 = (org.connectbot.service.TerminalManager$KeyHolder) $r5;
+
+        $r8 = $r7.<org.connectbot.service.TerminalManager$KeyHolder: byte[] openSSHPubkey>;
+
+        $z0 = staticinvoke <java.util.Arrays: boolean equals(byte[],byte[])>($r8, $r1);
+
+        if $z0 == 0 goto label1;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r9 = (java.lang.String) $r5;
+
+        return $r9;
+
+     label2:
+        return null;
+    }
+
+    public int getScrollback()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.SharedPreferences $r1;
+        java.lang.String $r2;
+        int $i0;
+        java.lang.Exception $r3;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+     label1:
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $r2 = interfaceinvoke $r1.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("scrollback", "140");
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r2);
+
+     label2:
+        return $i0;
+
+     label3:
+        $r3 := @caughtexception;
+
+        return 140;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public boolean isKeyLoaded(java.lang.String)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.lang.String $r1;
+        java.util.Map $r2;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs>;
+
+        $z0 = interfaceinvoke $r2.<java.util.Map: boolean containsKey(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public boolean isResizeAllowed()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $z0 = $r0.<org.connectbot.service.TerminalManager: boolean resizeAllowed>;
+
+        return $z0;
+    }
+
+    public android.os.IBinder onBind(android.content.Intent)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.Intent $r1;
+        java.lang.StringBuilder $r2;
+        java.util.ArrayList $r3;
+        int $i0;
+        java.lang.String $r4;
+        android.os.IBinder $r5;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Someone bound to TerminalManager with ");
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $i0 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bridges active");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("CB.TerminalManager", $r4);
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void keepServiceAlive()>();
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: void setResizeAllowed(boolean)>(1);
+
+        $r5 = $r0.<org.connectbot.service.TerminalManager: android.os.IBinder binder>;
+
+        return $r5;
+    }
+
+    public void onConnectivityLost()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.service.TerminalManager$2 $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = new org.connectbot.service.TerminalManager$2;
+
+        specialinvoke $r1.<org.connectbot.service.TerminalManager$2: void <init>(org.connectbot.service.TerminalManager)>($r0);
+
+        virtualinvoke $r1.<java.lang.Thread: void setName(java.lang.String)>("Disconnector");
+
+        virtualinvoke $r1.<java.lang.Thread: void start()>();
+
+        return;
+    }
+
+    public void onConnectivityRestored()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.service.TerminalManager$3 $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = new org.connectbot.service.TerminalManager$3;
+
+        specialinvoke $r1.<org.connectbot.service.TerminalManager$3: void <init>(org.connectbot.service.TerminalManager)>($r0);
+
+        virtualinvoke $r1.<java.lang.Thread: void setName(java.lang.String)>("Reconnector");
+
+        virtualinvoke $r1.<java.lang.Thread: void start()>();
+
+        return;
+    }
+
+    public void onCreate()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.lang.Exception $r1;
+        java.security.KeyPair $r2;
+        java.lang.Object[] $r3;
+        android.content.SharedPreferences $r4;
+        android.content.res.Resources $r5;
+        java.util.Timer $r6;
+        org.connectbot.util.HostDatabase $r7;
+        org.connectbot.util.PubkeyDatabase $r8;
+        java.util.List $r9;
+        java.util.Iterator $r10;
+        boolean $z0;
+        java.lang.Object $r11;
+        org.connectbot.bean.PubkeyBean $r12;
+        byte[] $r13;
+        java.lang.String $r14;
+        java.security.PrivateKey $r15;
+        java.security.PublicKey $r16;
+        android.os.Vibrator $r17;
+        android.content.res.Configuration $r18;
+        int $i0;
+        org.connectbot.service.ConnectivityReceiver $r19;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("CB.TerminalManager", "Starting service");
+
+        $r4 = staticinvoke <android.preference.PreferenceManager: android.content.SharedPreferences getDefaultSharedPreferences(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs> = $r4;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        interfaceinvoke $r4.<android.content.SharedPreferences: void registerOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener)>($r0);
+
+        $r5 = virtualinvoke $r0.<org.connectbot.service.TerminalManager: android.content.res.Resources getResources()>();
+
+        $r0.<org.connectbot.service.TerminalManager: android.content.res.Resources res> = $r5;
+
+        $r6 = new java.util.Timer;
+
+        specialinvoke $r6.<java.util.Timer: void <init>(java.lang.String,boolean)>("pubkeyTimer", 1);
+
+        $r0.<org.connectbot.service.TerminalManager: java.util.Timer pubkeyTimer> = $r6;
+
+        $r7 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r7.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb> = $r7;
+
+        $r8 = new org.connectbot.util.PubkeyDatabase;
+
+        specialinvoke $r8.<org.connectbot.util.PubkeyDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.PubkeyDatabase pubkeydb> = $r8;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void updateSavingKeys()>();
+
+        $r8 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        $r9 = virtualinvoke $r8.<org.connectbot.util.PubkeyDatabase: java.util.List getAllStartPubkeys()>();
+
+        $r10 = interfaceinvoke $r9.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r10.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $r11 = interfaceinvoke $r10.<java.util.Iterator: java.lang.Object next()>();
+
+        $r12 = (org.connectbot.bean.PubkeyBean) $r11;
+
+     label2:
+        $r13 = virtualinvoke $r12.<org.connectbot.bean.PubkeyBean: byte[] getPrivateKey()>();
+
+        $r14 = virtualinvoke $r12.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $r15 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PrivateKey decodePrivate(byte[],java.lang.String)>($r13, $r14);
+
+        $r13 = virtualinvoke $r12.<org.connectbot.bean.PubkeyBean: byte[] getPublicKey()>();
+
+        $r14 = virtualinvoke $r12.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $r16 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PublicKey decodePublic(byte[],java.lang.String)>($r13, $r14);
+
+        $r2 = new java.security.KeyPair;
+
+        specialinvoke $r2.<java.security.KeyPair: void <init>(java.security.PublicKey,java.security.PrivateKey)>($r16, $r15);
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: void addKey(org.connectbot.bean.PubkeyBean,java.security.KeyPair)>($r12, $r2);
+
+     label3:
+        goto label1;
+
+     label4:
+        $r1 := @caughtexception;
+
+        $r3 = newarray (java.lang.Object)[1];
+
+        $r14 = virtualinvoke $r12.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        $r3[0] = $r14;
+
+        $r14 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Problem adding key \'%s\' to in-memory cache", $r3);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.TerminalManager", $r14, $r1);
+
+        goto label1;
+
+     label5:
+        $r11 = virtualinvoke $r0.<org.connectbot.service.TerminalManager: java.lang.Object getSystemService(java.lang.String)>("vibrator");
+
+        $r17 = (android.os.Vibrator) $r11;
+
+        $r0.<org.connectbot.service.TerminalManager: android.os.Vibrator vibrator> = $r17;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r4.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("bumpyarrows", 1);
+
+        $r0.<org.connectbot.service.TerminalManager: boolean wantKeyVibration> = $z0;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r4.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("bellVibrate", 1);
+
+        $r0.<org.connectbot.service.TerminalManager: boolean wantBellVibration> = $z0;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void enableMediaPlayer()>();
+
+        $r5 = $r0.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r18 = virtualinvoke $r5.<android.content.res.Resources: android.content.res.Configuration getConfiguration()>();
+
+        $i0 = $r18.<android.content.res.Configuration: int hardKeyboardHidden>;
+
+        if $i0 != 2 goto label7;
+
+        $z0 = 1;
+
+     label6:
+        $r0.<org.connectbot.service.TerminalManager: boolean hardKeyboardHidden> = $z0;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r4.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("wifilock", 1);
+
+        $r19 = new org.connectbot.service.ConnectivityReceiver;
+
+        specialinvoke $r19.<org.connectbot.service.ConnectivityReceiver: void <init>(org.connectbot.service.TerminalManager,boolean)>($r0, $z0);
+
+        $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.ConnectivityReceiver connectivityManager> = $r19;
+
+        return;
+
+     label7:
+        $z0 = 0;
+
+        goto label6;
+
+        catch java.lang.Exception from label2 to label3 with label4;
+    }
+
+    public void onDestroy()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.service.ConnectionNotifier $r1;
+        org.connectbot.util.HostDatabase $r2;
+        org.connectbot.util.PubkeyDatabase $r3;
+        java.util.Timer $r4;
+        org.connectbot.service.ConnectivityReceiver $r5;
+        java.lang.Throwable $r6;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("CB.TerminalManager", "Destroying service");
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: void disconnectAll(boolean,boolean)>(1, 0);
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        virtualinvoke $r2.<org.connectbot.util.HostDatabase: void close()>();
+
+        $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb> = null;
+
+     label1:
+        $r3 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        if $r3 == null goto label2;
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        virtualinvoke $r3.<org.connectbot.util.PubkeyDatabase: void close()>();
+
+        $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.PubkeyDatabase pubkeydb> = null;
+
+     label2:
+        entermonitor $r0;
+
+     label3:
+        $r4 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer idleTimer>;
+
+        if $r4 == null goto label4;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer idleTimer>;
+
+        virtualinvoke $r4.<java.util.Timer: void cancel()>();
+
+     label4:
+        $r4 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer pubkeyTimer>;
+
+        if $r4 == null goto label5;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: java.util.Timer pubkeyTimer>;
+
+        virtualinvoke $r4.<java.util.Timer: void cancel()>();
+
+     label5:
+        exitmonitor $r0;
+
+     label6:
+        $r5 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.ConnectivityReceiver connectivityManager>;
+
+        virtualinvoke $r5.<org.connectbot.service.ConnectivityReceiver: void cleanup()>();
+
+        $r1 = staticinvoke <org.connectbot.service.ConnectionNotifier: org.connectbot.service.ConnectionNotifier getInstance()>();
+
+        virtualinvoke $r1.<org.connectbot.service.ConnectionNotifier: void hideRunningNotification(android.app.Service)>($r0);
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void disableMediaPlayer()>();
+
+        return;
+
+     label7:
+        $r6 := @caughtexception;
+
+     label8:
+        exitmonitor $r0;
+
+     label9:
+        throw $r6;
+
+        catch java.lang.Throwable from label3 to label6 with label7;
+        catch java.lang.Throwable from label8 to label9 with label7;
+    }
+
+    public void onDisconnected(org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.service.TerminalBridge $r1;
+        boolean $z0, $z1;
+        java.util.ArrayList $r2, $r3;
+        org.connectbot.bean.HostBean $r4;
+        java.lang.String $r5;
+        java.util.Map $r6;
+        org.connectbot.service.ConnectivityReceiver $r7;
+        int $i0;
+        java.util.List $r8, $r9;
+        org.connectbot.service.ConnectionNotifier $r10;
+        android.os.Handler $r11;
+        android.os.Message $r12;
+        java.lang.Throwable $r13, $r14;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $z0 = 0;
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        entermonitor $r3;
+
+     label01:
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        virtualinvoke $r2.<java.util.ArrayList: boolean remove(java.lang.Object)>($r1);
+
+        $r6 = $r0.<org.connectbot.service.TerminalManager: java.util.Map mHostBridgeMap>;
+
+        $r4 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        interfaceinvoke $r6.<java.util.Map: java.lang.Object remove(java.lang.Object)>($r4);
+
+        $r6 = $r0.<org.connectbot.service.TerminalManager: java.util.Map mNicknameBridgeMap>;
+
+        $r4 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r5 = virtualinvoke $r4.<org.connectbot.bean.HostBean: java.lang.String getNickname()>();
+
+        interfaceinvoke $r6.<java.util.Map: java.lang.Object remove(java.lang.Object)>($r5);
+
+        $z1 = virtualinvoke $r1.<org.connectbot.service.TerminalBridge: boolean isUsingNetwork()>();
+
+        if $z1 == 0 goto label02;
+
+        $r7 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.ConnectivityReceiver connectivityManager>;
+
+        virtualinvoke $r7.<org.connectbot.service.ConnectivityReceiver: void decRef()>();
+
+     label02:
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $i0 = virtualinvoke $r2.<java.util.ArrayList: int size()>();
+
+        if $i0 != 0 goto label03;
+
+        $r8 = $r0.<org.connectbot.service.TerminalManager: java.util.List mPendingReconnect>;
+
+        $i0 = interfaceinvoke $r8.<java.util.List: int size()>();
+
+        if $i0 != 0 goto label03;
+
+        $z0 = 1;
+
+     label03:
+        exitmonitor $r3;
+
+     label04:
+        $r8 = $r0.<org.connectbot.service.TerminalManager: java.util.List disconnected>;
+
+        entermonitor $r8;
+
+     label05:
+        $r9 = $r0.<org.connectbot.service.TerminalManager: java.util.List disconnected>;
+
+        $r4 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        interfaceinvoke $r9.<java.util.List: boolean add(java.lang.Object)>($r4);
+
+        exitmonitor $r8;
+
+     label06:
+        if $z0 == 0 goto label07;
+
+        $r10 = staticinvoke <org.connectbot.service.ConnectionNotifier: org.connectbot.service.ConnectionNotifier getInstance()>();
+
+        virtualinvoke $r10.<org.connectbot.service.ConnectionNotifier: void hideRunningNotification(android.app.Service)>($r0);
+
+     label07:
+        $r11 = $r0.<org.connectbot.service.TerminalManager: android.os.Handler disconnectHandler>;
+
+        if $r11 == null goto label14;
+
+        $r11 = $r0.<org.connectbot.service.TerminalManager: android.os.Handler disconnectHandler>;
+
+        $r12 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,java.lang.Object)>($r11, -1, $r1);
+
+        virtualinvoke $r12.<android.os.Message: void sendToTarget()>();
+
+        return;
+
+     label08:
+        $r13 := @caughtexception;
+
+     label09:
+        exitmonitor $r3;
+
+     label10:
+        throw $r13;
+
+     label11:
+        $r14 := @caughtexception;
+
+     label12:
+        exitmonitor $r8;
+
+     label13:
+        throw $r14;
+
+     label14:
+        return;
+
+        catch java.lang.Throwable from label01 to label04 with label08;
+        catch java.lang.Throwable from label05 to label06 with label11;
+        catch java.lang.Throwable from label09 to label10 with label08;
+        catch java.lang.Throwable from label12 to label13 with label11;
+    }
+
+    public void onRebind(android.content.Intent)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.Intent $r1;
+        java.lang.StringBuilder $r2;
+        java.util.ArrayList $r3;
+        int $i0;
+        java.lang.String $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        specialinvoke $r0.<android.app.Service: void onRebind(android.content.Intent)>($r1);
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Someone rebound to TerminalManager with ");
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $i0 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bridges active");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("CB.TerminalManager", $r4);
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void keepServiceAlive()>();
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: void setResizeAllowed(boolean)>(1);
+
+        return;
+    }
+
+    public void onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.SharedPreferences $r1;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+        android.media.MediaPlayer $r4;
+        float $f0;
+        org.connectbot.service.ConnectivityReceiver $r5;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: android.content.SharedPreferences;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = "bell";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label02;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("bell", 1);
+
+        if $z0 == 0 goto label01;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        if $r4 != null goto label01;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void enableMediaPlayer()>();
+
+        return;
+
+     label01:
+        if $z0 != 0 goto label07;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        if $r4 == null goto label08;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void disableMediaPlayer()>();
+
+        return;
+
+     label02:
+        $r3 = "bellVolume";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label03;
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        if $r4 == null goto label09;
+
+        $f0 = interfaceinvoke $r1.<android.content.SharedPreferences: float getFloat(java.lang.String,float)>("bellVolume", 0.25F);
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        virtualinvoke $r4.<android.media.MediaPlayer: void setVolume(float,float)>($f0, $f0);
+
+        return;
+
+     label03:
+        $r3 = "bellVibrate";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label04;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("bellVibrate", 1);
+
+        $r0.<org.connectbot.service.TerminalManager: boolean wantBellVibration> = $z0;
+
+        return;
+
+     label04:
+        $r3 = "bumpyarrows";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label05;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("bumpyarrows", 1);
+
+        $r0.<org.connectbot.service.TerminalManager: boolean wantKeyVibration> = $z0;
+
+        return;
+
+     label05:
+        $r3 = "wifilock";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label06;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("wifilock", 1);
+
+        $r5 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.ConnectivityReceiver connectivityManager>;
+
+        virtualinvoke $r5.<org.connectbot.service.ConnectivityReceiver: void setWantWifiLock(boolean)>($z0);
+
+        return;
+
+     label06:
+        $r3 = "memkeys";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label10;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void updateSavingKeys()>();
+
+        return;
+
+     label07:
+        return;
+
+     label08:
+        return;
+
+     label09:
+        return;
+
+     label10:
+        return;
+    }
+
+    public int onStartCommand(android.content.Intent, int, int)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.Intent $r1;
+        int $i0, $i1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        return 1;
+    }
+
+    public boolean onUnbind(android.content.Intent)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.content.Intent $r1;
+        java.lang.StringBuilder $r2;
+        java.util.ArrayList $r3;
+        int $i0;
+        java.lang.String $r4;
+        java.util.Iterator $r5;
+        boolean $z0;
+        java.lang.Object $r6;
+        org.connectbot.service.TerminalBridge $r7;
+        org.connectbot.service.PromptHelper $r8;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Someone unbound from TerminalManager with ");
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $i0 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bridges active");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("CB.TerminalManager", $r4);
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: void setResizeAllowed(boolean)>(1);
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $i0 = virtualinvoke $r3.<java.util.ArrayList: int size()>();
+
+        if $i0 != 0 goto label1;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void stopWithDelay()>();
+
+        return 1;
+
+     label1:
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $r5 = virtualinvoke $r3.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (org.connectbot.service.TerminalBridge) $r6;
+
+        $r8 = $r7.<org.connectbot.service.TerminalBridge: org.connectbot.service.PromptHelper promptHelper>;
+
+        virtualinvoke $r8.<org.connectbot.service.PromptHelper: void setHandler(android.os.Handler)>(null);
+
+        goto label2;
+
+     label3:
+        return 1;
+    }
+
+    public org.connectbot.service.TerminalBridge openConnection(android.net.Uri) throws java.lang.Exception
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.net.Uri $r1;
+        org.connectbot.bean.HostBean $r2, $r4;
+        org.connectbot.util.HostDatabase $r3;
+        java.lang.String $r5;
+        org.connectbot.transport.AbsTransport $r6;
+        org.connectbot.service.TerminalBridge $r7;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: android.net.Uri;
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        $r4 = staticinvoke <org.connectbot.transport.TransportFactory: org.connectbot.bean.HostBean findHost(org.connectbot.util.HostDatabase,android.net.Uri)>($r3, $r1);
+
+        $r2 = $r4;
+
+        if $r4 != null goto label1;
+
+        $r5 = virtualinvoke $r1.<android.net.Uri: java.lang.String getScheme()>();
+
+        $r6 = staticinvoke <org.connectbot.transport.TransportFactory: org.connectbot.transport.AbsTransport getTransport(java.lang.String)>($r5);
+
+        $r2 = virtualinvoke $r6.<org.connectbot.transport.AbsTransport: org.connectbot.bean.HostBean createHost(android.net.Uri)>($r1);
+
+     label1:
+        $r7 = specialinvoke $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.TerminalBridge openConnection(org.connectbot.bean.HostBean)>($r2);
+
+        return $r7;
+    }
+
+    public void playBeep()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        android.media.MediaPlayer $r1;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: android.media.MediaPlayer mediaPlayer>;
+
+        virtualinvoke $r1.<android.media.MediaPlayer: void start()>();
+
+     label1:
+        $z0 = $r0.<org.connectbot.service.TerminalManager: boolean wantBellVibration>;
+
+        if $z0 == 0 goto label2;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void vibrate()>();
+
+        return;
+
+     label2:
+        return;
+    }
+
+    public boolean removeKey(java.lang.String)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.lang.String $r1, $r3;
+        java.lang.Object[] $r2;
+        java.util.Map $r4;
+        java.lang.Object $r5;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = newarray (java.lang.Object)[1];
+
+        $r2[0] = $r1;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Removed key \'%s\' to in-memory cache", $r2);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.TerminalManager", $r3);
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs>;
+
+        $r5 = interfaceinvoke $r4.<java.util.Map: java.lang.Object remove(java.lang.Object)>($r1);
+
+        if $r5 == null goto label1;
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    public boolean removeKey(byte[])
+    {
+        org.connectbot.service.TerminalManager $r0;
+        byte[] $r1, $r9;
+        java.lang.String $r2, $r11;
+        java.util.Map $r3;
+        java.util.Set $r4;
+        java.util.Iterator $r5;
+        boolean $z0;
+        java.lang.Object $r6;
+        java.util.Map$Entry $r7;
+        org.connectbot.service.TerminalManager$KeyHolder $r8;
+        java.lang.Object[] $r10;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 = null;
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.Map loadedKeypairs>;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.util.Set entrySet()>();
+
+        $r5 = interfaceinvoke $r4.<java.util.Set: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.util.Map$Entry) $r6;
+
+        $r6 = interfaceinvoke $r7.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r8 = (org.connectbot.service.TerminalManager$KeyHolder) $r6;
+
+        $r9 = $r8.<org.connectbot.service.TerminalManager$KeyHolder: byte[] openSSHPubkey>;
+
+        $z0 = staticinvoke <java.util.Arrays: boolean equals(byte[],byte[])>($r9, $r1);
+
+        if $z0 == 0 goto label1;
+
+        $r6 = interfaceinvoke $r7.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r2 = (java.lang.String) $r6;
+
+     label2:
+        if $r2 == null goto label3;
+
+        $r10 = newarray (java.lang.Object)[1];
+
+        $r10[0] = $r2;
+
+        $r11 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Removed key \'%s\' to in-memory cache", $r10);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.TerminalManager", $r11);
+
+        $z0 = virtualinvoke $r0.<org.connectbot.service.TerminalManager: boolean removeKey(java.lang.String)>($r2);
+
+        return $z0;
+
+     label3:
+        return 0;
+    }
+
+    public void requestReconnect(org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.service.TerminalBridge $r1;
+        java.util.List $r2, $r3;
+        java.lang.ref.WeakReference $r4;
+        boolean $z0;
+        org.connectbot.service.ConnectivityReceiver $r5;
+        java.lang.Throwable $r6;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r3 = $r0.<org.connectbot.service.TerminalManager: java.util.List mPendingReconnect>;
+
+        entermonitor $r3;
+
+     label1:
+        $r2 = $r0.<org.connectbot.service.TerminalManager: java.util.List mPendingReconnect>;
+
+        $r4 = new java.lang.ref.WeakReference;
+
+        specialinvoke $r4.<java.lang.ref.WeakReference: void <init>(java.lang.Object)>($r1);
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r4);
+
+        $z0 = virtualinvoke $r1.<org.connectbot.service.TerminalBridge: boolean isUsingNetwork()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = $r0.<org.connectbot.service.TerminalManager: org.connectbot.service.ConnectivityReceiver connectivityManager>;
+
+        $z0 = virtualinvoke $r5.<org.connectbot.service.ConnectivityReceiver: boolean isConnected()>();
+
+        if $z0 == 0 goto label3;
+
+     label2:
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void reconnectPending()>();
+
+     label3:
+        exitmonitor $r3;
+
+     label4:
+        return;
+
+     label5:
+        $r6 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label6:
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void sendActivityNotification(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        org.connectbot.bean.HostBean $r1;
+        android.content.SharedPreferences $r2;
+        boolean $z0;
+        org.connectbot.service.ConnectionNotifier $r3;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $r2 = $r0.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r2.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("bellNotification", 0);
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r3 = staticinvoke <org.connectbot.service.ConnectionNotifier: org.connectbot.service.ConnectionNotifier getInstance()>();
+
+        virtualinvoke $r3.<org.connectbot.service.ConnectionNotifier: void showActivityNotification(android.app.Service,org.connectbot.bean.HostBean)>($r0, $r1);
+
+        return;
+    }
+
+    public void setResizeAllowed(boolean)
+    {
+        org.connectbot.service.TerminalManager $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.service.TerminalManager: boolean resizeAllowed> = $z0;
+
+        return;
+    }
+
+    protected void stopNow()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        java.util.ArrayList $r1;
+        int $i0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager: java.util.ArrayList bridges>;
+
+        $i0 = virtualinvoke $r1.<java.util.ArrayList: int size()>();
+
+        if $i0 != 0 goto label1;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalManager: void stopSelf()>();
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void tryKeyVibrate()
+    {
+        org.connectbot.service.TerminalManager $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager;
+
+        $z0 = $r0.<org.connectbot.service.TerminalManager: boolean wantKeyVibration>;
+
+        if $z0 == 0 goto label1;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager: void vibrate()>();
+
+        return;
+
+     label1:
+        return;
+    }
+}

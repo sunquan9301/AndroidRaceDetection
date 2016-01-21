@@ -1,0 +1,82 @@
+class org.connectbot.service.TerminalBridge$1 extends de.mud.terminal.vt320
+{
+    final org.connectbot.service.TerminalBridge this$0;
+
+    void <init>(org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.service.TerminalBridge$1 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$1;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r0.<org.connectbot.service.TerminalBridge$1: org.connectbot.service.TerminalBridge this$0> = $r1;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void <init>()>();
+
+        return;
+    }
+
+    public void debug(java.lang.String)
+    {
+        org.connectbot.service.TerminalBridge$1 $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$1;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public void sendTelnetCommand(byte)
+    {
+        org.connectbot.service.TerminalBridge$1 $r0;
+        byte $b0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$1;
+
+        $b0 := @parameter0: byte;
+
+        return;
+    }
+
+    public void setWindowSize(int, int)
+    {
+        org.connectbot.service.TerminalBridge$1 $r0;
+        int $i0, $i1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$1;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        return;
+    }
+
+    public void write(int)
+    {
+        org.connectbot.service.TerminalBridge$1 $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$1;
+
+        $i0 := @parameter0: int;
+
+        return;
+    }
+
+    public void write(byte[])
+    {
+        org.connectbot.service.TerminalBridge$1 $r0;
+        byte[] $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$1;
+
+        $r1 := @parameter0: byte[];
+
+        return;
+    }
+}

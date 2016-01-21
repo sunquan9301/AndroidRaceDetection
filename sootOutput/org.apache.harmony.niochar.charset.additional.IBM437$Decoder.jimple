@@ -1,0 +1,662 @@
+final class org.apache.harmony.niochar.charset.additional.IBM437$Decoder extends java.nio.charset.CharsetDecoder
+{
+    static final char[] arr;
+
+    static void <clinit>()
+    {
+        char[] $r0;
+
+        $r0 = newarray (char)[230];
+
+        $r0[0] = 28;
+
+        $r0[1] = 27;
+
+        $r0[2] = 127;
+
+        $r0[3] = 29;
+
+        $r0[4] = 30;
+
+        $r0[5] = 31;
+
+        $r0[6] = 32;
+
+        $r0[7] = 33;
+
+        $r0[8] = 34;
+
+        $r0[9] = 35;
+
+        $r0[10] = 36;
+
+        $r0[11] = 37;
+
+        $r0[12] = 38;
+
+        $r0[13] = 39;
+
+        $r0[14] = 40;
+
+        $r0[15] = 41;
+
+        $r0[16] = 42;
+
+        $r0[17] = 43;
+
+        $r0[18] = 44;
+
+        $r0[19] = 45;
+
+        $r0[20] = 46;
+
+        $r0[21] = 47;
+
+        $r0[22] = 48;
+
+        $r0[23] = 49;
+
+        $r0[24] = 50;
+
+        $r0[25] = 51;
+
+        $r0[26] = 52;
+
+        $r0[27] = 53;
+
+        $r0[28] = 54;
+
+        $r0[29] = 55;
+
+        $r0[30] = 56;
+
+        $r0[31] = 57;
+
+        $r0[32] = 58;
+
+        $r0[33] = 59;
+
+        $r0[34] = 60;
+
+        $r0[35] = 61;
+
+        $r0[36] = 62;
+
+        $r0[37] = 63;
+
+        $r0[38] = 64;
+
+        $r0[39] = 65;
+
+        $r0[40] = 66;
+
+        $r0[41] = 67;
+
+        $r0[42] = 68;
+
+        $r0[43] = 69;
+
+        $r0[44] = 70;
+
+        $r0[45] = 71;
+
+        $r0[46] = 72;
+
+        $r0[47] = 73;
+
+        $r0[48] = 74;
+
+        $r0[49] = 75;
+
+        $r0[50] = 76;
+
+        $r0[51] = 77;
+
+        $r0[52] = 78;
+
+        $r0[53] = 79;
+
+        $r0[54] = 80;
+
+        $r0[55] = 81;
+
+        $r0[56] = 82;
+
+        $r0[57] = 83;
+
+        $r0[58] = 84;
+
+        $r0[59] = 85;
+
+        $r0[60] = 86;
+
+        $r0[61] = 87;
+
+        $r0[62] = 88;
+
+        $r0[63] = 89;
+
+        $r0[64] = 90;
+
+        $r0[65] = 91;
+
+        $r0[66] = 92;
+
+        $r0[67] = 93;
+
+        $r0[68] = 94;
+
+        $r0[69] = 95;
+
+        $r0[70] = 96;
+
+        $r0[71] = 97;
+
+        $r0[72] = 98;
+
+        $r0[73] = 99;
+
+        $r0[74] = 100;
+
+        $r0[75] = 101;
+
+        $r0[76] = 102;
+
+        $r0[77] = 103;
+
+        $r0[78] = 104;
+
+        $r0[79] = 105;
+
+        $r0[80] = 106;
+
+        $r0[81] = 107;
+
+        $r0[82] = 108;
+
+        $r0[83] = 109;
+
+        $r0[84] = 110;
+
+        $r0[85] = 111;
+
+        $r0[86] = 112;
+
+        $r0[87] = 113;
+
+        $r0[88] = 114;
+
+        $r0[89] = 115;
+
+        $r0[90] = 116;
+
+        $r0[91] = 117;
+
+        $r0[92] = 118;
+
+        $r0[93] = 119;
+
+        $r0[94] = 120;
+
+        $r0[95] = 121;
+
+        $r0[96] = 122;
+
+        $r0[97] = 123;
+
+        $r0[98] = 124;
+
+        $r0[99] = 125;
+
+        $r0[100] = 126;
+
+        $r0[101] = 26;
+
+        $r0[102] = 199;
+
+        $r0[103] = 252;
+
+        $r0[104] = 233;
+
+        $r0[105] = 226;
+
+        $r0[106] = 228;
+
+        $r0[107] = 224;
+
+        $r0[108] = 229;
+
+        $r0[109] = 231;
+
+        $r0[110] = 234;
+
+        $r0[111] = 235;
+
+        $r0[112] = 232;
+
+        $r0[113] = 239;
+
+        $r0[114] = 238;
+
+        $r0[115] = 236;
+
+        $r0[116] = 196;
+
+        $r0[117] = 197;
+
+        $r0[118] = 201;
+
+        $r0[119] = 230;
+
+        $r0[120] = 198;
+
+        $r0[121] = 244;
+
+        $r0[122] = 246;
+
+        $r0[123] = 242;
+
+        $r0[124] = 251;
+
+        $r0[125] = 249;
+
+        $r0[126] = 255;
+
+        $r0[127] = 214;
+
+        $r0[128] = 220;
+
+        $r0[129] = 162;
+
+        $r0[130] = 163;
+
+        $r0[131] = 165;
+
+        $r0[132] = 8359;
+
+        $r0[133] = 402;
+
+        $r0[134] = 225;
+
+        $r0[135] = 237;
+
+        $r0[136] = 243;
+
+        $r0[137] = 250;
+
+        $r0[138] = 241;
+
+        $r0[139] = 209;
+
+        $r0[140] = 170;
+
+        $r0[141] = 186;
+
+        $r0[142] = 191;
+
+        $r0[143] = 8976;
+
+        $r0[144] = 172;
+
+        $r0[145] = 189;
+
+        $r0[146] = 188;
+
+        $r0[147] = 161;
+
+        $r0[148] = 171;
+
+        $r0[149] = 187;
+
+        $r0[150] = 9617;
+
+        $r0[151] = 9618;
+
+        $r0[152] = 9619;
+
+        $r0[153] = 9474;
+
+        $r0[154] = 9508;
+
+        $r0[155] = 9569;
+
+        $r0[156] = 9570;
+
+        $r0[157] = 9558;
+
+        $r0[158] = 9557;
+
+        $r0[159] = 9571;
+
+        $r0[160] = 9553;
+
+        $r0[161] = 9559;
+
+        $r0[162] = 9565;
+
+        $r0[163] = 9564;
+
+        $r0[164] = 9563;
+
+        $r0[165] = 9488;
+
+        $r0[166] = 9492;
+
+        $r0[167] = 9524;
+
+        $r0[168] = 9516;
+
+        $r0[169] = 9500;
+
+        $r0[170] = 9472;
+
+        $r0[171] = 9532;
+
+        $r0[172] = 9566;
+
+        $r0[173] = 9567;
+
+        $r0[174] = 9562;
+
+        $r0[175] = 9556;
+
+        $r0[176] = 9577;
+
+        $r0[177] = 9574;
+
+        $r0[178] = 9568;
+
+        $r0[179] = 9552;
+
+        $r0[180] = 9580;
+
+        $r0[181] = 9575;
+
+        $r0[182] = 9576;
+
+        $r0[183] = 9572;
+
+        $r0[184] = 9573;
+
+        $r0[185] = 9561;
+
+        $r0[186] = 9560;
+
+        $r0[187] = 9554;
+
+        $r0[188] = 9555;
+
+        $r0[189] = 9579;
+
+        $r0[190] = 9578;
+
+        $r0[191] = 9496;
+
+        $r0[192] = 9484;
+
+        $r0[193] = 9608;
+
+        $r0[194] = 9604;
+
+        $r0[195] = 9612;
+
+        $r0[196] = 9616;
+
+        $r0[197] = 9600;
+
+        $r0[198] = 945;
+
+        $r0[199] = 223;
+
+        $r0[200] = 915;
+
+        $r0[201] = 960;
+
+        $r0[202] = 931;
+
+        $r0[203] = 963;
+
+        $r0[204] = 956;
+
+        $r0[205] = 964;
+
+        $r0[206] = 934;
+
+        $r0[207] = 920;
+
+        $r0[208] = 937;
+
+        $r0[209] = 948;
+
+        $r0[210] = 8734;
+
+        $r0[211] = 966;
+
+        $r0[212] = 949;
+
+        $r0[213] = 8745;
+
+        $r0[214] = 8801;
+
+        $r0[215] = 177;
+
+        $r0[216] = 8805;
+
+        $r0[217] = 8804;
+
+        $r0[218] = 8992;
+
+        $r0[219] = 8993;
+
+        $r0[220] = 247;
+
+        $r0[221] = 8776;
+
+        $r0[222] = 176;
+
+        $r0[223] = 8729;
+
+        $r0[224] = 183;
+
+        $r0[225] = 8730;
+
+        $r0[226] = 8319;
+
+        $r0[227] = 178;
+
+        $r0[228] = 9632;
+
+        $r0[229] = 160;
+
+        <org.apache.harmony.niochar.charset.additional.IBM437$Decoder: char[] arr> = $r0;
+
+        return;
+    }
+
+    private void <init>(java.nio.charset.Charset)
+    {
+        org.apache.harmony.niochar.charset.additional.IBM437$Decoder $r0;
+        java.nio.charset.Charset $r1;
+
+        $r0 := @this: org.apache.harmony.niochar.charset.additional.IBM437$Decoder;
+
+        $r1 := @parameter0: java.nio.charset.Charset;
+
+        specialinvoke $r0.<java.nio.charset.CharsetDecoder: void <init>(java.nio.charset.Charset,float,float)>($r1, 1.0F, 1.0F);
+
+        return;
+    }
+
+    void <init>(java.nio.charset.Charset, org.apache.harmony.niochar.charset.additional.IBM437$1)
+    {
+        org.apache.harmony.niochar.charset.additional.IBM437$Decoder $r0;
+        java.nio.charset.Charset $r1;
+        org.apache.harmony.niochar.charset.additional.IBM437$1 $r2;
+
+        $r0 := @this: org.apache.harmony.niochar.charset.additional.IBM437$Decoder;
+
+        $r1 := @parameter0: java.nio.charset.Charset;
+
+        $r2 := @parameter1: org.apache.harmony.niochar.charset.additional.IBM437$1;
+
+        specialinvoke $r0.<org.apache.harmony.niochar.charset.additional.IBM437$Decoder: void <init>(java.nio.charset.Charset)>($r1);
+
+        return;
+    }
+
+    protected java.nio.charset.CoderResult decodeLoop(java.nio.ByteBuffer, java.nio.CharBuffer)
+    {
+        org.apache.harmony.niochar.charset.additional.IBM437$Decoder $r0;
+        java.nio.ByteBuffer $r1;
+        java.nio.CharBuffer $r2;
+        int $i0, $i1, $i3, $i4, $i5, $i6, $i9;
+        char $c2;
+        boolean $z0;
+        byte[] $r3;
+        char[] $r4, $r5;
+        byte $b7;
+        short $s8;
+        java.nio.charset.CoderResult $r6;
+
+        $r0 := @this: org.apache.harmony.niochar.charset.additional.IBM437$Decoder;
+
+        $r1 := @parameter0: java.nio.ByteBuffer;
+
+        $r2 := @parameter1: java.nio.CharBuffer;
+
+        $i5 = virtualinvoke $r2.<java.nio.CharBuffer: int remaining()>();
+
+        $i0 = $i5;
+
+        $z0 = virtualinvoke $r1.<java.nio.ByteBuffer: boolean hasArray()>();
+
+        if $z0 == 0 goto label09;
+
+        $z0 = virtualinvoke $r2.<java.nio.CharBuffer: boolean hasArray()>();
+
+        if $z0 == 0 goto label09;
+
+        $i3 = virtualinvoke $r1.<java.nio.ByteBuffer: int remaining()>();
+
+        $i4 = $i3;
+
+        if $i5 < $i3 goto label04;
+
+     label01:
+        $r3 = virtualinvoke $r1.<java.nio.ByteBuffer: byte[] array()>();
+
+        $r4 = virtualinvoke $r2.<java.nio.CharBuffer: char[] array()>();
+
+        $i6 = virtualinvoke $r1.<java.nio.ByteBuffer: int position()>();
+
+        $i1 = $i6;
+
+        $i0 = virtualinvoke $r2.<java.nio.CharBuffer: int position()>();
+
+     label02:
+        $i3 = $i6 + $i4;
+
+        if $i1 >= $i3 goto label06;
+
+        $b7 = $r3[$i1];
+
+        $s8 = $b7 & 255;
+
+        $c2 = (char) $s8;
+
+        if $c2 < 26 goto label05;
+
+        $i3 = $c2 + -26;
+
+        $i9 = $i0 + 1;
+
+        $r5 = <org.apache.harmony.niochar.charset.additional.IBM437$Decoder: char[] arr>;
+
+        $c2 = $r5[$i3];
+
+        $r4[$i0] = $c2;
+
+     label03:
+        $i1 = $i1 + 1;
+
+        $i0 = $i9;
+
+        goto label02;
+
+     label04:
+        $i4 = $i5;
+
+        goto label01;
+
+     label05:
+        $i9 = $i0 + 1;
+
+        $c2 = $c2 & 255;
+
+        $c2 = (char) $c2;
+
+        $r4[$i0] = $c2;
+
+        goto label03;
+
+     label06:
+        virtualinvoke $r1.<java.nio.ByteBuffer: java.nio.Buffer position(int)>($i1);
+
+        virtualinvoke $r2.<java.nio.CharBuffer: java.nio.Buffer position(int)>($i0);
+
+        if $i4 != $i5 goto label11;
+
+        $z0 = virtualinvoke $r1.<java.nio.ByteBuffer: boolean hasRemaining()>();
+
+        if $z0 == 0 goto label11;
+
+        $r6 = <java.nio.charset.CoderResult: java.nio.charset.CoderResult OVERFLOW>;
+
+        return $r6;
+
+     label07:
+        $b7 = virtualinvoke $r1.<java.nio.ByteBuffer: byte get()>();
+
+        $s8 = $b7 & 255;
+
+        $c2 = (char) $s8;
+
+        if $c2 < 26 goto label10;
+
+        $i9 = $c2 + -26;
+
+        $r5 = <org.apache.harmony.niochar.charset.additional.IBM437$Decoder: char[] arr>;
+
+        $c2 = $r5[$i9];
+
+        virtualinvoke $r2.<java.nio.CharBuffer: java.nio.CharBuffer put(char)>($c2);
+
+     label08:
+        $i0 = $i0 + -1;
+
+     label09:
+        $z0 = virtualinvoke $r1.<java.nio.ByteBuffer: boolean hasRemaining()>();
+
+        if $z0 == 0 goto label11;
+
+        if $i0 != 0 goto label07;
+
+        $r6 = <java.nio.charset.CoderResult: java.nio.charset.CoderResult OVERFLOW>;
+
+        return $r6;
+
+     label10:
+        $c2 = $c2 & 255;
+
+        $c2 = (char) $c2;
+
+        virtualinvoke $r2.<java.nio.CharBuffer: java.nio.CharBuffer put(char)>($c2);
+
+        goto label08;
+
+     label11:
+        $r6 = <java.nio.charset.CoderResult: java.nio.charset.CoderResult UNDERFLOW>;
+
+        return $r6;
+    }
+}

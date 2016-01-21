@@ -1,0 +1,387 @@
+public class org.connectbot.service.Relay extends java.lang.Object implements java.lang.Runnable
+{
+    private org.connectbot.service.TerminalBridge bridge;
+    private de.mud.terminal.vt320 buffer;
+    private byte[] byteArray;
+    private java.nio.ByteBuffer byteBuffer;
+    private char[] charArray;
+    private java.nio.CharBuffer charBuffer;
+    private java.nio.charset.Charset currentCharset;
+    private java.nio.charset.CharsetDecoder decoder;
+    private org.connectbot.transport.AbsTransport transport;
+
+    public void <init>(org.connectbot.service.TerminalBridge, org.connectbot.transport.AbsTransport, de.mud.terminal.vt320, java.lang.String)
+    {
+        org.connectbot.service.Relay $r0;
+        org.connectbot.service.TerminalBridge $r1;
+        org.connectbot.transport.AbsTransport $r2;
+        de.mud.terminal.vt320 $r3;
+        java.lang.String $r4;
+
+        $r0 := @this: org.connectbot.service.Relay;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r2 := @parameter1: org.connectbot.transport.AbsTransport;
+
+        $r3 := @parameter2: de.mud.terminal.vt320;
+
+        $r4 := @parameter3: java.lang.String;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        virtualinvoke $r0.<org.connectbot.service.Relay: void setCharset(java.lang.String)>($r4);
+
+        $r0.<org.connectbot.service.Relay: org.connectbot.service.TerminalBridge bridge> = $r1;
+
+        $r0.<org.connectbot.service.Relay: org.connectbot.transport.AbsTransport transport> = $r2;
+
+        $r0.<org.connectbot.service.Relay: de.mud.terminal.vt320 buffer> = $r3;
+
+        return;
+    }
+
+    public java.nio.charset.Charset getCharset()
+    {
+        org.connectbot.service.Relay $r0;
+        java.nio.charset.Charset $r1;
+
+        $r0 := @this: org.connectbot.service.Relay;
+
+        $r1 = $r0.<org.connectbot.service.Relay: java.nio.charset.Charset currentCharset>;
+
+        return $r1;
+    }
+
+    public void run()
+    {
+        org.connectbot.service.Relay $r0;
+        int $i0, $i1, $i2, $i3;
+        byte[] $r1, $r5;
+        java.io.IOException $r2;
+        java.nio.ByteBuffer $r3, $r10;
+        java.nio.CharBuffer $r4;
+        char[] $r6;
+        org.connectbot.util.EastAsianWidth $r7;
+        org.connectbot.service.TerminalBridge $r8;
+        org.connectbot.transport.AbsTransport $r9;
+        java.nio.charset.CharsetDecoder $r11;
+        java.nio.charset.CoderResult $r12;
+        boolean $z0;
+        android.graphics.Paint $r13;
+        de.mud.terminal.vt320 $r14;
+        java.lang.Throwable $r15;
+
+        $r0 := @this: org.connectbot.service.Relay;
+
+        $r3 = staticinvoke <java.nio.ByteBuffer: java.nio.ByteBuffer allocate(int)>(4096);
+
+        $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer> = $r3;
+
+        $r4 = staticinvoke <java.nio.CharBuffer: java.nio.CharBuffer allocate(int)>(4096);
+
+        $r0.<org.connectbot.service.Relay: java.nio.CharBuffer charBuffer> = $r4;
+
+        $r1 = newarray (byte)[4096];
+
+        $r3 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $r5 = virtualinvoke $r3.<java.nio.ByteBuffer: byte[] array()>();
+
+        $r0.<org.connectbot.service.Relay: byte[] byteArray> = $r5;
+
+        $r4 = $r0.<org.connectbot.service.Relay: java.nio.CharBuffer charBuffer>;
+
+        $r6 = virtualinvoke $r4.<java.nio.CharBuffer: char[] array()>();
+
+        $r0.<org.connectbot.service.Relay: char[] charArray> = $r6;
+
+        $r3 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        virtualinvoke $r3.<java.nio.ByteBuffer: java.nio.Buffer limit(int)>(0);
+
+        $r7 = staticinvoke <org.connectbot.util.EastAsianWidth: org.connectbot.util.EastAsianWidth getInstance()>();
+
+     label01:
+        $r8 = $r0.<org.connectbot.service.Relay: org.connectbot.service.TerminalBridge bridge>;
+
+        $i1 = $r8.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $r3 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+     label02:
+        $i2 = virtualinvoke $r3.<java.nio.ByteBuffer: int capacity()>();
+
+        $r3 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $i0 = virtualinvoke $r3.<java.nio.ByteBuffer: int limit()>();
+
+     label03:
+        $i2 = $i2 - $i0;
+
+     label04:
+        $r3 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $i0 = virtualinvoke $r3.<java.nio.ByteBuffer: int arrayOffset()>();
+
+        $r3 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $i3 = virtualinvoke $r3.<java.nio.ByteBuffer: int limit()>();
+
+     label05:
+        $i0 = $i0 + $i3;
+
+        $r9 = $r0.<org.connectbot.service.Relay: org.connectbot.transport.AbsTransport transport>;
+
+     label06:
+        $r5 = $r0.<org.connectbot.service.Relay: byte[] byteArray>;
+
+        $i3 = virtualinvoke $r9.<org.connectbot.transport.AbsTransport: int read(byte[],int,int)>($r5, $i0, $i2);
+
+     label07:
+        if $i3 <= 0 goto label01;
+
+        $r3 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+     label08:
+        $r10 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $i2 = virtualinvoke $r10.<java.nio.ByteBuffer: int limit()>();
+
+        $i3 = $i2 + $i3;
+
+        virtualinvoke $r3.<java.nio.ByteBuffer: java.nio.Buffer limit(int)>($i3);
+
+     label09:
+        entermonitor $r0;
+
+     label10:
+        $r11 = $r0.<org.connectbot.service.Relay: java.nio.charset.CharsetDecoder decoder>;
+
+        $r10 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $r4 = $r0.<org.connectbot.service.Relay: java.nio.CharBuffer charBuffer>;
+
+        $r12 = virtualinvoke $r11.<java.nio.charset.CharsetDecoder: java.nio.charset.CoderResult decode(java.nio.ByteBuffer,java.nio.CharBuffer,boolean)>($r10, $r4, 0);
+
+        exitmonitor $r0;
+
+     label11:
+        $z0 = virtualinvoke $r12.<java.nio.charset.CoderResult: boolean isUnderflow()>();
+
+     label12:
+        if $z0 == 0 goto label18;
+
+     label13:
+        $r10 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $i3 = virtualinvoke $r10.<java.nio.ByteBuffer: int limit()>();
+
+        $r10 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $i2 = virtualinvoke $r10.<java.nio.ByteBuffer: int capacity()>();
+
+     label14:
+        if $i3 != $i2 goto label18;
+
+     label15:
+        $r10 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        virtualinvoke $r10.<java.nio.ByteBuffer: java.nio.ByteBuffer compact()>();
+
+     label16:
+        $r10 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+     label17:
+        $r3 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        $i3 = virtualinvoke $r3.<java.nio.ByteBuffer: int position()>();
+
+        virtualinvoke $r10.<java.nio.ByteBuffer: java.nio.Buffer limit(int)>($i3);
+
+        $r10 = $r0.<org.connectbot.service.Relay: java.nio.ByteBuffer byteBuffer>;
+
+        virtualinvoke $r10.<java.nio.ByteBuffer: java.nio.Buffer position(int)>(0);
+
+     label18:
+        $r4 = $r0.<org.connectbot.service.Relay: java.nio.CharBuffer charBuffer>;
+
+        $i3 = virtualinvoke $r4.<java.nio.CharBuffer: int position()>();
+
+     label19:
+        $r6 = $r0.<org.connectbot.service.Relay: char[] charArray>;
+
+        $r8 = $r0.<org.connectbot.service.Relay: org.connectbot.service.TerminalBridge bridge>;
+
+     label20:
+        $r13 = $r8.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r7.<org.connectbot.util.EastAsianWidth: void measure(char[],int,int,byte[],android.graphics.Paint,int)>($r6, 0, $i3, $r1, $r13, $i1);
+
+     label21:
+        $r14 = $r0.<org.connectbot.service.Relay: de.mud.terminal.vt320 buffer>;
+
+        $r6 = $r0.<org.connectbot.service.Relay: char[] charArray>;
+
+     label22:
+        $r4 = $r0.<org.connectbot.service.Relay: java.nio.CharBuffer charBuffer>;
+
+        $i3 = virtualinvoke $r4.<java.nio.CharBuffer: int position()>();
+
+        virtualinvoke $r14.<de.mud.terminal.vt320: void putString(char[],byte[],int,int)>($r6, $r1, 0, $i3);
+
+     label23:
+        $r8 = $r0.<org.connectbot.service.Relay: org.connectbot.service.TerminalBridge bridge>;
+
+        $r6 = $r0.<org.connectbot.service.Relay: char[] charArray>;
+
+     label24:
+        $r4 = $r0.<org.connectbot.service.Relay: java.nio.CharBuffer charBuffer>;
+
+        $i3 = virtualinvoke $r4.<java.nio.CharBuffer: int position()>();
+
+        virtualinvoke $r8.<org.connectbot.service.TerminalBridge: void propagateConsoleText(char[],int)>($r6, $i3);
+
+        $r4 = $r0.<org.connectbot.service.Relay: java.nio.CharBuffer charBuffer>;
+
+        virtualinvoke $r4.<java.nio.CharBuffer: java.nio.Buffer clear()>();
+
+        $r8 = $r0.<org.connectbot.service.Relay: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r8.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+     label25:
+        goto label01;
+
+     label26:
+        $r2 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.Relay", "Problem while handling incoming data in relay thread", $r2);
+
+        return;
+
+     label27:
+        $r15 := @caughtexception;
+
+     label28:
+        exitmonitor $r0;
+
+     label29:
+        throw $r15;
+
+     label30:
+        nop;
+
+        catch java.io.IOException from label02 to label03 with label26;
+        catch java.io.IOException from label04 to label05 with label26;
+        catch java.io.IOException from label06 to label07 with label26;
+        catch java.io.IOException from label08 to label09 with label26;
+        catch java.lang.Throwable from label10 to label11 with label27;
+        catch java.io.IOException from label11 to label12 with label26;
+        catch java.io.IOException from label13 to label14 with label26;
+        catch java.io.IOException from label15 to label16 with label26;
+        catch java.io.IOException from label17 to label19 with label26;
+        catch java.io.IOException from label20 to label21 with label26;
+        catch java.io.IOException from label22 to label23 with label26;
+        catch java.io.IOException from label24 to label25 with label26;
+        catch java.lang.Throwable from label28 to label29 with label27;
+        catch java.io.IOException from label29 to label30 with label26;
+    }
+
+    public void setCharset(java.lang.String)
+    {
+        org.connectbot.service.Relay $r0;
+        java.lang.String $r1, $r4;
+        java.nio.charset.Charset $r2, $r6;
+        java.lang.StringBuilder $r3, r10;
+        boolean $z0;
+        java.lang.String[] $r5;
+        java.nio.charset.CharsetDecoder $r7;
+        java.nio.charset.CodingErrorAction $r8;
+        java.lang.Throwable $r9;
+        org.apache.harmony.niochar.charset.additional.IBM437 r11;
+
+        $r0 := @this: org.connectbot.service.Relay;
+
+        $r1 := @parameter0: java.lang.String;
+
+        r10 = new java.lang.StringBuilder;
+
+        specialinvoke r10.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke r10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("changing charset to ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ConnectBot.Relay", $r4);
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("CP437");
+
+        if $z0 == 0 goto label2;
+
+        r11 = new org.apache.harmony.niochar.charset.additional.IBM437;
+
+        $r2 = r11;
+
+        $r5 = newarray (java.lang.String)[2];
+
+        $r5[0] = "IBM437";
+
+        $r5[1] = "CP437";
+
+        specialinvoke r11.<org.apache.harmony.niochar.charset.additional.IBM437: void <init>(java.lang.String,java.lang.String[])>("IBM437", $r5);
+
+     label1:
+        $r6 = $r0.<org.connectbot.service.Relay: java.nio.charset.Charset currentCharset>;
+
+        if $r2 == $r6 goto label8;
+
+        if $r2 != null goto label3;
+
+        return;
+
+     label2:
+        $r2 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset forName(java.lang.String)>($r1);
+
+        goto label1;
+
+     label3:
+        $r7 = virtualinvoke $r2.<java.nio.charset.Charset: java.nio.charset.CharsetDecoder newDecoder()>();
+
+        $r8 = <java.nio.charset.CodingErrorAction: java.nio.charset.CodingErrorAction REPLACE>;
+
+        virtualinvoke $r7.<java.nio.charset.CharsetDecoder: java.nio.charset.CharsetDecoder onUnmappableCharacter(java.nio.charset.CodingErrorAction)>($r8);
+
+        $r8 = <java.nio.charset.CodingErrorAction: java.nio.charset.CodingErrorAction REPLACE>;
+
+        virtualinvoke $r7.<java.nio.charset.CharsetDecoder: java.nio.charset.CharsetDecoder onMalformedInput(java.nio.charset.CodingErrorAction)>($r8);
+
+        $r0.<org.connectbot.service.Relay: java.nio.charset.Charset currentCharset> = $r2;
+
+        entermonitor $r0;
+
+     label4:
+        $r0.<org.connectbot.service.Relay: java.nio.charset.CharsetDecoder decoder> = $r7;
+
+        exitmonitor $r0;
+
+     label5:
+        return;
+
+     label6:
+        $r9 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label7:
+        throw $r9;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label4 to label5 with label6;
+        catch java.lang.Throwable from label6 to label7 with label6;
+    }
+}

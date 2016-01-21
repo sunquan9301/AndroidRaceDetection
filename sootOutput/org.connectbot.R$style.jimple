@@ -1,0 +1,25 @@
+public final class org.connectbot.R$style extends java.lang.Object
+{
+    public static final int NoTitle;
+    public static final int SolidActionBar;
+
+    public void <init>()
+    {
+        org.connectbot.R$style $r0;
+
+        $r0 := @this: org.connectbot.R$style;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$style: int SolidActionBar> = 2131230721;
+
+        <org.connectbot.R$style: int NoTitle> = 2131230720;
+
+        return;
+    }
+}

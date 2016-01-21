@@ -1,0 +1,5 @@
+interface  android.support.v4.view.ViewGroupCompat$ViewGroupCompatImpl extends java.lang.Object
+{
+
+    public abstract void setMotionEventSplittingEnabled(android.view.ViewGroup, boolean);
+}

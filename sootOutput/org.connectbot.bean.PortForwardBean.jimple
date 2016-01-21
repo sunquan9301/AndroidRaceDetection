@@ -1,0 +1,485 @@
+public class org.connectbot.bean.PortForwardBean extends org.connectbot.bean.AbstractBean
+{
+    private java.lang.String destAddr;
+    private int destPort;
+    private boolean enabled;
+    private long hostId;
+    private long id;
+    private java.lang.Object identifier;
+    private java.lang.String nickname;
+    private int sourcePort;
+    private java.lang.String type;
+
+    public void <init>(long, long, java.lang.String, java.lang.String, int, java.lang.String, int)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        long $l0, $l1;
+        java.lang.String $r1, $r2, $r3;
+        int $i2, $i3;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $l0 := @parameter0: long;
+
+        $l1 := @parameter1: long;
+
+        $r1 := @parameter2: java.lang.String;
+
+        $r2 := @parameter3: java.lang.String;
+
+        $i2 := @parameter4: int;
+
+        $r3 := @parameter5: java.lang.String;
+
+        $i3 := @parameter6: int;
+
+        specialinvoke $r0.<org.connectbot.bean.AbstractBean: void <init>()>();
+
+        $r0.<org.connectbot.bean.PortForwardBean: long id> = -1L;
+
+        $r0.<org.connectbot.bean.PortForwardBean: long hostId> = -1L;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String nickname> = null;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type> = null;
+
+        $r0.<org.connectbot.bean.PortForwardBean: int sourcePort> = -1;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String destAddr> = null;
+
+        $r0.<org.connectbot.bean.PortForwardBean: int destPort> = -1;
+
+        $r0.<org.connectbot.bean.PortForwardBean: boolean enabled> = 0;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.Object identifier> = null;
+
+        $r0.<org.connectbot.bean.PortForwardBean: long id> = $l0;
+
+        $r0.<org.connectbot.bean.PortForwardBean: long hostId> = $l1;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String nickname> = $r1;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type> = $r2;
+
+        $r0.<org.connectbot.bean.PortForwardBean: int sourcePort> = $i2;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String destAddr> = $r3;
+
+        $r0.<org.connectbot.bean.PortForwardBean: int destPort> = $i3;
+
+        return;
+    }
+
+    public void <init>(long, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        long $l0;
+        java.lang.String $r1, $r2, $r3, $r4;
+        int $i1;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $l0 := @parameter0: long;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 := @parameter3: java.lang.String;
+
+        $r4 := @parameter4: java.lang.String;
+
+        specialinvoke $r0.<org.connectbot.bean.AbstractBean: void <init>()>();
+
+        $r0.<org.connectbot.bean.PortForwardBean: long id> = -1L;
+
+        $r0.<org.connectbot.bean.PortForwardBean: long hostId> = -1L;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String nickname> = null;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type> = null;
+
+        $r0.<org.connectbot.bean.PortForwardBean: int sourcePort> = -1;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String destAddr> = null;
+
+        $r0.<org.connectbot.bean.PortForwardBean: int destPort> = -1;
+
+        $r0.<org.connectbot.bean.PortForwardBean: boolean enabled> = 0;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.Object identifier> = null;
+
+        $r0.<org.connectbot.bean.PortForwardBean: long hostId> = $l0;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String nickname> = $r1;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type> = $r2;
+
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+
+        $r0.<org.connectbot.bean.PortForwardBean: int sourcePort> = $i1;
+
+        virtualinvoke $r0.<org.connectbot.bean.PortForwardBean: void setDest(java.lang.String)>($r4);
+
+        return;
+    }
+
+    public java.lang.CharSequence getDescription()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.String $r1, $r2;
+        boolean $z0;
+        java.lang.Object[] $r3;
+        int $i0;
+        java.lang.Integer $r4;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 = "local";
+
+        $r2 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type>;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        $r3 = newarray (java.lang.Object)[3];
+
+        $i0 = $r0.<org.connectbot.bean.PortForwardBean: int sourcePort>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r3[0] = $r4;
+
+        $r2 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String destAddr>;
+
+        $r3[1] = $r2;
+
+        $i0 = $r0.<org.connectbot.bean.PortForwardBean: int destPort>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r3[2] = $r4;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Local port %d to %s:%d", $r3);
+
+        return $r2;
+
+     label1:
+        $r2 = "remote";
+
+        $r1 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type>;
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = newarray (java.lang.Object)[3];
+
+        $i0 = $r0.<org.connectbot.bean.PortForwardBean: int sourcePort>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r3[0] = $r4;
+
+        $r2 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String destAddr>;
+
+        $r3[1] = $r2;
+
+        $i0 = $r0.<org.connectbot.bean.PortForwardBean: int destPort>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r3[2] = $r4;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Remote port %d to %s:%d", $r3);
+
+        return $r2;
+
+     label2:
+        $r2 = "dynamic5";
+
+        $r1 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type>;
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label3;
+
+        $r3 = newarray (java.lang.Object)[1];
+
+        $i0 = $r0.<org.connectbot.bean.PortForwardBean: int sourcePort>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r3[0] = $r4;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Dynamic port %d (SOCKS)", $r3);
+
+        return $r2;
+
+     label3:
+        return "Unknown type";
+    }
+
+    public java.lang.String getDestAddr()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String destAddr>;
+
+        return $r1;
+    }
+
+    public int getDestPort()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $i0 = $r0.<org.connectbot.bean.PortForwardBean: int destPort>;
+
+        return $i0;
+    }
+
+    public long getId()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $l0 = $r0.<org.connectbot.bean.PortForwardBean: long id>;
+
+        return $l0;
+    }
+
+    public java.lang.Object getIdentifier()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.Object $r1;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.Object identifier>;
+
+        return $r1;
+    }
+
+    public java.lang.String getNickname()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String nickname>;
+
+        return $r1;
+    }
+
+    public int getSourcePort()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $i0 = $r0.<org.connectbot.bean.PortForwardBean: int sourcePort>;
+
+        return $i0;
+    }
+
+    public java.lang.String getType()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type>;
+
+        return $r1;
+    }
+
+    public android.content.ContentValues getValues()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        android.content.ContentValues $r1;
+        long $l0;
+        java.lang.Long $r2;
+        java.lang.String $r3;
+        int $i1;
+        java.lang.Integer $r4;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 = new android.content.ContentValues;
+
+        specialinvoke $r1.<android.content.ContentValues: void <init>()>();
+
+        $l0 = $r0.<org.connectbot.bean.PortForwardBean: long hostId>;
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("hostid", $r2);
+
+        $r3 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String nickname>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("nickname", $r3);
+
+        $r3 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("type", $r3);
+
+        $i1 = $r0.<org.connectbot.bean.PortForwardBean: int sourcePort>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("sourceport", $r4);
+
+        $r3 = $r0.<org.connectbot.bean.PortForwardBean: java.lang.String destAddr>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("destaddr", $r3);
+
+        $i1 = $r0.<org.connectbot.bean.PortForwardBean: int destPort>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("destport", $r4);
+
+        return $r1;
+    }
+
+    public boolean isEnabled()
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $z0 = $r0.<org.connectbot.bean.PortForwardBean: boolean enabled>;
+
+        return $z0;
+    }
+
+    public final void setDest(java.lang.String)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.String $r1;
+        java.lang.String[] $r2;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = virtualinvoke $r1.<java.lang.String: java.lang.String[] split(java.lang.String)>(":");
+
+        $r1 = $r2[0];
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String destAddr> = $r1;
+
+        $i0 = lengthof $r2;
+
+        if $i0 <= 1 goto label1;
+
+        $r1 = $r2[1];
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r1);
+
+        $r0.<org.connectbot.bean.PortForwardBean: int destPort> = $i0;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void setEnabled(boolean)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.PortForwardBean: boolean enabled> = $z0;
+
+        return;
+    }
+
+    public void setId(long)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $l0 := @parameter0: long;
+
+        $r0.<org.connectbot.bean.PortForwardBean: long id> = $l0;
+
+        return;
+    }
+
+    public void setIdentifier(java.lang.Object)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.Object $r1;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.Object identifier> = $r1;
+
+        return;
+    }
+
+    public void setNickname(java.lang.String)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String nickname> = $r1;
+
+        return;
+    }
+
+    public void setSourcePort(int)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $i0 := @parameter0: int;
+
+        $r0.<org.connectbot.bean.PortForwardBean: int sourcePort> = $i0;
+
+        return;
+    }
+
+    public void setType(java.lang.String)
+    {
+        org.connectbot.bean.PortForwardBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PortForwardBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.PortForwardBean: java.lang.String type> = $r1;
+
+        return;
+    }
+}

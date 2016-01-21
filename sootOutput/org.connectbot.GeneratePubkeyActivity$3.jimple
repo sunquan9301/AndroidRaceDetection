@@ -1,0 +1,170 @@
+class org.connectbot.GeneratePubkeyActivity$3 extends java.lang.Object implements android.view.View$OnFocusChangeListener
+{
+    final org.connectbot.GeneratePubkeyActivity this$0;
+
+    void <init>(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity$3 $r0;
+        org.connectbot.GeneratePubkeyActivity $r1;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$3;
+
+        $r1 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onFocusChange(android.view.View, boolean)
+    {
+        org.connectbot.GeneratePubkeyActivity$3 $r0;
+        android.view.View $r1;
+        boolean $z0;
+        java.lang.NumberFormatException $r2;
+        java.lang.String $r3, $r5;
+        org.connectbot.GeneratePubkeyActivity $r4, $r6, $r9;
+        android.widget.EditText $r7;
+        android.text.Editable $r8;
+        int $i0, $i1;
+        android.widget.SeekBar $r10;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$3;
+
+        $r1 := @parameter0: android.view.View;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 != 0 goto label10;
+
+        $r3 = "EC";
+
+        $r4 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r5 = staticinvoke <org.connectbot.GeneratePubkeyActivity: java.lang.String access$300(org.connectbot.GeneratePubkeyActivity)>($r4);
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        $r4 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+     label01:
+        $r7 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+        $r8 = virtualinvoke $r7.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r5 = virtualinvoke $r8.<java.lang.Object: java.lang.String toString()>();
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r5);
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$402(org.connectbot.GeneratePubkeyActivity,int)>($r4, $i0);
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i0 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$400(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+     label02:
+        if $i0 >= $i1 goto label04;
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+     label03:
+        $r4 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r4);
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$402(org.connectbot.GeneratePubkeyActivity,int)>($r6, $i1);
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$400(org.connectbot.GeneratePubkeyActivity)>($r6);
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+
+        virtualinvoke $r7.<android.widget.EditText: void setText(java.lang.CharSequence)>($r5);
+
+     label04:
+        if $z0 == 0 goto label06;
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r9 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+     label05:
+        $r4 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$400(org.connectbot.GeneratePubkeyActivity)>($r4);
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$500(org.connectbot.GeneratePubkeyActivity,int)>($r9, $i1);
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$402(org.connectbot.GeneratePubkeyActivity,int)>($r6, $i1);
+
+     label06:
+        $r9 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r10 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar access$100(org.connectbot.GeneratePubkeyActivity)>($r9);
+
+        $r9 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$400(org.connectbot.GeneratePubkeyActivity)>($r9);
+
+        $r9 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i0 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r9);
+
+        $i1 = $i1 - $i0;
+
+        virtualinvoke $r10.<android.widget.SeekBar: void setProgress(int)>($i1);
+
+        return;
+
+     label07:
+        $r2 := @caughtexception;
+
+        $r9 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        if $z0 == 0 goto label09;
+
+        $i1 = <org.connectbot.GeneratePubkeyActivity: int ECDSA_DEFAULT_BITS>;
+
+     label08:
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$402(org.connectbot.GeneratePubkeyActivity,int)>($r9, $i1);
+
+        $r9 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r9);
+
+        $r9 = $r0.<org.connectbot.GeneratePubkeyActivity$3: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$400(org.connectbot.GeneratePubkeyActivity)>($r9);
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+
+        virtualinvoke $r7.<android.widget.EditText: void setText(java.lang.CharSequence)>($r5);
+
+        goto label06;
+
+     label09:
+        $i1 = 2048;
+
+        goto label08;
+
+     label10:
+        return;
+
+        catch java.lang.NumberFormatException from label01 to label02 with label07;
+        catch java.lang.NumberFormatException from label03 to label04 with label07;
+        catch java.lang.NumberFormatException from label05 to label06 with label07;
+    }
+}

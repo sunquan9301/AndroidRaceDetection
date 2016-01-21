@@ -1,0 +1,99 @@
+class org.connectbot.PubkeyListActivity$8 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.PubkeyListActivity this$0;
+    final boolean val$imported;
+    final org.connectbot.bean.PubkeyBean val$pubkey;
+
+    void <init>(org.connectbot.PubkeyListActivity, boolean, org.connectbot.bean.PubkeyBean)
+    {
+        org.connectbot.PubkeyListActivity$8 $r0;
+        org.connectbot.PubkeyListActivity $r1;
+        boolean $z0;
+        org.connectbot.bean.PubkeyBean $r2;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$8;
+
+        $r1 := @parameter0: org.connectbot.PubkeyListActivity;
+
+        $z0 := @parameter1: boolean;
+
+        $r2 := @parameter2: org.connectbot.bean.PubkeyBean;
+
+        $r0.<org.connectbot.PubkeyListActivity$8: org.connectbot.PubkeyListActivity this$0> = $r1;
+
+        $r0.<org.connectbot.PubkeyListActivity$8: boolean val$imported> = $z0;
+
+        $r0.<org.connectbot.PubkeyListActivity$8: org.connectbot.bean.PubkeyBean val$pubkey> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.PubkeyListActivity$8 $r0;
+        android.view.MenuItem $r1;
+        java.lang.String $r2;
+        java.lang.Exception $r3;
+        boolean $z0;
+        org.connectbot.bean.PubkeyBean $r4;
+        byte[] $r5;
+        org.connectbot.PubkeyListActivity $r6;
+        android.text.ClipboardManager $r7;
+        java.security.PrivateKey $r8;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$8;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+     label1:
+        $z0 = $r0.<org.connectbot.PubkeyListActivity$8: boolean val$imported>;
+
+        if $z0 == 0 goto label4;
+
+        $r2 = new java.lang.String;
+
+        $r4 = $r0.<org.connectbot.PubkeyListActivity$8: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $r5 = virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: byte[] getPrivateKey()>();
+
+        specialinvoke $r2.<java.lang.String: void <init>(byte[])>($r5);
+
+     label2:
+        $r6 = $r0.<org.connectbot.PubkeyListActivity$8: org.connectbot.PubkeyListActivity this$0>;
+
+        $r7 = $r6.<org.connectbot.PubkeyListActivity: android.text.ClipboardManager clipboard>;
+
+        virtualinvoke $r7.<android.text.ClipboardManager: void setText(java.lang.CharSequence)>($r2);
+
+     label3:
+        return 1;
+
+     label4:
+        $r4 = $r0.<org.connectbot.PubkeyListActivity$8: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $r5 = virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: byte[] getPrivateKey()>();
+
+        $r4 = $r0.<org.connectbot.PubkeyListActivity$8: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $r2 = virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $r8 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PrivateKey decodePrivate(byte[],java.lang.String)>($r5, $r2);
+
+        $r2 = staticinvoke <org.connectbot.util.PubkeyUtils: java.lang.String exportPEM(java.security.PrivateKey,java.lang.String)>($r8, null);
+
+     label5:
+        goto label2;
+
+     label6:
+        $r3 := @caughtexception;
+
+        virtualinvoke $r3.<java.lang.Exception: void printStackTrace()>();
+
+        goto label3;
+
+        catch java.lang.Exception from label1 to label3 with label6;
+        catch java.lang.Exception from label4 to label5 with label6;
+    }
+}

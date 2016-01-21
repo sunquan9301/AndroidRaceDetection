@@ -1,0 +1,2008 @@
+public class de.mud.terminal.VDUBuffer extends java.lang.Object
+{
+    private int bottomMargin;
+    public int bufSize;
+    public char[][] charArray;
+    public int[][] charAttributes;
+    protected int cursorX;
+    protected int cursorY;
+    protected de.mud.terminal.VDUDisplay display;
+    public int height;
+    public int maxBufSize;
+    public int screenBase;
+    public int scrollMarker;
+    protected boolean showcursor;
+    private int topMargin;
+    public boolean[] update;
+    public int width;
+    public int windowBase;
+
+    public void <init>(int, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<de.mud.terminal.VDUBuffer: boolean showcursor> = 1;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void setScreenSize(int,int,boolean)>($i0, $i1, 0);
+
+        return;
+    }
+
+    public void deleteArea(int, int, int, int, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8;
+        int[][] $r1;
+        int[] $r2;
+        char[][] $r3;
+        char[] $r4;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        $i4 := @parameter4: int;
+
+        $i2 = $i0 + $i2;
+
+        $i6 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i6 = $i6 + $i1;
+
+        $i5 = 0;
+
+     label1:
+        if $i5 >= $i3 goto label2;
+
+        $i8 = $i1 + $i5;
+
+        $i7 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i8 >= $i7 goto label2;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $r2 = $r1[$i6];
+
+        staticinvoke <java.util.Arrays: void fill(int[],int,int,int)>($r2, $i0, $i2, $i4);
+
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r4 = $r3[$i6];
+
+        staticinvoke <java.util.Arrays: void fill(char[],int,int,char)>($r4, $i0, $i2, 32);
+
+        $i6 = $i6 + 1;
+
+        $i5 = $i5 + 1;
+
+        goto label1;
+
+     label2:
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void markLine(int,int)>($i1, $i3);
+
+        return;
+    }
+
+    public void deleteChar(int, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2, $i3;
+        char[][] $r1;
+        char[] $r2, $r3;
+        int[][] $r4;
+        int[] $r5, $r6;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i2 = $i2 + -1;
+
+        if $i0 >= $i2 goto label1;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i2 = $i2 + $i1;
+
+        $r2 = $r1[$i2];
+
+        $i3 = $i0 + 1;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i2 = $i2 + $i1;
+
+        $r3 = $r1[$i2];
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i2 = $i2 - $i0;
+
+        $i2 = $i2 + -1;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, $i3, $r3, $i0, $i2);
+
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i3 = $i3 + $i1;
+
+        $r5 = $r4[$i3];
+
+        $i3 = $i0 + 1;
+
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i2 = $i2 + $i1;
+
+        $r6 = $r4[$i2];
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i2 = $i2 - $i0;
+
+        $i2 = $i2 + -1;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r5, $i3, $r6, $i0, $i2);
+
+     label1:
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i3 = $i3 + -1;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void putChar(int,int,char)>($i3, $i1, 0);
+
+        return;
+    }
+
+    public void deleteLine(int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        int[] $r1;
+        char[] $r2;
+        char[][] $r3, $r5;
+        int[][] $r4, $r6;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+        if $i0 <= $i2 goto label3;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        $i1 = $i3 + -1;
+
+     label1:
+        $i3 = $i1 - $i0;
+
+        $i2 = $i3 + -1;
+
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i3 = $i3 + $i0;
+
+        $r2 = $r3[$i3];
+
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i3 = $i3 + $i0;
+
+        $r1 = $r4[$i3];
+
+        if $i2 <= 0 goto label2;
+
+        $r5 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i3 = $i3 + $i0;
+
+        $i4 = $i3 + 1;
+
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i3 = $i3 + $i0;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r5, $i4, $r3, $i3, $i2);
+
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i4 = $i4 + $i0;
+
+        $i4 = $i4 + 1;
+
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i3 = $i3 + $i0;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, $i4, $r6, $i3, $i2);
+
+     label2:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i4 = $i4 + $i1;
+
+        $i2 = $i4 + -1;
+
+        $r5 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r5[$i2] = $r2;
+
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $r6[$i2] = $r1;
+
+        $r5 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r2 = $r5[$i2];
+
+        staticinvoke <java.util.Arrays: void fill(char[],char)>($r2, 32);
+
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $r1 = $r6[$i2];
+
+        staticinvoke <java.util.Arrays: void fill(int[],int)>($r1, 0);
+
+        $i4 = $i1 - $i0;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void markLine(int,int)>($i0, $i4);
+
+        return;
+
+     label3:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int topMargin>;
+
+        if $i0 >= $i4 goto label4;
+
+        $i1 = $r0.<de.mud.terminal.VDUBuffer: int topMargin>;
+
+        goto label1;
+
+     label4:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+        $i1 = $i4 + 1;
+
+        goto label1;
+    }
+
+    public int getAttributes(int, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2;
+        int[][] $r1;
+        int[] $r2;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i2 = $i2 + $i1;
+
+        $r2 = $r1[$i2];
+
+        $i2 = $r2[$i0];
+
+        return $i2;
+    }
+
+    public int getBottomMargin()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+        return $i0;
+    }
+
+    public char getChar(int, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2;
+        char[][] $r1;
+        char[] $r2;
+        char $c3;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i2 = $i2 + $i1;
+
+        $r2 = $r1[$i2];
+
+        $c3 = $r2[$i0];
+
+        return $c3;
+    }
+
+    public int getColumns()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        return $i0;
+    }
+
+    public int getCursorColumn()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int cursorX>;
+
+        return $i0;
+    }
+
+    public int getCursorRow()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int cursorY>;
+
+        return $i0;
+    }
+
+    public int getRows()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        return $i0;
+    }
+
+    public int getTopMargin()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int topMargin>;
+
+        return $i0;
+    }
+
+    public int getWindowBase()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        return $i0;
+    }
+
+    public void insertChar(int, int, char, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i3, $i4, $i5;
+        char $c2;
+        char[][] $r1;
+        char[] $r2, $r3;
+        int[][] $r4;
+        int[] $r5, $r6;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $c2 := @parameter2: char;
+
+        $i3 := @parameter3: int;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i4 = $i4 + $i1;
+
+        $r2 = $r1[$i4];
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i4 = $i4 + $i1;
+
+        $r3 = $r1[$i4];
+
+        $i5 = $i0 + 1;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i4 = $i4 - $i0;
+
+        $i4 = $i4 + -1;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, $i0, $r3, $i5, $i4);
+
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i5 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i5 = $i5 + $i1;
+
+        $r5 = $r4[$i5];
+
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i5 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i5 = $i5 + $i1;
+
+        $r6 = $r4[$i5];
+
+        $i5 = $i0 + 1;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i4 = $i4 - $i0;
+
+        $i4 = $i4 + -1;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r5, $i0, $r6, $i5, $i4);
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void putChar(int,int,char,int)>($i0, $i1, $c2, $i3);
+
+        return;
+    }
+
+    public void insertLine(int, int, boolean)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11;
+        boolean $z0;
+        java.lang.ArrayIndexOutOfBoundsException $r1;
+        java.lang.StringBuilder $r2;
+        char[][] $r3, $r5;
+        int[][] $r4, $r6;
+        char[] $r7;
+        int[] $r8;
+        java.io.PrintStream $r9;
+        java.lang.String $r10;
+        java.lang.Throwable $r11;
+        de.mud.terminal.VDUDisplay $r12;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        entermonitor $r0;
+
+     label01:
+        $i3 = 0;
+
+        $i7 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i5 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i6 = $r0.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i8 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+     label02:
+        if $i0 <= $i8 goto label04;
+
+     label03:
+        exitmonitor $r0;
+
+        return;
+
+     label04:
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int topMargin>;
+
+        if $i0 >= $i9 goto label29;
+
+        $i8 = 0;
+
+     label05:
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+        if $i0 <= $i9 goto label36;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+     label06:
+        $i2 = $i9 + -1;
+
+     label07:
+        if $z0 == 0 goto label41;
+
+        $i9 = $i2 - $i8;
+
+        if $i1 <= $i9 goto label08;
+
+        $i1 = $i2 - $i8;
+
+     label08:
+        $i9 = $i2 - $i0;
+
+        $i3 = $i1 + -1;
+
+        $i3 = $i9 - $i3;
+
+     label09:
+        if $i3 >= 0 goto label10;
+
+        $i3 = 0;
+
+     label10:
+        $r3 = newarray (char[])[$i3];
+
+        $r4 = newarray (int[])[$i3];
+
+        $r5 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+     label11:
+        $i10 = $i7 + $i0;
+
+        $i3 = $i2 - $i0;
+
+        $i9 = $i1 + -1;
+
+     label12:
+        $i9 = $i3 - $i9;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r5, $i10, $r3, 0, $i9);
+
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+     label13:
+        $i10 = $i7 + $i0;
+
+        $i9 = $i2 - $i0;
+
+        $i3 = $i1 + -1;
+
+     label14:
+        $i9 = $i9 - $i3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r6, $i10, $r4, 0, $i9);
+
+        $r5 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+     label15:
+        $i10 = $i7 + $i0;
+
+        $i10 = $i10 + $i1;
+
+        $i9 = $i2 - $i0;
+
+        $i3 = $i1 + -1;
+
+     label16:
+        $i9 = $i9 - $i3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, 0, $r5, $i10, $i9);
+
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+     label17:
+        $i10 = $i7 + $i0;
+
+        $i10 = $i10 + $i1;
+
+        $i9 = $i2 - $i0;
+
+        $i7 = $i1 + -1;
+
+     label18:
+        $i9 = $i9 - $i7;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, 0, $r6, $i10, $i9);
+
+        $r5 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+     label19:
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int scrollMarker>;
+
+        $i10 = $i10 - $i1;
+
+        $r0.<de.mud.terminal.VDUBuffer: int scrollMarker> = $i10;
+
+     label20:
+        $i3 = 0;
+
+     label21:
+        if $i3 >= $i1 goto label91;
+
+     label22:
+        $i10 = $i5 + $i0;
+
+        if $z0 == 0 goto label88;
+
+        $i9 = $i3;
+
+     label23:
+        $i10 = $i9 + $i10;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $r7 = newarray (char)[$i9];
+
+        $r5[$i10] = $r7;
+
+     label24:
+        $i10 = $i5 + $i0;
+
+        if $z0 == 0 goto label89;
+
+        $i9 = $i3;
+
+     label25:
+        $i10 = $i9 + $i10;
+
+        $r7 = $r5[$i10];
+
+        staticinvoke <java.util.Arrays: void fill(char[],char)>($r7, 32);
+
+     label26:
+        $i10 = $i5 + $i0;
+
+        if $z0 == 0 goto label90;
+
+        $i9 = $i3;
+
+     label27:
+        $i10 = $i9 + $i10;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $r8 = newarray (int)[$i9];
+
+        $r6[$i10] = $r8;
+
+     label28:
+        $i3 = $i3 + 1;
+
+        goto label21;
+
+     label29:
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+        if $i0 <= $i10 goto label35;
+
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+        $i10 = $i10 + 1;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i10 >= $i9 goto label32;
+
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+     label30:
+        $i8 = $i10 + 1;
+
+     label31:
+        goto label05;
+
+     label32:
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+     label33:
+        $i8 = $i10 + -1;
+
+     label34:
+        goto label05;
+
+     label35:
+        $i8 = $r0.<de.mud.terminal.VDUBuffer: int topMargin>;
+
+        goto label05;
+
+     label36:
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int topMargin>;
+
+        if $i0 >= $i10 goto label39;
+
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int topMargin>;
+
+        if $i10 <= 0 goto label38;
+
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int topMargin>;
+
+     label37:
+        $i2 = $i10 + -1;
+
+        goto label07;
+
+     label38:
+        $i2 = 0;
+
+        goto label07;
+
+     label39:
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int bottomMargin>;
+
+     label40:
+        goto label07;
+
+     label41:
+        $i10 = $i2 - $i8;
+
+        $i10 = $i10 + 1;
+
+        if $i1 <= $i10 goto label42;
+
+        $i10 = $i2 - $i8;
+
+        $i1 = $i10 + 1;
+
+     label42:
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int maxBufSize>;
+
+        if $i10 >= $i9 goto label86;
+
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i10 = $i10 + $i1;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int maxBufSize>;
+
+        if $i10 <= $i9 goto label83;
+
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int maxBufSize>;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+     label43:
+        $i10 = $i10 - $i9;
+
+     label44:
+        $i3 = $i1 - $i10;
+
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int scrollMarker>;
+
+        $i10 = $i10 + $i3;
+
+        $r0.<de.mud.terminal.VDUBuffer: int scrollMarker> = $i10;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int maxBufSize>;
+
+        $i10 = $r0.<de.mud.terminal.VDUBuffer: int maxBufSize>;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+     label45:
+        $i10 = $i10 - $i9;
+
+     label46:
+        $i5 = $i10 + -1;
+
+        $i6 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+     label47:
+        $r5 = newarray (char[])[$i4];
+
+        $r6 = newarray (int[])[$i4];
+
+     label48:
+        if $i7 <= 0 goto label52;
+
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i10 = $i7 - $i3;
+
+     label49:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i3, $r5, 0, $i10);
+
+     label50:
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+     label51:
+        $i10 = $i7 - $i3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, $i3, $r6, 0, $i10);
+
+     label52:
+        if $i8 <= 0 goto label54;
+
+     label53:
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i7, $r5, $i5, $i8);
+
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, $i7, $r6, $i5, $i8);
+
+     label54:
+        if $i7 < 0 goto label60;
+
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+     label55:
+        $i10 = $i7 + $i8;
+
+     label56:
+        $i9 = $i7 - $i3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i10, $r5, $i9, $i1);
+
+     label57:
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+     label58:
+        $i10 = $i7 + $i8;
+
+     label59:
+        $i9 = $i7 - $i3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, $i10, $r6, $i9, $i1);
+
+     label60:
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+     label61:
+        $i10 = $i7 + $i8;
+
+        $i10 = $i10 + $i1;
+
+        $i9 = $i5 + $i8;
+
+        $i3 = $i0 - $i8;
+
+        $i11 = $i1 + -1;
+
+     label62:
+        $i11 = $i3 - $i11;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i10, $r5, $i9, $i11);
+
+     label63:
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+     label64:
+        $i11 = $i7 + $i8;
+
+        $i11 = $i11 + $i1;
+
+        $i10 = $i5 + $i8;
+
+        $i9 = $i0 - $i8;
+
+        $i3 = $i1 + -1;
+
+     label65:
+        $i9 = $i9 - $i3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, $i11, $r6, $i10, $i9);
+
+     label66:
+        $i11 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+     label67:
+        $i11 = $i11 + -1;
+
+     label68:
+        if $i0 >= $i11 goto label19;
+
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+     label69:
+        $i11 = $i7 + $i0;
+
+        $i11 = $i11 + 1;
+
+        $i10 = $i5 + $i0;
+
+     label70:
+        $i10 = $i10 + 1;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+     label71:
+        $i9 = $i9 + -1;
+
+     label72:
+        $i9 = $i9 - $i0;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i11, $r5, $i10, $i9);
+
+     label73:
+        $r4 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+     label74:
+        $i11 = $i7 + $i0;
+
+        $i11 = $i11 + 1;
+
+        $i10 = $i5 + $i0;
+
+     label75:
+        $i10 = $i10 + 1;
+
+        $i9 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+     label76:
+        $i9 = $i9 + -1;
+
+     label77:
+        $i9 = $i9 - $i0;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, $i11, $r6, $i10, $i9);
+
+     label78:
+        goto label19;
+
+     label79:
+        $r1 := @caughtexception;
+
+     label80:
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>("*** Error while scrolling up:");
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>("--- BEGIN STACK TRACE ---");
+
+        virtualinvoke $r1.<java.lang.ArrayIndexOutOfBoundsException: void printStackTrace()>();
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>("--- END STACK TRACE ---");
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("bufSize=");
+
+        $i11 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", maxBufSize=");
+
+        $i11 = $r0.<de.mud.terminal.VDUBuffer: int maxBufSize>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r10 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>($r10);
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("top=");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i8);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", bottom=");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r10 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>($r10);
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("n=");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", l=");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r10 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>($r10);
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("screenBase=");
+
+        $i11 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", windowBase=");
+
+        $i11 = $r0.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r10 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>($r10);
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("newScreenBase=");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", newWindowBase=");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        $r10 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>($r10);
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("oldBase=");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r10 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>($r10);
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("size.width=");
+
+        $i11 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", size.height=");
+
+        $i11 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r10 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>($r10);
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("abuf.length=");
+
+        $i11 = lengthof $r6;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", cbuf.length=");
+
+        $i11 = lengthof $r5;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i11);
+
+        $r10 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>($r10);
+
+        $r9 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $r9.<java.io.PrintStream: void println(java.lang.String)>("*** done dumping debug information");
+
+     label81:
+        goto label19;
+
+     label82:
+        $r11 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r11;
+
+     label83:
+        $i11 = $r0.<de.mud.terminal.VDUBuffer: int scrollMarker>;
+
+        $i11 = $i11 + $i1;
+
+        $r0.<de.mud.terminal.VDUBuffer: int scrollMarker> = $i11;
+
+     label84:
+        $i5 = $i5 + $i1;
+
+        $i6 = $i6 + $i1;
+
+        $i4 = $i4 + $i1;
+
+     label85:
+        goto label47;
+
+     label86:
+        $i3 = $i1;
+
+        $r5 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+     label87:
+        goto label48;
+
+     label88:
+        $i9 = neg $i3;
+
+        goto label23;
+
+     label89:
+        $i9 = neg $i3;
+
+        goto label25;
+
+     label90:
+        $i9 = neg $i3;
+
+        goto label27;
+
+     label91:
+        $r0.<de.mud.terminal.VDUBuffer: char[][] charArray> = $r5;
+
+        $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes> = $r6;
+
+        $r0.<de.mud.terminal.VDUBuffer: int screenBase> = $i5;
+
+        $r0.<de.mud.terminal.VDUBuffer: int windowBase> = $i6;
+
+        $r0.<de.mud.terminal.VDUBuffer: int bufSize> = $i4;
+
+     label92:
+        if $z0 == 0 goto label96;
+
+        $i11 = $i2 - $i0;
+
+     label93:
+        $i11 = $i11 + 1;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void markLine(int,int)>($i0, $i11);
+
+     label94:
+        $r12 = $r0.<de.mud.terminal.VDUBuffer: de.mud.terminal.VDUDisplay display>;
+
+        interfaceinvoke $r12.<de.mud.terminal.VDUDisplay: void updateScrollBar()>();
+
+     label95:
+        goto label03;
+
+     label96:
+        $i11 = $i0 - $i8;
+
+     label97:
+        $i11 = $i11 + 1;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void markLine(int,int)>($i8, $i11);
+
+     label98:
+        goto label94;
+
+        catch java.lang.Throwable from label01 to label02 with label82;
+        catch java.lang.Throwable from label04 to label06 with label82;
+        catch java.lang.Throwable from label09 to label11 with label82;
+        catch java.lang.Throwable from label12 to label13 with label82;
+        catch java.lang.Throwable from label14 to label15 with label82;
+        catch java.lang.Throwable from label16 to label17 with label82;
+        catch java.lang.Throwable from label18 to label20 with label82;
+        catch java.lang.Throwable from label21 to label22 with label82;
+        catch java.lang.Throwable from label23 to label24 with label82;
+        catch java.lang.Throwable from label25 to label26 with label82;
+        catch java.lang.Throwable from label27 to label28 with label82;
+        catch java.lang.Throwable from label29 to label30 with label82;
+        catch java.lang.Throwable from label31 to label33 with label82;
+        catch java.lang.Throwable from label34 to label37 with label82;
+        catch java.lang.Throwable from label39 to label40 with label82;
+        catch java.lang.ArrayIndexOutOfBoundsException from label49 to label50 with label79;
+        catch java.lang.ArrayIndexOutOfBoundsException from label51 to label52 with label79;
+        catch java.lang.ArrayIndexOutOfBoundsException from label53 to label54 with label79;
+        catch java.lang.ArrayIndexOutOfBoundsException from label56 to label57 with label79;
+        catch java.lang.ArrayIndexOutOfBoundsException from label59 to label60 with label79;
+        catch java.lang.ArrayIndexOutOfBoundsException from label62 to label63 with label79;
+        catch java.lang.ArrayIndexOutOfBoundsException from label65 to label66 with label79;
+        catch java.lang.ArrayIndexOutOfBoundsException from label72 to label73 with label79;
+        catch java.lang.ArrayIndexOutOfBoundsException from label77 to label78 with label79;
+        catch java.lang.Throwable from label42 to label43 with label82;
+        catch java.lang.Throwable from label44 to label45 with label82;
+        catch java.lang.Throwable from label46 to label55 with label82;
+        catch java.lang.Throwable from label56 to label58 with label82;
+        catch java.lang.Throwable from label59 to label61 with label82;
+        catch java.lang.Throwable from label62 to label64 with label82;
+        catch java.lang.Throwable from label65 to label67 with label82;
+        catch java.lang.Throwable from label68 to label69 with label82;
+        catch java.lang.Throwable from label70 to label71 with label82;
+        catch java.lang.Throwable from label72 to label74 with label82;
+        catch java.lang.Throwable from label75 to label76 with label82;
+        catch java.lang.Throwable from label77 to label78 with label82;
+        catch java.lang.Throwable from label80 to label81 with label82;
+        catch java.lang.Throwable from label83 to label84 with label82;
+        catch java.lang.Throwable from label85 to label87 with label82;
+        catch java.lang.Throwable from label91 to label92 with label82;
+        catch java.lang.Throwable from label93 to label95 with label82;
+        catch java.lang.Throwable from label97 to label98 with label82;
+    }
+
+    public void insertLine(int, boolean)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0;
+        boolean $z0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $z0 := @parameter1: boolean;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void insertLine(int,int,boolean)>($i0, 1, $z0);
+
+        return;
+    }
+
+    public boolean isCursorVisible()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        boolean $z0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $z0 = $r0.<de.mud.terminal.VDUBuffer: boolean showcursor>;
+
+        return $z0;
+    }
+
+    public void markLine(int, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        boolean[] $r1;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i1 goto label2;
+
+        $i3 = $i0 + $i2;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i3 >= $i4 goto label3;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $i4 = $i0 + $i2;
+
+        $i4 = $i4 + 1;
+
+        $r1[$i4] = 1;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label2:
+        return;
+
+     label3:
+        return;
+    }
+
+    public void putChar(int, int, char)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1;
+        char $c2;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $c2 := @parameter2: char;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void putChar(int,int,char,int)>($i0, $i1, $c2, 0);
+
+        return;
+    }
+
+    public void putChar(int, int, char, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i3, $i4;
+        char $c2;
+        char[][] $r1;
+        char[] $r2;
+        int[][] $r3;
+        int[] $r4;
+        boolean[] $r5;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $c2 := @parameter2: char;
+
+        $i3 := @parameter3: int;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i4 = $i4 + $i1;
+
+        $r2 = $r1[$i4];
+
+        $r2[$i0] = $c2;
+
+        $r3 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i4 = $i4 + $i1;
+
+        $r4 = $r3[$i4];
+
+        $r4[$i0] = $i3;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i1 >= $i4 goto label1;
+
+        $r5 = $r0.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $i4 = $i1 + 1;
+
+        $r5[$i4] = 1;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    protected void redraw()
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        de.mud.terminal.VDUDisplay $r1;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: de.mud.terminal.VDUDisplay display>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: de.mud.terminal.VDUDisplay display>;
+
+        interfaceinvoke $r1.<de.mud.terminal.VDUDisplay: void redraw()>();
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void setBufferSize(int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2;
+        java.lang.Class $r1;
+        int[] $r2;
+        java.lang.Object $r3;
+        char[][] $r4, $r6;
+        int[][] $r5, $r7;
+        boolean[] $r8;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i0 >= $i2 goto label1;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+     label1:
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int maxBufSize>;
+
+        if $i0 >= $i2 goto label6;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $r2 = newarray (int)[2];
+
+        $r2[0] = $i0;
+
+        $r2[1] = $i2;
+
+        $r1 = <java.lang.Character: java.lang.Class TYPE>;
+
+        $r3 = staticinvoke <java.lang.reflect.Array: java.lang.Object newInstance(java.lang.Class,int[])>($r1, $r2);
+
+        $r4 = (char[][]) $r3;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $r2 = newarray (int)[2];
+
+        $r2[0] = $i0;
+
+        $r2[1] = $i2;
+
+        $r1 = <java.lang.Integer: java.lang.Class TYPE>;
+
+        $r3 = staticinvoke <java.lang.reflect.Array: java.lang.Object newInstance(java.lang.Class,int[])>($r1, $r2);
+
+        $r5 = (int[][]) $r3;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i2 = $i2 - $i0;
+
+        if $i2 >= 0 goto label7;
+
+        $i2 = 0;
+
+     label2:
+        $i1 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i1 = $i1 - $i0;
+
+        if $i1 >= 0 goto label8;
+
+        $i1 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+     label3:
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        if $r6 == null goto label4;
+
+        $r6 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r6, $i2, $r4, 0, $i1);
+
+     label4:
+        $r7 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        if $r7 == null goto label5;
+
+        $r7 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r7, $i2, $r5, 0, $i1);
+
+     label5:
+        $r0.<de.mud.terminal.VDUBuffer: char[][] charArray> = $r4;
+
+        $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes> = $r5;
+
+        $r0.<de.mud.terminal.VDUBuffer: int bufSize> = $i1;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i1 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        $i2 = $i2 - $i1;
+
+        $r0.<de.mud.terminal.VDUBuffer: int screenBase> = $i2;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $r0.<de.mud.terminal.VDUBuffer: int windowBase> = $i2;
+
+     label6:
+        $r0.<de.mud.terminal.VDUBuffer: int maxBufSize> = $i0;
+
+        $r8 = $r0.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $r8[0] = 1;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void redraw()>();
+
+        return;
+
+     label7:
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i2 = $i2 - $i0;
+
+        goto label2;
+
+     label8:
+        $i1 = $i0;
+
+        goto label3;
+    }
+
+    public void setCursorPosition(int, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r0.<de.mud.terminal.VDUBuffer: int cursorX> = $i0;
+
+        $r0.<de.mud.terminal.VDUBuffer: int cursorY> = $i1;
+
+        return;
+    }
+
+    public void setDisplay(de.mud.terminal.VDUDisplay)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        de.mud.terminal.VDUDisplay $r1;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $r1 := @parameter0: de.mud.terminal.VDUDisplay;
+
+        $r0.<de.mud.terminal.VDUBuffer: de.mud.terminal.VDUDisplay display> = $r1;
+
+        return;
+    }
+
+    public void setMargins(int, int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        if $i0 <= $i1 goto label1;
+
+        return;
+
+     label1:
+        if $i0 >= 0 goto label2;
+
+        $i0 = 0;
+
+     label2:
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i1 < $i2 goto label3;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        $i1 = $i2 + -1;
+
+     label3:
+        $r0.<de.mud.terminal.VDUBuffer: int topMargin> = $i0;
+
+        $r0.<de.mud.terminal.VDUBuffer: int bottomMargin> = $i1;
+
+        return;
+    }
+
+    public void setScreenSize(int, int, boolean)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        boolean $z0;
+        char[] $r1, $r9;
+        int[] $r2, $r10;
+        java.lang.Class $r3;
+        java.lang.Object $r4;
+        char[][] $r5, $r7;
+        int[][] $r6, $r8;
+        boolean[] $r11;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        if $i0 < 1 goto label18;
+
+        if $i1 >= 1 goto label01;
+
+        return;
+
+     label01:
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int maxBufSize>;
+
+        if $i1 <= $i3 goto label02;
+
+        $r0.<de.mud.terminal.VDUBuffer: int maxBufSize> = $i1;
+
+     label02:
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        if $i1 <= $i3 goto label03;
+
+        $r0.<de.mud.terminal.VDUBuffer: int bufSize> = $i1;
+
+        $r0.<de.mud.terminal.VDUBuffer: int screenBase> = 0;
+
+        $r0.<de.mud.terminal.VDUBuffer: int windowBase> = 0;
+
+     label03:
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $i4 = $i3 + $i1;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        if $i4 < $i3 goto label04;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i4 = $i4 - $i1;
+
+        $r0.<de.mud.terminal.VDUBuffer: int windowBase> = $i4;
+
+     label04:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i4 = $i4 + $i1;
+
+        $i3 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        if $i4 < $i3 goto label05;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $i4 = $i4 - $i1;
+
+        $r0.<de.mud.terminal.VDUBuffer: int screenBase> = $i4;
+
+     label05:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $r2 = newarray (int)[2];
+
+        $r2[0] = $i4;
+
+        $r2[1] = $i0;
+
+        $r3 = <java.lang.Character: java.lang.Class TYPE>;
+
+        $r4 = staticinvoke <java.lang.reflect.Array: java.lang.Object newInstance(java.lang.Class,int[])>($r3, $r2);
+
+        $r5 = (char[][]) $r4;
+
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        $r2 = newarray (int)[2];
+
+        $r2[0] = $i4;
+
+        $r2[1] = $i0;
+
+        $r3 = <java.lang.Integer: java.lang.Class TYPE>;
+
+        $r4 = staticinvoke <java.lang.reflect.Array: java.lang.Object newInstance(java.lang.Class,int[])>($r3, $r2);
+
+        $r6 = (int[][]) $r4;
+
+        $i3 = 0;
+
+     label06:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        if $i3 >= $i4 goto label07;
+
+        $r1 = $r5[$i3];
+
+        staticinvoke <java.util.Arrays: void fill(char[],char)>($r1, 32);
+
+        $i3 = $i3 + 1;
+
+        goto label06;
+
+     label07:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+        if $i4 >= $i2 goto label08;
+
+        $i2 = $r0.<de.mud.terminal.VDUBuffer: int bufSize>;
+
+     label08:
+        $r7 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        if $r7 == null goto label13;
+
+        $r8 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        if $r8 == null goto label13;
+
+        $i4 = 0;
+
+     label09:
+        if $i4 >= $i2 goto label13;
+
+        $r7 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r1 = $r7[$i4];
+
+        if $r1 == null goto label13;
+
+        $r7 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r1 = $r7[$i4];
+
+        $i3 = lengthof $r1;
+
+        $r7 = $r0.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r9 = $r7[$i4];
+
+        $r1 = $r5[$i4];
+
+        if $i0 >= $i3 goto label12;
+
+        $i5 = $i0;
+
+     label10:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r9, 0, $r1, 0, $i5);
+
+        $r8 = $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $r2 = $r8[$i4];
+
+        $r10 = $r6[$i4];
+
+        if $i0 >= $i3 goto label11;
+
+        $i3 = $i0;
+
+     label11:
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r10, 0, $i3);
+
+        $i4 = $i4 + 1;
+
+        goto label09;
+
+     label12:
+        $i5 = $i3;
+
+        goto label10;
+
+     label13:
+        $i5 = virtualinvoke $r0.<de.mud.terminal.VDUBuffer: int getCursorColumn()>();
+
+        $i2 = $i5;
+
+        if $i5 >= 0 goto label16;
+
+        $i2 = 0;
+
+     label14:
+        $i5 = virtualinvoke $r0.<de.mud.terminal.VDUBuffer: int getCursorRow()>();
+
+        $i3 = $i5;
+
+        if $i5 >= 0 goto label17;
+
+        $i3 = 0;
+
+     label15:
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void setCursorPosition(int,int)>($i2, $i3);
+
+        $r0.<de.mud.terminal.VDUBuffer: char[][] charArray> = $r5;
+
+        $r0.<de.mud.terminal.VDUBuffer: int[][] charAttributes> = $r6;
+
+        $r0.<de.mud.terminal.VDUBuffer: int width> = $i0;
+
+        $r0.<de.mud.terminal.VDUBuffer: int height> = $i1;
+
+        $r0.<de.mud.terminal.VDUBuffer: int topMargin> = 0;
+
+        $i5 = $i1 + -1;
+
+        $r0.<de.mud.terminal.VDUBuffer: int bottomMargin> = $i5;
+
+        $i5 = $i1 + 1;
+
+        $r11 = newarray (boolean)[$i5];
+
+        $r0.<de.mud.terminal.VDUBuffer: boolean[] update> = $r11;
+
+        $r11 = $r0.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $r11[0] = 1;
+
+        return;
+
+     label16:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        if $i5 < $i4 goto label14;
+
+        $i5 = $r0.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i2 = $i5 + -1;
+
+        goto label14;
+
+     label17:
+        $i4 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i5 < $i4 goto label15;
+
+        $i5 = $r0.<de.mud.terminal.VDUBuffer: int height>;
+
+        $i3 = $i5 + -1;
+
+        goto label15;
+
+     label18:
+        return;
+    }
+
+    public void setWindowBase(int)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        int $i0, $i1;
+        boolean[] $r1;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        if $i0 <= $i1 goto label2;
+
+        $i0 = $r0.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+     label1:
+        $r0.<de.mud.terminal.VDUBuffer: int windowBase> = $i0;
+
+        $r1 = $r0.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $r1[0] = 1;
+
+        virtualinvoke $r0.<de.mud.terminal.VDUBuffer: void redraw()>();
+
+        return;
+
+     label2:
+        if $i0 >= 0 goto label1;
+
+        $i0 = 0;
+
+        goto label1;
+    }
+
+    public void showCursor(boolean)
+    {
+        de.mud.terminal.VDUBuffer $r0;
+        boolean $z0;
+
+        $r0 := @this: de.mud.terminal.VDUBuffer;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<de.mud.terminal.VDUBuffer: boolean showcursor> = $z0;
+
+        return;
+    }
+}

@@ -1,0 +1,98 @@
+class org.connectbot.util.EastAsianWidth$PreFroyo extends org.connectbot.util.EastAsianWidth
+{
+    private float[] mWidths;
+
+    private void <init>()
+    {
+        org.connectbot.util.EastAsianWidth$PreFroyo $r0;
+        float[] $r1;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth$PreFroyo;
+
+        specialinvoke $r0.<org.connectbot.util.EastAsianWidth: void <init>()>();
+
+        $r1 = newarray (float)[4096];
+
+        $r0.<org.connectbot.util.EastAsianWidth$PreFroyo: float[] mWidths> = $r1;
+
+        return;
+    }
+
+    void <init>(org.connectbot.util.EastAsianWidth$1)
+    {
+        org.connectbot.util.EastAsianWidth$PreFroyo $r0;
+        org.connectbot.util.EastAsianWidth$1 $r1;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth$PreFroyo;
+
+        $r1 := @parameter0: org.connectbot.util.EastAsianWidth$1;
+
+        specialinvoke $r0.<org.connectbot.util.EastAsianWidth$PreFroyo: void <init>()>();
+
+        return;
+    }
+
+    public void measure(char[], int, int, byte[], android.graphics.Paint, int)
+    {
+        org.connectbot.util.EastAsianWidth$PreFroyo $r0;
+        char[] $r1;
+        int $i0, $i1, $i2, $i3;
+        byte[] $r2;
+        android.graphics.Paint $r3;
+        float[] $r4;
+        float $f0;
+        byte $b4;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth$PreFroyo;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 := @parameter3: byte[];
+
+        $r3 := @parameter4: android.graphics.Paint;
+
+        $i2 := @parameter5: int;
+
+        $r4 = $r0.<org.connectbot.util.EastAsianWidth$PreFroyo: float[] mWidths>;
+
+        virtualinvoke $r3.<android.graphics.Paint: int getTextWidths(char[],int,int,float[])>($r1, $i0, $i1, $r4);
+
+        $i1 = $i1 - $i0;
+
+        $i0 = 0;
+
+     label1:
+        if $i0 >= $i1 goto label4;
+
+        $r4 = $r0.<org.connectbot.util.EastAsianWidth$PreFroyo: float[] mWidths>;
+
+        $f0 = $r4[$i0];
+
+        $i3 = (int) $f0;
+
+        if $i3 == $i2 goto label3;
+
+        $b4 = 5;
+
+     label2:
+        $b4 = (byte) $b4;
+
+        $r2[$i0] = $b4;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label3:
+        $b4 = 4;
+
+        goto label2;
+
+     label4:
+        return;
+    }
+}

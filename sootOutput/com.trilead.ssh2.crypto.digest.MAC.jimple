@@ -1,0 +1,447 @@
+public final class com.trilead.ssh2.crypto.digest.MAC extends java.lang.Object
+{
+    private static final java.lang.String[] MAC_LIST;
+    byte[] buffer;
+    javax.crypto.Mac mac;
+    int macSize;
+    int outSize;
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[6];
+
+        $r0[0] = "hmac-sha2-256";
+
+        $r0[1] = "hmac-sha2-512";
+
+        $r0[2] = "hmac-sha1-96";
+
+        $r0[3] = "hmac-sha1";
+
+        $r0[4] = "hmac-md5-96";
+
+        $r0[5] = "hmac-md5";
+
+        <com.trilead.ssh2.crypto.digest.MAC: java.lang.String[] MAC_LIST> = $r0;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, byte[])
+    {
+        com.trilead.ssh2.crypto.digest.MAC $r0;
+        java.lang.String $r1, $r4;
+        byte[] $r2, $r7;
+        java.security.NoSuchAlgorithmException $r3;
+        javax.crypto.spec.SecretKeySpec $r5;
+        boolean $z0;
+        javax.crypto.Mac $r6;
+        int $i0;
+        java.lang.IllegalArgumentException $r8;
+        java.lang.StringBuilder $r9;
+        java.security.InvalidKeyException $r10;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.MAC;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: byte[];
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r4 = "hmac-sha1";
+
+     label01:
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label02;
+
+        $r4 = "hmac-sha1-96";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label08;
+
+     label02:
+        $r6 = staticinvoke <javax.crypto.Mac: javax.crypto.Mac getInstance(java.lang.String)>("HmacSHA1");
+
+     label03:
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac> = $r6;
+
+     label04:
+        $r6 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        $i0 = virtualinvoke $r6.<javax.crypto.Mac: int getMacLength()>();
+
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: int macSize> = $i0;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean endsWith(java.lang.String)>("-96");
+
+        if $z0 == 0 goto label21;
+
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: int outSize> = 12;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.digest.MAC: int macSize>;
+
+        $r7 = newarray (byte)[$i0];
+
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: byte[] buffer> = $r7;
+
+     label05:
+        $r6 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        $r5 = new javax.crypto.spec.SecretKeySpec;
+
+     label06:
+        specialinvoke $r5.<javax.crypto.spec.SecretKeySpec: void <init>(byte[],java.lang.String)>($r2, $r1);
+
+        virtualinvoke $r6.<javax.crypto.Mac: void init(java.security.Key)>($r5);
+
+     label07:
+        return;
+
+     label08:
+        $r4 = "hmac-md5";
+
+     label09:
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label10;
+
+        $r4 = "hmac-md5-96";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label13;
+
+     label10:
+        $r6 = staticinvoke <javax.crypto.Mac: javax.crypto.Mac getInstance(java.lang.String)>("HmacMD5");
+
+     label11:
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac> = $r6;
+
+        goto label04;
+
+     label12:
+        $r3 := @caughtexception;
+
+        $r8 = new java.lang.IllegalArgumentException;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown algorithm ");
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.lang.IllegalArgumentException: void <init>(java.lang.String,java.lang.Throwable)>($r4, $r3);
+
+        throw $r8;
+
+     label13:
+        $r4 = "hmac-sha2-256";
+
+     label14:
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label16;
+
+        $r6 = staticinvoke <javax.crypto.Mac: javax.crypto.Mac getInstance(java.lang.String)>("HmacSHA256");
+
+     label15:
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac> = $r6;
+
+        goto label04;
+
+     label16:
+        $r4 = "hmac-sha2-512";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label18;
+
+        $r6 = staticinvoke <javax.crypto.Mac: javax.crypto.Mac getInstance(java.lang.String)>("HmacSHA512");
+
+     label17:
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac> = $r6;
+
+        goto label04;
+
+     label18:
+        $r8 = new java.lang.IllegalArgumentException;
+
+     label19:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unkown algorithm ");
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r8.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r4);
+
+     label20:
+        throw $r8;
+
+     label21:
+        $i0 = $r0.<com.trilead.ssh2.crypto.digest.MAC: int macSize>;
+
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: int outSize> = $i0;
+
+        $r0.<com.trilead.ssh2.crypto.digest.MAC: byte[] buffer> = null;
+
+        goto label05;
+
+     label22:
+        $r10 := @caughtexception;
+
+        $r8 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r8.<java.lang.IllegalArgumentException: void <init>(java.lang.Throwable)>($r10);
+
+        throw $r8;
+
+        catch java.security.NoSuchAlgorithmException from label01 to label03 with label12;
+        catch java.security.InvalidKeyException from label06 to label07 with label22;
+        catch java.security.NoSuchAlgorithmException from label09 to label11 with label12;
+        catch java.security.NoSuchAlgorithmException from label14 to label15 with label12;
+        catch java.security.NoSuchAlgorithmException from label16 to label17 with label12;
+        catch java.security.NoSuchAlgorithmException from label19 to label20 with label12;
+    }
+
+    public static final int getKeyLen(java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        java.lang.StringBuilder $r2;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r3;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = "hmac-sha1";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 != 0 goto label1;
+
+        $r1 = "hmac-sha1-96";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        return 20;
+
+     label2:
+        $r1 = "hmac-md5";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 != 0 goto label3;
+
+        $r1 = "hmac-md5-96";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label4;
+
+     label3:
+        return 16;
+
+     label4:
+        $r1 = "hmac-sha2-256";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label5;
+
+        return 32;
+
+     label5:
+        $r1 = "hmac-sha2-512";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label6;
+
+        return 64;
+
+     label6:
+        $r3 = new java.lang.IllegalArgumentException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unkown algorithm ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+        throw $r3;
+    }
+
+    public static final java.lang.String[] getMacList()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = <com.trilead.ssh2.crypto.digest.MAC: java.lang.String[] MAC_LIST>;
+
+        return $r0;
+    }
+
+    public final void getMac(byte[], int)
+    {
+        com.trilead.ssh2.crypto.digest.MAC $r0;
+        byte[] $r1, $r3;
+        int $i0, $i1;
+        javax.crypto.ShortBufferException $r2;
+        javax.crypto.Mac $r4;
+        java.lang.IllegalStateException $r5;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.MAC;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.digest.MAC: byte[] buffer>;
+
+        if $r3 == null goto label5;
+
+        $r4 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.digest.MAC: byte[] buffer>;
+
+     label1:
+        virtualinvoke $r4.<javax.crypto.Mac: void doFinal(byte[],int)>($r3, 0);
+
+     label2:
+        $r3 = $r0.<com.trilead.ssh2.crypto.digest.MAC: byte[] buffer>;
+
+        $i1 = lengthof $r1;
+
+     label3:
+        $i1 = $i1 - $i0;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, 0, $r1, $i0, $i1);
+
+     label4:
+        return;
+
+     label5:
+        $r4 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        virtualinvoke $r4.<javax.crypto.Mac: void doFinal(byte[],int)>($r1, $i0);
+
+     label6:
+        return;
+
+     label7:
+        $r2 := @caughtexception;
+
+        $r5 = new java.lang.IllegalStateException;
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.Throwable)>($r2);
+
+        throw $r5;
+
+        catch javax.crypto.ShortBufferException from label1 to label2 with label7;
+        catch javax.crypto.ShortBufferException from label3 to label4 with label7;
+        catch javax.crypto.ShortBufferException from label5 to label6 with label7;
+    }
+
+    public final void initMac(int)
+    {
+        com.trilead.ssh2.crypto.digest.MAC $r0;
+        int $i0, $i1;
+        javax.crypto.Mac $r1;
+        byte $b2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.MAC;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        virtualinvoke $r1.<javax.crypto.Mac: void reset()>();
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        $i1 = $i0 >> 24;
+
+        $b2 = (byte) $i1;
+
+        virtualinvoke $r1.<javax.crypto.Mac: void update(byte)>($b2);
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        $i1 = $i0 >> 16;
+
+        $b2 = (byte) $i1;
+
+        virtualinvoke $r1.<javax.crypto.Mac: void update(byte)>($b2);
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        $i1 = $i0 >> 8;
+
+        $b2 = (byte) $i1;
+
+        virtualinvoke $r1.<javax.crypto.Mac: void update(byte)>($b2);
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        $b2 = (byte) $i0;
+
+        virtualinvoke $r1.<javax.crypto.Mac: void update(byte)>($b2);
+
+        return;
+    }
+
+    public final int size()
+    {
+        com.trilead.ssh2.crypto.digest.MAC $r0;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.MAC;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.digest.MAC: int outSize>;
+
+        return $i0;
+    }
+
+    public final void update(byte[], int, int)
+    {
+        com.trilead.ssh2.crypto.digest.MAC $r0;
+        byte[] $r1;
+        int $i0, $i1;
+        javax.crypto.Mac $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.MAC;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.digest.MAC: javax.crypto.Mac mac>;
+
+        virtualinvoke $r2.<javax.crypto.Mac: void update(byte[],int,int)>($r1, $i0, $i1);
+
+        return;
+    }
+}

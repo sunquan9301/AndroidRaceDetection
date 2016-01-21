@@ -1,0 +1,296 @@
+public final class android.support.v4.media.MediaMetadataCompat extends java.lang.Object implements android.os.Parcelable
+{
+    public static final android.os.Parcelable$Creator CREATOR;
+    private static final android.support.v4.util.ArrayMap METADATA_KEYS_TYPE;
+    private static final java.lang.String[] PREFERRED_BITMAP_ORDER;
+    private static final java.lang.String[] PREFERRED_DESCRIPTION_ORDER;
+    private static final java.lang.String[] PREFERRED_URI_ORDER;
+    private final android.os.Bundle mBundle;
+
+    static void <clinit>()
+    {
+        android.support.v4.util.ArrayMap $r0;
+        java.lang.Integer $r1;
+        java.lang.String[] $r2;
+        android.support.v4.media.MediaMetadataCompat$1 $r3;
+
+        $r0 = new android.support.v4.util.ArrayMap;
+
+        specialinvoke $r0.<android.support.v4.util.ArrayMap: void <init>()>();
+
+        <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE> = $r0;
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.TITLE", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.ARTIST", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.DURATION", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.ALBUM", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.AUTHOR", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.WRITER", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.COMPOSER", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.COMPILATION", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.DATE", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.YEAR", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.GENRE", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.TRACK_NUMBER", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.NUM_TRACKS", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.DISC_NUMBER", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.ALBUM_ARTIST", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.ART", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.ART_URI", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.ALBUM_ART", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.ALBUM_ART_URI", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(3);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.USER_RATING", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(3);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.RATING", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.DISPLAY_TITLE", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.DISPLAY_SUBTITLE", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.DISPLAY_DESCRIPTION", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(2);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.DISPLAY_ICON", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.DISPLAY_ICON_URI", $r1);
+
+        $r0 = <android.support.v4.media.MediaMetadataCompat: android.support.v4.util.ArrayMap METADATA_KEYS_TYPE>;
+
+        $r1 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        virtualinvoke $r0.<android.support.v4.util.ArrayMap: java.lang.Object put(java.lang.Object,java.lang.Object)>("android.media.metadata.MEDIA_ID", $r1);
+
+        $r2 = newarray (java.lang.String)[7];
+
+        $r2[0] = "android.media.metadata.TITLE";
+
+        $r2[1] = "android.media.metadata.ARTIST";
+
+        $r2[2] = "android.media.metadata.ALBUM";
+
+        $r2[3] = "android.media.metadata.ALBUM_ARTIST";
+
+        $r2[4] = "android.media.metadata.WRITER";
+
+        $r2[5] = "android.media.metadata.AUTHOR";
+
+        $r2[6] = "android.media.metadata.COMPOSER";
+
+        <android.support.v4.media.MediaMetadataCompat: java.lang.String[] PREFERRED_DESCRIPTION_ORDER> = $r2;
+
+        $r2 = newarray (java.lang.String)[3];
+
+        $r2[0] = "android.media.metadata.DISPLAY_ICON";
+
+        $r2[1] = "android.media.metadata.ART";
+
+        $r2[2] = "android.media.metadata.ALBUM_ART";
+
+        <android.support.v4.media.MediaMetadataCompat: java.lang.String[] PREFERRED_BITMAP_ORDER> = $r2;
+
+        $r2 = newarray (java.lang.String)[3];
+
+        $r2[0] = "android.media.metadata.DISPLAY_ICON_URI";
+
+        $r2[1] = "android.media.metadata.ART_URI";
+
+        $r2[2] = "android.media.metadata.ALBUM_ART_URI";
+
+        <android.support.v4.media.MediaMetadataCompat: java.lang.String[] PREFERRED_URI_ORDER> = $r2;
+
+        $r3 = new android.support.v4.media.MediaMetadataCompat$1;
+
+        specialinvoke $r3.<android.support.v4.media.MediaMetadataCompat$1: void <init>()>();
+
+        <android.support.v4.media.MediaMetadataCompat: android.os.Parcelable$Creator CREATOR> = $r3;
+
+        return;
+    }
+
+    private void <init>(android.os.Parcel)
+    {
+        android.support.v4.media.MediaMetadataCompat $r0;
+        android.os.Parcel $r1;
+        android.os.Bundle $r2;
+
+        $r0 := @this: android.support.v4.media.MediaMetadataCompat;
+
+        $r1 := @parameter0: android.os.Parcel;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<android.os.Parcel: android.os.Bundle readBundle()>();
+
+        $r0.<android.support.v4.media.MediaMetadataCompat: android.os.Bundle mBundle> = $r2;
+
+        return;
+    }
+
+    void <init>(android.os.Parcel, android.support.v4.media.MediaMetadataCompat$1)
+    {
+        android.support.v4.media.MediaMetadataCompat $r0;
+        android.os.Parcel $r1;
+        android.support.v4.media.MediaMetadataCompat$1 $r2;
+
+        $r0 := @this: android.support.v4.media.MediaMetadataCompat;
+
+        $r1 := @parameter0: android.os.Parcel;
+
+        $r2 := @parameter1: android.support.v4.media.MediaMetadataCompat$1;
+
+        specialinvoke $r0.<android.support.v4.media.MediaMetadataCompat: void <init>(android.os.Parcel)>($r1);
+
+        return;
+    }
+
+    public int describeContents()
+    {
+        android.support.v4.media.MediaMetadataCompat $r0;
+
+        $r0 := @this: android.support.v4.media.MediaMetadataCompat;
+
+        return 0;
+    }
+
+    public void writeToParcel(android.os.Parcel, int)
+    {
+        android.support.v4.media.MediaMetadataCompat $r0;
+        android.os.Parcel $r1;
+        int $i0;
+        android.os.Bundle $r2;
+
+        $r0 := @this: android.support.v4.media.MediaMetadataCompat;
+
+        $r1 := @parameter0: android.os.Parcel;
+
+        $i0 := @parameter1: int;
+
+        $r2 = $r0.<android.support.v4.media.MediaMetadataCompat: android.os.Bundle mBundle>;
+
+        virtualinvoke $r1.<android.os.Parcel: void writeBundle(android.os.Bundle)>($r2);
+
+        return;
+    }
+}

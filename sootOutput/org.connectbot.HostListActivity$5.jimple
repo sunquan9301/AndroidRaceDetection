@@ -1,0 +1,88 @@
+class org.connectbot.HostListActivity$5 extends java.lang.Object implements android.widget.AdapterView$OnItemSelectedListener
+{
+    final org.connectbot.HostListActivity this$0;
+
+    void <init>(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity$5 $r0;
+        org.connectbot.HostListActivity $r1;
+
+        $r0 := @this: org.connectbot.HostListActivity$5;
+
+        $r1 := @parameter0: org.connectbot.HostListActivity;
+
+        $r0.<org.connectbot.HostListActivity$5: org.connectbot.HostListActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onItemSelected(android.widget.AdapterView, android.view.View, int, long)
+    {
+        org.connectbot.HostListActivity$5 $r0;
+        android.widget.AdapterView $r1;
+        android.view.View $r2;
+        int $i0;
+        long $l1;
+        org.connectbot.HostListActivity $r3;
+        android.widget.Spinner $r4;
+        java.lang.Object $r5;
+        java.lang.String $r6;
+        android.widget.TextView $r7;
+
+        $r0 := @this: org.connectbot.HostListActivity$5;
+
+        $r1 := @parameter0: android.widget.AdapterView;
+
+        $r2 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $l1 := @parameter3: long;
+
+        $r3 = $r0.<org.connectbot.HostListActivity$5: org.connectbot.HostListActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.HostListActivity: android.widget.Spinner access$300(org.connectbot.HostListActivity)>($r3);
+
+        $r5 = virtualinvoke $r4.<android.widget.Spinner: java.lang.Object getSelectedItem()>();
+
+        $r6 = (java.lang.String) $r5;
+
+        $r3 = $r0.<org.connectbot.HostListActivity$5: org.connectbot.HostListActivity this$0>;
+
+        $r6 = staticinvoke <org.connectbot.transport.TransportFactory: java.lang.String getFormatHint(java.lang.String,android.content.Context)>($r6, $r3);
+
+        $r3 = $r0.<org.connectbot.HostListActivity$5: org.connectbot.HostListActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.HostListActivity: android.widget.TextView access$400(org.connectbot.HostListActivity)>($r3);
+
+        virtualinvoke $r7.<android.widget.TextView: void setHint(java.lang.CharSequence)>($r6);
+
+        $r3 = $r0.<org.connectbot.HostListActivity$5: org.connectbot.HostListActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.HostListActivity: android.widget.TextView access$400(org.connectbot.HostListActivity)>($r3);
+
+        virtualinvoke $r7.<android.widget.TextView: void setError(java.lang.CharSequence)>(null);
+
+        $r3 = $r0.<org.connectbot.HostListActivity$5: org.connectbot.HostListActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.HostListActivity: android.widget.TextView access$400(org.connectbot.HostListActivity)>($r3);
+
+        virtualinvoke $r7.<android.widget.TextView: boolean requestFocus()>();
+
+        return;
+    }
+
+    public void onNothingSelected(android.widget.AdapterView)
+    {
+        org.connectbot.HostListActivity$5 $r0;
+        android.widget.AdapterView $r1;
+
+        $r0 := @this: org.connectbot.HostListActivity$5;
+
+        $r1 := @parameter0: android.widget.AdapterView;
+
+        return;
+    }
+}

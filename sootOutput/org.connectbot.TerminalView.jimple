@@ -1,0 +1,1111 @@
+public class org.connectbot.TerminalView extends android.view.View implements org.connectbot.service.FontSizeChangedListener
+{
+    private static final android.graphics.Matrix$ScaleToFit scaleType;
+    private android.graphics.Path altCursor;
+    public final org.connectbot.service.TerminalBridge bridge;
+    private final android.content.Context context;
+    private android.graphics.Path ctrlCursor;
+    private final android.graphics.Paint cursorPaint;
+    private final android.graphics.Paint cursorStrokePaint;
+    private java.lang.String lastNotification;
+    private boolean mAccessibilityActive;
+    private java.lang.StringBuffer mAccessibilityBuffer;
+    private boolean mAccessibilityInitialized;
+    private java.lang.Object[] mAccessibilityLock;
+    private java.util.regex.Matcher mCodeMatcher;
+    private java.util.regex.Pattern mControlCodes;
+    private org.connectbot.TerminalView$AccessibilityEventSender mEventSender;
+    private android.widget.Toast notification;
+    private volatile boolean notifications;
+    private final android.graphics.Paint paint;
+    private android.graphics.Matrix scaleMatrix;
+    private android.graphics.Path shiftCursor;
+    private android.graphics.RectF tempDst;
+    private android.graphics.RectF tempSrc;
+
+    static void <clinit>()
+    {
+        android.graphics.Matrix$ScaleToFit $r0;
+
+        $r0 = <android.graphics.Matrix$ScaleToFit: android.graphics.Matrix$ScaleToFit FILL>;
+
+        <org.connectbot.TerminalView: android.graphics.Matrix$ScaleToFit scaleType> = $r0;
+
+        return;
+    }
+
+    public void <init>(android.content.Context, org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.TerminalView $r0;
+        android.content.Context $r1;
+        org.connectbot.service.TerminalBridge $r2;
+        int $i0;
+        java.lang.Object[] $r3;
+        android.graphics.Paint $r4, $r9;
+        android.view.ViewGroup$LayoutParams $r5;
+        java.lang.Integer[] $r6;
+        java.lang.Integer $r7;
+        android.graphics.PixelXorXfermode $r8;
+        android.graphics.Paint$Style $r10;
+        android.graphics.Path $r11;
+        android.graphics.RectF $r12;
+        android.graphics.Matrix $r13;
+        org.connectbot.service.TerminalKeyListener $r14;
+        java.lang.StringBuffer $r15;
+        org.connectbot.TerminalView$AccessibilityStateTester $r16;
+        java.lang.Void[] $r17;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: org.connectbot.service.TerminalBridge;
+
+        specialinvoke $r0.<android.view.View: void <init>(android.content.Context)>($r1);
+
+        $r0.<org.connectbot.TerminalView: android.widget.Toast notification> = null;
+
+        $r0.<org.connectbot.TerminalView: java.lang.String lastNotification> = null;
+
+        $r0.<org.connectbot.TerminalView: boolean notifications> = 1;
+
+        $r0.<org.connectbot.TerminalView: boolean mAccessibilityInitialized> = 0;
+
+        $r0.<org.connectbot.TerminalView: boolean mAccessibilityActive> = 1;
+
+        $r3 = newarray (java.lang.Object)[0];
+
+        $r0.<org.connectbot.TerminalView: java.lang.Object[] mAccessibilityLock> = $r3;
+
+        $r0.<org.connectbot.TerminalView: java.util.regex.Pattern mControlCodes> = null;
+
+        $r0.<org.connectbot.TerminalView: java.util.regex.Matcher mCodeMatcher> = null;
+
+        $r0.<org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender mEventSender> = null;
+
+        $r0.<org.connectbot.TerminalView: android.content.Context context> = $r1;
+
+        $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge> = $r2;
+
+        $r4 = new android.graphics.Paint;
+
+        specialinvoke $r4.<android.graphics.Paint: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: android.graphics.Paint paint> = $r4;
+
+        $r5 = new android.view.ViewGroup$LayoutParams;
+
+        specialinvoke $r5.<android.view.ViewGroup$LayoutParams: void <init>(int,int)>(-1, -1);
+
+        virtualinvoke $r0.<org.connectbot.TerminalView: void setLayoutParams(android.view.ViewGroup$LayoutParams)>($r5);
+
+        virtualinvoke $r0.<org.connectbot.TerminalView: void setFocusable(boolean)>(1);
+
+        virtualinvoke $r0.<org.connectbot.TerminalView: void setFocusableInTouchMode(boolean)>(1);
+
+        $r4 = new android.graphics.Paint;
+
+        specialinvoke $r4.<android.graphics.Paint: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint> = $r4;
+
+        $r4 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        $r6 = $r2.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color>;
+
+        $i0 = $r2.<org.connectbot.service.TerminalBridge: int defaultFg>;
+
+        $r7 = $r6[$i0];
+
+        $i0 = virtualinvoke $r7.<java.lang.Integer: int intValue()>();
+
+        virtualinvoke $r4.<android.graphics.Paint: void setColor(int)>($i0);
+
+        $r4 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        $r8 = new android.graphics.PixelXorXfermode;
+
+        $r6 = $r2.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color>;
+
+        $i0 = $r2.<org.connectbot.service.TerminalBridge: int defaultBg>;
+
+        $r7 = $r6[$i0];
+
+        $i0 = virtualinvoke $r7.<java.lang.Integer: int intValue()>();
+
+        specialinvoke $r8.<android.graphics.PixelXorXfermode: void <init>(int)>($i0);
+
+        virtualinvoke $r4.<android.graphics.Paint: android.graphics.Xfermode setXfermode(android.graphics.Xfermode)>($r8);
+
+        $r4 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        virtualinvoke $r4.<android.graphics.Paint: void setAntiAlias(boolean)>(1);
+
+        $r4 = new android.graphics.Paint;
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        specialinvoke $r4.<android.graphics.Paint: void <init>(android.graphics.Paint)>($r9);
+
+        $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorStrokePaint> = $r4;
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorStrokePaint>;
+
+        virtualinvoke $r9.<android.graphics.Paint: void setStrokeWidth(float)>(0.1F);
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorStrokePaint>;
+
+        $r10 = <android.graphics.Paint$Style: android.graphics.Paint$Style STROKE>;
+
+        virtualinvoke $r9.<android.graphics.Paint: void setStyle(android.graphics.Paint$Style)>($r10);
+
+        $r11 = new android.graphics.Path;
+
+        specialinvoke $r11.<android.graphics.Path: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: android.graphics.Path shiftCursor> = $r11;
+
+        $r11 = $r0.<org.connectbot.TerminalView: android.graphics.Path shiftCursor>;
+
+        virtualinvoke $r11.<android.graphics.Path: void lineTo(float,float)>(0.5F, 0.33F);
+
+        $r11 = $r0.<org.connectbot.TerminalView: android.graphics.Path shiftCursor>;
+
+        virtualinvoke $r11.<android.graphics.Path: void lineTo(float,float)>(1.0F, 0.0F);
+
+        $r11 = new android.graphics.Path;
+
+        specialinvoke $r11.<android.graphics.Path: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: android.graphics.Path altCursor> = $r11;
+
+        $r11 = $r0.<org.connectbot.TerminalView: android.graphics.Path altCursor>;
+
+        virtualinvoke $r11.<android.graphics.Path: void moveTo(float,float)>(0.0F, 1.0F);
+
+        $r11 = $r0.<org.connectbot.TerminalView: android.graphics.Path altCursor>;
+
+        virtualinvoke $r11.<android.graphics.Path: void lineTo(float,float)>(0.5F, 0.66F);
+
+        $r11 = $r0.<org.connectbot.TerminalView: android.graphics.Path altCursor>;
+
+        virtualinvoke $r11.<android.graphics.Path: void lineTo(float,float)>(1.0F, 1.0F);
+
+        $r11 = new android.graphics.Path;
+
+        specialinvoke $r11.<android.graphics.Path: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: android.graphics.Path ctrlCursor> = $r11;
+
+        $r11 = $r0.<org.connectbot.TerminalView: android.graphics.Path ctrlCursor>;
+
+        virtualinvoke $r11.<android.graphics.Path: void moveTo(float,float)>(0.0F, 0.25F);
+
+        $r11 = $r0.<org.connectbot.TerminalView: android.graphics.Path ctrlCursor>;
+
+        virtualinvoke $r11.<android.graphics.Path: void lineTo(float,float)>(1.0F, 0.5F);
+
+        $r11 = $r0.<org.connectbot.TerminalView: android.graphics.Path ctrlCursor>;
+
+        virtualinvoke $r11.<android.graphics.Path: void lineTo(float,float)>(0.0F, 0.75F);
+
+        $r12 = new android.graphics.RectF;
+
+        specialinvoke $r12.<android.graphics.RectF: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: android.graphics.RectF tempSrc> = $r12;
+
+        $r12 = $r0.<org.connectbot.TerminalView: android.graphics.RectF tempSrc>;
+
+        virtualinvoke $r12.<android.graphics.RectF: void set(float,float,float,float)>(0.0F, 0.0F, 1.0F, 1.0F);
+
+        $r12 = new android.graphics.RectF;
+
+        specialinvoke $r12.<android.graphics.RectF: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: android.graphics.RectF tempDst> = $r12;
+
+        $r13 = new android.graphics.Matrix;
+
+        specialinvoke $r13.<android.graphics.Matrix: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: android.graphics.Matrix scaleMatrix> = $r13;
+
+        virtualinvoke $r2.<org.connectbot.service.TerminalBridge: void addFontSizeChangedListener(org.connectbot.service.FontSizeChangedListener)>($r0);
+
+        $r14 = virtualinvoke $r2.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalKeyListener getKeyHandler()>();
+
+        virtualinvoke $r0.<org.connectbot.TerminalView: void setOnKeyListener(android.view.View$OnKeyListener)>($r14);
+
+        $r15 = new java.lang.StringBuffer;
+
+        specialinvoke $r15.<java.lang.StringBuffer: void <init>()>();
+
+        $r0.<org.connectbot.TerminalView: java.lang.StringBuffer mAccessibilityBuffer> = $r15;
+
+        $r16 = new org.connectbot.TerminalView$AccessibilityStateTester;
+
+        specialinvoke $r16.<org.connectbot.TerminalView$AccessibilityStateTester: void <init>(org.connectbot.TerminalView,org.connectbot.TerminalView$1)>($r0, null);
+
+        $r17 = newarray (java.lang.Void)[1];
+
+        $r17[0] = null;
+
+        virtualinvoke $r16.<org.connectbot.TerminalView$AccessibilityStateTester: android.os.AsyncTask execute(java.lang.Object[])>($r17);
+
+        return;
+    }
+
+    static java.lang.Object[] access$200(org.connectbot.TerminalView)
+    {
+        org.connectbot.TerminalView $r0;
+        java.lang.Object[] $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 = $r0.<org.connectbot.TerminalView: java.lang.Object[] mAccessibilityLock>;
+
+        return $r1;
+    }
+
+    static java.util.regex.Matcher access$300(org.connectbot.TerminalView)
+    {
+        org.connectbot.TerminalView $r0;
+        java.util.regex.Matcher $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 = $r0.<org.connectbot.TerminalView: java.util.regex.Matcher mCodeMatcher>;
+
+        return $r1;
+    }
+
+    static java.util.regex.Matcher access$302(org.connectbot.TerminalView, java.util.regex.Matcher)
+    {
+        org.connectbot.TerminalView $r0;
+        java.util.regex.Matcher $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 := @parameter1: java.util.regex.Matcher;
+
+        $r0.<org.connectbot.TerminalView: java.util.regex.Matcher mCodeMatcher> = $r1;
+
+        return $r1;
+    }
+
+    static java.lang.StringBuffer access$400(org.connectbot.TerminalView)
+    {
+        org.connectbot.TerminalView $r0;
+        java.lang.StringBuffer $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 = $r0.<org.connectbot.TerminalView: java.lang.StringBuffer mAccessibilityBuffer>;
+
+        return $r1;
+    }
+
+    static java.lang.StringBuffer access$402(org.connectbot.TerminalView, java.lang.StringBuffer)
+    {
+        org.connectbot.TerminalView $r0;
+        java.lang.StringBuffer $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 := @parameter1: java.lang.StringBuffer;
+
+        $r0.<org.connectbot.TerminalView: java.lang.StringBuffer mAccessibilityBuffer> = $r1;
+
+        return $r1;
+    }
+
+    static java.util.regex.Pattern access$500(org.connectbot.TerminalView)
+    {
+        org.connectbot.TerminalView $r0;
+        java.util.regex.Pattern $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 = $r0.<org.connectbot.TerminalView: java.util.regex.Pattern mControlCodes>;
+
+        return $r1;
+    }
+
+    static java.util.regex.Pattern access$502(org.connectbot.TerminalView, java.util.regex.Pattern)
+    {
+        org.connectbot.TerminalView $r0;
+        java.util.regex.Pattern $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 := @parameter1: java.util.regex.Pattern;
+
+        $r0.<org.connectbot.TerminalView: java.util.regex.Pattern mControlCodes> = $r1;
+
+        return $r1;
+    }
+
+    static android.content.Context access$600(org.connectbot.TerminalView)
+    {
+        org.connectbot.TerminalView $r0;
+        android.content.Context $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 = $r0.<org.connectbot.TerminalView: android.content.Context context>;
+
+        return $r1;
+    }
+
+    static boolean access$702(org.connectbot.TerminalView, boolean)
+    {
+        org.connectbot.TerminalView $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $z0 := @parameter1: boolean;
+
+        $r0.<org.connectbot.TerminalView: boolean mAccessibilityActive> = $z0;
+
+        return $z0;
+    }
+
+    static boolean access$802(org.connectbot.TerminalView, boolean)
+    {
+        org.connectbot.TerminalView $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $z0 := @parameter1: boolean;
+
+        $r0.<org.connectbot.TerminalView: boolean mAccessibilityInitialized> = $z0;
+
+        return $z0;
+    }
+
+    static org.connectbot.TerminalView$AccessibilityEventSender access$900(org.connectbot.TerminalView)
+    {
+        org.connectbot.TerminalView $r0;
+        org.connectbot.TerminalView$AccessibilityEventSender $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 = $r0.<org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender mEventSender>;
+
+        return $r1;
+    }
+
+    static org.connectbot.TerminalView$AccessibilityEventSender access$902(org.connectbot.TerminalView, org.connectbot.TerminalView$AccessibilityEventSender)
+    {
+        org.connectbot.TerminalView $r0;
+        org.connectbot.TerminalView$AccessibilityEventSender $r1;
+
+        $r0 := @parameter0: org.connectbot.TerminalView;
+
+        $r1 := @parameter1: org.connectbot.TerminalView$AccessibilityEventSender;
+
+        $r0.<org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender mEventSender> = $r1;
+
+        return $r1;
+    }
+
+    private void scaleCursors()
+    {
+        org.connectbot.TerminalView $r0;
+        android.graphics.RectF $r1, $r4;
+        org.connectbot.service.TerminalBridge $r2;
+        int $i0;
+        float $f0, $f1;
+        android.graphics.Matrix $r3;
+        android.graphics.Matrix$ScaleToFit $r5;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $r1 = $r0.<org.connectbot.TerminalView: android.graphics.RectF tempDst>;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i0 = $r2.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $f0 = (float) $i0;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i0 = $r2.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $f1 = (float) $i0;
+
+        virtualinvoke $r1.<android.graphics.RectF: void set(float,float,float,float)>(0.0F, 0.0F, $f0, $f1);
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Matrix scaleMatrix>;
+
+        $r1 = $r0.<org.connectbot.TerminalView: android.graphics.RectF tempSrc>;
+
+        $r4 = $r0.<org.connectbot.TerminalView: android.graphics.RectF tempDst>;
+
+        $r5 = <org.connectbot.TerminalView: android.graphics.Matrix$ScaleToFit scaleType>;
+
+        virtualinvoke $r3.<android.graphics.Matrix: boolean setRectToRect(android.graphics.RectF,android.graphics.RectF,android.graphics.Matrix$ScaleToFit)>($r1, $r4, $r5);
+
+        return;
+    }
+
+    public void forceSize(int, int)
+    {
+        org.connectbot.TerminalView $r0;
+        int $i0, $i1, $i2, $i3;
+        org.connectbot.service.TerminalBridge $r1;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i2 = virtualinvoke $r0.<org.connectbot.TerminalView: int getWidth()>();
+
+        $i3 = virtualinvoke $r0.<org.connectbot.TerminalView: int getHeight()>();
+
+        virtualinvoke $r1.<org.connectbot.service.TerminalBridge: void resizeComputed(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        return;
+    }
+
+    public void notifyUser(java.lang.String)
+    {
+        org.connectbot.TerminalView $r0;
+        java.lang.String $r1, $r3;
+        boolean $z0;
+        android.widget.Toast $r2;
+        android.content.Context $r4;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 = $r0.<org.connectbot.TerminalView: boolean notifications>;
+
+        if $z0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = $r0.<org.connectbot.TerminalView: android.widget.Toast notification>;
+
+        if $r2 == null goto label4;
+
+        $r3 = $r0.<org.connectbot.TerminalView: java.lang.String lastNotification>;
+
+        if $r3 == null goto label2;
+
+        $r3 = $r0.<org.connectbot.TerminalView: java.lang.String lastNotification>;
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label5;
+
+     label2:
+        $r2 = $r0.<org.connectbot.TerminalView: android.widget.Toast notification>;
+
+        virtualinvoke $r2.<android.widget.Toast: void setText(java.lang.CharSequence)>($r1);
+
+        $r2 = $r0.<org.connectbot.TerminalView: android.widget.Toast notification>;
+
+        virtualinvoke $r2.<android.widget.Toast: void show()>();
+
+     label3:
+        $r0.<org.connectbot.TerminalView: java.lang.String lastNotification> = $r1;
+
+        return;
+
+     label4:
+        $r4 = $r0.<org.connectbot.TerminalView: android.content.Context context>;
+
+        $r2 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,java.lang.CharSequence,int)>($r4, $r1, 0);
+
+        $r0.<org.connectbot.TerminalView: android.widget.Toast notification> = $r2;
+
+        $r2 = $r0.<org.connectbot.TerminalView: android.widget.Toast notification>;
+
+        virtualinvoke $r2.<android.widget.Toast: void show()>();
+
+        goto label3;
+
+     label5:
+        return;
+    }
+
+    public boolean onCheckIsTextEditor()
+    {
+        org.connectbot.TerminalView $r0;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        return 1;
+    }
+
+    public android.view.inputmethod.InputConnection onCreateInputConnection(android.view.inputmethod.EditorInfo)
+    {
+        org.connectbot.TerminalView $r0;
+        android.view.inputmethod.EditorInfo $r1;
+        int $i0;
+        org.connectbot.TerminalView$1 $r2;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $r1 := @parameter0: android.view.inputmethod.EditorInfo;
+
+        $i0 = $r1.<android.view.inputmethod.EditorInfo: int imeOptions>;
+
+        $i0 = $i0 | 1342177281;
+
+        $r1.<android.view.inputmethod.EditorInfo: int imeOptions> = $i0;
+
+        $r1.<android.view.inputmethod.EditorInfo: int inputType> = 0;
+
+        $r2 = new org.connectbot.TerminalView$1;
+
+        specialinvoke $r2.<org.connectbot.TerminalView$1: void <init>(org.connectbot.TerminalView,android.view.View,boolean)>($r0, $r0, 0);
+
+        return $r2;
+    }
+
+    public void onDraw(android.graphics.Canvas)
+    {
+        org.connectbot.TerminalView $r0;
+        android.graphics.Canvas $r1;
+        org.connectbot.service.TerminalBridge $r2;
+        android.graphics.Paint $r3;
+        int $i0, $i1, $i2, $i3, $i6;
+        boolean $z0;
+        android.graphics.Bitmap $r4;
+        de.mud.terminal.VDUBuffer $r5;
+        float $f0, $f1;
+        byte $b4;
+        org.connectbot.service.TerminalKeyListener $r6;
+        char[] $r7;
+        char $c5;
+        android.graphics.Matrix $r8;
+        android.graphics.Path $r9;
+        org.connectbot.bean.SelectionArea $r10;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $r1 := @parameter0: android.graphics.Canvas;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r4 = $r2.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+        if $r4 == null goto label15;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r2.<org.connectbot.service.TerminalBridge: void onDraw()>();
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r4 = $r2.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint paint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawBitmap(android.graphics.Bitmap,float,float,android.graphics.Paint)>($r4, 0.0F, 0.0F, $r3);
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r5 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $z0 = virtualinvoke $r5.<de.mud.terminal.VDUBuffer: boolean isCursorVisible()>();
+
+        if $z0 == 0 goto label09;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r5 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i1 = virtualinvoke $r5.<de.mud.terminal.VDUBuffer: int getCursorColumn()>();
+
+        $i0 = $i1;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r5 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i2 = virtualinvoke $r5.<de.mud.terminal.VDUBuffer: int getCursorRow()>();
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r5 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i3 = virtualinvoke $r5.<de.mud.terminal.VDUBuffer: int getColumns()>();
+
+        if $i1 != $i3 goto label01;
+
+        $i0 = $i3 + -1;
+
+     label01:
+        if $i0 < 0 goto label16;
+
+        if $i2 >= 0 goto label02;
+
+        return;
+
+     label02:
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r5 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i3 = virtualinvoke $r5.<de.mud.terminal.VDUBuffer: int getAttributes(int,int)>($i0, $i2);
+
+        $i3 = 134217728 & $i3;
+
+        if $i3 == 0 goto label10;
+
+        $z0 = 1;
+
+     label03:
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i3 = $r2.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $i0 = $i0 * $i3;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r5 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i3 = virtualinvoke $r5.<de.mud.terminal.VDUBuffer: int getCursorRow()>();
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r5 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i2 = $r5.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        $i3 = $i3 + $i2;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r5 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i2 = $r5.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $i3 = $i3 - $i2;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i2 = $r2.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $i1 = $i3 * $i2;
+
+        virtualinvoke $r1.<android.graphics.Canvas: int save()>();
+
+        $f0 = (float) $i0;
+
+        $f1 = (float) $i1;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void translate(float,float)>($f0, $f1);
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i3 = $r2.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        if $z0 == 0 goto label11;
+
+        $b4 = 2;
+
+     label04:
+        $i3 = $b4 * $i3;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i2 = $r2.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: boolean clipRect(int,int,int,int)>(0, 0, $i3, $i2);
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPaint(android.graphics.Paint)>($r3);
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r6 = virtualinvoke $r2.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalKeyListener getKeyHandler()>();
+
+        $i3 = virtualinvoke $r6.<org.connectbot.service.TerminalKeyListener: int getDeadKey()>();
+
+        if $i3 == 0 goto label05;
+
+        $r7 = newarray (char)[1];
+
+        $c5 = (char) $i3;
+
+        $r7[0] = $c5;
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorStrokePaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawText(char[],int,int,float,float,android.graphics.Paint)>($r7, 0, 1, 0.0F, 0.0F, $r3);
+
+     label05:
+        $r8 = $r0.<org.connectbot.TerminalView: android.graphics.Matrix scaleMatrix>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void concat(android.graphics.Matrix)>($r8);
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r6 = virtualinvoke $r2.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalKeyListener getKeyHandler()>();
+
+        $i3 = virtualinvoke $r6.<org.connectbot.service.TerminalKeyListener: int getMetaState()>();
+
+        $i2 = $i3 & 16;
+
+        if $i2 == 0 goto label12;
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Path shiftCursor>;
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorStrokePaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r9, $r3);
+
+     label06:
+        $i2 = $i3 & 4;
+
+        if $i2 == 0 goto label13;
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Path altCursor>;
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorStrokePaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r9, $r3);
+
+     label07:
+        $i2 = $i3 & 1;
+
+        if $i2 == 0 goto label14;
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Path ctrlCursor>;
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorStrokePaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r9, $r3);
+
+     label08:
+        virtualinvoke $r1.<android.graphics.Canvas: void restore()>();
+
+     label09:
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.service.TerminalBridge: boolean isSelectingForCopy()>();
+
+        if $z0 == 0 goto label17;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r10 = virtualinvoke $r2.<org.connectbot.service.TerminalBridge: org.connectbot.bean.SelectionArea getSelectionArea()>();
+
+        virtualinvoke $r1.<android.graphics.Canvas: int save(int)>(2);
+
+        $i3 = virtualinvoke $r10.<org.connectbot.bean.SelectionArea: int getLeft()>();
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i2 = $r2.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $i3 = $i3 * $i2;
+
+        $i2 = virtualinvoke $r10.<org.connectbot.bean.SelectionArea: int getTop()>();
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i1 = $r2.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $i2 = $i2 * $i1;
+
+        $i1 = virtualinvoke $r10.<org.connectbot.bean.SelectionArea: int getRight()>();
+
+        $i1 = $i1 + 1;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i0 = $r2.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $i1 = $i1 * $i0;
+
+        $i0 = virtualinvoke $r10.<org.connectbot.bean.SelectionArea: int getBottom()>();
+
+        $i0 = $i0 + 1;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i6 = $r2.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $i6 = $i0 * $i6;
+
+        virtualinvoke $r1.<android.graphics.Canvas: boolean clipRect(int,int,int,int)>($i3, $i2, $i1, $i6);
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPaint(android.graphics.Paint)>($r3);
+
+        virtualinvoke $r1.<android.graphics.Canvas: void restore()>();
+
+        return;
+
+     label10:
+        $z0 = 0;
+
+        goto label03;
+
+     label11:
+        $b4 = 1;
+
+        goto label04;
+
+     label12:
+        $i6 = $i3 & 32;
+
+        if $i6 == 0 goto label06;
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Path shiftCursor>;
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r9, $r3);
+
+        goto label06;
+
+     label13:
+        $i6 = $i3 & 8;
+
+        if $i6 == 0 goto label07;
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Path altCursor>;
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r9, $r3);
+
+        goto label07;
+
+     label14:
+        $i6 = $i3 & 2;
+
+        if $i6 == 0 goto label08;
+
+        $r9 = $r0.<org.connectbot.TerminalView: android.graphics.Path ctrlCursor>;
+
+        $r3 = $r0.<org.connectbot.TerminalView: android.graphics.Paint cursorPaint>;
+
+        virtualinvoke $r1.<android.graphics.Canvas: void drawPath(android.graphics.Path,android.graphics.Paint)>($r9, $r3);
+
+        goto label08;
+
+     label15:
+        return;
+
+     label16:
+        return;
+
+     label17:
+        return;
+    }
+
+    public void onFontSizeChanged(float)
+    {
+        org.connectbot.TerminalView $r0;
+        float $f0;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $f0 := @parameter0: float;
+
+        specialinvoke $r0.<org.connectbot.TerminalView: void scaleCursors()>();
+
+        return;
+    }
+
+    public boolean onGenericMotionEvent(android.view.MotionEvent)
+    {
+        org.connectbot.TerminalView $r0;
+        android.view.MotionEvent $r1;
+        int $i0, $i2;
+        boolean $z0;
+        float $f0;
+        byte $b1;
+        org.connectbot.service.TerminalBridge $r2;
+        de.mud.terminal.VDUBuffer $r3;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $r1 := @parameter0: android.view.MotionEvent;
+
+        $i0 = staticinvoke <android.support.v4.view.MotionEventCompat: int getSource(android.view.MotionEvent)>($r1);
+
+        $i0 = $i0 & 2;
+
+        if $i0 == 0 goto label1;
+
+        $i0 = virtualinvoke $r1.<android.view.MotionEvent: int getAction()>();
+
+        lookupswitch($i0)
+        {
+            case 8: goto label2;
+            default: goto label1;
+        };
+
+     label1:
+        $z0 = specialinvoke $r0.<android.view.View: boolean onGenericMotionEvent(android.view.MotionEvent)>($r1);
+
+        return $z0;
+
+     label2:
+        $f0 = staticinvoke <android.support.v4.view.MotionEventCompat: float getAxisValue(android.view.MotionEvent,int)>($r1, 9);
+
+        $b1 = $f0 cmpl 0.0F;
+
+        if $b1 == 0 goto label1;
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r3 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i0 = virtualinvoke $r3.<de.mud.terminal.VDUBuffer: int getWindowBase()>();
+
+        $r2 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r3 = $r2.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i2 = staticinvoke <java.lang.Math: int round(float)>($f0);
+
+        $i2 = $i0 - $i2;
+
+        virtualinvoke $r3.<de.mud.terminal.VDUBuffer: void setWindowBase(int)>($i2);
+
+        return 1;
+    }
+
+    protected void onSizeChanged(int, int, int, int)
+    {
+        org.connectbot.TerminalView $r0;
+        int $i0, $i1, $i2, $i3;
+        org.connectbot.service.TerminalBridge $r1;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        specialinvoke $r0.<android.view.View: void onSizeChanged(int,int,int,int)>($i0, $i1, $i2, $i3);
+
+        $r1 = $r0.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r1.<org.connectbot.service.TerminalBridge: void parentChanged(org.connectbot.TerminalView)>($r0);
+
+        specialinvoke $r0.<org.connectbot.TerminalView: void scaleCursors()>();
+
+        return;
+    }
+
+    public void propagateConsoleText(char[], int)
+    {
+        org.connectbot.TerminalView $r0;
+        char[] $r1;
+        int $i0;
+        boolean $z0;
+        java.lang.Object[] $r2;
+        java.lang.StringBuffer $r3;
+        org.connectbot.TerminalView$AccessibilityEventSender $r4;
+        java.lang.Throwable $r5;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $z0 = $r0.<org.connectbot.TerminalView: boolean mAccessibilityActive>;
+
+        if $z0 == 0 goto label8;
+
+        $r2 = $r0.<org.connectbot.TerminalView: java.lang.Object[] mAccessibilityLock>;
+
+        entermonitor $r2;
+
+     label1:
+        $r3 = $r0.<org.connectbot.TerminalView: java.lang.StringBuffer mAccessibilityBuffer>;
+
+        virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(char[],int,int)>($r1, 0, $i0);
+
+        exitmonitor $r2;
+
+     label2:
+        $z0 = $r0.<org.connectbot.TerminalView: boolean mAccessibilityInitialized>;
+
+        if $z0 == 0 goto label9;
+
+        $r4 = $r0.<org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender mEventSender>;
+
+        if $r4 == null goto label7;
+
+        $r4 = $r0.<org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender mEventSender>;
+
+        virtualinvoke $r0.<org.connectbot.TerminalView: boolean removeCallbacks(java.lang.Runnable)>($r4);
+
+     label3:
+        $r4 = $r0.<org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender mEventSender>;
+
+        virtualinvoke $r0.<org.connectbot.TerminalView: boolean postDelayed(java.lang.Runnable,long)>($r4, 1000L);
+
+        return;
+
+     label4:
+        $r5 := @caughtexception;
+
+     label5:
+        exitmonitor $r2;
+
+     label6:
+        throw $r5;
+
+     label7:
+        $r4 = new org.connectbot.TerminalView$AccessibilityEventSender;
+
+        specialinvoke $r4.<org.connectbot.TerminalView$AccessibilityEventSender: void <init>(org.connectbot.TerminalView,org.connectbot.TerminalView$1)>($r0, null);
+
+        $r0.<org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender mEventSender> = $r4;
+
+        goto label3;
+
+     label8:
+        return;
+
+     label9:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void setNotifications(boolean)
+    {
+        org.connectbot.TerminalView $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.TerminalView;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.TerminalView: boolean notifications> = $z0;
+
+        return;
+    }
+}

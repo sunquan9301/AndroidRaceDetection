@@ -1,0 +1,51 @@
+class org.connectbot.HostListActivity$8 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.HostListActivity this$0;
+    final org.connectbot.service.TerminalBridge val$bridge;
+
+    void <init>(org.connectbot.HostListActivity, org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.HostListActivity$8 $r0;
+        org.connectbot.HostListActivity $r1;
+        org.connectbot.service.TerminalBridge $r2;
+
+        $r0 := @this: org.connectbot.HostListActivity$8;
+
+        $r1 := @parameter0: org.connectbot.HostListActivity;
+
+        $r2 := @parameter1: org.connectbot.service.TerminalBridge;
+
+        $r0.<org.connectbot.HostListActivity$8: org.connectbot.HostListActivity this$0> = $r1;
+
+        $r0.<org.connectbot.HostListActivity$8: org.connectbot.service.TerminalBridge val$bridge> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.HostListActivity$8 $r0;
+        android.view.MenuItem $r1;
+        org.connectbot.service.TerminalBridge $r2;
+        org.connectbot.HostListActivity $r3;
+        android.os.Handler $r4;
+
+        $r0 := @this: org.connectbot.HostListActivity$8;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+        $r2 = $r0.<org.connectbot.HostListActivity$8: org.connectbot.service.TerminalBridge val$bridge>;
+
+        virtualinvoke $r2.<org.connectbot.service.TerminalBridge: void dispatchDisconnect(boolean)>(1);
+
+        $r3 = $r0.<org.connectbot.HostListActivity$8: org.connectbot.HostListActivity this$0>;
+
+        $r4 = $r3.<org.connectbot.HostListActivity: android.os.Handler updateHandler>;
+
+        virtualinvoke $r4.<android.os.Handler: boolean sendEmptyMessage(int)>(-1);
+
+        return 1;
+    }
+}

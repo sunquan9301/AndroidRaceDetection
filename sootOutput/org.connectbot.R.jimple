@@ -1,0 +1,14 @@
+public final class org.connectbot.R extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.connectbot.R $r0;
+
+        $r0 := @this: org.connectbot.R;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

@@ -1,0 +1,341 @@
+public class com.trilead.ssh2.compression.Zlib extends java.lang.Object implements com.trilead.ssh2.compression.ICompressor
+{
+    private com.jcraft.jzlib.ZStream deflate;
+    private byte[] deflate_tmpbuf;
+    private com.jcraft.jzlib.ZStream inflate;
+    private byte[] inflate_tmpbuf;
+    private byte[] inflated_buf;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.compression.Zlib $r0;
+        com.jcraft.jzlib.ZStream $r1;
+        byte[] $r2;
+
+        $r0 := @this: com.trilead.ssh2.compression.Zlib;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r1 = new com.jcraft.jzlib.ZStream;
+
+        specialinvoke $r1.<com.jcraft.jzlib.ZStream: void <init>()>();
+
+        $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate> = $r1;
+
+        $r1 = new com.jcraft.jzlib.ZStream;
+
+        specialinvoke $r1.<com.jcraft.jzlib.ZStream: void <init>()>();
+
+        $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate> = $r1;
+
+        $r1 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.ZStream: int deflateInit(int)>(5);
+
+        $r1 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.ZStream: int inflateInit()>();
+
+        $r2 = newarray (byte)[4096];
+
+        $r0.<com.trilead.ssh2.compression.Zlib: byte[] deflate_tmpbuf> = $r2;
+
+        $r2 = newarray (byte)[4096];
+
+        $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflate_tmpbuf> = $r2;
+
+        $r2 = newarray (byte)[4096];
+
+        $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflated_buf> = $r2;
+
+        return;
+    }
+
+    public boolean canCompressPreauth()
+    {
+        com.trilead.ssh2.compression.Zlib $r0;
+
+        $r0 := @this: com.trilead.ssh2.compression.Zlib;
+
+        return 1;
+    }
+
+    public int compress(byte[], int, int, byte[])
+    {
+        com.trilead.ssh2.compression.Zlib $r0;
+        byte[] $r1, $r2, $r4;
+        int $i0, $i1;
+        com.jcraft.jzlib.ZStream $r3;
+        java.io.PrintStream $r5;
+
+        $r0 := @this: com.trilead.ssh2.compression.Zlib;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 := @parameter3: byte[];
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $r3.<com.jcraft.jzlib.ZStream: byte[] next_in> = $r1;
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $r3.<com.jcraft.jzlib.ZStream: int next_in_index> = $i0;
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $i1 = $i1 - $i0;
+
+        $r3.<com.jcraft.jzlib.ZStream: int avail_in> = $i1;
+
+        $i1 = lengthof $r1;
+
+        $i1 = $i1 + 1024;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] deflate_tmpbuf>;
+
+        $i0 = lengthof $r4;
+
+        if $i1 <= $i0 goto label1;
+
+        $i1 = lengthof $r1;
+
+        $i1 = $i1 + 1024;
+
+        $r4 = newarray (byte)[$i1];
+
+        $r0.<com.trilead.ssh2.compression.Zlib: byte[] deflate_tmpbuf> = $r4;
+
+     label1:
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] deflate_tmpbuf>;
+
+        $r3.<com.jcraft.jzlib.ZStream: byte[] next_out> = $r4;
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $r3.<com.jcraft.jzlib.ZStream: int next_out_index> = 0;
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $i1 = lengthof $r2;
+
+        $r3.<com.jcraft.jzlib.ZStream: int avail_out> = $i1;
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $i1 = virtualinvoke $r3.<com.jcraft.jzlib.ZStream: int deflate(int)>(1);
+
+        if $i1 == 0 goto label2;
+
+        $r5 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $r5.<java.io.PrintStream: void println(java.lang.String)>("compress: compression failure");
+
+     label2:
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $i1 = $r3.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i1 <= 0 goto label3;
+
+        $r5 = <java.lang.System: java.io.PrintStream err>;
+
+        virtualinvoke $r5.<java.io.PrintStream: void println(java.lang.String)>("compress: deflated data too large");
+
+     label3:
+        $i1 = lengthof $r2;
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream deflate>;
+
+        $i0 = $r3.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        $i1 = $i1 - $i0;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] deflate_tmpbuf>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, 0, $r2, 0, $i1);
+
+        return $i1;
+    }
+
+    public int getBufferSize()
+    {
+        com.trilead.ssh2.compression.Zlib $r0;
+
+        $r0 := @this: com.trilead.ssh2.compression.Zlib;
+
+        return 4096;
+    }
+
+    public byte[] uncompress(byte[], int, int[])
+    {
+        com.trilead.ssh2.compression.Zlib $r0;
+        byte[] $r1, $r3, $r8;
+        int $i0, $i1, $i2, $i3, $i4;
+        int[] $r2;
+        com.jcraft.jzlib.ZStream $r4;
+        java.io.PrintStream $r5;
+        java.lang.StringBuilder $r6;
+        java.lang.String $r7;
+
+        $r0 := @this: com.trilead.ssh2.compression.Zlib;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: int[];
+
+        $i1 = 0;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $r4.<com.jcraft.jzlib.ZStream: byte[] next_in> = $r1;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $r4.<com.jcraft.jzlib.ZStream: int next_in_index> = $i0;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $i2 = $r2[0];
+
+        $r4.<com.jcraft.jzlib.ZStream: int avail_in> = $i2;
+
+     label1:
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflate_tmpbuf>;
+
+        $r4.<com.jcraft.jzlib.ZStream: byte[] next_out> = $r3;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $r4.<com.jcraft.jzlib.ZStream: int next_out_index> = 0;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $r4.<com.jcraft.jzlib.ZStream: int avail_out> = 4096;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $i2 = virtualinvoke $r4.<com.jcraft.jzlib.ZStream: int inflate(int)>(1);
+
+        lookupswitch($i2)
+        {
+            case -5: goto label5;
+            case 0: goto label3;
+            default: goto label2;
+        };
+
+     label2:
+        $r5 = <java.lang.System: java.io.PrintStream err>;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("uncompress: inflate returnd ");
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r7 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r5.<java.io.PrintStream: void println(java.lang.String)>($r7);
+
+        return null;
+
+     label3:
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflated_buf>;
+
+        $i2 = lengthof $r3;
+
+        $i3 = $i1 + 4096;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $i4 = $r4.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        $i4 = $i3 - $i4;
+
+        if $i2 >= $i4 goto label4;
+
+        $i4 = $i1 + 4096;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $i3 = $r4.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        $i4 = $i4 - $i3;
+
+        $r3 = newarray (byte)[$i4];
+
+        $r8 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflated_buf>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r8, 0, $r3, 0, $i1);
+
+        $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflated_buf> = $r3;
+
+     label4:
+        $r8 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflate_tmpbuf>;
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflated_buf>;
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $i4 = $r4.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        $i4 = 4096 - $i4;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r8, 0, $r3, $i1, $i4);
+
+        $r4 = $r0.<com.trilead.ssh2.compression.Zlib: com.jcraft.jzlib.ZStream inflate>;
+
+        $i4 = $r4.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        $i4 = 4096 - $i4;
+
+        $i1 = $i1 + $i4;
+
+        $r2[0] = $i1;
+
+        goto label1;
+
+     label5:
+        $i4 = lengthof $r1;
+
+        $i4 = $i4 - $i0;
+
+        if $i1 <= $i4 goto label7;
+
+        $i4 = $i1 + $i0;
+
+        $r8 = newarray (byte)[$i4];
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r8, 0, $i0);
+
+        $r3 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflated_buf>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, 0, $r8, $i0, $i1);
+
+        $r1 = $r8;
+
+     label6:
+        $r2[0] = $i1;
+
+        return $r1;
+
+     label7:
+        $r8 = $r0.<com.trilead.ssh2.compression.Zlib: byte[] inflated_buf>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r8, 0, $r1, $i0, $i1);
+
+        goto label6;
+    }
+}

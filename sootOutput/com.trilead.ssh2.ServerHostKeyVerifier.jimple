@@ -1,0 +1,5 @@
+public interface  com.trilead.ssh2.ServerHostKeyVerifier extends java.lang.Object
+{
+
+    public abstract boolean verifyServerHostKey(java.lang.String, int, java.lang.String, byte[]) throws java.lang.Exception;
+}

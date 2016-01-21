@@ -1,0 +1,45 @@
+public class org.connectbot.util.EntropyDialog extends android.app.Dialog implements org.connectbot.util.OnEntropyGatheredListener
+{
+
+    public void <init>(android.content.Context, android.view.View)
+    {
+        org.connectbot.util.EntropyDialog $r0;
+        android.content.Context $r1;
+        android.view.View $r2;
+        org.connectbot.util.EntropyView $r3;
+
+        $r0 := @this: org.connectbot.util.EntropyDialog;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: android.view.View;
+
+        specialinvoke $r0.<android.app.Dialog: void <init>(android.content.Context)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.util.EntropyDialog: void setContentView(android.view.View)>($r2);
+
+        virtualinvoke $r0.<org.connectbot.util.EntropyDialog: void setTitle(int)>(2131165206);
+
+        $r2 = virtualinvoke $r0.<org.connectbot.util.EntropyDialog: android.view.View findViewById(int)>(2131427371);
+
+        $r3 = (org.connectbot.util.EntropyView) $r2;
+
+        virtualinvoke $r3.<org.connectbot.util.EntropyView: void addOnEntropyGatheredListener(org.connectbot.util.OnEntropyGatheredListener)>($r0);
+
+        return;
+    }
+
+    public void onEntropyGathered(byte[])
+    {
+        org.connectbot.util.EntropyDialog $r0;
+        byte[] $r1;
+
+        $r0 := @this: org.connectbot.util.EntropyDialog;
+
+        $r1 := @parameter0: byte[];
+
+        virtualinvoke $r0.<org.connectbot.util.EntropyDialog: void dismiss()>();
+
+        return;
+    }
+}

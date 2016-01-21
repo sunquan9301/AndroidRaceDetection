@@ -1,0 +1,11 @@
+public interface  com.trilead.ssh2.compression.ICompressor extends java.lang.Object
+{
+
+    public abstract boolean canCompressPreauth();
+
+    public abstract int compress(byte[], int, int, byte[]);
+
+    public abstract int getBufferSize();
+
+    public abstract byte[] uncompress(byte[], int, int[]);
+}

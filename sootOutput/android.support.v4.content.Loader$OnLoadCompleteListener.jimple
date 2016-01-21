@@ -1,0 +1,3 @@
+public interface  android.support.v4.content.Loader$OnLoadCompleteListener extends java.lang.Object
+{
+}

@@ -1,0 +1,13 @@
+public interface  net.sourceforge.jsocks.server.ServerAuthenticator extends java.lang.Object
+{
+
+    public abstract boolean checkRequest(net.sourceforge.jsocks.ProxyMessage);
+
+    public abstract void endSession();
+
+    public abstract java.io.InputStream getInputStream();
+
+    public abstract java.io.OutputStream getOutputStream();
+
+    public abstract net.sourceforge.jsocks.server.ServerAuthenticator startSession(java.net.Socket) throws java.io.IOException;
+}

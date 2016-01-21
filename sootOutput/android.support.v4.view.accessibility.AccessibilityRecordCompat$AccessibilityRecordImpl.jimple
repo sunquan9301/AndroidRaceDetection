@@ -1,0 +1,21 @@
+interface  android.support.v4.view.accessibility.AccessibilityRecordCompat$AccessibilityRecordImpl extends java.lang.Object
+{
+
+    public abstract java.lang.Object obtain();
+
+    public abstract void setFromIndex(java.lang.Object, int);
+
+    public abstract void setItemCount(java.lang.Object, int);
+
+    public abstract void setMaxScrollX(java.lang.Object, int);
+
+    public abstract void setMaxScrollY(java.lang.Object, int);
+
+    public abstract void setScrollX(java.lang.Object, int);
+
+    public abstract void setScrollY(java.lang.Object, int);
+
+    public abstract void setScrollable(java.lang.Object, boolean);
+
+    public abstract void setToIndex(java.lang.Object, int);
+}

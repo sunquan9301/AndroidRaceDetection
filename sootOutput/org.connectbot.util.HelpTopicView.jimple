@@ -1,0 +1,106 @@
+public class org.connectbot.util.HelpTopicView extends android.webkit.WebView
+{
+
+    public void <init>(android.content.Context)
+    {
+        org.connectbot.util.HelpTopicView $r0;
+        android.content.Context $r1;
+
+        $r0 := @this: org.connectbot.util.HelpTopicView;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke $r0.<android.webkit.WebView: void <init>(android.content.Context)>($r1);
+
+        specialinvoke $r0.<org.connectbot.util.HelpTopicView: void initialize()>();
+
+        return;
+    }
+
+    public void <init>(android.content.Context, android.util.AttributeSet)
+    {
+        org.connectbot.util.HelpTopicView $r0;
+        android.content.Context $r1;
+        android.util.AttributeSet $r2;
+
+        $r0 := @this: org.connectbot.util.HelpTopicView;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: android.util.AttributeSet;
+
+        specialinvoke $r0.<android.webkit.WebView: void <init>(android.content.Context,android.util.AttributeSet)>($r1, $r2);
+
+        specialinvoke $r0.<org.connectbot.util.HelpTopicView: void initialize()>();
+
+        return;
+    }
+
+    public void <init>(android.content.Context, android.util.AttributeSet, int)
+    {
+        org.connectbot.util.HelpTopicView $r0;
+        android.content.Context $r1;
+        android.util.AttributeSet $r2;
+        int $i0;
+
+        $r0 := @this: org.connectbot.util.HelpTopicView;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: android.util.AttributeSet;
+
+        $i0 := @parameter2: int;
+
+        specialinvoke $r0.<android.webkit.WebView: void <init>(android.content.Context,android.util.AttributeSet,int)>($r1, $r2, $i0);
+
+        specialinvoke $r0.<org.connectbot.util.HelpTopicView: void initialize()>();
+
+        return;
+    }
+
+    private void initialize()
+    {
+        org.connectbot.util.HelpTopicView $r0;
+        android.webkit.WebSettings$LayoutAlgorithm $r1;
+        android.webkit.WebSettings $r2;
+
+        $r0 := @this: org.connectbot.util.HelpTopicView;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.util.HelpTopicView: android.webkit.WebSettings getSettings()>();
+
+        $r1 = <android.webkit.WebSettings$LayoutAlgorithm: android.webkit.WebSettings$LayoutAlgorithm NARROW_COLUMNS>;
+
+        virtualinvoke $r2.<android.webkit.WebSettings: void setLayoutAlgorithm(android.webkit.WebSettings$LayoutAlgorithm)>($r1);
+
+        virtualinvoke $r2.<android.webkit.WebSettings: void setUseWideViewPort(boolean)>(0);
+
+        return;
+    }
+
+    public org.connectbot.util.HelpTopicView setTopic(java.lang.String)
+    {
+        org.connectbot.util.HelpTopicView $r0;
+        java.lang.String $r1;
+        java.lang.Object[] $r2;
+
+        $r0 := @this: org.connectbot.util.HelpTopicView;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = newarray (java.lang.Object)[3];
+
+        $r2[0] = "help";
+
+        $r2[1] = $r1;
+
+        $r2[2] = ".html";
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("file:///android_asset/%s/%s%s", $r2);
+
+        virtualinvoke $r0.<org.connectbot.util.HelpTopicView: void loadUrl(java.lang.String)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.util.HelpTopicView: void computeScroll()>();
+
+        return $r0;
+    }
+}

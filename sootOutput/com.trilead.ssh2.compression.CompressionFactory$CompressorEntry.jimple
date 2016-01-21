@@ -1,0 +1,25 @@
+class com.trilead.ssh2.compression.CompressionFactory$CompressorEntry extends java.lang.Object
+{
+    java.lang.String compressorClass;
+    java.lang.String type;
+
+    public void <init>(java.lang.String, java.lang.String)
+    {
+        com.trilead.ssh2.compression.CompressionFactory$CompressorEntry $r0;
+        java.lang.String $r1, $r2;
+
+        $r0 := @this: com.trilead.ssh2.compression.CompressionFactory$CompressorEntry;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.compression.CompressionFactory$CompressorEntry: java.lang.String type> = $r1;
+
+        $r0.<com.trilead.ssh2.compression.CompressionFactory$CompressorEntry: java.lang.String compressorClass> = $r2;
+
+        return;
+    }
+}

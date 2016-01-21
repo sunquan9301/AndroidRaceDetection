@@ -1,0 +1,123 @@
+class org.connectbot.HostListActivity$3 extends java.lang.Object implements android.widget.AdapterView$OnItemClickListener
+{
+    final org.connectbot.HostListActivity this$0;
+
+    void <init>(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity$3 $r0;
+        org.connectbot.HostListActivity $r1;
+
+        $r0 := @this: org.connectbot.HostListActivity$3;
+
+        $r1 := @parameter0: org.connectbot.HostListActivity;
+
+        $r0.<org.connectbot.HostListActivity$3: org.connectbot.HostListActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onItemClick(android.widget.AdapterView, android.view.View, int, long)
+    {
+        org.connectbot.HostListActivity$3 $r0;
+        android.widget.AdapterView $r1;
+        android.view.View $r2;
+        int $i0;
+        long $l1;
+        android.content.Intent $r3, $r4;
+        android.widget.Adapter $r5;
+        java.lang.Object $r6;
+        org.connectbot.bean.HostBean $r7;
+        android.net.Uri $r8;
+        org.connectbot.HostListActivity $r9;
+        boolean $z0;
+        android.content.Intent$ShortcutIconResource $r10;
+        java.lang.String $r11;
+        java.lang.Throwable $r12;
+
+        $r0 := @this: org.connectbot.HostListActivity$3;
+
+        $r1 := @parameter0: android.widget.AdapterView;
+
+        $r2 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $l1 := @parameter3: long;
+
+        entermonitor $r0;
+
+     label1:
+        $r5 = virtualinvoke $r1.<android.widget.AdapterView: android.widget.Adapter getAdapter()>();
+
+        $r6 = interfaceinvoke $r5.<android.widget.Adapter: java.lang.Object getItem(int)>($i0);
+
+        $r7 = (org.connectbot.bean.HostBean) $r6;
+
+        $r8 = virtualinvoke $r7.<org.connectbot.bean.HostBean: android.net.Uri getUri()>();
+
+        $r3 = new android.content.Intent;
+
+        specialinvoke $r3.<android.content.Intent: void <init>(java.lang.String,android.net.Uri)>("android.intent.action.VIEW", $r8);
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent setFlags(int)>(67108864);
+
+        $r9 = $r0.<org.connectbot.HostListActivity$3: org.connectbot.HostListActivity this$0>;
+
+        $z0 = $r9.<org.connectbot.HostListActivity: boolean makingShortcut>;
+
+        if $z0 == 0 goto label3;
+
+        $r9 = $r0.<org.connectbot.HostListActivity$3: org.connectbot.HostListActivity this$0>;
+
+        $r10 = staticinvoke <android.content.Intent$ShortcutIconResource: android.content.Intent$ShortcutIconResource fromContext(android.content.Context,int)>($r9, 2130837509);
+
+        $r4 = new android.content.Intent;
+
+        specialinvoke $r4.<android.content.Intent: void <init>()>();
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("android.intent.extra.shortcut.INTENT", $r3);
+
+        $r11 = virtualinvoke $r7.<org.connectbot.bean.HostBean: java.lang.String getNickname()>();
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("android.intent.extra.shortcut.NAME", $r11);
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,android.os.Parcelable)>("android.intent.extra.shortcut.ICON_RESOURCE", $r10);
+
+        $r9 = $r0.<org.connectbot.HostListActivity$3: org.connectbot.HostListActivity this$0>;
+
+        virtualinvoke $r9.<org.connectbot.HostListActivity: void setResult(int,android.content.Intent)>(-1, $r4);
+
+        $r9 = $r0.<org.connectbot.HostListActivity$3: org.connectbot.HostListActivity this$0>;
+
+        virtualinvoke $r9.<org.connectbot.HostListActivity: void finish()>();
+
+     label2:
+        exitmonitor $r0;
+
+        return;
+
+     label3:
+        $r9 = $r0.<org.connectbot.HostListActivity$3: org.connectbot.HostListActivity this$0>;
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent setClass(android.content.Context,java.lang.Class)>($r9, class "org/connectbot/ConsoleActivity");
+
+        $r9 = $r0.<org.connectbot.HostListActivity$3: org.connectbot.HostListActivity this$0>;
+
+        virtualinvoke $r9.<org.connectbot.HostListActivity: void startActivity(android.content.Intent)>($r3);
+
+     label4:
+        goto label2;
+
+     label5:
+        $r12 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r12;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+    }
+}

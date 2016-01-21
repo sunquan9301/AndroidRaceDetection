@@ -1,0 +1,258 @@
+public class com.trilead.ssh2.crypto.dh.DhGroupExchange extends java.lang.Object
+{
+    private java.math.BigInteger e;
+    private java.math.BigInteger f;
+    private java.math.BigInteger g;
+    private java.math.BigInteger k;
+    private java.math.BigInteger p;
+    private java.math.BigInteger x;
+
+    public void <init>(java.math.BigInteger, java.math.BigInteger)
+    {
+        com.trilead.ssh2.crypto.dh.DhGroupExchange $r0;
+        java.math.BigInteger $r1, $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhGroupExchange;
+
+        $r1 := @parameter0: java.math.BigInteger;
+
+        $r2 := @parameter1: java.math.BigInteger;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger p> = $r1;
+
+        $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger g> = $r2;
+
+        return;
+    }
+
+    public byte[] calculateH(java.lang.String, byte[], byte[], byte[], byte[], byte[], com.trilead.ssh2.DHGexParameters)
+    {
+        com.trilead.ssh2.crypto.dh.DhGroupExchange $r0;
+        java.lang.String $r1;
+        byte[] $r2, $r3, $r4, $r5, $r6;
+        com.trilead.ssh2.DHGexParameters $r7;
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r8;
+        int $i0;
+        java.math.BigInteger $r9;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhGroupExchange;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: byte[];
+
+        $r3 := @parameter2: byte[];
+
+        $r4 := @parameter3: byte[];
+
+        $r5 := @parameter4: byte[];
+
+        $r6 := @parameter5: byte[];
+
+        $r7 := @parameter6: com.trilead.ssh2.DHGexParameters;
+
+        $r8 = new com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        specialinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void <init>(java.lang.String)>($r1);
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r2);
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r3);
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r4);
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r5);
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r6);
+
+        $i0 = virtualinvoke $r7.<com.trilead.ssh2.DHGexParameters: int getMin_group_len()>();
+
+        if $i0 <= 0 goto label1;
+
+        $i0 = virtualinvoke $r7.<com.trilead.ssh2.DHGexParameters: int getMin_group_len()>();
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateUINT32(int)>($i0);
+
+     label1:
+        $i0 = virtualinvoke $r7.<com.trilead.ssh2.DHGexParameters: int getPref_group_len()>();
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateUINT32(int)>($i0);
+
+        $i0 = virtualinvoke $r7.<com.trilead.ssh2.DHGexParameters: int getMax_group_len()>();
+
+        if $i0 <= 0 goto label2;
+
+        $i0 = virtualinvoke $r7.<com.trilead.ssh2.DHGexParameters: int getMax_group_len()>();
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateUINT32(int)>($i0);
+
+     label2:
+        $r9 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger p>;
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateBigInt(java.math.BigInteger)>($r9);
+
+        $r9 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger g>;
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateBigInt(java.math.BigInteger)>($r9);
+
+        $r9 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger e>;
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateBigInt(java.math.BigInteger)>($r9);
+
+        $r9 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger f>;
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateBigInt(java.math.BigInteger)>($r9);
+
+        $r9 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger k>;
+
+        virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateBigInt(java.math.BigInteger)>($r9);
+
+        $r6 = virtualinvoke $r8.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: byte[] getDigest()>();
+
+        return $r6;
+    }
+
+    public java.math.BigInteger getE()
+    {
+        com.trilead.ssh2.crypto.dh.DhGroupExchange $r0;
+        java.math.BigInteger $r1;
+        java.lang.IllegalStateException $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhGroupExchange;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger e>;
+
+        if $r1 != null goto label1;
+
+        $r2 = new java.lang.IllegalStateException;
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Not initialized!");
+
+        throw $r2;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger e>;
+
+        return $r1;
+    }
+
+    public java.math.BigInteger getK()
+    {
+        com.trilead.ssh2.crypto.dh.DhGroupExchange $r0;
+        java.math.BigInteger $r1;
+        java.lang.IllegalStateException $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhGroupExchange;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger k>;
+
+        if $r1 != null goto label1;
+
+        $r2 = new java.lang.IllegalStateException;
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Shared secret not yet known, need f first!");
+
+        throw $r2;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger k>;
+
+        return $r1;
+    }
+
+    public void init(java.security.SecureRandom)
+    {
+        com.trilead.ssh2.crypto.dh.DhGroupExchange $r0;
+        java.security.SecureRandom $r1;
+        java.math.BigInteger $r2, $r3, $r4;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhGroupExchange;
+
+        $r1 := @parameter0: java.security.SecureRandom;
+
+        $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger k> = null;
+
+        $r3 = new java.math.BigInteger;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger p>;
+
+        $i0 = virtualinvoke $r2.<java.math.BigInteger: int bitLength()>();
+
+        $i0 = $i0 + -1;
+
+        specialinvoke $r3.<java.math.BigInteger: void <init>(int,java.util.Random)>($i0, $r1);
+
+        $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger x> = $r3;
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger g>;
+
+        $r4 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger x>;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger p>;
+
+        $r4 = virtualinvoke $r3.<java.math.BigInteger: java.math.BigInteger modPow(java.math.BigInteger,java.math.BigInteger)>($r4, $r2);
+
+        $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger e> = $r4;
+
+        return;
+    }
+
+    public void setF(java.math.BigInteger)
+    {
+        com.trilead.ssh2.crypto.dh.DhGroupExchange $r0;
+        java.math.BigInteger $r1, $r2, $r5;
+        java.lang.IllegalStateException $r3;
+        int $i0;
+        java.lang.IllegalArgumentException $r4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhGroupExchange;
+
+        $r1 := @parameter0: java.math.BigInteger;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger e>;
+
+        if $r2 != null goto label1;
+
+        $r3 = new java.lang.IllegalStateException;
+
+        specialinvoke $r3.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Not initialized!");
+
+        throw $r3;
+
+     label1:
+        $r2 = staticinvoke <java.math.BigInteger: java.math.BigInteger valueOf(long)>(0L);
+
+        $i0 = virtualinvoke $r2.<java.math.BigInteger: int compareTo(java.math.BigInteger)>($r1);
+
+        if $i0 >= 0 goto label2;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger p>;
+
+        $i0 = virtualinvoke $r2.<java.math.BigInteger: int compareTo(java.math.BigInteger)>($r1);
+
+        if $i0 > 0 goto label3;
+
+     label2:
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Invalid f specified!");
+
+        throw $r4;
+
+     label3:
+        $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger f> = $r1;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger x>;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger p>;
+
+        $r5 = virtualinvoke $r1.<java.math.BigInteger: java.math.BigInteger modPow(java.math.BigInteger,java.math.BigInteger)>($r2, $r5);
+
+        $r0.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger k> = $r5;
+
+        return;
+    }
+}

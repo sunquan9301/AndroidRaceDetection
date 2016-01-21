@@ -1,0 +1,43 @@
+public final class org.connectbot.R$anim extends java.lang.Object
+{
+    public static final int fade_out_delayed;
+    public static final int fade_stay_hidden;
+    public static final int keyboard_fade_in;
+    public static final int keyboard_fade_out;
+    public static final int slide_left_in;
+    public static final int slide_left_out;
+    public static final int slide_right_in;
+    public static final int slide_right_out;
+
+    public void <init>()
+    {
+        org.connectbot.R$anim $r0;
+
+        $r0 := @this: org.connectbot.R$anim;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$anim: int slide_right_out> = 2130968583;
+
+        <org.connectbot.R$anim: int slide_right_in> = 2130968582;
+
+        <org.connectbot.R$anim: int slide_left_out> = 2130968581;
+
+        <org.connectbot.R$anim: int slide_left_in> = 2130968580;
+
+        <org.connectbot.R$anim: int keyboard_fade_out> = 2130968579;
+
+        <org.connectbot.R$anim: int keyboard_fade_in> = 2130968578;
+
+        <org.connectbot.R$anim: int fade_stay_hidden> = 2130968577;
+
+        <org.connectbot.R$anim: int fade_out_delayed> = 2130968576;
+
+        return;
+    }
+}

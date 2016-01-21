@@ -1,0 +1,157 @@
+public class org.connectbot.service.BackupAgent extends android.app.backup.BackupAgentHelper
+{
+
+    public void <init>()
+    {
+        org.connectbot.service.BackupAgent $r0;
+
+        $r0 := @this: org.connectbot.service.BackupAgent;
+
+        specialinvoke $r0.<android.app.backup.BackupAgentHelper: void <init>()>();
+
+        return;
+    }
+
+    public void onBackup(android.os.ParcelFileDescriptor, android.app.backup.BackupDataOutput, android.os.ParcelFileDescriptor) throws java.io.IOException
+    {
+        org.connectbot.service.BackupAgent $r0;
+        android.os.ParcelFileDescriptor $r1, $r3;
+        android.app.backup.BackupDataOutput $r2;
+        java.lang.Throwable $r4;
+        java.lang.Object[] $r5;
+
+        $r0 := @this: org.connectbot.service.BackupAgent;
+
+        $r1 := @parameter0: android.os.ParcelFileDescriptor;
+
+        $r2 := @parameter1: android.app.backup.BackupDataOutput;
+
+        $r3 := @parameter2: android.os.ParcelFileDescriptor;
+
+        $r5 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r5;
+
+     label1:
+        specialinvoke $r0.<android.app.backup.BackupAgentHelper: void onBackup(android.os.ParcelFileDescriptor,android.app.backup.BackupDataOutput,android.os.ParcelFileDescriptor)>($r1, $r2, $r3);
+
+        exitmonitor $r5;
+
+     label2:
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        exitmonitor $r5;
+
+     label4:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void onCreate()
+    {
+        org.connectbot.service.BackupAgent $r0;
+        android.app.backup.FileBackupHelper $r1;
+        android.app.backup.SharedPreferencesBackupHelper $r2;
+        java.lang.String $r3;
+        java.lang.String[] $r4;
+        java.lang.StringBuilder $r5;
+
+        $r0 := @this: org.connectbot.service.BackupAgent;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ConnectBot.BackupAgent", "onCreate called");
+
+        $r2 = new android.app.backup.SharedPreferencesBackupHelper;
+
+        $r4 = newarray (java.lang.String)[1];
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r0.<org.connectbot.service.BackupAgent: java.lang.String getPackageName()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("_preferences");
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4[0] = $r3;
+
+        specialinvoke $r2.<android.app.backup.SharedPreferencesBackupHelper: void <init>(android.content.Context,java.lang.String[])>($r0, $r4);
+
+        virtualinvoke $r0.<org.connectbot.service.BackupAgent: void addHelper(java.lang.String,android.app.backup.BackupHelper)>("prefs", $r2);
+
+        $r1 = new android.app.backup.FileBackupHelper;
+
+        $r4 = newarray (java.lang.String)[1];
+
+        $r4[0] = "../databases/hosts";
+
+        specialinvoke $r1.<android.app.backup.FileBackupHelper: void <init>(android.content.Context,java.lang.String[])>($r0, $r4);
+
+        virtualinvoke $r0.<org.connectbot.service.BackupAgent: void addHelper(java.lang.String,android.app.backup.BackupHelper)>("hosts", $r1);
+
+        $r1 = new android.app.backup.FileBackupHelper;
+
+        $r4 = newarray (java.lang.String)[1];
+
+        $r4[0] = "../databases/pubkeys";
+
+        specialinvoke $r1.<android.app.backup.FileBackupHelper: void <init>(android.content.Context,java.lang.String[])>($r0, $r4);
+
+        virtualinvoke $r0.<org.connectbot.service.BackupAgent: void addHelper(java.lang.String,android.app.backup.BackupHelper)>("pubkeys", $r1);
+
+        return;
+    }
+
+    public void onRestore(android.app.backup.BackupDataInput, int, android.os.ParcelFileDescriptor) throws java.io.IOException
+    {
+        org.connectbot.service.BackupAgent $r0;
+        android.app.backup.BackupDataInput $r1;
+        int $i0;
+        android.os.ParcelFileDescriptor $r2;
+        java.lang.Object[] $r3;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: org.connectbot.service.BackupAgent;
+
+        $r1 := @parameter0: android.app.backup.BackupDataInput;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: android.os.ParcelFileDescriptor;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ConnectBot.BackupAgent", "onRestore called");
+
+        $r3 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r3;
+
+     label1:
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("ConnectBot.BackupAgent", "onRestore in-lock");
+
+        specialinvoke $r0.<android.app.backup.BackupAgentHelper: void onRestore(android.app.backup.BackupDataInput,int,android.os.ParcelFileDescriptor)>($r1, $i0, $r2);
+
+        exitmonitor $r3;
+
+     label2:
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label4:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+}

@@ -1,0 +1,19 @@
+public abstract class android.support.v4.app.NotificationCompat$Style extends java.lang.Object
+{
+    java.lang.CharSequence mBigContentTitle;
+    java.lang.CharSequence mSummaryText;
+    boolean mSummaryTextSet;
+
+    public void <init>()
+    {
+        android.support.v4.app.NotificationCompat$Style $r0;
+
+        $r0 := @this: android.support.v4.app.NotificationCompat$Style;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<android.support.v4.app.NotificationCompat$Style: boolean mSummaryTextSet> = 0;
+
+        return;
+    }
+}

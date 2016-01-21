@@ -1,0 +1,1286 @@
+public class com.trilead.ssh2.crypto.PEMDecoder extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.trilead.ssh2.crypto.PEMDecoder $r0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.PEMDecoder;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.security.KeyPair decode(com.trilead.ssh2.crypto.PEMStructure, java.lang.String) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.PEMStructure $r0;
+        java.lang.String $r1;
+        java.security.spec.DSAPrivateKeySpec $r2;
+        com.trilead.ssh2.crypto.SimpleDERReader $r3, $r20;
+        java.security.spec.DSAPublicKeySpec $r4;
+        byte[] $r5, $r19;
+        java.math.BigInteger $r6, $r8, $r10, $r11, $r12, $r14, $r15, $r16;
+        boolean $z0;
+        java.io.IOException $r7;
+        int $i0;
+        java.lang.StringBuilder $r9;
+        java.security.KeyPair $r13;
+        java.security.spec.RSAPrivateCrtKeySpec $r17;
+        java.security.spec.RSAPublicKeySpec $r18;
+        java.security.spec.ECParameterSpec $r21;
+        java.security.spec.EllipticCurve $r22;
+        java.security.spec.ECPoint $r23;
+        java.security.spec.ECPrivateKeySpec $r24;
+        java.security.spec.ECPublicKeySpec $r25;
+
+        $r0 := @parameter0: com.trilead.ssh2.crypto.PEMStructure;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $z0 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: boolean isPEMEncrypted(com.trilead.ssh2.crypto.PEMStructure)>($r0);
+
+        if $z0 == 0 goto label02;
+
+        if $r1 != null goto label01;
+
+        $r7 = new java.io.IOException;
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>("PEM is encrypted, but no password was specified");
+
+        throw $r7;
+
+     label01:
+        $r5 = virtualinvoke $r1.<java.lang.String: byte[] getBytes(java.lang.String)>("ISO-8859-1");
+
+        staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: void decryptPEM(com.trilead.ssh2.crypto.PEMStructure,byte[])>($r0, $r5);
+
+     label02:
+        $i0 = $r0.<com.trilead.ssh2.crypto.PEMStructure: int pemType>;
+
+        if $i0 != 2 goto label06;
+
+        $r3 = new com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.PEMStructure: byte[] data>;
+
+        specialinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: void <init>(byte[])>($r5);
+
+        $r5 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readSequenceAsByteArray()>();
+
+        $i0 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i0 == 0 goto label03;
+
+        $r7 = new java.io.IOException;
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>("Padding in DSA PRIVATE KEY DER stream.");
+
+        throw $r7;
+
+     label03:
+        virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: void resetInput(byte[])>($r5);
+
+        $r6 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r8 = <java.math.BigInteger: java.math.BigInteger ZERO>;
+
+        $i0 = virtualinvoke $r6.<java.math.BigInteger: int compareTo(java.math.BigInteger)>($r8);
+
+        if $i0 == 0 goto label04;
+
+        $r7 = new java.io.IOException;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Wrong version (");
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r6);
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") in DSA PRIVATE KEY DER stream.");
+
+        $r1 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>($r1);
+
+        throw $r7;
+
+     label04:
+        $r8 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r6 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r10 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r11 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r12 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $i0 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i0 == 0 goto label05;
+
+        $r7 = new java.io.IOException;
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>("Padding in DSA PRIVATE KEY DER stream.");
+
+        throw $r7;
+
+     label05:
+        $r2 = new java.security.spec.DSAPrivateKeySpec;
+
+        specialinvoke $r2.<java.security.spec.DSAPrivateKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger)>($r12, $r8, $r6, $r10);
+
+        $r4 = new java.security.spec.DSAPublicKeySpec;
+
+        specialinvoke $r4.<java.security.spec.DSAPublicKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger)>($r11, $r8, $r6, $r10);
+
+        $r13 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: java.security.KeyPair generateKeyPair(java.lang.String,java.security.spec.KeySpec,java.security.spec.KeySpec)>("DSA", $r2, $r4);
+
+        return $r13;
+
+     label06:
+        $i0 = $r0.<com.trilead.ssh2.crypto.PEMStructure: int pemType>;
+
+        if $i0 != 1 goto label09;
+
+        $r3 = new com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.PEMStructure: byte[] data>;
+
+        specialinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: void <init>(byte[])>($r5);
+
+        $r5 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readSequenceAsByteArray()>();
+
+        $i0 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i0 == 0 goto label07;
+
+        $r7 = new java.io.IOException;
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>("Padding in RSA PRIVATE KEY DER stream.");
+
+        throw $r7;
+
+     label07:
+        virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: void resetInput(byte[])>($r5);
+
+        $r12 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r11 = <java.math.BigInteger: java.math.BigInteger ZERO>;
+
+        $i0 = virtualinvoke $r12.<java.math.BigInteger: int compareTo(java.math.BigInteger)>($r11);
+
+        if $i0 == 0 goto label08;
+
+        $r11 = <java.math.BigInteger: java.math.BigInteger ONE>;
+
+        $i0 = virtualinvoke $r12.<java.math.BigInteger: int compareTo(java.math.BigInteger)>($r11);
+
+        if $i0 == 0 goto label08;
+
+        $r7 = new java.io.IOException;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Wrong version (");
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r12);
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") in RSA PRIVATE KEY DER stream.");
+
+        $r1 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>($r1);
+
+        throw $r7;
+
+     label08:
+        $r12 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r11 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r10 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r8 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r6 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r14 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r15 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r16 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r17 = new java.security.spec.RSAPrivateCrtKeySpec;
+
+        specialinvoke $r17.<java.security.spec.RSAPrivateCrtKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger)>($r12, $r11, $r10, $r8, $r6, $r14, $r15, $r16);
+
+        $r18 = new java.security.spec.RSAPublicKeySpec;
+
+        specialinvoke $r18.<java.security.spec.RSAPublicKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger)>($r12, $r11);
+
+        $r13 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: java.security.KeyPair generateKeyPair(java.lang.String,java.security.spec.KeySpec,java.security.spec.KeySpec)>("RSA", $r17, $r18);
+
+        return $r13;
+
+     label09:
+        $i0 = $r0.<com.trilead.ssh2.crypto.PEMStructure: int pemType>;
+
+        if $i0 != 3 goto label18;
+
+        $r3 = new com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.PEMStructure: byte[] data>;
+
+        specialinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: void <init>(byte[])>($r5);
+
+        $r5 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readSequenceAsByteArray()>();
+
+        $i0 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i0 == 0 goto label10;
+
+        $r7 = new java.io.IOException;
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>("Padding in EC PRIVATE KEY DER stream.");
+
+        throw $r7;
+
+     label10:
+        virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: void resetInput(byte[])>($r5);
+
+        $r16 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r15 = <java.math.BigInteger: java.math.BigInteger ONE>;
+
+        $i0 = virtualinvoke $r16.<java.math.BigInteger: int compareTo(java.math.BigInteger)>($r15);
+
+        if $i0 == 0 goto label11;
+
+        $r7 = new java.io.IOException;
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Wrong version (");
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r16);
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") in EC PRIVATE KEY DER stream.");
+
+        $r1 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>($r1);
+
+        throw $r7;
+
+     label11:
+        $r19 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readOctetString()>();
+
+        $r1 = null;
+
+        $r5 = null;
+
+     label12:
+        $i0 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i0 <= 0 goto label16;
+
+        $i0 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: int readConstructedType()>();
+
+        $r20 = virtualinvoke $r3.<com.trilead.ssh2.crypto.SimpleDERReader: com.trilead.ssh2.crypto.SimpleDERReader readConstructed()>();
+
+        lookupswitch($i0)
+        {
+            case 0: goto label14;
+            case 1: goto label15;
+            default: goto label13;
+        };
+
+     label13:
+        goto label12;
+
+     label14:
+        $r1 = virtualinvoke $r20.<com.trilead.ssh2.crypto.SimpleDERReader: java.lang.String readOid()>();
+
+        goto label12;
+
+     label15:
+        $r5 = virtualinvoke $r20.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readOctetString()>();
+
+        goto label12;
+
+     label16:
+        $r21 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.security.spec.ECParameterSpec getCurveForOID(java.lang.String)>($r1);
+
+        if $r21 != null goto label17;
+
+        $r7 = new java.io.IOException;
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>("invalid OID");
+
+        throw $r7;
+
+     label17:
+        $r6 = new java.math.BigInteger;
+
+        specialinvoke $r6.<java.math.BigInteger: void <init>(byte[])>($r19);
+
+        $i0 = lengthof $r5;
+
+        $i0 = $i0 + -1;
+
+        $r19 = newarray (byte)[$i0];
+
+        $i0 = lengthof $r19;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r5, 1, $r19, 0, $i0);
+
+        $r22 = virtualinvoke $r21.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r23 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.security.spec.ECPoint decodeECPoint(byte[],java.security.spec.EllipticCurve)>($r19, $r22);
+
+        $r24 = new java.security.spec.ECPrivateKeySpec;
+
+        specialinvoke $r24.<java.security.spec.ECPrivateKeySpec: void <init>(java.math.BigInteger,java.security.spec.ECParameterSpec)>($r6, $r21);
+
+        $r25 = new java.security.spec.ECPublicKeySpec;
+
+        specialinvoke $r25.<java.security.spec.ECPublicKeySpec: void <init>(java.security.spec.ECPoint,java.security.spec.ECParameterSpec)>($r23, $r21);
+
+        $r13 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: java.security.KeyPair generateKeyPair(java.lang.String,java.security.spec.KeySpec,java.security.spec.KeySpec)>("EC", $r24, $r25);
+
+        return $r13;
+
+     label18:
+        $r7 = new java.io.IOException;
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>("PEM problem: it is of unknown type");
+
+        throw $r7;
+    }
+
+    public static java.security.KeyPair decode(char[], java.lang.String) throws java.io.IOException
+    {
+        char[] $r0;
+        java.lang.String $r1;
+        com.trilead.ssh2.crypto.PEMStructure $r2;
+        java.security.KeyPair $r3;
+
+        $r0 := @parameter0: char[];
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: com.trilead.ssh2.crypto.PEMStructure parsePEM(char[])>($r0);
+
+        $r3 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: java.security.KeyPair decode(com.trilead.ssh2.crypto.PEMStructure,java.lang.String)>($r2, $r1);
+
+        return $r3;
+    }
+
+    private static final void decryptPEM(com.trilead.ssh2.crypto.PEMStructure, byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.PEMStructure $r0;
+        byte[] $r1, $r8;
+        com.trilead.ssh2.crypto.cipher.AES $r2;
+        java.lang.String $r3, $r10;
+        com.trilead.ssh2.crypto.cipher.CBCMode $r4;
+        com.trilead.ssh2.crypto.cipher.DES $r5;
+        com.trilead.ssh2.crypto.cipher.DESede $r6;
+        int $i0, $i1, $i2;
+        java.lang.String[] $r7;
+        java.io.IOException $r9;
+        boolean $z0;
+        java.lang.StringBuilder $r11;
+
+        $r0 := @parameter0: com.trilead.ssh2.crypto.PEMStructure;
+
+        $r1 := @parameter1: byte[];
+
+        $r7 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] dekInfo>;
+
+        if $r7 != null goto label01;
+
+        $r9 = new java.io.IOException;
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>("Broken PEM, no mode and salt given, but encryption enabled");
+
+        throw $r9;
+
+     label01:
+        $r7 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] dekInfo>;
+
+        $i0 = lengthof $r7;
+
+        if $i0 == 2 goto label02;
+
+        $r9 = new java.io.IOException;
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>("Broken PEM, DEK-Info is incomplete!");
+
+        throw $r9;
+
+     label02:
+        $r7 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] dekInfo>;
+
+        $r3 = $r7[0];
+
+        $r7 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] dekInfo>;
+
+        $r10 = $r7[1];
+
+        $r8 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: byte[] hexToByteArray(java.lang.String)>($r10);
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("DES-EDE3-CBC");
+
+        if $z0 == 0 goto label04;
+
+        $r6 = new com.trilead.ssh2.crypto.cipher.DESede;
+
+        specialinvoke $r6.<com.trilead.ssh2.crypto.cipher.DESede: void <init>()>();
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: byte[] generateKeyFromPasswordSaltWithMD5(byte[],byte[],int)>($r1, $r8, 24);
+
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.cipher.DESede: void init(boolean,byte[])>(0, $r1);
+
+        $r4 = new com.trilead.ssh2.crypto.cipher.CBCMode;
+
+        specialinvoke $r4.<com.trilead.ssh2.crypto.cipher.CBCMode: void <init>(com.trilead.ssh2.crypto.cipher.BlockCipher,byte[],boolean)>($r6, $r8, 0);
+
+     label03:
+        $r8 = $r0.<com.trilead.ssh2.crypto.PEMStructure: byte[] data>;
+
+        $i0 = lengthof $r8;
+
+        $i1 = interfaceinvoke $r4.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $i1 = $i0 % $i1;
+
+        if $i1 == 0 goto label09;
+
+        $r9 = new java.io.IOException;
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid PEM structure, size of encrypted block is not a multiple of ");
+
+        $i1 = interfaceinvoke $r4.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>($r10);
+
+        throw $r9;
+
+     label04:
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("DES-CBC");
+
+        if $z0 == 0 goto label05;
+
+        $r5 = new com.trilead.ssh2.crypto.cipher.DES;
+
+        specialinvoke $r5.<com.trilead.ssh2.crypto.cipher.DES: void <init>()>();
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: byte[] generateKeyFromPasswordSaltWithMD5(byte[],byte[],int)>($r1, $r8, 8);
+
+        virtualinvoke $r5.<com.trilead.ssh2.crypto.cipher.DES: void init(boolean,byte[])>(0, $r1);
+
+        $r4 = new com.trilead.ssh2.crypto.cipher.CBCMode;
+
+        specialinvoke $r4.<com.trilead.ssh2.crypto.cipher.CBCMode: void <init>(com.trilead.ssh2.crypto.cipher.BlockCipher,byte[],boolean)>($r5, $r8, 0);
+
+        goto label03;
+
+     label05:
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("AES-128-CBC");
+
+        if $z0 == 0 goto label06;
+
+        $r2 = new com.trilead.ssh2.crypto.cipher.AES;
+
+        specialinvoke $r2.<com.trilead.ssh2.crypto.cipher.AES: void <init>()>();
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: byte[] generateKeyFromPasswordSaltWithMD5(byte[],byte[],int)>($r1, $r8, 16);
+
+        virtualinvoke $r2.<com.trilead.ssh2.crypto.cipher.AES: void init(boolean,byte[])>(0, $r1);
+
+        $r4 = new com.trilead.ssh2.crypto.cipher.CBCMode;
+
+        specialinvoke $r4.<com.trilead.ssh2.crypto.cipher.CBCMode: void <init>(com.trilead.ssh2.crypto.cipher.BlockCipher,byte[],boolean)>($r2, $r8, 0);
+
+        goto label03;
+
+     label06:
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("AES-192-CBC");
+
+        if $z0 == 0 goto label07;
+
+        $r2 = new com.trilead.ssh2.crypto.cipher.AES;
+
+        specialinvoke $r2.<com.trilead.ssh2.crypto.cipher.AES: void <init>()>();
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: byte[] generateKeyFromPasswordSaltWithMD5(byte[],byte[],int)>($r1, $r8, 24);
+
+        virtualinvoke $r2.<com.trilead.ssh2.crypto.cipher.AES: void init(boolean,byte[])>(0, $r1);
+
+        $r4 = new com.trilead.ssh2.crypto.cipher.CBCMode;
+
+        specialinvoke $r4.<com.trilead.ssh2.crypto.cipher.CBCMode: void <init>(com.trilead.ssh2.crypto.cipher.BlockCipher,byte[],boolean)>($r2, $r8, 0);
+
+        goto label03;
+
+     label07:
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("AES-256-CBC");
+
+        if $z0 == 0 goto label08;
+
+        $r2 = new com.trilead.ssh2.crypto.cipher.AES;
+
+        specialinvoke $r2.<com.trilead.ssh2.crypto.cipher.AES: void <init>()>();
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: byte[] generateKeyFromPasswordSaltWithMD5(byte[],byte[],int)>($r1, $r8, 32);
+
+        virtualinvoke $r2.<com.trilead.ssh2.crypto.cipher.AES: void init(boolean,byte[])>(0, $r1);
+
+        $r4 = new com.trilead.ssh2.crypto.cipher.CBCMode;
+
+        specialinvoke $r4.<com.trilead.ssh2.crypto.cipher.CBCMode: void <init>(com.trilead.ssh2.crypto.cipher.BlockCipher,byte[],boolean)>($r2, $r8, 0);
+
+        goto label03;
+
+     label08:
+        $r9 = new java.io.IOException;
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot decrypt PEM structure, unknown cipher ");
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r10 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>($r10);
+
+        throw $r9;
+
+     label09:
+        $r8 = $r0.<com.trilead.ssh2.crypto.PEMStructure: byte[] data>;
+
+        $i1 = lengthof $r8;
+
+        $r1 = newarray (byte)[$i1];
+
+        $i0 = 0;
+
+     label10:
+        $r8 = $r0.<com.trilead.ssh2.crypto.PEMStructure: byte[] data>;
+
+        $i1 = lengthof $r8;
+
+        $i2 = interfaceinvoke $r4.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $i2 = $i1 / $i2;
+
+        if $i0 >= $i2 goto label11;
+
+        $r8 = $r0.<com.trilead.ssh2.crypto.PEMStructure: byte[] data>;
+
+        $i2 = interfaceinvoke $r4.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $i2 = $i2 * $i0;
+
+        $i1 = interfaceinvoke $r4.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $i1 = $i1 * $i0;
+
+        interfaceinvoke $r4.<com.trilead.ssh2.crypto.cipher.BlockCipher: void transformBlock(byte[],int,byte[],int)>($r8, $i2, $r1, $i1);
+
+        $i0 = $i0 + 1;
+
+        goto label10;
+
+     label11:
+        $i2 = interfaceinvoke $r4.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $r8 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: byte[] removePadding(byte[],int)>($r1, $i2);
+
+        $r0.<com.trilead.ssh2.crypto.PEMStructure: byte[] data> = $r8;
+
+        $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] dekInfo> = null;
+
+        $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] procType> = null;
+
+        return;
+    }
+
+    private static byte[] generateKeyFromPasswordSaltWithMD5(byte[], byte[], int) throws java.io.IOException
+    {
+        byte[] $r0, $r1, $r4, $r5;
+        int $i0, $i1, $i2;
+        java.security.NoSuchAlgorithmException $r2;
+        java.io.IOException $r3;
+        java.security.MessageDigest $r6;
+        java.lang.IllegalArgumentException $r7;
+        java.security.DigestException $r8;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 = lengthof $r1;
+
+        if $i1 >= 8 goto label01;
+
+        $r7 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Salt needs to be at least 8 bytes for key generation.");
+
+        throw $r7;
+
+     label01:
+        $r6 = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>("MD5");
+
+     label02:
+        $r4 = newarray (byte)[$i0];
+
+        $i1 = virtualinvoke $r6.<java.security.MessageDigest: int getDigestLength()>();
+
+        $r5 = newarray (byte)[$i1];
+
+     label03:
+        $i1 = lengthof $r0;
+
+        virtualinvoke $r6.<java.security.MessageDigest: void update(byte[],int,int)>($r0, 0, $i1);
+
+        virtualinvoke $r6.<java.security.MessageDigest: void update(byte[],int,int)>($r1, 0, 8);
+
+        $i1 = lengthof $r5;
+
+        if $i0 >= $i1 goto label08;
+
+        $i1 = $i0;
+
+     label04:
+        $i2 = lengthof $r5;
+
+     label05:
+        virtualinvoke $r6.<java.security.MessageDigest: int digest(byte[],int,int)>($r5, 0, $i2);
+
+     label06:
+        $i2 = lengthof $r4;
+
+        $i2 = $i2 - $i0;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r5, 0, $r4, $i2, $i1);
+
+        $i0 = $i0 - $i1;
+
+        if $i0 != 0 goto label10;
+
+        return $r4;
+
+     label07:
+        $r2 := @caughtexception;
+
+        $r7 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String,java.lang.Throwable)>("VM does not support MD5", $r2);
+
+        throw $r7;
+
+     label08:
+        $i1 = lengthof $r5;
+
+        goto label04;
+
+     label09:
+        $r8 := @caughtexception;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("could not digest password");
+
+        virtualinvoke $r3.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r8);
+
+        throw $r3;
+
+     label10:
+        $i2 = lengthof $r5;
+
+        virtualinvoke $r6.<java.security.MessageDigest: void update(byte[],int,int)>($r5, 0, $i2);
+
+        goto label03;
+
+        catch java.security.NoSuchAlgorithmException from label01 to label02 with label07;
+        catch java.security.DigestException from label05 to label06 with label09;
+    }
+
+    private static java.security.KeyPair generateKeyPair(java.lang.String, java.security.spec.KeySpec, java.security.spec.KeySpec) throws java.io.IOException
+    {
+        java.lang.String $r0;
+        java.security.spec.KeySpec $r1, $r2;
+        java.security.NoSuchAlgorithmException $r3;
+        java.io.IOException $r4;
+        java.security.KeyPair $r5;
+        java.security.KeyFactory $r6;
+        java.security.PublicKey $r7;
+        java.security.PrivateKey $r8;
+        java.security.spec.InvalidKeySpecException $r9;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.security.spec.KeySpec;
+
+        $r2 := @parameter2: java.security.spec.KeySpec;
+
+     label1:
+        $r6 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>($r0);
+
+        $r7 = virtualinvoke $r6.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r2);
+
+        $r8 = virtualinvoke $r6.<java.security.KeyFactory: java.security.PrivateKey generatePrivate(java.security.spec.KeySpec)>($r1);
+
+        $r5 = new java.security.KeyPair;
+
+        specialinvoke $r5.<java.security.KeyPair: void <init>(java.security.PublicKey,java.security.PrivateKey)>($r7, $r8);
+
+     label2:
+        return $r5;
+
+     label3:
+        $r3 := @caughtexception;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>()>();
+
+        virtualinvoke $r4.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r3);
+
+        throw $r4;
+
+     label4:
+        $r9 := @caughtexception;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("invalid keyspec");
+
+        virtualinvoke $r4.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r9);
+
+        throw $r4;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label3;
+        catch java.security.spec.InvalidKeySpecException from label1 to label2 with label4;
+    }
+
+    private static byte[] hexToByteArray(java.lang.String)
+    {
+        java.lang.String $r0;
+        byte[] $r1;
+        int $i0, $i1, $i3;
+        java.lang.IllegalArgumentException $r2;
+        char $c2;
+        byte $b4;
+
+        $r0 := @parameter0: java.lang.String;
+
+        if $r0 != null goto label1;
+
+        $r2 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("null argument");
+
+        throw $r2;
+
+     label1:
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i0 = $i0 % 2;
+
+        if $i0 == 0 goto label2;
+
+        $r2 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Uneven string length in hex encoding.");
+
+        throw $r2;
+
+     label2:
+        $i0 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        $i0 = $i0 / 2;
+
+        $r1 = newarray (byte)[$i0];
+
+        $i0 = 0;
+
+     label3:
+        $i1 = lengthof $r1;
+
+        if $i0 >= $i1 goto label4;
+
+        $i1 = $i0 * 2;
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i1);
+
+        $i1 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: int hexToInt(char)>($c2);
+
+        $i3 = $i0 * 2;
+
+        $i3 = $i3 + 1;
+
+        $c2 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i3);
+
+        $i3 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: int hexToInt(char)>($c2);
+
+        $i1 = $i1 * 16;
+
+        $i3 = $i1 + $i3;
+
+        $b4 = (byte) $i3;
+
+        $r1[$i0] = $b4;
+
+        $i0 = $i0 + 1;
+
+        goto label3;
+
+     label4:
+        return $r1;
+    }
+
+    private static final int hexToInt(char)
+    {
+        char $c0;
+        int $i1;
+        java.lang.IllegalArgumentException $r0;
+
+        $c0 := @parameter0: char;
+
+        if $c0 < 97 goto label1;
+
+        if $c0 > 102 goto label1;
+
+        $i1 = $c0 + -97;
+
+        $i1 = $i1 + 10;
+
+        return $i1;
+
+     label1:
+        if $c0 < 65 goto label2;
+
+        if $c0 > 70 goto label2;
+
+        $i1 = $c0 + -65;
+
+        $i1 = $i1 + 10;
+
+        return $i1;
+
+     label2:
+        if $c0 < 48 goto label3;
+
+        if $c0 > 57 goto label3;
+
+        $i1 = $c0 + -48;
+
+        return $i1;
+
+     label3:
+        $r0 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r0.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Need hex char");
+
+        throw $r0;
+    }
+
+    public static final boolean isPEMEncrypted(com.trilead.ssh2.crypto.PEMStructure) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.PEMStructure $r0;
+        java.lang.String[] $r1;
+        boolean $z0;
+        int $i0;
+        java.io.IOException $r2;
+        java.lang.String $r3, $r4;
+        java.lang.StringBuilder $r5;
+
+        $r0 := @parameter0: com.trilead.ssh2.crypto.PEMStructure;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] procType>;
+
+        if $r1 != null goto label1;
+
+        return 0;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] procType>;
+
+        $i0 = lengthof $r1;
+
+        if $i0 == 2 goto label2;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Unknown Proc-Type field.");
+
+        throw $r2;
+
+     label2:
+        $r3 = "4";
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] procType>;
+
+        $r4 = $r1[0];
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 != 0 goto label3;
+
+        $r2 = new java.io.IOException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown Proc-Type field (");
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] procType>;
+
+        $r4 = $r1[0];
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r2;
+
+     label3:
+        $r4 = "ENCRYPTED";
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] procType>;
+
+        $r3 = $r1[1];
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label4;
+
+        return 1;
+
+     label4:
+        return 0;
+    }
+
+    public static final com.trilead.ssh2.crypto.PEMStructure parsePEM(char[]) throws java.io.IOException
+    {
+        char[] $r0;
+        java.io.BufferedReader $r1;
+        java.lang.String $r2, $r7, $r9;
+        int $i0, $i1;
+        java.lang.StringBuffer $r3;
+        com.trilead.ssh2.crypto.PEMStructure $r4;
+        java.io.CharArrayReader $r5;
+        java.io.IOException $r6;
+        boolean $z0;
+        java.lang.StringBuilder $r8;
+        java.lang.String[] $r10;
+        byte[] $r11;
+
+        $r0 := @parameter0: char[];
+
+        $r4 = new com.trilead.ssh2.crypto.PEMStructure;
+
+        specialinvoke $r4.<com.trilead.ssh2.crypto.PEMStructure: void <init>()>();
+
+        $r1 = new java.io.BufferedReader;
+
+        $r5 = new java.io.CharArrayReader;
+
+        specialinvoke $r5.<java.io.CharArrayReader: void <init>(char[])>($r0);
+
+        specialinvoke $r1.<java.io.BufferedReader: void <init>(java.io.Reader)>($r5);
+
+     label01:
+        $r2 = virtualinvoke $r1.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        if $r2 != null goto label02;
+
+        $r6 = new java.io.IOException;
+
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>("Invalid PEM structure, \'-----BEGIN...\' missing");
+
+        throw $r6;
+
+     label02:
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String trim()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("-----BEGIN DSA PRIVATE KEY-----");
+
+        if $z0 == 0 goto label04;
+
+        $r2 = "-----END DSA PRIVATE KEY-----";
+
+        $r4.<com.trilead.ssh2.crypto.PEMStructure: int pemType> = 2;
+
+     label03:
+        $r7 = virtualinvoke $r1.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        if $r7 != null goto label06;
+
+        $r6 = new java.io.IOException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid PEM structure, ");
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" missing");
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>($r7);
+
+        throw $r6;
+
+     label04:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("-----BEGIN RSA PRIVATE KEY-----");
+
+        if $z0 == 0 goto label05;
+
+        $r2 = "-----END RSA PRIVATE KEY-----";
+
+        $r4.<com.trilead.ssh2.crypto.PEMStructure: int pemType> = 1;
+
+        goto label03;
+
+     label05:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("-----BEGIN EC PRIVATE KEY-----");
+
+        if $z0 == 0 goto label01;
+
+        $r2 = "-----END EC PRIVATE KEY-----";
+
+        $r4.<com.trilead.ssh2.crypto.PEMStructure: int pemType> = 3;
+
+        goto label03;
+
+     label06:
+        $r7 = virtualinvoke $r7.<java.lang.String: java.lang.String trim()>();
+
+        $r9 = $r7;
+
+        $i0 = virtualinvoke $r7.<java.lang.String: int indexOf(int)>(58);
+
+        if $i0 != -1 goto label08;
+
+        $r3 = new java.lang.StringBuffer;
+
+        specialinvoke $r3.<java.lang.StringBuffer: void <init>()>();
+
+     label07:
+        if $r9 != null goto label12;
+
+        $r6 = new java.io.IOException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid PEM structure, ");
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" missing");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>($r9);
+
+        throw $r6;
+
+     label08:
+        $i1 = $i0 + 1;
+
+        $r9 = virtualinvoke $r7.<java.lang.String: java.lang.String substring(int,int)>(0, $i1);
+
+        $i1 = $i0 + 1;
+
+        $r7 = virtualinvoke $r7.<java.lang.String: java.lang.String substring(int)>($i1);
+
+        $r10 = virtualinvoke $r7.<java.lang.String: java.lang.String[] split(java.lang.String)>(",");
+
+        $i0 = 0;
+
+     label09:
+        $i1 = lengthof $r10;
+
+        if $i0 >= $i1 goto label10;
+
+        $r7 = $r10[$i0];
+
+        $r7 = virtualinvoke $r7.<java.lang.String: java.lang.String trim()>();
+
+        $r10[$i0] = $r7;
+
+        $i0 = $i0 + 1;
+
+        goto label09;
+
+     label10:
+        $r7 = "Proc-Type:";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r9);
+
+        if $z0 == 0 goto label11;
+
+        $r4.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] procType> = $r10;
+
+        goto label03;
+
+     label11:
+        $r7 = "DEK-Info:";
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r9);
+
+        if $z0 == 0 goto label03;
+
+        $r4.<com.trilead.ssh2.crypto.PEMStructure: java.lang.String[] dekInfo> = $r10;
+
+        goto label03;
+
+     label12:
+        $r9 = virtualinvoke $r9.<java.lang.String: java.lang.String trim()>();
+
+        $z0 = virtualinvoke $r9.<java.lang.String: boolean startsWith(java.lang.String)>($r2);
+
+        if $z0 == 0 goto label13;
+
+        $i1 = virtualinvoke $r3.<java.lang.StringBuffer: int length()>();
+
+        $r0 = newarray (char)[$i1];
+
+        $i1 = lengthof $r0;
+
+        virtualinvoke $r3.<java.lang.StringBuffer: void getChars(int,int,char[],int)>(0, $i1, $r0, 0);
+
+        $r11 = staticinvoke <com.trilead.ssh2.crypto.Base64: byte[] decode(char[])>($r0);
+
+        $r4.<com.trilead.ssh2.crypto.PEMStructure: byte[] data> = $r11;
+
+        $r11 = $r4.<com.trilead.ssh2.crypto.PEMStructure: byte[] data>;
+
+        $i1 = lengthof $r11;
+
+        if $i1 != 0 goto label14;
+
+        $r6 = new java.io.IOException;
+
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>("Invalid PEM structure, no data available");
+
+        throw $r6;
+
+     label13:
+        virtualinvoke $r3.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r9);
+
+        $r9 = virtualinvoke $r1.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        goto label07;
+
+     label14:
+        return $r4;
+    }
+
+    private static byte[] removePadding(byte[], int) throws java.io.IOException
+    {
+        byte[] $r0, $r1;
+        int $i0, $i2;
+        short $s1;
+        byte $b3;
+        java.io.IOException $r2;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i2 = lengthof $r0;
+
+        $i2 = $i2 + -1;
+
+        $b3 = $r0[$i2];
+
+        $s1 = $b3 & 255;
+
+        if $s1 < 1 goto label1;
+
+        if $s1 <= $i0 goto label2;
+
+     label1:
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Decrypted PEM has wrong padding, did you specify the correct password?");
+
+        throw $r2;
+
+     label2:
+        $i0 = 2;
+
+     label3:
+        if $i0 > $s1 goto label5;
+
+        $i2 = lengthof $r0;
+
+        $i2 = $i2 - $i0;
+
+        $b3 = $r0[$i2];
+
+        if $b3 == $s1 goto label4;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Decrypted PEM has wrong padding, did you specify the correct password?");
+
+        throw $r2;
+
+     label4:
+        $i0 = $i0 + 1;
+
+        goto label3;
+
+     label5:
+        $i2 = lengthof $r0;
+
+        $i2 = $i2 - $s1;
+
+        $r1 = newarray (byte)[$i2];
+
+        $i2 = lengthof $r0;
+
+        $i2 = $i2 - $s1;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, $r1, 0, $i2);
+
+        return $r1;
+    }
+}

@@ -1,0 +1,17 @@
+public class com.trilead.ssh2.channel.X11ServerData extends java.lang.Object
+{
+    public java.lang.String hostname;
+    public int port;
+    public byte[] x11_magic_cookie;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.channel.X11ServerData $r0;
+
+        $r0 := @this: com.trilead.ssh2.channel.X11ServerData;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

@@ -1,0 +1,448 @@
+public class com.trilead.ssh2.channel.StreamForwarder extends java.lang.Thread
+{
+    final byte[] buffer;
+    final com.trilead.ssh2.channel.Channel c;
+    final java.io.InputStream is;
+    final java.lang.String mode;
+    final java.io.OutputStream os;
+    final java.net.Socket s;
+    final com.trilead.ssh2.channel.StreamForwarder sibling;
+
+    void <init>(com.trilead.ssh2.channel.Channel, com.trilead.ssh2.channel.StreamForwarder, java.net.Socket, java.io.InputStream, java.io.OutputStream, java.lang.String) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.StreamForwarder $r0, $r2;
+        com.trilead.ssh2.channel.Channel $r1;
+        java.net.Socket $r3;
+        java.io.InputStream $r4;
+        java.io.OutputStream $r5;
+        java.lang.String $r6;
+        byte[] $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.StreamForwarder;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $r2 := @parameter1: com.trilead.ssh2.channel.StreamForwarder;
+
+        $r3 := @parameter2: java.net.Socket;
+
+        $r4 := @parameter3: java.io.InputStream;
+
+        $r5 := @parameter4: java.io.OutputStream;
+
+        $r6 := @parameter5: java.lang.String;
+
+        specialinvoke $r0.<java.lang.Thread: void <init>()>();
+
+        $r7 = newarray (byte)[30000];
+
+        $r0.<com.trilead.ssh2.channel.StreamForwarder: byte[] buffer> = $r7;
+
+        $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.InputStream is> = $r4;
+
+        $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.OutputStream os> = $r5;
+
+        $r0.<com.trilead.ssh2.channel.StreamForwarder: java.lang.String mode> = $r6;
+
+        $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c> = $r1;
+
+        $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling> = $r2;
+
+        $r0.<com.trilead.ssh2.channel.StreamForwarder: java.net.Socket s> = $r3;
+
+        return;
+    }
+
+    public void run()
+    {
+        com.trilead.ssh2.channel.StreamForwarder $r0, $r5;
+        java.io.IOException $r1, $r13, $r16, $r17, $r18, $r19, $r20, $r21, $r22, $r23, $r24, $r25, $r26, $r27;
+        java.io.InputStream $r2;
+        byte[] $r3;
+        int $i0;
+        java.io.OutputStream $r4;
+        boolean $z0;
+        java.lang.InterruptedException $r6, $r11, $r15;
+        com.trilead.ssh2.channel.Channel $r7;
+        com.trilead.ssh2.channel.ChannelManager $r8;
+        java.lang.StringBuilder $r9;
+        java.lang.String $r10;
+        java.net.Socket $r12;
+        java.lang.Throwable $r14;
+
+        $r0 := @this: com.trilead.ssh2.channel.StreamForwarder;
+
+     label01:
+        $r2 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.InputStream is>;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.StreamForwarder: byte[] buffer>;
+
+     label02:
+        $i0 = virtualinvoke $r2.<java.io.InputStream: int read(byte[])>($r3);
+
+     label03:
+        if $i0 > 0 goto label12;
+
+        $r4 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.OutputStream os>;
+
+     label04:
+        virtualinvoke $r4.<java.io.OutputStream: void close()>();
+
+     label05:
+        $r2 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.InputStream is>;
+
+     label06:
+        virtualinvoke $r2.<java.io.InputStream: void close()>();
+
+     label07:
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+        if $r5 == null goto label29;
+
+     label08:
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+        $z0 = virtualinvoke $r5.<com.trilead.ssh2.channel.StreamForwarder: boolean isAlive()>();
+
+        if $z0 == 0 goto label27;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+     label09:
+        virtualinvoke $r5.<com.trilead.ssh2.channel.StreamForwarder: void join()>();
+
+     label10:
+        goto label08;
+
+     label11:
+        $r6 := @caughtexception;
+
+        goto label08;
+
+     label12:
+        $r4 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.OutputStream os>;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.StreamForwarder: byte[] buffer>;
+
+     label13:
+        virtualinvoke $r4.<java.io.OutputStream: void write(byte[],int,int)>($r3, 0, $i0);
+
+        $r4 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.OutputStream os>;
+
+        virtualinvoke $r4.<java.io.OutputStream: void flush()>();
+
+     label14:
+        goto label01;
+
+     label15:
+        $r1 := @caughtexception;
+
+     label16:
+        $r7 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c>;
+
+        $r8 = $r7.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r7 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c>;
+
+        $r9 = new java.lang.StringBuilder;
+
+     label17:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Closed due to exception in StreamForwarder (");
+
+        $r10 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.lang.String mode>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("): ");
+
+        $r10 = virtualinvoke $r1.<java.io.IOException: java.lang.String getMessage()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r7, $r10, 1);
+
+     label18:
+        $r4 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.OutputStream os>;
+
+     label19:
+        virtualinvoke $r4.<java.io.OutputStream: void close()>();
+
+     label20:
+        $r2 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.InputStream is>;
+
+     label21:
+        virtualinvoke $r2.<java.io.InputStream: void close()>();
+
+     label22:
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+        if $r5 == null goto label34;
+
+     label23:
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+        $z0 = virtualinvoke $r5.<com.trilead.ssh2.channel.StreamForwarder: boolean isAlive()>();
+
+        if $z0 == 0 goto label32;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+     label24:
+        virtualinvoke $r5.<com.trilead.ssh2.channel.StreamForwarder: void join()>();
+
+     label25:
+        goto label23;
+
+     label26:
+        $r11 := @caughtexception;
+
+        goto label23;
+
+     label27:
+        $r7 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c>;
+
+        $r8 = $r7.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r7 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c>;
+
+        $r9 = new java.lang.StringBuilder;
+
+     label28:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("StreamForwarder (");
+
+        $r10 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.lang.String mode>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") is cleaning up the connection");
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r7, $r10, 1);
+
+     label29:
+        $r12 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.net.Socket s>;
+
+        if $r12 == null goto label64;
+
+        $r12 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.net.Socket s>;
+
+     label30:
+        virtualinvoke $r12.<java.net.Socket: void close()>();
+
+     label31:
+        return;
+
+     label32:
+        $r7 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c>;
+
+        $r8 = $r7.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r7 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c>;
+
+        $r9 = new java.lang.StringBuilder;
+
+     label33:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("StreamForwarder (");
+
+        $r10 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.lang.String mode>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") is cleaning up the connection");
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r7, $r10, 1);
+
+     label34:
+        $r12 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.net.Socket s>;
+
+        if $r12 == null goto label65;
+
+        $r12 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.net.Socket s>;
+
+     label35:
+        virtualinvoke $r12.<java.net.Socket: void close()>();
+
+     label36:
+        return;
+
+     label37:
+        $r13 := @caughtexception;
+
+        return;
+
+     label38:
+        $r14 := @caughtexception;
+
+        $r4 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.OutputStream os>;
+
+     label39:
+        virtualinvoke $r4.<java.io.OutputStream: void close()>();
+
+     label40:
+        $r2 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.io.InputStream is>;
+
+     label41:
+        virtualinvoke $r2.<java.io.InputStream: void close()>();
+
+     label42:
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+        if $r5 == null goto label49;
+
+     label43:
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+        $z0 = virtualinvoke $r5.<com.trilead.ssh2.channel.StreamForwarder: boolean isAlive()>();
+
+        if $z0 == 0 goto label47;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.StreamForwarder sibling>;
+
+     label44:
+        virtualinvoke $r5.<com.trilead.ssh2.channel.StreamForwarder: void join()>();
+
+     label45:
+        goto label43;
+
+     label46:
+        $r15 := @caughtexception;
+
+        goto label43;
+
+     label47:
+        $r7 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c>;
+
+        $r8 = $r7.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r7 = $r0.<com.trilead.ssh2.channel.StreamForwarder: com.trilead.ssh2.channel.Channel c>;
+
+        $r9 = new java.lang.StringBuilder;
+
+     label48:
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("StreamForwarder (");
+
+        $r10 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.lang.String mode>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") is cleaning up the connection");
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r7, $r10, 1);
+
+     label49:
+        $r12 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.net.Socket s>;
+
+        if $r12 == null goto label51;
+
+        $r12 = $r0.<com.trilead.ssh2.channel.StreamForwarder: java.net.Socket s>;
+
+     label50:
+        virtualinvoke $r12.<java.net.Socket: void close()>();
+
+     label51:
+        throw $r14;
+
+     label52:
+        $r16 := @caughtexception;
+
+        goto label51;
+
+     label53:
+        $r17 := @caughtexception;
+
+        goto label49;
+
+     label54:
+        $r18 := @caughtexception;
+
+        goto label42;
+
+     label55:
+        $r19 := @caughtexception;
+
+        goto label40;
+
+     label56:
+        $r20 := @caughtexception;
+
+        goto label34;
+
+     label57:
+        $r21 := @caughtexception;
+
+        goto label22;
+
+     label58:
+        $r22 := @caughtexception;
+
+        goto label20;
+
+     label59:
+        $r23 := @caughtexception;
+
+        goto label18;
+
+     label60:
+        $r24 := @caughtexception;
+
+        return;
+
+     label61:
+        $r25 := @caughtexception;
+
+        goto label29;
+
+     label62:
+        $r26 := @caughtexception;
+
+        goto label07;
+
+     label63:
+        $r27 := @caughtexception;
+
+        goto label05;
+
+     label64:
+        return;
+
+     label65:
+        return;
+
+        catch java.io.IOException from label02 to label03 with label15;
+        catch java.lang.Throwable from label01 to label03 with label38;
+        catch java.io.IOException from label04 to label05 with label63;
+        catch java.io.IOException from label06 to label07 with label62;
+        catch java.lang.InterruptedException from label09 to label10 with label11;
+        catch java.io.IOException from label13 to label14 with label15;
+        catch java.lang.Throwable from label12 to label14 with label38;
+        catch java.io.IOException from label17 to label18 with label59;
+        catch java.lang.Throwable from label16 to label18 with label38;
+        catch java.io.IOException from label19 to label20 with label58;
+        catch java.io.IOException from label21 to label22 with label57;
+        catch java.lang.InterruptedException from label24 to label25 with label26;
+        catch java.io.IOException from label28 to label29 with label61;
+        catch java.io.IOException from label30 to label31 with label60;
+        catch java.io.IOException from label33 to label34 with label56;
+        catch java.io.IOException from label35 to label36 with label37;
+        catch java.io.IOException from label39 to label40 with label55;
+        catch java.io.IOException from label41 to label42 with label54;
+        catch java.lang.InterruptedException from label44 to label45 with label46;
+        catch java.io.IOException from label48 to label49 with label53;
+        catch java.io.IOException from label50 to label51 with label52;
+    }
+}

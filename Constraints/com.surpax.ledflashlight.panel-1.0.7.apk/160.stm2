@@ -1,0 +1,103 @@
+;com.millennialmedia.android.MMAdView int width-com.millennialmedia.android.MMAdView- void setWidth(int)-com.millennialmedia.android.MMAdView$1- void run()-6.stm2
+(declare-const O0 Int)
+(declare-const O1 Int)
+(declare-const O2 Int)
+(declare-const O3 Int)
+(declare-const O4 Int)
+
+
+(declare-const O5 Int)
+(declare-const O6 Int)
+(declare-const O7 Int)
+(declare-const O8 Int)
+(declare-const O9 Int)
+(declare-const O10 Int)
+(declare-const O11 Int)
+(declare-const O12 Int)
+(declare-const O13 Int)
+(declare-const O14 Int)
+(declare-const O15 Int)
+(declare-const O16 Int)
+(declare-const O17 Int)
+(declare-const O18 Int)
+(declare-const O19 Int)
+(declare-const O20 Int)
+(declare-const O21 Int)
+(declare-const O22 Int)
+(declare-const O23 Int)
+(declare-const O24 Int)
+(declare-const O25 Int)
+(declare-const O26 Int)
+(declare-const O27 Int)
+(declare-const O28 Int)
+(declare-const O29 Int)
+(declare-const O30 Int)
+(declare-const O31 Int)
+(declare-const O32 Int)
+
+
+
+
+(assert (< O0 O1))
+(assert (< O1 O2))
+(assert (< O2 O3))
+(assert (< O3 O4))
+
+
+(assert (< O5 O6))
+(assert (< O6 O7))
+(assert (< O7 O8))
+(assert (< O8 O9))
+(assert (< O9 O10))
+(assert (< O10 O11))
+(assert (< O11 O12))
+(assert (< O12 O13))
+(assert (< O13 O14))
+(assert (< O14 O15))
+(assert (< O15 O16))
+(assert (< O16 O17))
+(assert (< O17 O18))
+(assert (< O18 O19))
+(assert (< O19 O20))
+(assert (< O20 O21))
+(assert (< O21 O22))
+(assert (< O22 O23))
+(assert (< O23 O24))
+(assert (< O24 O25))
+(assert (< O25 O26))
+(assert (< O26 O27))
+(assert (< O27 O28))
+(assert (< O28 O29))
+(assert (< O29 O30))
+(assert (< O30 O31))
+(assert (< O31 O32))
+
+
+
+
+
+
+(push)
+(check-sat)
+(assert (= O3 O12))
+(get-model)
+(pop)
+
+
+(push)
+(check-sat)
+(assert (= O3 O20))
+(get-model)
+(pop)
+
+
+
+
+
+
+
+
+
+
+
+

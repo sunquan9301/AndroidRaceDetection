@@ -1,0 +1,16 @@
+public class com.google.ase.Exec extends java.lang.Object
+{
+
+    static void <clinit>()
+    {
+        staticinvoke <java.lang.System: void loadLibrary(java.lang.String)>("com_google_ase_Exec");
+
+        return;
+    }
+
+    public static native java.io.FileDescriptor createSubprocess(java.lang.String, java.lang.String, java.lang.String, int[]);
+
+    public static native void setPtyWindowSize(java.io.FileDescriptor, int, int, int, int);
+
+    public static native int waitFor(int);
+}

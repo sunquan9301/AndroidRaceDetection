@@ -1,0 +1,2444 @@
+public class com.trilead.ssh2.transport.KexManager extends java.lang.Object
+{
+    private static final java.util.Set HOSTKEY_ALGS;
+    private static final java.util.Set KEX_ALGS;
+    private static final com.trilead.ssh2.log.Logger log;
+    private static final boolean supportsEc;
+    final java.lang.Object accessLock;
+    boolean connectionClosed;
+    com.trilead.ssh2.transport.ClientServerHello csh;
+    final java.lang.String hostname;
+    boolean ignore_next_kex_packet;
+    int kexCount;
+    com.trilead.ssh2.crypto.KeyMaterial km;
+    com.trilead.ssh2.transport.KexState kxs;
+    com.trilead.ssh2.ConnectionInfo lastConnInfo;
+    com.trilead.ssh2.crypto.CryptoWishList nextKEXcryptoWishList;
+    com.trilead.ssh2.DHGexParameters nextKEXdhgexParameters;
+    final int port;
+    final java.security.SecureRandom rnd;
+    byte[] sessionId;
+    final com.trilead.ssh2.transport.TransportManager tm;
+    com.trilead.ssh2.ServerHostKeyVerifier verifier;
+
+    static void <clinit>()
+    {
+        java.security.NoSuchAlgorithmException $r0;
+        java.security.KeyFactory $r1;
+        com.trilead.ssh2.log.Logger $r2;
+        boolean $z0;
+        java.util.LinkedHashSet $r3;
+        java.util.Set $r4;
+
+        $r2 = staticinvoke <com.trilead.ssh2.log.Logger: com.trilead.ssh2.log.Logger getLogger(java.lang.Class)>(class "com/trilead/ssh2/transport/KexManager");
+
+        <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log> = $r2;
+
+     label1:
+        $r1 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>("EC");
+
+     label2:
+        if $r1 == null goto label7;
+
+        $z0 = 1;
+
+     label3:
+        <com.trilead.ssh2.transport.KexManager: boolean supportsEc> = $z0;
+
+        $r3 = new java.util.LinkedHashSet;
+
+        specialinvoke $r3.<java.util.LinkedHashSet: void <init>()>();
+
+        <com.trilead.ssh2.transport.KexManager: java.util.Set HOSTKEY_ALGS> = $r3;
+
+        $z0 = <com.trilead.ssh2.transport.KexManager: boolean supportsEc>;
+
+        if $z0 == 0 goto label4;
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set HOSTKEY_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("ecdsa-sha2-nistp256");
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set HOSTKEY_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("ecdsa-sha2-nistp384");
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set HOSTKEY_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("ecdsa-sha2-nistp521");
+
+     label4:
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set HOSTKEY_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("ssh-rsa");
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set HOSTKEY_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("ssh-dss");
+
+        $r3 = new java.util.LinkedHashSet;
+
+        specialinvoke $r3.<java.util.LinkedHashSet: void <init>()>();
+
+        <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS> = $r3;
+
+        $z0 = <com.trilead.ssh2.transport.KexManager: boolean supportsEc>;
+
+        if $z0 == 0 goto label5;
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("ecdh-sha2-nistp256");
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("ecdh-sha2-nistp384");
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("ecdh-sha2-nistp521");
+
+     label5:
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("diffie-hellman-group-exchange-sha256");
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("diffie-hellman-group-exchange-sha1");
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("diffie-hellman-group14-sha1");
+
+        $r4 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        interfaceinvoke $r4.<java.util.Set: boolean add(java.lang.Object)>("diffie-hellman-group1-sha1");
+
+        return;
+
+     label6:
+        $r0 := @caughtexception;
+
+        $r1 = null;
+
+        $r2 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r2.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(10, "Disabling EC support due to lack of KeyFactory");
+
+        goto label2;
+
+     label7:
+        $z0 = 0;
+
+        goto label3;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label6;
+    }
+
+    public void <init>(com.trilead.ssh2.transport.TransportManager, com.trilead.ssh2.transport.ClientServerHello, com.trilead.ssh2.crypto.CryptoWishList, java.lang.String, int, com.trilead.ssh2.ServerHostKeyVerifier, java.security.SecureRandom)
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        com.trilead.ssh2.transport.TransportManager $r1;
+        com.trilead.ssh2.transport.ClientServerHello $r2;
+        com.trilead.ssh2.crypto.CryptoWishList $r3;
+        java.lang.String $r4;
+        int $i0;
+        com.trilead.ssh2.ServerHostKeyVerifier $r5;
+        java.security.SecureRandom $r6;
+        java.lang.Object $r7;
+        com.trilead.ssh2.DHGexParameters $r8;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.transport.TransportManager;
+
+        $r2 := @parameter1: com.trilead.ssh2.transport.ClientServerHello;
+
+        $r3 := @parameter2: com.trilead.ssh2.crypto.CryptoWishList;
+
+        $r4 := @parameter3: java.lang.String;
+
+        $i0 := @parameter4: int;
+
+        $r5 := @parameter5: com.trilead.ssh2.ServerHostKeyVerifier;
+
+        $r6 := @parameter6: java.security.SecureRandom;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.KexManager: int kexCount> = 0;
+
+        $r7 = new java.lang.Object;
+
+        specialinvoke $r7.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.KexManager: java.lang.Object accessLock> = $r7;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ConnectionInfo lastConnInfo> = null;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: boolean connectionClosed> = 0;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: boolean ignore_next_kex_packet> = 0;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm> = $r1;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.ClientServerHello csh> = $r2;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.CryptoWishList nextKEXcryptoWishList> = $r3;
+
+        $r8 = new com.trilead.ssh2.DHGexParameters;
+
+        specialinvoke $r8.<com.trilead.ssh2.DHGexParameters: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.DHGexParameters nextKEXdhgexParameters> = $r8;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String hostname> = $r4;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: int port> = $i0;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ServerHostKeyVerifier verifier> = $r5;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: java.security.SecureRandom rnd> = $r6;
+
+        return;
+    }
+
+    private boolean compareFirstOfNameList(java.lang.String[], java.lang.String[])
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        java.lang.String[] $r1, $r2;
+        int $i0;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r3;
+        java.lang.String $r4, $r5;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 := @parameter0: java.lang.String[];
+
+        $r2 := @parameter1: java.lang.String[];
+
+        if $r1 == null goto label1;
+
+        if $r2 != null goto label2;
+
+     label1:
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r3;
+
+     label2:
+        $i0 = lengthof $r1;
+
+        if $i0 != 0 goto label3;
+
+        $i0 = lengthof $r2;
+
+        if $i0 != 0 goto label3;
+
+        return 1;
+
+     label3:
+        $i0 = lengthof $r1;
+
+        if $i0 == 0 goto label4;
+
+        $i0 = lengthof $r2;
+
+        if $i0 == 0 goto label5;
+
+        $r4 = $r1[0];
+
+        $r5 = $r2[0];
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        return $z0;
+
+     label4:
+        return 0;
+
+     label5:
+        return 0;
+    }
+
+    private boolean establishKeyMaterial()
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        com.trilead.ssh2.transport.KexState $r1;
+        byte[] $r2, $r6;
+        java.lang.IllegalArgumentException $r3;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        com.trilead.ssh2.transport.NegotiatedParameters $r4;
+        java.lang.String $r5;
+        java.math.BigInteger $r7;
+        com.trilead.ssh2.crypto.KeyMaterial $r8;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r1.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_client_to_server>;
+
+     label01:
+        $i0 = staticinvoke <com.trilead.ssh2.crypto.digest.MAC: int getKeyLen(java.lang.String)>($r5);
+
+     label02:
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r1.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+     label03:
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_client_to_server>;
+
+        $i1 = staticinvoke <com.trilead.ssh2.crypto.cipher.BlockCipherFactory: int getKeySize(java.lang.String)>($r5);
+
+     label04:
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r1.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+     label05:
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_client_to_server>;
+
+        $i2 = staticinvoke <com.trilead.ssh2.crypto.cipher.BlockCipherFactory: int getBlockSize(java.lang.String)>($r5);
+
+     label06:
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r1.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+     label07:
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_server_to_client>;
+
+        $i3 = staticinvoke <com.trilead.ssh2.crypto.digest.MAC: int getKeyLen(java.lang.String)>($r5);
+
+     label08:
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r1.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+     label09:
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_server_to_client>;
+
+        $i4 = staticinvoke <com.trilead.ssh2.crypto.cipher.BlockCipherFactory: int getKeySize(java.lang.String)>($r5);
+
+     label10:
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r1.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+     label11:
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_server_to_client>;
+
+        $i5 = staticinvoke <com.trilead.ssh2.crypto.cipher.BlockCipherFactory: int getBlockSize(java.lang.String)>($r5);
+
+     label12:
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r5 = $r1.<com.trilead.ssh2.transport.KexState: java.lang.String hashAlgo>;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r6 = $r1.<com.trilead.ssh2.transport.KexState: byte[] H>;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r7 = $r1.<com.trilead.ssh2.transport.KexState: java.math.BigInteger K>;
+
+     label13:
+        $r2 = $r0.<com.trilead.ssh2.transport.KexManager: byte[] sessionId>;
+
+        $r8 = staticinvoke <com.trilead.ssh2.crypto.KeyMaterial: com.trilead.ssh2.crypto.KeyMaterial create(java.lang.String,byte[],java.math.BigInteger,byte[],int,int,int,int,int,int)>($r5, $r6, $r7, $r2, $i1, $i2, $i0, $i4, $i5, $i3);
+
+     label14:
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.KeyMaterial km> = $r8;
+
+        return 1;
+
+     label15:
+        $r3 := @caughtexception;
+
+        return 0;
+
+        catch java.lang.IllegalArgumentException from label01 to label02 with label15;
+        catch java.lang.IllegalArgumentException from label03 to label04 with label15;
+        catch java.lang.IllegalArgumentException from label05 to label06 with label15;
+        catch java.lang.IllegalArgumentException from label07 to label08 with label15;
+        catch java.lang.IllegalArgumentException from label09 to label10 with label15;
+        catch java.lang.IllegalArgumentException from label11 to label12 with label15;
+        catch java.lang.IllegalArgumentException from label13 to label14 with label15;
+    }
+
+    private void finishKex() throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        java.lang.IllegalArgumentException $r1;
+        com.trilead.ssh2.packets.PacketNewKeys $r2;
+        com.trilead.ssh2.crypto.digest.MAC $r3;
+        byte[] $r4, $r10;
+        com.trilead.ssh2.crypto.KeyMaterial $r5;
+        com.trilead.ssh2.transport.KexState $r6;
+        com.trilead.ssh2.transport.TransportManager $r7;
+        com.trilead.ssh2.transport.NegotiatedParameters $r8;
+        java.lang.String $r9;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r11;
+        com.trilead.ssh2.compression.ICompressor $r12;
+        java.io.IOException $r13;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: byte[] sessionId>;
+
+        if $r4 != null goto label1;
+
+        $r6 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r6.<com.trilead.ssh2.transport.KexState: byte[] H>;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: byte[] sessionId> = $r4;
+
+     label1:
+        specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: boolean establishKeyMaterial()>();
+
+        $r2 = new com.trilead.ssh2.packets.PacketNewKeys;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.PacketNewKeys: void <init>()>();
+
+        $r7 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r4 = virtualinvoke $r2.<com.trilead.ssh2.packets.PacketNewKeys: byte[] getPayload()>();
+
+        virtualinvoke $r7.<com.trilead.ssh2.transport.TransportManager: void sendKexMessage(byte[])>($r4);
+
+        $r6 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r8 = $r6.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r9 = $r8.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_client_to_server>;
+
+        $r5 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.KeyMaterial km>;
+
+        $r4 = $r5.<com.trilead.ssh2.crypto.KeyMaterial: byte[] enc_key_client_to_server>;
+
+        $r5 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.KeyMaterial km>;
+
+        $r10 = $r5.<com.trilead.ssh2.crypto.KeyMaterial: byte[] initial_iv_client_to_server>;
+
+     label2:
+        $r11 = staticinvoke <com.trilead.ssh2.crypto.cipher.BlockCipherFactory: com.trilead.ssh2.crypto.cipher.BlockCipher createCipher(java.lang.String,boolean,byte[],byte[])>($r9, 1, $r4, $r10);
+
+     label3:
+        $r3 = new com.trilead.ssh2.crypto.digest.MAC;
+
+        $r6 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r8 = $r6.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r9 = $r8.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_client_to_server>;
+
+        $r5 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.KeyMaterial km>;
+
+     label4:
+        $r10 = $r5.<com.trilead.ssh2.crypto.KeyMaterial: byte[] integrity_key_client_to_server>;
+
+        specialinvoke $r3.<com.trilead.ssh2.crypto.digest.MAC: void <init>(java.lang.String,byte[])>($r9, $r10);
+
+     label5:
+        $r6 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r8 = $r6.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+     label6:
+        $r9 = $r8.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String comp_algo_client_to_server>;
+
+        $r12 = staticinvoke <com.trilead.ssh2.compression.CompressionFactory: com.trilead.ssh2.compression.ICompressor createCompressor(java.lang.String)>($r9);
+
+     label7:
+        $r7 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r7.<com.trilead.ssh2.transport.TransportManager: void changeSendCipher(com.trilead.ssh2.crypto.cipher.BlockCipher,com.trilead.ssh2.crypto.digest.MAC)>($r11, $r3);
+
+        $r7 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r7.<com.trilead.ssh2.transport.TransportManager: void changeSendCompression(com.trilead.ssh2.compression.ICompressor)>($r12);
+
+        $r7 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r7.<com.trilead.ssh2.transport.TransportManager: void kexFinished()>();
+
+        return;
+
+     label8:
+        $r1 := @caughtexception;
+
+        $r13 = new java.io.IOException;
+
+        specialinvoke $r13.<java.io.IOException: void <init>(java.lang.String)>("Fatal error during MAC startup!");
+
+        throw $r13;
+
+        catch java.lang.IllegalArgumentException from label2 to label3 with label8;
+        catch java.lang.IllegalArgumentException from label4 to label5 with label8;
+        catch java.lang.IllegalArgumentException from label6 to label7 with label8;
+    }
+
+    public static final java.lang.String[] getDefaultKexAlgorithmList()
+    {
+        java.util.Set $r0, $r1;
+        int $i0;
+        java.lang.String[] $r2;
+        java.lang.Object[] $r3;
+
+        $r0 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        $r1 = <com.trilead.ssh2.transport.KexManager: java.util.Set KEX_ALGS>;
+
+        $i0 = interfaceinvoke $r1.<java.util.Set: int size()>();
+
+        $r2 = newarray (java.lang.String)[$i0];
+
+        $r3 = interfaceinvoke $r0.<java.util.Set: java.lang.Object[] toArray(java.lang.Object[])>($r2);
+
+        $r2 = (java.lang.String[]) $r3;
+
+        return $r2;
+    }
+
+    public static final java.lang.String[] getDefaultServerHostkeyAlgorithmList()
+    {
+        java.util.Set $r0, $r1;
+        int $i0;
+        java.lang.String[] $r2;
+        java.lang.Object[] $r3;
+
+        $r0 = <com.trilead.ssh2.transport.KexManager: java.util.Set HOSTKEY_ALGS>;
+
+        $r1 = <com.trilead.ssh2.transport.KexManager: java.util.Set HOSTKEY_ALGS>;
+
+        $i0 = interfaceinvoke $r1.<java.util.Set: int size()>();
+
+        $r2 = newarray (java.lang.String)[$i0];
+
+        $r3 = interfaceinvoke $r0.<java.util.Set: java.lang.Object[] toArray(java.lang.Object[])>($r2);
+
+        $r2 = (java.lang.String[]) $r3;
+
+        return $r2;
+    }
+
+    private java.lang.String getFirstMatch(java.lang.String[], java.lang.String[]) throws com.trilead.ssh2.transport.NegotiateException
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        java.lang.String[] $r1, $r2;
+        int $i0, $i1, $i2;
+        java.lang.IllegalArgumentException $r3;
+        java.lang.String $r4, $r5;
+        boolean $z0;
+        com.trilead.ssh2.transport.NegotiateException $r6;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 := @parameter0: java.lang.String[];
+
+        $r2 := @parameter1: java.lang.String[];
+
+        if $r1 == null goto label1;
+
+        if $r2 != null goto label2;
+
+     label1:
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r3;
+
+     label2:
+        $i1 = lengthof $r1;
+
+        if $i1 != 0 goto label3;
+
+        return null;
+
+     label3:
+        $i0 = 0;
+
+     label4:
+        $i1 = lengthof $r1;
+
+        if $i0 >= $i1 goto label8;
+
+        $i1 = 0;
+
+     label5:
+        $i2 = lengthof $r2;
+
+        if $i1 >= $i2 goto label7;
+
+        $r5 = $r1[$i0];
+
+        $r4 = $r2[$i1];
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 == 0 goto label6;
+
+        $r4 = $r1[$i0];
+
+        return $r4;
+
+     label6:
+        $i1 = $i1 + 1;
+
+        goto label5;
+
+     label7:
+        $i0 = $i0 + 1;
+
+        goto label4;
+
+     label8:
+        $r6 = new com.trilead.ssh2.transport.NegotiateException;
+
+        specialinvoke $r6.<com.trilead.ssh2.transport.NegotiateException: void <init>()>();
+
+        throw $r6;
+    }
+
+    private boolean isGuessOK(com.trilead.ssh2.transport.KexParameters, com.trilead.ssh2.transport.KexParameters)
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        com.trilead.ssh2.transport.KexParameters $r1, $r2;
+        java.lang.String[] $r3, $r4;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r5;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.transport.KexParameters;
+
+        $r2 := @parameter1: com.trilead.ssh2.transport.KexParameters;
+
+        if $r1 == null goto label1;
+
+        if $r2 != null goto label2;
+
+     label1:
+        $r5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>()>();
+
+        throw $r5;
+
+     label2:
+        $r3 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] kex_algorithms>;
+
+        $r4 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] kex_algorithms>;
+
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: boolean compareFirstOfNameList(java.lang.String[],java.lang.String[])>($r3, $r4);
+
+        if $z0 != 0 goto label3;
+
+        return 0;
+
+     label3:
+        $r4 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] server_host_key_algorithms>;
+
+        $r3 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] server_host_key_algorithms>;
+
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: boolean compareFirstOfNameList(java.lang.String[],java.lang.String[])>($r4, $r3);
+
+        if $z0 == 0 goto label4;
+
+        return 1;
+
+     label4:
+        return 0;
+    }
+
+    private com.trilead.ssh2.transport.NegotiatedParameters mergeKexParameters(com.trilead.ssh2.transport.KexParameters, com.trilead.ssh2.transport.KexParameters)
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        com.trilead.ssh2.transport.KexParameters $r1, $r2;
+        com.trilead.ssh2.transport.NegotiateException $r3, $r4, $r5;
+        com.trilead.ssh2.transport.NegotiatedParameters $r6;
+        java.lang.String[] $r7, $r8;
+        java.lang.StringBuilder $r9;
+        java.lang.String $r10;
+        com.trilead.ssh2.log.Logger $r11;
+        boolean $z0;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.transport.KexParameters;
+
+        $r2 := @parameter1: com.trilead.ssh2.transport.KexParameters;
+
+        $r6 = new com.trilead.ssh2.transport.NegotiatedParameters;
+
+        specialinvoke $r6.<com.trilead.ssh2.transport.NegotiatedParameters: void <init>()>();
+
+        $r7 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] kex_algorithms>;
+
+        $r8 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] kex_algorithms>;
+
+     label01:
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r7, $r8);
+
+     label02:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo> = $r10;
+
+        $r11 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+     label03:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("kex_algo=");
+
+        $r10 = $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r10);
+
+     label04:
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] server_host_key_algorithms>;
+
+     label05:
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] server_host_key_algorithms>;
+
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label06:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo> = $r10;
+
+        $r11 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+     label07:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("server_host_key_algo=");
+
+        $r10 = $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r10);
+
+     label08:
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] encryption_algorithms_client_to_server>;
+
+     label09:
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] encryption_algorithms_client_to_server>;
+
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label10:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_client_to_server> = $r10;
+
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] encryption_algorithms_server_to_client>;
+
+     label11:
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] encryption_algorithms_server_to_client>;
+
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label12:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_server_to_client> = $r10;
+
+        $r11 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+     label13:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("enc_algo_client_to_server=");
+
+        $r10 = $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_client_to_server>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r10);
+
+     label14:
+        $r11 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+     label15:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("enc_algo_server_to_client=");
+
+        $r10 = $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_server_to_client>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r10);
+
+     label16:
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] mac_algorithms_client_to_server>;
+
+     label17:
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] mac_algorithms_client_to_server>;
+
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label18:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_client_to_server> = $r10;
+
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] mac_algorithms_server_to_client>;
+
+     label19:
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] mac_algorithms_server_to_client>;
+
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label20:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_server_to_client> = $r10;
+
+        $r11 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+     label21:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("mac_algo_client_to_server=");
+
+        $r10 = $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_client_to_server>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r10);
+
+     label22:
+        $r11 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+     label23:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("mac_algo_server_to_client=");
+
+        $r10 = $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_server_to_client>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r10);
+
+     label24:
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] compression_algorithms_client_to_server>;
+
+     label25:
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] compression_algorithms_client_to_server>;
+
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label26:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String comp_algo_client_to_server> = $r10;
+
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] compression_algorithms_server_to_client>;
+
+     label27:
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] compression_algorithms_server_to_client>;
+
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label28:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String comp_algo_server_to_client> = $r10;
+
+        $r11 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+     label29:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("comp_algo_client_to_server=");
+
+        $r10 = $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String comp_algo_client_to_server>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r10);
+
+     label30:
+        $r11 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+     label31:
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("comp_algo_server_to_client=");
+
+        $r10 = $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String comp_algo_server_to_client>;
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r10 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r10);
+
+     label32:
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] languages_client_to_server>;
+
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] languages_client_to_server>;
+
+     label33:
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label34:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String lang_client_to_server> = $r10;
+
+     label35:
+        $r8 = $r1.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] languages_server_to_client>;
+
+        $r7 = $r2.<com.trilead.ssh2.transport.KexParameters: java.lang.String[] languages_server_to_client>;
+
+     label36:
+        $r10 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String getFirstMatch(java.lang.String[],java.lang.String[])>($r8, $r7);
+
+     label37:
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String lang_server_to_client> = $r10;
+
+     label38:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: boolean isGuessOK(com.trilead.ssh2.transport.KexParameters,com.trilead.ssh2.transport.KexParameters)>($r1, $r2);
+
+        if $z0 == 0 goto label42;
+
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: boolean guessOK> = 1;
+
+        return $r6;
+
+     label39:
+        $r3 := @caughtexception;
+
+        return null;
+
+     label40:
+        $r4 := @caughtexception;
+
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String lang_client_to_server> = null;
+
+        goto label35;
+
+     label41:
+        $r5 := @caughtexception;
+
+        $r6.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String lang_server_to_client> = null;
+
+        goto label38;
+
+     label42:
+        return $r6;
+
+        catch com.trilead.ssh2.transport.NegotiateException from label01 to label02 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label03 to label04 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label05 to label06 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label07 to label08 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label09 to label10 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label11 to label12 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label13 to label14 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label15 to label16 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label17 to label18 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label19 to label20 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label21 to label22 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label23 to label24 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label25 to label26 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label27 to label28 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label29 to label30 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label31 to label32 with label39;
+        catch com.trilead.ssh2.transport.NegotiateException from label33 to label34 with label40;
+        catch com.trilead.ssh2.transport.NegotiateException from label36 to label37 with label41;
+    }
+
+    private boolean verifySignature(byte[], byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        byte[] $r1, $r2;
+        com.trilead.ssh2.transport.KexState $r3;
+        boolean $z0;
+        com.trilead.ssh2.transport.NegotiatedParameters $r4;
+        java.lang.String $r5;
+        java.security.interfaces.ECPublicKey $r6;
+        com.trilead.ssh2.log.Logger $r7;
+        java.security.interfaces.RSAPublicKey $r8;
+        java.security.interfaces.DSAPublicKey $r9;
+        java.io.IOException $r10;
+        java.lang.StringBuilder $r11;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 := @parameter1: byte[];
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r3.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo>;
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean startsWith(java.lang.String)>("ecdsa-sha2-");
+
+        if $z0 == 0 goto label1;
+
+        $r1 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: byte[] decodeSSHECDSASignature(byte[])>($r1);
+
+        $r6 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.security.interfaces.ECPublicKey decodeSSHECDSAPublicKey(byte[])>($r2);
+
+        $r7 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, "Verifying ecdsa signature");
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r2 = $r3.<com.trilead.ssh2.transport.KexState: byte[] H>;
+
+        $z0 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: boolean verifySignature(byte[],byte[],java.security.interfaces.ECPublicKey)>($r2, $r1, $r6);
+
+        return $z0;
+
+     label1:
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r3.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo>;
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>("ssh-rsa");
+
+        if $z0 == 0 goto label2;
+
+        $r1 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: byte[] decodeSSHRSASignature(byte[])>($r1);
+
+        $r8 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: java.security.interfaces.RSAPublicKey decodeSSHRSAPublicKey(byte[])>($r2);
+
+        $r7 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, "Verifying ssh-rsa signature");
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r2 = $r3.<com.trilead.ssh2.transport.KexState: byte[] H>;
+
+        $z0 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: boolean verifySignature(byte[],byte[],java.security.interfaces.RSAPublicKey)>($r2, $r1, $r8);
+
+        return $z0;
+
+     label2:
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r3.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo>;
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>("ssh-dss");
+
+        if $z0 == 0 goto label3;
+
+        $r1 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: byte[] decodeSSHDSASignature(byte[])>($r1);
+
+        $r9 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: java.security.interfaces.DSAPublicKey decodeSSHDSAPublicKey(byte[])>($r2);
+
+        $r7 = <com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, "Verifying ssh-dss signature");
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r2 = $r3.<com.trilead.ssh2.transport.KexState: byte[] H>;
+
+        $z0 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: boolean verifySignature(byte[],byte[],java.security.interfaces.DSAPublicKey)>($r2, $r1, $r9);
+
+        return $z0;
+
+     label3:
+        $r10 = new java.io.IOException;
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown server host key algorithm \'");
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r3.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r5 = $r4.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo>;
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r5 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r10.<java.io.IOException: void <init>(java.lang.String)>($r5);
+
+        throw $r10;
+    }
+
+    public com.trilead.ssh2.ConnectionInfo getOrWaitForConnectionInfo(int) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        int $i0, $i1;
+        com.trilead.ssh2.ConnectionInfo $r1;
+        java.lang.Object $r2, $r6;
+        java.lang.Throwable $r3;
+        boolean $z0;
+        java.io.IOException $r4;
+        com.trilead.ssh2.transport.TransportManager $r5;
+        java.lang.InterruptedException $r7;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $i0 := @parameter0: int;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.KexManager: java.lang.Object accessLock>;
+
+        entermonitor $r2;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ConnectionInfo lastConnInfo>;
+
+        if $r1 == null goto label3;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ConnectionInfo lastConnInfo>;
+
+        $i1 = $r1.<com.trilead.ssh2.ConnectionInfo: int keyExchangeCounter>;
+
+        if $i1 < $i0 goto label3;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ConnectionInfo lastConnInfo>;
+
+        exitmonitor $r2;
+
+     label2:
+        return $r1;
+
+     label3:
+        $z0 = $r0.<com.trilead.ssh2.transport.KexManager: boolean connectionClosed>;
+
+        if $z0 == 0 goto label6;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("Key exchange was not finished, connection is closed.");
+
+        $r5 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r3 = virtualinvoke $r5.<com.trilead.ssh2.transport.TransportManager: java.lang.Throwable getReasonClosedCause()>();
+
+        $r3 = virtualinvoke $r4.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r3);
+
+        $r4 = (java.io.IOException) $r3;
+
+        throw $r4;
+
+     label4:
+        $r3 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label5:
+        throw $r3;
+
+     label6:
+        $r6 = $r0.<com.trilead.ssh2.transport.KexManager: java.lang.Object accessLock>;
+
+     label7:
+        virtualinvoke $r6.<java.lang.Object: void wait()>();
+
+     label8:
+        goto label1;
+
+     label9:
+        $r7 := @caughtexception;
+
+        goto label1;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label3 to label5 with label4;
+        catch java.lang.InterruptedException from label7 to label8 with label9;
+        catch java.lang.Throwable from label6 to label8 with label4;
+    }
+
+    public void handleMessage(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        byte[] $r1, $r25, $r43, $r44, $r45;
+        int $i0, $i2;
+        java.lang.Object $r2, $r17;
+        com.trilead.ssh2.crypto.KeyMaterial $r3;
+        com.trilead.ssh2.transport.KexState $r4, $r26;
+        com.trilead.ssh2.packets.PacketKexDhGexGroup $r5;
+        com.trilead.ssh2.packets.PacketKexDhGexInit $r6;
+        com.trilead.ssh2.packets.PacketKexDhGexRequestOld $r7;
+        com.trilead.ssh2.packets.PacketKexDhGexReply $r8;
+        com.trilead.ssh2.packets.PacketKexDHReply $r9;
+        java.lang.Exception $r10, $r47;
+        java.lang.IllegalArgumentException $r11, $r46, $r48;
+        com.trilead.ssh2.packets.PacketKexInit $r12;
+        com.trilead.ssh2.packets.PacketKexDHInit $r13;
+        com.trilead.ssh2.crypto.digest.MAC $r14;
+        com.trilead.ssh2.ConnectionInfo $r15;
+        java.lang.StringBuilder $r16;
+        java.lang.Throwable $r18, $r19, $r36;
+        byte $b1;
+        java.io.IOException $r20;
+        java.lang.String $r21, $r42;
+        boolean $z0;
+        com.trilead.ssh2.DHGexParameters $r22;
+        com.trilead.ssh2.crypto.CryptoWishList $r23;
+        com.trilead.ssh2.transport.TransportManager $r24;
+        com.trilead.ssh2.transport.KexParameters $r27, $r28;
+        com.trilead.ssh2.transport.NegotiatedParameters $r29;
+        com.trilead.ssh2.transport.ClientServerHello $r30;
+        com.trilead.ssh2.packets.PacketKexDhGexRequest $r31;
+        com.trilead.ssh2.crypto.dh.GenericDhExchange $r32;
+        java.lang.IllegalStateException $r33;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r34;
+        com.trilead.ssh2.compression.ICompressor $r35;
+        com.trilead.ssh2.crypto.dh.DhGroupExchange $r37;
+        java.math.BigInteger $r38, $r39;
+        java.security.SecureRandom $r40;
+        com.trilead.ssh2.ServerHostKeyVerifier $r41;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        entermonitor $r0;
+
+        if $r1 != null goto label08;
+
+     label01:
+        $r2 = $r0.<com.trilead.ssh2.transport.KexManager: java.lang.Object accessLock>;
+
+        entermonitor $r2;
+
+     label02:
+        $r0.<com.trilead.ssh2.transport.KexManager: boolean connectionClosed> = 1;
+
+        $r17 = $r0.<com.trilead.ssh2.transport.KexManager: java.lang.Object accessLock>;
+
+        virtualinvoke $r17.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r2;
+
+     label03:
+        exitmonitor $r0;
+
+        return;
+
+     label04:
+        $r18 := @caughtexception;
+
+     label05:
+        exitmonitor $r2;
+
+     label06:
+        throw $r18;
+
+     label07:
+        $r19 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r19;
+
+     label08:
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        if $r4 != null goto label09;
+
+        $b1 = $r1[0];
+
+        if $b1 == 20 goto label09;
+
+        $r20 = new java.io.IOException;
+
+        $r16 = new java.lang.StringBuilder;
+
+        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected KEX message (type ");
+
+        $b1 = $r1[0];
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($b1);
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r21 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>($r21);
+
+        throw $r20;
+
+     label09:
+        $z0 = $r0.<com.trilead.ssh2.transport.KexManager: boolean ignore_next_kex_packet>;
+
+        if $z0 == 0 goto label11;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: boolean ignore_next_kex_packet> = 0;
+
+     label10:
+        goto label03;
+
+     label11:
+        $b1 = $r1[0];
+
+        if $b1 != 20 goto label27;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        if $r4 == null goto label12;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $i2 = $r4.<com.trilead.ssh2.transport.KexState: int state>;
+
+        if $i2 == 0 goto label12;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("Unexpected SSH_MSG_KEXINIT message during on-going kex exchange!");
+
+        throw $r20;
+
+     label12:
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        if $r4 != null goto label13;
+
+        $r4 = new com.trilead.ssh2.transport.KexState;
+
+        specialinvoke $r4.<com.trilead.ssh2.transport.KexState: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs> = $r4;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r22 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.DHGexParameters nextKEXdhgexParameters>;
+
+        $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.DHGexParameters dhgexParameters> = $r22;
+
+        $r12 = new com.trilead.ssh2.packets.PacketKexInit;
+
+        $r23 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.CryptoWishList nextKEXcryptoWishList>;
+
+        specialinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: void <init>(com.trilead.ssh2.crypto.CryptoWishList)>($r23);
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit localKEX> = $r12;
+
+        $r24 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r25 = virtualinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: byte[] getPayload()>();
+
+        virtualinvoke $r24.<com.trilead.ssh2.transport.TransportManager: void sendKexMessage(byte[])>($r25);
+
+     label13:
+        $r12 = new com.trilead.ssh2.packets.PacketKexInit;
+
+        specialinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit remoteKEX> = $r12;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r12 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit localKEX>;
+
+        $r27 = virtualinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: com.trilead.ssh2.transport.KexParameters getKexParameters()>();
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r12 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit remoteKEX>;
+
+        $r28 = virtualinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: com.trilead.ssh2.transport.KexParameters getKexParameters()>();
+
+        $r29 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.NegotiatedParameters mergeKexParameters(com.trilead.ssh2.transport.KexParameters,com.trilead.ssh2.transport.KexParameters)>($r27, $r28);
+
+        $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np> = $r29;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        if $r29 != null goto label14;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("Cannot negotiate, proposals do not match.");
+
+        throw $r20;
+
+     label14:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r12 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit remoteKEX>;
+
+        $z0 = virtualinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: boolean isFirst_kex_packet_follows()>();
+
+        if $z0 == 0 goto label15;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $z0 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: boolean guessOK>;
+
+        if $z0 != 0 goto label15;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: boolean ignore_next_kex_packet> = 1;
+
+     label15:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("diffie-hellman-group-exchange-sha1");
+
+        if $z0 != 0 goto label16;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("diffie-hellman-group-exchange-sha256");
+
+        if $z0 == 0 goto label23;
+
+     label16:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r22 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.DHGexParameters dhgexParameters>;
+
+        $i2 = virtualinvoke $r22.<com.trilead.ssh2.DHGexParameters: int getMin_group_len()>();
+
+        if $i2 == 0 goto label17;
+
+        $r30 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.ClientServerHello csh>;
+
+        $r21 = $r30.<com.trilead.ssh2.transport.ClientServerHello: java.lang.String server_versioncomment>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean matches(java.lang.String)>("OpenSSH_2\\.([0-4]\\.|5\\.[0-2]).*");
+
+        if $z0 == 0 goto label21;
+
+     label17:
+        $r7 = new com.trilead.ssh2.packets.PacketKexDhGexRequestOld;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r22 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.DHGexParameters dhgexParameters>;
+
+        specialinvoke $r7.<com.trilead.ssh2.packets.PacketKexDhGexRequestOld: void <init>(com.trilead.ssh2.DHGexParameters)>($r22);
+
+        $r24 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r25 = virtualinvoke $r7.<com.trilead.ssh2.packets.PacketKexDhGexRequestOld: byte[] getPayload()>();
+
+        virtualinvoke $r24.<com.trilead.ssh2.transport.TransportManager: void sendKexMessage(byte[])>($r25);
+
+     label18:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean endsWith(java.lang.String)>("sha1");
+
+        if $z0 == 0 goto label22;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r26.<com.trilead.ssh2.transport.KexState: java.lang.String hashAlgo> = "SHA1";
+
+     label19:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r26.<com.trilead.ssh2.transport.KexState: int state> = 1;
+
+     label20:
+        goto label03;
+
+     label21:
+        $r31 = new com.trilead.ssh2.packets.PacketKexDhGexRequest;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r22 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.DHGexParameters dhgexParameters>;
+
+        specialinvoke $r31.<com.trilead.ssh2.packets.PacketKexDhGexRequest: void <init>(com.trilead.ssh2.DHGexParameters)>($r22);
+
+        $r24 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r25 = virtualinvoke $r31.<com.trilead.ssh2.packets.PacketKexDhGexRequest: byte[] getPayload()>();
+
+        virtualinvoke $r24.<com.trilead.ssh2.transport.TransportManager: void sendKexMessage(byte[])>($r25);
+
+        goto label18;
+
+     label22:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r26.<com.trilead.ssh2.transport.KexState: java.lang.String hashAlgo> = "SHA-256";
+
+        goto label19;
+
+     label23:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("diffie-hellman-group1-sha1");
+
+        if $z0 != 0 goto label24;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("diffie-hellman-group14-sha1");
+
+        if $z0 != 0 goto label24;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("ecdh-sha2-nistp256");
+
+        if $z0 != 0 goto label24;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("ecdh-sha2-nistp384");
+
+        if $z0 != 0 goto label24;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("ecdh-sha2-nistp521");
+
+        if $z0 == 0 goto label26;
+
+     label24:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $r32 = staticinvoke <com.trilead.ssh2.crypto.dh.GenericDhExchange: com.trilead.ssh2.crypto.dh.GenericDhExchange getInstance(java.lang.String)>($r21);
+
+        $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.GenericDhExchange dhx> = $r32;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r32 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.GenericDhExchange dhx>;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        virtualinvoke $r32.<com.trilead.ssh2.crypto.dh.GenericDhExchange: void init(java.lang.String)>($r21);
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r32 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.GenericDhExchange dhx>;
+
+        $r21 = virtualinvoke $r32.<com.trilead.ssh2.crypto.dh.GenericDhExchange: java.lang.String getHashAlgo()>();
+
+        $r26.<com.trilead.ssh2.transport.KexState: java.lang.String hashAlgo> = $r21;
+
+        $r13 = new com.trilead.ssh2.packets.PacketKexDHInit;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r32 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.GenericDhExchange dhx>;
+
+        $r25 = virtualinvoke $r32.<com.trilead.ssh2.crypto.dh.GenericDhExchange: byte[] getE()>();
+
+        specialinvoke $r13.<com.trilead.ssh2.packets.PacketKexDHInit: void <init>(byte[])>($r25);
+
+        $r24 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r25 = virtualinvoke $r13.<com.trilead.ssh2.packets.PacketKexDHInit: byte[] getPayload()>();
+
+        virtualinvoke $r24.<com.trilead.ssh2.transport.TransportManager: void sendKexMessage(byte[])>($r25);
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r26.<com.trilead.ssh2.transport.KexState: int state> = 1;
+
+     label25:
+        goto label03;
+
+     label26:
+        $r33 = new java.lang.IllegalStateException;
+
+        specialinvoke $r33.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Unknown KEX method!");
+
+        throw $r33;
+
+     label27:
+        $b1 = $r1[0];
+
+        if $b1 != 21 goto label42;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.KeyMaterial km>;
+
+        if $r3 != null goto label28;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("Peer sent SSH_MSG_NEWKEYS, but I have no key material ready!");
+
+        throw $r20;
+
+     label28:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_server_to_client>;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.KeyMaterial km>;
+
+        $r25 = $r3.<com.trilead.ssh2.crypto.KeyMaterial: byte[] enc_key_server_to_client>;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.KeyMaterial km>;
+
+        $r1 = $r3.<com.trilead.ssh2.crypto.KeyMaterial: byte[] initial_iv_server_to_client>;
+
+     label29:
+        $r34 = staticinvoke <com.trilead.ssh2.crypto.cipher.BlockCipherFactory: com.trilead.ssh2.crypto.cipher.BlockCipher createCipher(java.lang.String,boolean,byte[],byte[])>($r21, 0, $r25, $r1);
+
+     label30:
+        $r14 = new com.trilead.ssh2.crypto.digest.MAC;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_server_to_client>;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.KeyMaterial km>;
+
+     label31:
+        $r25 = $r3.<com.trilead.ssh2.crypto.KeyMaterial: byte[] integrity_key_server_to_client>;
+
+        specialinvoke $r14.<com.trilead.ssh2.crypto.digest.MAC: void <init>(java.lang.String,byte[])>($r21, $r25);
+
+     label32:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+     label33:
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String comp_algo_server_to_client>;
+
+        $r35 = staticinvoke <com.trilead.ssh2.compression.CompressionFactory: com.trilead.ssh2.compression.ICompressor createCompressor(java.lang.String)>($r21);
+
+     label34:
+        $r24 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r24.<com.trilead.ssh2.transport.TransportManager: void changeRecvCipher(com.trilead.ssh2.crypto.cipher.BlockCipher,com.trilead.ssh2.crypto.digest.MAC)>($r34, $r14);
+
+        $r24 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r24.<com.trilead.ssh2.transport.TransportManager: void changeRecvCompression(com.trilead.ssh2.compression.ICompressor)>($r35);
+
+        $r15 = new com.trilead.ssh2.ConnectionInfo;
+
+        specialinvoke $r15.<com.trilead.ssh2.ConnectionInfo: void <init>()>();
+
+        $i2 = $r0.<com.trilead.ssh2.transport.KexManager: int kexCount>;
+
+        $i2 = $i2 + 1;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: int kexCount> = $i2;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $r15.<com.trilead.ssh2.ConnectionInfo: java.lang.String keyExchangeAlgorithm> = $r21;
+
+        $i2 = $r0.<com.trilead.ssh2.transport.KexManager: int kexCount>;
+
+        $r15.<com.trilead.ssh2.ConnectionInfo: int keyExchangeCounter> = $i2;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_client_to_server>;
+
+        $r15.<com.trilead.ssh2.ConnectionInfo: java.lang.String clientToServerCryptoAlgorithm> = $r21;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String enc_algo_server_to_client>;
+
+        $r15.<com.trilead.ssh2.ConnectionInfo: java.lang.String serverToClientCryptoAlgorithm> = $r21;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_client_to_server>;
+
+        $r15.<com.trilead.ssh2.ConnectionInfo: java.lang.String clientToServerMACAlgorithm> = $r21;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String mac_algo_server_to_client>;
+
+        $r15.<com.trilead.ssh2.ConnectionInfo: java.lang.String serverToClientMACAlgorithm> = $r21;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo>;
+
+        $r15.<com.trilead.ssh2.ConnectionInfo: java.lang.String serverHostKeyAlgorithm> = $r21;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r25 = $r26.<com.trilead.ssh2.transport.KexState: byte[] hostkey>;
+
+        $r15.<com.trilead.ssh2.ConnectionInfo: byte[] serverHostKey> = $r25;
+
+        $r17 = $r0.<com.trilead.ssh2.transport.KexManager: java.lang.Object accessLock>;
+
+        entermonitor $r17;
+
+     label35:
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ConnectionInfo lastConnInfo> = $r15;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.KexManager: java.lang.Object accessLock>;
+
+        virtualinvoke $r2.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r17;
+
+     label36:
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs> = null;
+
+     label37:
+        goto label03;
+
+     label38:
+        $r11 := @caughtexception;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("Fatal error during MAC startup!");
+
+        throw $r20;
+
+     label39:
+        $r36 := @caughtexception;
+
+     label40:
+        exitmonitor $r17;
+
+     label41:
+        throw $r36;
+
+     label42:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        if $r26 == null goto label43;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $i2 = $r26.<com.trilead.ssh2.transport.KexState: int state>;
+
+        if $i2 != 0 goto label44;
+
+     label43:
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("Unexpected Kex submessage!");
+
+        throw $r20;
+
+     label44:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("diffie-hellman-group-exchange-sha1");
+
+        if $z0 != 0 goto label45;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r21.<java.lang.String: boolean equals(java.lang.Object)>("diffie-hellman-group-exchange-sha256");
+
+        if $z0 == 0 goto label68;
+
+     label45:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $i2 = $r26.<com.trilead.ssh2.transport.KexState: int state>;
+
+        if $i2 != 1 goto label47;
+
+        $r5 = new com.trilead.ssh2.packets.PacketKexDhGexGroup;
+
+        specialinvoke $r5.<com.trilead.ssh2.packets.PacketKexDhGexGroup: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r37 = new com.trilead.ssh2.crypto.dh.DhGroupExchange;
+
+        $r38 = virtualinvoke $r5.<com.trilead.ssh2.packets.PacketKexDhGexGroup: java.math.BigInteger getP()>();
+
+        $r39 = virtualinvoke $r5.<com.trilead.ssh2.packets.PacketKexDhGexGroup: java.math.BigInteger getG()>();
+
+        specialinvoke $r37.<com.trilead.ssh2.crypto.dh.DhGroupExchange: void <init>(java.math.BigInteger,java.math.BigInteger)>($r38, $r39);
+
+        $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.DhGroupExchange dhgx> = $r37;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r37 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.DhGroupExchange dhgx>;
+
+        $r40 = $r0.<com.trilead.ssh2.transport.KexManager: java.security.SecureRandom rnd>;
+
+        virtualinvoke $r37.<com.trilead.ssh2.crypto.dh.DhGroupExchange: void init(java.security.SecureRandom)>($r40);
+
+        $r6 = new com.trilead.ssh2.packets.PacketKexDhGexInit;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r37 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.DhGroupExchange dhgx>;
+
+        $r39 = virtualinvoke $r37.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger getE()>();
+
+        specialinvoke $r6.<com.trilead.ssh2.packets.PacketKexDhGexInit: void <init>(java.math.BigInteger)>($r39);
+
+        $r24 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r25 = virtualinvoke $r6.<com.trilead.ssh2.packets.PacketKexDhGexInit: byte[] getPayload()>();
+
+        virtualinvoke $r24.<com.trilead.ssh2.transport.TransportManager: void sendKexMessage(byte[])>($r25);
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r26.<com.trilead.ssh2.transport.KexState: int state> = 2;
+
+     label46:
+        goto label03;
+
+     label47:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $i2 = $r26.<com.trilead.ssh2.transport.KexState: int state>;
+
+        if $i2 != 2 goto label67;
+
+        $r8 = new com.trilead.ssh2.packets.PacketKexDhGexReply;
+
+        specialinvoke $r8.<com.trilead.ssh2.packets.PacketKexDhGexReply: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r25 = virtualinvoke $r8.<com.trilead.ssh2.packets.PacketKexDhGexReply: byte[] getHostKey()>();
+
+        $r26.<com.trilead.ssh2.transport.KexState: byte[] hostkey> = $r25;
+
+        $r41 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ServerHostKeyVerifier verifier>;
+
+     label48:
+        if $r41 == null goto label53;
+
+     label49:
+        $r41 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ServerHostKeyVerifier verifier>;
+
+        $r21 = $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String hostname>;
+
+        $i2 = $r0.<com.trilead.ssh2.transport.KexManager: int port>;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r42 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo>;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r25 = $r4.<com.trilead.ssh2.transport.KexState: byte[] hostkey>;
+
+        $z0 = interfaceinvoke $r41.<com.trilead.ssh2.ServerHostKeyVerifier: boolean verifyServerHostKey(java.lang.String,int,java.lang.String,byte[])>($r21, $i2, $r42, $r25);
+
+     label50:
+        if $z0 != 0 goto label53;
+
+     label51:
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("The server hostkey was not accepted by the verifier callback");
+
+        throw $r20;
+
+     label52:
+        $r10 := @caughtexception;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("The server hostkey was not accepted by the verifier callback.");
+
+        $r36 = virtualinvoke $r20.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r10);
+
+        $r20 = (java.io.IOException) $r36;
+
+        throw $r20;
+
+     label53:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r37 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.DhGroupExchange dhgx>;
+
+        $r39 = virtualinvoke $r8.<com.trilead.ssh2.packets.PacketKexDhGexReply: java.math.BigInteger getF()>();
+
+        virtualinvoke $r37.<com.trilead.ssh2.crypto.dh.DhGroupExchange: void setF(java.math.BigInteger)>($r39);
+
+     label54:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r37 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.DhGroupExchange dhgx>;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r42 = $r4.<com.trilead.ssh2.transport.KexState: java.lang.String hashAlgo>;
+
+        $r30 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.ClientServerHello csh>;
+
+     label55:
+        $r25 = virtualinvoke $r30.<com.trilead.ssh2.transport.ClientServerHello: byte[] getClientString()>();
+
+        $r30 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.ClientServerHello csh>;
+
+        $r1 = virtualinvoke $r30.<com.trilead.ssh2.transport.ClientServerHello: byte[] getServerString()>();
+
+     label56:
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+     label57:
+        $r12 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit localKEX>;
+
+        $r43 = virtualinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: byte[] getPayload()>();
+
+     label58:
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+     label59:
+        $r12 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit remoteKEX>;
+
+        $r44 = virtualinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: byte[] getPayload()>();
+
+        $r45 = virtualinvoke $r8.<com.trilead.ssh2.packets.PacketKexDhGexReply: byte[] getHostKey()>();
+
+     label60:
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+     label61:
+        $r22 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.DHGexParameters dhgexParameters>;
+
+        $r45 = virtualinvoke $r37.<com.trilead.ssh2.crypto.dh.DhGroupExchange: byte[] calculateH(java.lang.String,byte[],byte[],byte[],byte[],byte[],com.trilead.ssh2.DHGexParameters)>($r42, $r25, $r1, $r43, $r44, $r45, $r22);
+
+     label62:
+        $r26.<com.trilead.ssh2.transport.KexState: byte[] H> = $r45;
+
+     label63:
+        $r45 = virtualinvoke $r8.<com.trilead.ssh2.packets.PacketKexDhGexReply: byte[] getSignature()>();
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r44 = $r26.<com.trilead.ssh2.transport.KexState: byte[] hostkey>;
+
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: boolean verifySignature(byte[],byte[])>($r45, $r44);
+
+        if $z0 != 0 goto label65;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("Hostkey signature sent by remote is wrong!");
+
+        throw $r20;
+
+     label64:
+        $r46 := @caughtexception;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("KEX error.");
+
+        $r36 = virtualinvoke $r20.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r46);
+
+        $r20 = (java.io.IOException) $r36;
+
+        throw $r20;
+
+     label65:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r37 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.DhGroupExchange dhgx>;
+
+        $r39 = virtualinvoke $r37.<com.trilead.ssh2.crypto.dh.DhGroupExchange: java.math.BigInteger getK()>();
+
+        $r26.<com.trilead.ssh2.transport.KexState: java.math.BigInteger K> = $r39;
+
+        specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: void finishKex()>();
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r26.<com.trilead.ssh2.transport.KexState: int state> = -1;
+
+     label66:
+        goto label03;
+
+     label67:
+        $r33 = new java.lang.IllegalStateException;
+
+        specialinvoke $r33.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Illegal State in KEX Exchange!");
+
+        throw $r33;
+
+     label68:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r42 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r42.<java.lang.String: boolean equals(java.lang.Object)>("diffie-hellman-group1-sha1");
+
+        if $z0 != 0 goto label69;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r42 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r42.<java.lang.String: boolean equals(java.lang.Object)>("diffie-hellman-group14-sha1");
+
+        if $z0 != 0 goto label69;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r42 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r42.<java.lang.String: boolean equals(java.lang.Object)>("ecdh-sha2-nistp256");
+
+        if $z0 != 0 goto label69;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r42 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r42.<java.lang.String: boolean equals(java.lang.Object)>("ecdh-sha2-nistp384");
+
+        if $z0 != 0 goto label69;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r42 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $z0 = virtualinvoke $r42.<java.lang.String: boolean equals(java.lang.Object)>("ecdh-sha2-nistp521");
+
+        if $z0 == 0 goto label87;
+
+     label69:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $i2 = $r26.<com.trilead.ssh2.transport.KexState: int state>;
+
+        if $i2 != 1 goto label87;
+
+        $r9 = new com.trilead.ssh2.packets.PacketKexDHReply;
+
+        specialinvoke $r9.<com.trilead.ssh2.packets.PacketKexDHReply: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r45 = virtualinvoke $r9.<com.trilead.ssh2.packets.PacketKexDHReply: byte[] getHostKey()>();
+
+        $r26.<com.trilead.ssh2.transport.KexState: byte[] hostkey> = $r45;
+
+        $r41 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ServerHostKeyVerifier verifier>;
+
+     label70:
+        if $r41 == null goto label75;
+
+     label71:
+        $r41 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ServerHostKeyVerifier verifier>;
+
+        $r42 = $r0.<com.trilead.ssh2.transport.KexManager: java.lang.String hostname>;
+
+        $i2 = $r0.<com.trilead.ssh2.transport.KexManager: int port>;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r21 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String server_host_key_algo>;
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r45 = $r26.<com.trilead.ssh2.transport.KexState: byte[] hostkey>;
+
+        $z0 = interfaceinvoke $r41.<com.trilead.ssh2.ServerHostKeyVerifier: boolean verifyServerHostKey(java.lang.String,int,java.lang.String,byte[])>($r42, $i2, $r21, $r45);
+
+     label72:
+        if $z0 != 0 goto label75;
+
+     label73:
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("The server hostkey was not accepted by the verifier callback");
+
+        throw $r20;
+
+     label74:
+        $r47 := @caughtexception;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("The server hostkey was not accepted by the verifier callback.");
+
+        $r36 = virtualinvoke $r20.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r47);
+
+        $r20 = (java.io.IOException) $r36;
+
+        throw $r20;
+
+     label75:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r32 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.GenericDhExchange dhx>;
+
+        $r45 = virtualinvoke $r9.<com.trilead.ssh2.packets.PacketKexDHReply: byte[] getF()>();
+
+        virtualinvoke $r32.<com.trilead.ssh2.crypto.dh.GenericDhExchange: void setF(byte[])>($r45);
+
+     label76:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r32 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.GenericDhExchange dhx>;
+
+        $r30 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.ClientServerHello csh>;
+
+     label77:
+        $r45 = virtualinvoke $r30.<com.trilead.ssh2.transport.ClientServerHello: byte[] getClientString()>();
+
+        $r30 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.ClientServerHello csh>;
+
+        $r44 = virtualinvoke $r30.<com.trilead.ssh2.transport.ClientServerHello: byte[] getServerString()>();
+
+     label78:
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+     label79:
+        $r12 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit localKEX>;
+
+        $r43 = virtualinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: byte[] getPayload()>();
+
+     label80:
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+     label81:
+        $r12 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit remoteKEX>;
+
+        $r25 = virtualinvoke $r12.<com.trilead.ssh2.packets.PacketKexInit: byte[] getPayload()>();
+
+        $r1 = virtualinvoke $r9.<com.trilead.ssh2.packets.PacketKexDHReply: byte[] getHostKey()>();
+
+        $r45 = virtualinvoke $r32.<com.trilead.ssh2.crypto.dh.GenericDhExchange: byte[] calculateH(byte[],byte[],byte[],byte[],byte[])>($r45, $r44, $r43, $r25, $r1);
+
+     label82:
+        $r26.<com.trilead.ssh2.transport.KexState: byte[] H> = $r45;
+
+     label83:
+        $r45 = virtualinvoke $r9.<com.trilead.ssh2.packets.PacketKexDHReply: byte[] getSignature()>();
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r44 = $r26.<com.trilead.ssh2.transport.KexState: byte[] hostkey>;
+
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: boolean verifySignature(byte[],byte[])>($r45, $r44);
+
+        if $z0 != 0 goto label85;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("Hostkey signature sent by remote is wrong!");
+
+        throw $r20;
+
+     label84:
+        $r48 := @caughtexception;
+
+        $r20 = new java.io.IOException;
+
+        specialinvoke $r20.<java.io.IOException: void <init>(java.lang.String)>("KEX error.");
+
+        $r36 = virtualinvoke $r20.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r48);
+
+        $r20 = (java.io.IOException) $r36;
+
+        throw $r20;
+
+     label85:
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r32 = $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.crypto.dh.GenericDhExchange dhx>;
+
+        $r39 = virtualinvoke $r32.<com.trilead.ssh2.crypto.dh.GenericDhExchange: java.math.BigInteger getK()>();
+
+        $r26.<com.trilead.ssh2.transport.KexState: java.math.BigInteger K> = $r39;
+
+        specialinvoke $r0.<com.trilead.ssh2.transport.KexManager: void finishKex()>();
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r26.<com.trilead.ssh2.transport.KexState: int state> = -1;
+
+     label86:
+        goto label03;
+
+     label87:
+        $r33 = new java.lang.IllegalStateException;
+
+        $r16 = new java.lang.StringBuilder;
+
+        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unkown KEX method! (");
+
+        $r26 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r29 = $r26.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.transport.NegotiatedParameters np>;
+
+        $r42 = $r29.<com.trilead.ssh2.transport.NegotiatedParameters: java.lang.String kex_algo>;
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r42);
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r42 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r33.<java.lang.IllegalStateException: void <init>(java.lang.String)>($r42);
+
+        throw $r33;
+
+     label88:
+        nop;
+
+        catch java.lang.Throwable from label01 to label02 with label07;
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label05 to label06 with label04;
+        catch java.lang.Throwable from label06 to label07 with label07;
+        catch java.lang.Throwable from label08 to label10 with label07;
+        catch java.lang.Throwable from label11 to label20 with label07;
+        catch java.lang.Throwable from label21 to label25 with label07;
+        catch java.lang.Throwable from label26 to label28 with label07;
+        catch java.lang.IllegalArgumentException from label29 to label30 with label38;
+        catch java.lang.IllegalArgumentException from label31 to label32 with label38;
+        catch java.lang.IllegalArgumentException from label33 to label34 with label38;
+        catch java.lang.Throwable from label28 to label34 with label07;
+        catch java.lang.Throwable from label34 to label35 with label07;
+        catch java.lang.Throwable from label35 to label36 with label39;
+        catch java.lang.Throwable from label36 to label37 with label07;
+        catch java.lang.Throwable from label38 to label39 with label07;
+        catch java.lang.Throwable from label40 to label41 with label39;
+        catch java.lang.Throwable from label41 to label46 with label07;
+        catch java.lang.Throwable from label47 to label48 with label07;
+        catch java.lang.Exception from label49 to label50 with label52;
+        catch java.lang.Throwable from label49 to label50 with label07;
+        catch java.lang.Throwable from label51 to label54 with label07;
+        catch java.lang.IllegalArgumentException from label55 to label56 with label64;
+        catch java.lang.IllegalArgumentException from label57 to label58 with label64;
+        catch java.lang.IllegalArgumentException from label59 to label60 with label64;
+        catch java.lang.IllegalArgumentException from label61 to label62 with label64;
+        catch java.lang.Throwable from label54 to label63 with label07;
+        catch java.lang.Throwable from label63 to label66 with label07;
+        catch java.lang.Throwable from label67 to label70 with label07;
+        catch java.lang.Exception from label71 to label72 with label74;
+        catch java.lang.Throwable from label71 to label72 with label07;
+        catch java.lang.Throwable from label73 to label76 with label07;
+        catch java.lang.IllegalArgumentException from label77 to label78 with label84;
+        catch java.lang.IllegalArgumentException from label79 to label80 with label84;
+        catch java.lang.IllegalArgumentException from label81 to label82 with label84;
+        catch java.lang.Throwable from label76 to label83 with label07;
+        catch java.lang.Throwable from label83 to label86 with label07;
+        catch java.lang.Throwable from label87 to label88 with label07;
+    }
+
+    public void initiateKEX(com.trilead.ssh2.crypto.CryptoWishList, com.trilead.ssh2.DHGexParameters) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.KexManager $r0;
+        com.trilead.ssh2.crypto.CryptoWishList $r1;
+        com.trilead.ssh2.DHGexParameters $r2;
+        com.trilead.ssh2.packets.PacketKexInit $r3;
+        com.trilead.ssh2.transport.KexState $r4;
+        byte[] $r5;
+        com.trilead.ssh2.transport.TransportManager $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.CryptoWishList;
+
+        $r2 := @parameter1: com.trilead.ssh2.DHGexParameters;
+
+        entermonitor $r0;
+
+     label1:
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.CryptoWishList nextKEXcryptoWishList> = $r1;
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.DHGexParameters nextKEXdhgexParameters> = $r2;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        if $r4 != null goto label2;
+
+        $r4 = new com.trilead.ssh2.transport.KexState;
+
+        specialinvoke $r4.<com.trilead.ssh2.transport.KexState: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs> = $r4;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.DHGexParameters nextKEXdhgexParameters>;
+
+        $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.DHGexParameters dhgexParameters> = $r2;
+
+        $r3 = new com.trilead.ssh2.packets.PacketKexInit;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.crypto.CryptoWishList nextKEXcryptoWishList>;
+
+        specialinvoke $r3.<com.trilead.ssh2.packets.PacketKexInit: void <init>(com.trilead.ssh2.crypto.CryptoWishList)>($r1);
+
+        $r4 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.KexState kxs>;
+
+        $r4.<com.trilead.ssh2.transport.KexState: com.trilead.ssh2.packets.PacketKexInit localKEX> = $r3;
+
+        $r6 = $r0.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r5 = virtualinvoke $r3.<com.trilead.ssh2.packets.PacketKexInit: byte[] getPayload()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.transport.TransportManager: void sendKexMessage(byte[])>($r5);
+
+     label2:
+        exitmonitor $r0;
+
+        return;
+
+     label3:
+        $r7 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+}

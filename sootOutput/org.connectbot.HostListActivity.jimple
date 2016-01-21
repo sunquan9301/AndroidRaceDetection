@@ -1,0 +1,1083 @@
+public class org.connectbot.HostListActivity extends android.app.ListActivity
+{
+    protected org.connectbot.service.TerminalManager bound;
+    private boolean closeOnDisconnectAll;
+    private android.content.ServiceConnection connection;
+    protected org.connectbot.util.HostDatabase hostdb;
+    private java.util.List hosts;
+    protected android.view.LayoutInflater inflater;
+    protected boolean makingShortcut;
+    private android.content.SharedPreferences prefs;
+    private android.widget.TextView quickconnect;
+    private android.view.MenuItem sortcolor;
+    protected boolean sortedByColor;
+    private android.view.MenuItem sortlast;
+    private android.widget.Spinner transportSpinner;
+    protected android.os.Handler updateHandler;
+    private boolean waitingForDisconnectAll;
+
+    public void <init>()
+    {
+        org.connectbot.HostListActivity $r0;
+        org.connectbot.HostListActivity$1 $r1;
+        org.connectbot.HostListActivity$2 $r2;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void <init>()>();
+
+        $r0.<org.connectbot.HostListActivity: org.connectbot.service.TerminalManager bound> = null;
+
+        $r0.<org.connectbot.HostListActivity: android.view.LayoutInflater inflater> = null;
+
+        $r0.<org.connectbot.HostListActivity: boolean sortedByColor> = 0;
+
+        $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs> = null;
+
+        $r0.<org.connectbot.HostListActivity: boolean makingShortcut> = 0;
+
+        $r0.<org.connectbot.HostListActivity: boolean waitingForDisconnectAll> = 0;
+
+        $r0.<org.connectbot.HostListActivity: boolean closeOnDisconnectAll> = 1;
+
+        $r1 = new org.connectbot.HostListActivity$1;
+
+        specialinvoke $r1.<org.connectbot.HostListActivity$1: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        $r0.<org.connectbot.HostListActivity: android.os.Handler updateHandler> = $r1;
+
+        $r2 = new org.connectbot.HostListActivity$2;
+
+        specialinvoke $r2.<org.connectbot.HostListActivity$2: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        $r0.<org.connectbot.HostListActivity: android.content.ServiceConnection connection> = $r2;
+
+        return;
+    }
+
+    static boolean access$000(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.connectbot.HostListActivity;
+
+        $z0 = $r0.<org.connectbot.HostListActivity: boolean waitingForDisconnectAll>;
+
+        return $z0;
+    }
+
+    static boolean access$002(org.connectbot.HostListActivity, boolean)
+    {
+        org.connectbot.HostListActivity $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.connectbot.HostListActivity;
+
+        $z0 := @parameter1: boolean;
+
+        $r0.<org.connectbot.HostListActivity: boolean waitingForDisconnectAll> = $z0;
+
+        return $z0;
+    }
+
+    static void access$100(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity $r0;
+
+        $r0 := @parameter0: org.connectbot.HostListActivity;
+
+        specialinvoke $r0.<org.connectbot.HostListActivity: void disconnectAll()>();
+
+        return;
+    }
+
+    static boolean access$200(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.connectbot.HostListActivity;
+
+        $z0 = specialinvoke $r0.<org.connectbot.HostListActivity: boolean startConsoleActivity()>();
+
+        return $z0;
+    }
+
+    static android.widget.Spinner access$300(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity $r0;
+        android.widget.Spinner $r1;
+
+        $r0 := @parameter0: org.connectbot.HostListActivity;
+
+        $r1 = $r0.<org.connectbot.HostListActivity: android.widget.Spinner transportSpinner>;
+
+        return $r1;
+    }
+
+    static android.widget.TextView access$400(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity $r0;
+        android.widget.TextView $r1;
+
+        $r0 := @parameter0: org.connectbot.HostListActivity;
+
+        $r1 = $r0.<org.connectbot.HostListActivity: android.widget.TextView quickconnect>;
+
+        return $r1;
+    }
+
+    static boolean access$500(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.connectbot.HostListActivity;
+
+        $z0 = $r0.<org.connectbot.HostListActivity: boolean closeOnDisconnectAll>;
+
+        return $z0;
+    }
+
+    private void disconnectAll()
+    {
+        org.connectbot.HostListActivity $r0;
+        org.connectbot.service.TerminalManager $r1;
+        org.connectbot.HostListActivity$13 $r2;
+        java.lang.String $r3;
+        android.app.AlertDialog$Builder $r4;
+        org.connectbot.HostListActivity$12 $r5;
+        android.app.AlertDialog $r6;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $r1 = $r0.<org.connectbot.HostListActivity: org.connectbot.service.TerminalManager bound>;
+
+        if $r1 != null goto label1;
+
+        $r0.<org.connectbot.HostListActivity: boolean waitingForDisconnectAll> = 1;
+
+        return;
+
+     label1:
+        $r4 = new android.app.AlertDialog$Builder;
+
+        specialinvoke $r4.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r0);
+
+        $r3 = virtualinvoke $r0.<org.connectbot.HostListActivity: java.lang.String getString(int)>(2131165420);
+
+        $r4 = virtualinvoke $r4.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setMessage(java.lang.CharSequence)>($r3);
+
+        $r2 = new org.connectbot.HostListActivity$13;
+
+        specialinvoke $r2.<org.connectbot.HostListActivity$13: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        $r4 = virtualinvoke $r4.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(2131165422, $r2);
+
+        $r5 = new org.connectbot.HostListActivity$12;
+
+        specialinvoke $r5.<org.connectbot.HostListActivity$12: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        $r4 = virtualinvoke $r4.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(2131165421, $r5);
+
+        $r6 = virtualinvoke $r4.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r6.<android.app.AlertDialog: void show()>();
+
+        return;
+    }
+
+    private boolean startConsoleActivity()
+    {
+        org.connectbot.HostListActivity $r0;
+        android.content.Intent $r1;
+        android.widget.Spinner $r2;
+        android.widget.TextView $r3;
+        java.lang.Object $r4;
+        java.lang.String $r5, $r7;
+        java.lang.CharSequence $r6;
+        android.net.Uri $r8;
+        java.lang.Object[] $r9;
+        org.connectbot.util.HostDatabase $r10;
+        org.connectbot.bean.HostBean $r11;
+        org.connectbot.transport.AbsTransport $r12;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $r2 = $r0.<org.connectbot.HostListActivity: android.widget.Spinner transportSpinner>;
+
+        $r4 = virtualinvoke $r2.<android.widget.Spinner: java.lang.Object getSelectedItem()>();
+
+        $r5 = (java.lang.String) $r4;
+
+        $r3 = $r0.<org.connectbot.HostListActivity: android.widget.TextView quickconnect>;
+
+        $r6 = virtualinvoke $r3.<android.widget.TextView: java.lang.CharSequence getText()>();
+
+        $r7 = interfaceinvoke $r6.<java.lang.CharSequence: java.lang.String toString()>();
+
+        $r8 = staticinvoke <org.connectbot.transport.TransportFactory: android.net.Uri getUri(java.lang.String,java.lang.String)>($r5, $r7);
+
+        if $r8 != null goto label1;
+
+        $r3 = $r0.<org.connectbot.HostListActivity: android.widget.TextView quickconnect>;
+
+        $r9 = newarray (java.lang.Object)[1];
+
+        $r2 = $r0.<org.connectbot.HostListActivity: android.widget.Spinner transportSpinner>;
+
+        $r4 = virtualinvoke $r2.<android.widget.Spinner: java.lang.Object getSelectedItem()>();
+
+        $r7 = (java.lang.String) $r4;
+
+        $r7 = staticinvoke <org.connectbot.transport.TransportFactory: java.lang.String getFormatHint(java.lang.String,android.content.Context)>($r7, $r0);
+
+        $r9[0] = $r7;
+
+        $r7 = virtualinvoke $r0.<org.connectbot.HostListActivity: java.lang.String getString(int,java.lang.Object[])>(2131165187, $r9);
+
+        virtualinvoke $r3.<android.widget.TextView: void setError(java.lang.CharSequence)>($r7);
+
+        return 0;
+
+     label1:
+        $r10 = $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        $r11 = staticinvoke <org.connectbot.transport.TransportFactory: org.connectbot.bean.HostBean findHost(org.connectbot.util.HostDatabase,android.net.Uri)>($r10, $r8);
+
+        if $r11 != null goto label2;
+
+        $r7 = virtualinvoke $r8.<android.net.Uri: java.lang.String getScheme()>();
+
+        $r12 = staticinvoke <org.connectbot.transport.TransportFactory: org.connectbot.transport.AbsTransport getTransport(java.lang.String)>($r7);
+
+        $r11 = virtualinvoke $r12.<org.connectbot.transport.AbsTransport: org.connectbot.bean.HostBean createHost(android.net.Uri)>($r8);
+
+        virtualinvoke $r11.<org.connectbot.bean.HostBean: void setColor(java.lang.String)>("gray");
+
+        virtualinvoke $r11.<org.connectbot.bean.HostBean: void setPubkeyId(long)>(-1L);
+
+        $r10 = $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        virtualinvoke $r10.<org.connectbot.util.HostDatabase: org.connectbot.bean.HostBean saveHost(org.connectbot.bean.HostBean)>($r11);
+
+     label2:
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/ConsoleActivity");
+
+        virtualinvoke $r1.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r8);
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void startActivity(android.content.Intent)>($r1);
+
+        return 1;
+    }
+
+    protected void onActivityResult(int, int, android.content.Intent)
+    {
+        org.connectbot.HostListActivity $r0;
+        int $i0, $i1;
+        android.content.Intent $r1;
+        android.content.SharedPreferences$Editor $r2;
+        android.content.SharedPreferences $r3;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 := @parameter2: android.content.Intent;
+
+        if $i0 != 2 goto label2;
+
+        if $i1 != -1 goto label1;
+
+        $r3 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $r2 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        interfaceinvoke $r2.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("eula", 1);
+
+        interfaceinvoke $r2.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        return;
+
+     label1:
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void finish()>();
+
+        return;
+
+     label2:
+        if $i0 != 1 goto label3;
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void updateList()>();
+
+        return;
+
+     label3:
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        org.connectbot.HostListActivity $r0;
+        android.os.Bundle $r1;
+        boolean $z0, $z1, $z2;
+        android.widget.ArrayAdapter $r2;
+        byte $b0, $b1;
+        java.lang.Object[] $r3;
+        android.content.res.Resources $r4;
+        java.lang.CharSequence $r5;
+        java.lang.String $r6, $r10;
+        android.content.SharedPreferences $r7;
+        android.content.SharedPreferences$Editor $r8;
+        android.content.Intent $r9;
+        org.connectbot.util.HostDatabase $r11;
+        android.widget.ListView $r12;
+        org.connectbot.HostListActivity$3 $r13;
+        android.view.View $r14;
+        android.widget.TextView $r15;
+        org.connectbot.HostListActivity$4 $r16;
+        android.widget.Spinner $r17;
+        java.lang.String[] $r18;
+        org.connectbot.HostListActivity$5 $r19;
+        android.view.LayoutInflater $r20;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        $b0 = 8;
+
+        $z1 = 1;
+
+        specialinvoke $r0.<android.app.ListActivity: void onCreate(android.os.Bundle)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void setContentView(int)>(2130903045);
+
+        $r3 = newarray (java.lang.Object)[2];
+
+        $r4 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.content.res.Resources getResources()>();
+
+        $r5 = virtualinvoke $r4.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165411);
+
+        $r3[0] = $r5;
+
+        $r4 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.content.res.Resources getResources()>();
+
+        $r5 = virtualinvoke $r4.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165220);
+
+        $r3[1] = $r5;
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s: %s", $r3);
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void setTitle(java.lang.CharSequence)>($r6);
+
+        $r7 = staticinvoke <android.preference.PreferenceManager: android.content.SharedPreferences getDefaultSharedPreferences(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs> = $r7;
+
+        $r6 = <android.os.Build: java.lang.String MANUFACTURER>;
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("HTC");
+
+        if $z0 == 0 goto label04;
+
+        $r6 = <android.os.Build: java.lang.String DEVICE>;
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("dream");
+
+        if $z0 == 0 goto label04;
+
+        $r7 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $r8 = interfaceinvoke $r7.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $z0 = 0;
+
+        $r7 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $z2 = interfaceinvoke $r7.<android.content.SharedPreferences: boolean contains(java.lang.String)>("shiftfkeys");
+
+        if $z2 != 0 goto label01;
+
+        $r7 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $z2 = interfaceinvoke $r7.<android.content.SharedPreferences: boolean contains(java.lang.String)>("ctrlfkeys");
+
+        if $z2 != 0 goto label01;
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("shiftfkeys", 1);
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("ctrlfkeys", 1);
+
+        $z0 = 1;
+
+     label01:
+        $r7 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $z2 = interfaceinvoke $r7.<android.content.SharedPreferences: boolean contains(java.lang.String)>("stickymodifiers");
+
+        if $z2 != 0 goto label02;
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("stickymodifiers", "yes");
+
+        $z0 = 1;
+
+     label02:
+        $r7 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $z2 = interfaceinvoke $r7.<android.content.SharedPreferences: boolean contains(java.lang.String)>("keymode");
+
+        if $z2 != 0 goto label03;
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("keymode", "Use right-side keys");
+
+        $z0 = 1;
+
+     label03:
+        if $z0 == 0 goto label04;
+
+        interfaceinvoke $r8.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+     label04:
+        $r7 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $z2 = interfaceinvoke $r7.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("eula", 0);
+
+        if $z2 != 0 goto label05;
+
+        $r9 = new android.content.Intent;
+
+        specialinvoke $r9.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/WizardActivity");
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void startActivityForResult(android.content.Intent,int)>($r9, 2);
+
+     label05:
+        $r6 = "android.intent.action.CREATE_SHORTCUT";
+
+        $r9 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.content.Intent getIntent()>();
+
+        $r10 = virtualinvoke $r9.<android.content.Intent: java.lang.String getAction()>();
+
+        $z2 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r10);
+
+        if $z2 != 0 goto label06;
+
+        $r10 = "android.intent.action.PICK";
+
+        $r9 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.content.Intent getIntent()>();
+
+        $r6 = virtualinvoke $r9.<android.content.Intent: java.lang.String getAction()>();
+
+        $z2 = virtualinvoke $r10.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z2 == 0 goto label09;
+
+     label06:
+        $r0.<org.connectbot.HostListActivity: boolean makingShortcut> = $z1;
+
+        $r11 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r11.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb> = $r11;
+
+        $r12 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.widget.ListView getListView()>();
+
+        $r7 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $z2 = interfaceinvoke $r7.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("sortByColor", 0);
+
+        $r0.<org.connectbot.HostListActivity: boolean sortedByColor> = $z2;
+
+        $r13 = new org.connectbot.HostListActivity$3;
+
+        specialinvoke $r13.<org.connectbot.HostListActivity$3: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        virtualinvoke $r12.<android.widget.ListView: void setOnItemClickListener(android.widget.AdapterView$OnItemClickListener)>($r13);
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void registerForContextMenu(android.view.View)>($r12);
+
+        $r14 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.view.View findViewById(int)>(2131427365);
+
+        $r15 = (android.widget.TextView) $r14;
+
+        $r0.<org.connectbot.HostListActivity: android.widget.TextView quickconnect> = $r15;
+
+        $r15 = $r0.<org.connectbot.HostListActivity: android.widget.TextView quickconnect>;
+
+        $z2 = $r0.<org.connectbot.HostListActivity: boolean makingShortcut>;
+
+        if $z2 == 0 goto label10;
+
+        $b1 = 8;
+
+     label07:
+        virtualinvoke $r15.<android.widget.TextView: void setVisibility(int)>($b1);
+
+        $r15 = $r0.<org.connectbot.HostListActivity: android.widget.TextView quickconnect>;
+
+        $r16 = new org.connectbot.HostListActivity$4;
+
+        specialinvoke $r16.<org.connectbot.HostListActivity$4: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        virtualinvoke $r15.<android.widget.TextView: void setOnKeyListener(android.view.View$OnKeyListener)>($r16);
+
+        $r14 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.view.View findViewById(int)>(2131427364);
+
+        $r17 = (android.widget.Spinner) $r14;
+
+        $r0.<org.connectbot.HostListActivity: android.widget.Spinner transportSpinner> = $r17;
+
+        $r17 = $r0.<org.connectbot.HostListActivity: android.widget.Spinner transportSpinner>;
+
+        $z2 = $r0.<org.connectbot.HostListActivity: boolean makingShortcut>;
+
+        if $z2 == 0 goto label11;
+
+     label08:
+        virtualinvoke $r17.<android.widget.Spinner: void setVisibility(int)>($b0);
+
+        $r2 = new android.widget.ArrayAdapter;
+
+        $r18 = staticinvoke <org.connectbot.transport.TransportFactory: java.lang.String[] getTransportNames()>();
+
+        specialinvoke $r2.<android.widget.ArrayAdapter: void <init>(android.content.Context,int,java.lang.Object[])>($r0, 17367048, $r18);
+
+        virtualinvoke $r2.<android.widget.ArrayAdapter: void setDropDownViewResource(int)>(17367049);
+
+        $r17 = $r0.<org.connectbot.HostListActivity: android.widget.Spinner transportSpinner>;
+
+        $r19 = new org.connectbot.HostListActivity$5;
+
+        specialinvoke $r19.<org.connectbot.HostListActivity$5: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        virtualinvoke $r17.<android.widget.Spinner: void setOnItemSelectedListener(android.widget.AdapterView$OnItemSelectedListener)>($r19);
+
+        $r17 = $r0.<org.connectbot.HostListActivity: android.widget.Spinner transportSpinner>;
+
+        virtualinvoke $r17.<android.widget.Spinner: void setAdapter(android.widget.SpinnerAdapter)>($r2);
+
+        $r20 = staticinvoke <android.view.LayoutInflater: android.view.LayoutInflater 'from'(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostListActivity: android.view.LayoutInflater inflater> = $r20;
+
+        return;
+
+     label09:
+        $z1 = 0;
+
+        goto label06;
+
+     label10:
+        $b1 = 0;
+
+        goto label07;
+
+     label11:
+        $b0 = 0;
+
+        goto label08;
+    }
+
+    public void onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu$ContextMenuInfo)
+    {
+        org.connectbot.HostListActivity $r0;
+        android.view.ContextMenu $r1;
+        android.view.View $r2;
+        android.view.ContextMenu$ContextMenuInfo $r3;
+        org.connectbot.service.TerminalBridge $r4;
+        int $i0;
+        android.widget.ListView $r5;
+        android.widget.AdapterView$AdapterContextMenuInfo $r6;
+        java.lang.Object $r7;
+        org.connectbot.bean.HostBean $r8;
+        java.lang.String $r9;
+        android.view.MenuItem $r10;
+        org.connectbot.service.TerminalManager $r11;
+        boolean $z0;
+        org.connectbot.HostListActivity$8 $r12;
+        org.connectbot.HostListActivity$9 $r13;
+        org.connectbot.HostListActivity$10 $r14;
+        org.connectbot.HostListActivity$11 $r15;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $r1 := @parameter0: android.view.ContextMenu;
+
+        $r2 := @parameter1: android.view.View;
+
+        $r3 := @parameter2: android.view.ContextMenu$ContextMenuInfo;
+
+        $r6 = (android.widget.AdapterView$AdapterContextMenuInfo) $r3;
+
+        $r5 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.widget.ListView getListView()>();
+
+        $i0 = $r6.<android.widget.AdapterView$AdapterContextMenuInfo: int position>;
+
+        $r7 = virtualinvoke $r5.<android.widget.ListView: java.lang.Object getItemAtPosition(int)>($i0);
+
+        $r8 = (org.connectbot.bean.HostBean) $r7;
+
+        $r9 = virtualinvoke $r8.<org.connectbot.bean.HostBean: java.lang.String getNickname()>();
+
+        interfaceinvoke $r1.<android.view.ContextMenu: android.view.ContextMenu setHeaderTitle(java.lang.CharSequence)>($r9);
+
+        $r10 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165253);
+
+        $r11 = $r0.<org.connectbot.HostListActivity: org.connectbot.service.TerminalManager bound>;
+
+        if $r11 != null goto label4;
+
+        $r4 = null;
+
+     label1:
+        if $r4 == null goto label5;
+
+        $z0 = 1;
+
+     label2:
+        interfaceinvoke $r10.<android.view.MenuItem: android.view.MenuItem setEnabled(boolean)>($z0);
+
+        $r12 = new org.connectbot.HostListActivity$8;
+
+        specialinvoke $r12.<org.connectbot.HostListActivity$8: void <init>(org.connectbot.HostListActivity,org.connectbot.service.TerminalBridge)>($r0, $r4);
+
+        interfaceinvoke $r10.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r12);
+
+        $r10 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165305);
+
+        $r13 = new org.connectbot.HostListActivity$9;
+
+        specialinvoke $r13.<org.connectbot.HostListActivity$9: void <init>(org.connectbot.HostListActivity,org.connectbot.bean.HostBean)>($r0, $r8);
+
+        interfaceinvoke $r10.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r13);
+
+        $r10 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165307);
+
+        $r14 = new org.connectbot.HostListActivity$10;
+
+        specialinvoke $r14.<org.connectbot.HostListActivity$10: void <init>(org.connectbot.HostListActivity,org.connectbot.bean.HostBean)>($r0, $r8);
+
+        interfaceinvoke $r10.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r14);
+
+        $r9 = virtualinvoke $r8.<org.connectbot.bean.HostBean: java.lang.String getProtocol()>();
+
+        $z0 = staticinvoke <org.connectbot.transport.TransportFactory: boolean canForwardPorts(java.lang.String)>($r9);
+
+        if $z0 != 0 goto label3;
+
+        interfaceinvoke $r10.<android.view.MenuItem: android.view.MenuItem setEnabled(boolean)>(0);
+
+     label3:
+        $r10 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165304);
+
+        $r15 = new org.connectbot.HostListActivity$11;
+
+        specialinvoke $r15.<org.connectbot.HostListActivity$11: void <init>(org.connectbot.HostListActivity,org.connectbot.bean.HostBean,org.connectbot.service.TerminalBridge)>($r0, $r8, $r4);
+
+        interfaceinvoke $r10.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r15);
+
+        return;
+
+     label4:
+        $r11 = $r0.<org.connectbot.HostListActivity: org.connectbot.service.TerminalManager bound>;
+
+        $r4 = virtualinvoke $r11.<org.connectbot.service.TerminalManager: org.connectbot.service.TerminalBridge getConnectedBridge(org.connectbot.bean.HostBean)>($r8);
+
+        goto label1;
+
+     label5:
+        $z0 = 0;
+
+        goto label2;
+    }
+
+    public boolean onCreateOptionsMenu(android.view.Menu)
+    {
+        org.connectbot.HostListActivity $r0;
+        android.view.Menu $r1;
+        boolean $z0;
+        org.connectbot.HostListActivity$6 $r2;
+        android.view.MenuItem $r3;
+        org.connectbot.HostListActivity$7 $r4;
+        android.content.Intent $r5;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $r1 := @parameter0: android.view.Menu;
+
+        specialinvoke $r0.<android.app.ListActivity: boolean onCreateOptionsMenu(android.view.Menu)>($r1);
+
+        $z0 = $r0.<org.connectbot.HostListActivity: boolean makingShortcut>;
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        $r3 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165312);
+
+        $r0.<org.connectbot.HostListActivity: android.view.MenuItem sortcolor> = $r3;
+
+        $r3 = $r0.<org.connectbot.HostListActivity: android.view.MenuItem sortcolor>;
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301586);
+
+        $r3 = $r0.<org.connectbot.HostListActivity: android.view.MenuItem sortcolor>;
+
+        $r2 = new org.connectbot.HostListActivity$6;
+
+        specialinvoke $r2.<org.connectbot.HostListActivity$6: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r2);
+
+        $r3 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165313);
+
+        $r0.<org.connectbot.HostListActivity: android.view.MenuItem sortlast> = $r3;
+
+        $r3 = $r0.<org.connectbot.HostListActivity: android.view.MenuItem sortlast>;
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301586);
+
+        $r3 = $r0.<org.connectbot.HostListActivity: android.view.MenuItem sortlast>;
+
+        $r4 = new org.connectbot.HostListActivity$7;
+
+        specialinvoke $r4.<org.connectbot.HostListActivity$7: void <init>(org.connectbot.HostListActivity)>($r0);
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r4);
+
+        $r3 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165310);
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301551);
+
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/PubkeyListActivity");
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIntent(android.content.Intent)>($r5);
+
+        $r3 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165217);
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301587);
+
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/ColorsActivity");
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIntent(android.content.Intent)>($r5);
+
+        $r3 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165311);
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301577);
+
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/SettingsActivity");
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIntent(android.content.Intent)>($r5);
+
+        $r3 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165218);
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301568);
+
+        $r5 = new android.content.Intent;
+
+        specialinvoke $r5.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/HelpActivity");
+
+        interfaceinvoke $r3.<android.view.MenuItem: android.view.MenuItem setIntent(android.content.Intent)>($r5);
+
+        return 1;
+    }
+
+    protected void onNewIntent(android.content.Intent)
+    {
+        org.connectbot.HostListActivity $r0;
+        android.content.Intent $r1;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $r1 := @parameter0: android.content.Intent;
+
+        specialinvoke $r0.<android.app.ListActivity: void onNewIntent(android.content.Intent)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void setIntent(android.content.Intent)>($r1);
+
+        return;
+    }
+
+    public boolean onPrepareOptionsMenu(android.view.Menu)
+    {
+        org.connectbot.HostListActivity $r0;
+        android.view.Menu $r1;
+        boolean $z0;
+        android.view.MenuItem $r2;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $r1 := @parameter0: android.view.Menu;
+
+        specialinvoke $r0.<android.app.ListActivity: boolean onPrepareOptionsMenu(android.view.Menu)>($r1);
+
+        $z0 = $r0.<org.connectbot.HostListActivity: boolean makingShortcut>;
+
+        if $z0 == 0 goto label1;
+
+        return 1;
+
+     label1:
+        $r2 = $r0.<org.connectbot.HostListActivity: android.view.MenuItem sortcolor>;
+
+        $z0 = $r0.<org.connectbot.HostListActivity: boolean sortedByColor>;
+
+        if $z0 != 0 goto label3;
+
+        $z0 = 1;
+
+     label2:
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setVisible(boolean)>($z0);
+
+        $r2 = $r0.<org.connectbot.HostListActivity: android.view.MenuItem sortlast>;
+
+        $z0 = $r0.<org.connectbot.HostListActivity: boolean sortedByColor>;
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setVisible(boolean)>($z0);
+
+        return 1;
+
+     label3:
+        $z0 = 0;
+
+        goto label2;
+    }
+
+    public void onResume()
+    {
+        org.connectbot.HostListActivity $r0;
+        android.content.Intent $r1;
+        int $i0;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void onResume()>();
+
+        $r1 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.content.Intent getIntent()>();
+
+        $i0 = virtualinvoke $r1.<android.content.Intent: int getFlags()>();
+
+        $i0 = $i0 & 1048576;
+
+        if $i0 != 0 goto label1;
+
+        $r2 = "org.connectbot.action.DISCONNECT";
+
+        $r1 = virtualinvoke $r0.<org.connectbot.HostListActivity: android.content.Intent getIntent()>();
+
+        $r3 = virtualinvoke $r1.<android.content.Intent: java.lang.String getAction()>();
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label1;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.HostListActivity", "Got disconnect all request");
+
+        specialinvoke $r0.<org.connectbot.HostListActivity: void disconnectAll()>();
+
+     label1:
+        $z0 = $r0.<org.connectbot.HostListActivity: boolean waitingForDisconnectAll>;
+
+        if $z0 == 0 goto label3;
+
+        $z0 = $r0.<org.connectbot.HostListActivity: boolean closeOnDisconnectAll>;
+
+        if $z0 == 0 goto label3;
+
+        $z0 = 1;
+
+     label2:
+        $r0.<org.connectbot.HostListActivity: boolean closeOnDisconnectAll> = $z0;
+
+        return;
+
+     label3:
+        $z0 = 0;
+
+        goto label2;
+    }
+
+    public void onStart()
+    {
+        org.connectbot.HostListActivity $r0;
+        android.content.Intent $r1;
+        android.content.ServiceConnection $r2;
+        org.connectbot.util.HostDatabase $r3;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void onStart()>();
+
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/service/TerminalManager");
+
+        $r2 = $r0.<org.connectbot.HostListActivity: android.content.ServiceConnection connection>;
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: boolean bindService(android.content.Intent,android.content.ServiceConnection,int)>($r1, $r2, 1);
+
+        $r3 = $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r3 != null goto label1;
+
+        $r3 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r3.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb> = $r3;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void onStop()
+    {
+        org.connectbot.HostListActivity $r0;
+        android.content.ServiceConnection $r1;
+        org.connectbot.util.HostDatabase $r2;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void onStop()>();
+
+        $r1 = $r0.<org.connectbot.HostListActivity: android.content.ServiceConnection connection>;
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void unbindService(android.content.ServiceConnection)>($r1);
+
+        $r2 = $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        virtualinvoke $r2.<org.connectbot.util.HostDatabase: void close()>();
+
+        $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb> = null;
+
+     label1:
+        $r0.<org.connectbot.HostListActivity: boolean closeOnDisconnectAll> = 1;
+
+        return;
+    }
+
+    protected void updateList()
+    {
+        org.connectbot.HostListActivity $r0;
+        org.connectbot.HostListActivity$HostAdapter $r1;
+        android.content.SharedPreferences $r2;
+        boolean $z0, $z1;
+        android.content.SharedPreferences$Editor $r3;
+        org.connectbot.util.HostDatabase $r4;
+        java.util.List $r5;
+        org.connectbot.service.TerminalManager $r6;
+        java.util.ArrayList $r7;
+        java.util.Iterator $r8;
+        java.lang.Object $r9;
+        org.connectbot.service.TerminalBridge $r10;
+        org.connectbot.bean.HostBean $r11;
+
+        $r0 := @this: org.connectbot.HostListActivity;
+
+        $r2 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r2.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("sortByColor", 0);
+
+        $z1 = $r0.<org.connectbot.HostListActivity: boolean sortedByColor>;
+
+        if $z0 == $z1 goto label1;
+
+        $r2 = $r0.<org.connectbot.HostListActivity: android.content.SharedPreferences prefs>;
+
+        $r3 = interfaceinvoke $r2.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        $z1 = $r0.<org.connectbot.HostListActivity: boolean sortedByColor>;
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("sortByColor", $z1);
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+     label1:
+        $r4 = $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r4 != null goto label2;
+
+        $r4 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r4.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb> = $r4;
+
+     label2:
+        $r4 = $r0.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        $z1 = $r0.<org.connectbot.HostListActivity: boolean sortedByColor>;
+
+        $r5 = virtualinvoke $r4.<org.connectbot.util.HostDatabase: java.util.List getHosts(boolean)>($z1);
+
+        $r0.<org.connectbot.HostListActivity: java.util.List hosts> = $r5;
+
+        $r6 = $r0.<org.connectbot.HostListActivity: org.connectbot.service.TerminalManager bound>;
+
+        if $r6 == null goto label4;
+
+        $r6 = $r0.<org.connectbot.HostListActivity: org.connectbot.service.TerminalManager bound>;
+
+        $r7 = virtualinvoke $r6.<org.connectbot.service.TerminalManager: java.util.ArrayList getBridges()>();
+
+        $r8 = virtualinvoke $r7.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label3:
+        $z1 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z1 == 0 goto label4;
+
+        $r9 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (org.connectbot.service.TerminalBridge) $r9;
+
+        $r5 = $r0.<org.connectbot.HostListActivity: java.util.List hosts>;
+
+        $r11 = $r10.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $z1 = interfaceinvoke $r5.<java.util.List: boolean contains(java.lang.Object)>($r11);
+
+        if $z1 != 0 goto label3;
+
+        $r5 = $r0.<org.connectbot.HostListActivity: java.util.List hosts>;
+
+        $r11 = $r10.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        interfaceinvoke $r5.<java.util.List: void add(int,java.lang.Object)>(0, $r11);
+
+        goto label3;
+
+     label4:
+        $r1 = new org.connectbot.HostListActivity$HostAdapter;
+
+        $r5 = $r0.<org.connectbot.HostListActivity: java.util.List hosts>;
+
+        $r6 = $r0.<org.connectbot.HostListActivity: org.connectbot.service.TerminalManager bound>;
+
+        specialinvoke $r1.<org.connectbot.HostListActivity$HostAdapter: void <init>(org.connectbot.HostListActivity,android.content.Context,java.util.List,org.connectbot.service.TerminalManager)>($r0, $r0, $r5, $r6);
+
+        virtualinvoke $r0.<org.connectbot.HostListActivity: void setListAdapter(android.widget.ListAdapter)>($r1);
+
+        return;
+    }
+}

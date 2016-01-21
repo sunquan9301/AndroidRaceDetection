@@ -1,0 +1,76 @@
+public final class org.connectbot.R$layout extends java.lang.Object
+{
+    public static final int act_colors;
+    public static final int act_console;
+    public static final int act_generatepubkey;
+    public static final int act_help;
+    public static final int act_help_topic;
+    public static final int act_hostlist;
+    public static final int act_portforwardlist;
+    public static final int act_pubkeylist;
+    public static final int act_wizard;
+    public static final int dia_changepassword;
+    public static final int dia_gatherentropy;
+    public static final int dia_password;
+    public static final int dia_portforward;
+    public static final int dia_resize;
+    public static final int item_host;
+    public static final int item_portforward;
+    public static final int item_pubkey;
+    public static final int item_terminal;
+    public static final int wiz_eula;
+
+    public void <init>()
+    {
+        org.connectbot.R$layout $r0;
+
+        $r0 := @this: org.connectbot.R$layout;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$layout: int wiz_eula> = 2130903058;
+
+        <org.connectbot.R$layout: int item_terminal> = 2130903057;
+
+        <org.connectbot.R$layout: int item_pubkey> = 2130903056;
+
+        <org.connectbot.R$layout: int item_portforward> = 2130903055;
+
+        <org.connectbot.R$layout: int item_host> = 2130903054;
+
+        <org.connectbot.R$layout: int dia_resize> = 2130903053;
+
+        <org.connectbot.R$layout: int dia_portforward> = 2130903052;
+
+        <org.connectbot.R$layout: int dia_password> = 2130903051;
+
+        <org.connectbot.R$layout: int dia_gatherentropy> = 2130903050;
+
+        <org.connectbot.R$layout: int dia_changepassword> = 2130903049;
+
+        <org.connectbot.R$layout: int act_wizard> = 2130903048;
+
+        <org.connectbot.R$layout: int act_pubkeylist> = 2130903047;
+
+        <org.connectbot.R$layout: int act_portforwardlist> = 2130903046;
+
+        <org.connectbot.R$layout: int act_hostlist> = 2130903045;
+
+        <org.connectbot.R$layout: int act_help_topic> = 2130903044;
+
+        <org.connectbot.R$layout: int act_help> = 2130903043;
+
+        <org.connectbot.R$layout: int act_generatepubkey> = 2130903042;
+
+        <org.connectbot.R$layout: int act_console> = 2130903041;
+
+        <org.connectbot.R$layout: int act_colors> = 2130903040;
+
+        return;
+    }
+}

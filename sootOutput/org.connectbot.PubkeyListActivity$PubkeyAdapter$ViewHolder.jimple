@@ -1,0 +1,23 @@
+class org.connectbot.PubkeyListActivity$PubkeyAdapter$ViewHolder extends java.lang.Object
+{
+    public android.widget.TextView caption;
+    public android.widget.ImageView icon;
+    public android.widget.TextView nickname;
+    final org.connectbot.PubkeyListActivity$PubkeyAdapter this$1;
+
+    void <init>(org.connectbot.PubkeyListActivity$PubkeyAdapter)
+    {
+        org.connectbot.PubkeyListActivity$PubkeyAdapter$ViewHolder $r0;
+        org.connectbot.PubkeyListActivity$PubkeyAdapter $r1;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$PubkeyAdapter$ViewHolder;
+
+        $r1 := @parameter0: org.connectbot.PubkeyListActivity$PubkeyAdapter;
+
+        $r0.<org.connectbot.PubkeyListActivity$PubkeyAdapter$ViewHolder: org.connectbot.PubkeyListActivity$PubkeyAdapter this$1> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

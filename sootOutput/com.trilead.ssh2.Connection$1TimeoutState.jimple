@@ -1,0 +1,26 @@
+final class com.trilead.ssh2.Connection$1TimeoutState extends java.lang.Object
+{
+    boolean isCancelled;
+    final com.trilead.ssh2.Connection this$0;
+    boolean timeoutSocketClosed;
+
+    void <init>(com.trilead.ssh2.Connection)
+    {
+        com.trilead.ssh2.Connection$1TimeoutState $r0;
+        com.trilead.ssh2.Connection $r1;
+
+        $r0 := @this: com.trilead.ssh2.Connection$1TimeoutState;
+
+        $r1 := @parameter0: com.trilead.ssh2.Connection;
+
+        $r0.<com.trilead.ssh2.Connection$1TimeoutState: com.trilead.ssh2.Connection this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.Connection$1TimeoutState: boolean isCancelled> = 0;
+
+        $r0.<com.trilead.ssh2.Connection$1TimeoutState: boolean timeoutSocketClosed> = 0;
+
+        return;
+    }
+}

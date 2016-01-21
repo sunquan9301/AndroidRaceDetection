@@ -1,0 +1,270 @@
+public class com.trilead.ssh2.crypto.digest.HashForSSH2Types extends java.lang.Object
+{
+    java.security.MessageDigest md;
+
+    public void <init>(java.lang.String)
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        java.lang.String $r1;
+        java.security.NoSuchAlgorithmException $r2;
+        java.lang.StringBuilder $r3;
+        java.security.MessageDigest $r4;
+        java.lang.RuntimeException $r5;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r1 := @parameter0: java.lang.String;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+     label1:
+        $r4 = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>($r1);
+
+     label2:
+        $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md> = $r4;
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $r5 = new java.lang.RuntimeException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported algorithm ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.RuntimeException: void <init>(java.lang.String)>($r1);
+
+        throw $r5;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label3;
+    }
+
+    public void getDigest(byte[])
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        byte[] $r1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r1 := @parameter0: byte[];
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void getDigest(byte[],int)>($r1, 0);
+
+        return;
+    }
+
+    public void getDigest(byte[], int)
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        byte[] $r1;
+        int $i0, $i1;
+        java.security.DigestException $r2;
+        java.security.MessageDigest $r3;
+        java.lang.RuntimeException $r4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        $i1 = lengthof $r1;
+
+        $i1 = $i1 - $i0;
+
+     label1:
+        virtualinvoke $r3.<java.security.MessageDigest: int digest(byte[],int,int)>($r1, $i0, $i1);
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $r4 = new java.lang.RuntimeException;
+
+        specialinvoke $r4.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("Unable to digest", $r2);
+
+        throw $r4;
+
+        catch java.security.DigestException from label1 to label2 with label3;
+    }
+
+    public byte[] getDigest()
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        byte[] $r1;
+        java.security.MessageDigest $r2;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        $i0 = virtualinvoke $r2.<java.security.MessageDigest: int getDigestLength()>();
+
+        $r1 = newarray (byte)[$i0];
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void getDigest(byte[])>($r1);
+
+        return $r1;
+    }
+
+    public int getDigestLength()
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        java.security.MessageDigest $r1;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        $i0 = virtualinvoke $r1.<java.security.MessageDigest: int getDigestLength()>();
+
+        return $i0;
+    }
+
+    public void reset()
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        java.security.MessageDigest $r1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        virtualinvoke $r1.<java.security.MessageDigest: void reset()>();
+
+        return;
+    }
+
+    public void updateBigInt(java.math.BigInteger)
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        java.math.BigInteger $r1;
+        byte[] $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r1 := @parameter0: java.math.BigInteger;
+
+        $r2 = virtualinvoke $r1.<java.math.BigInteger: byte[] toByteArray()>();
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r2);
+
+        return;
+    }
+
+    public void updateByte(byte)
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        byte $b0;
+        byte[] $r1;
+        java.security.MessageDigest $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $b0 := @parameter0: byte;
+
+        $r1 = newarray (byte)[1];
+
+        $r1[0] = $b0;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        virtualinvoke $r2.<java.security.MessageDigest: void update(byte[])>($r1);
+
+        return;
+    }
+
+    public void updateByteString(byte[])
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        byte[] $r1;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 = lengthof $r1;
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateUINT32(int)>($i0);
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateBytes(byte[])>($r1);
+
+        return;
+    }
+
+    public void updateBytes(byte[])
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        byte[] $r1;
+        java.security.MessageDigest $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        virtualinvoke $r2.<java.security.MessageDigest: void update(byte[])>($r1);
+
+        return;
+    }
+
+    public void updateUINT32(int)
+    {
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r0;
+        int $i0, $i1;
+        java.security.MessageDigest $r1;
+        byte $b2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        $i1 = $i0 >> 24;
+
+        $b2 = (byte) $i1;
+
+        virtualinvoke $r1.<java.security.MessageDigest: void update(byte)>($b2);
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        $i1 = $i0 >> 16;
+
+        $b2 = (byte) $i1;
+
+        virtualinvoke $r1.<java.security.MessageDigest: void update(byte)>($b2);
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        $i1 = $i0 >> 8;
+
+        $b2 = (byte) $i1;
+
+        virtualinvoke $r1.<java.security.MessageDigest: void update(byte)>($b2);
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: java.security.MessageDigest md>;
+
+        $b2 = (byte) $i0;
+
+        virtualinvoke $r1.<java.security.MessageDigest: void update(byte)>($b2);
+
+        return;
+    }
+}

@@ -1,0 +1,37 @@
+class org.connectbot.service.TerminalBridge$3 extends java.lang.Object implements java.lang.Runnable
+{
+    final org.connectbot.service.TerminalBridge this$0;
+
+    void <init>(org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.service.TerminalBridge$3 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$3;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r0.<org.connectbot.service.TerminalBridge$3: org.connectbot.service.TerminalBridge this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.service.TerminalBridge$3 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+        org.connectbot.transport.AbsTransport $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$3;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$3: org.connectbot.service.TerminalBridge this$0>;
+
+        $r2 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r2.<org.connectbot.transport.AbsTransport: void connect()>();
+
+        return;
+    }
+}

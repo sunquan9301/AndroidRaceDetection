@@ -1,0 +1,593 @@
+public class org.connectbot.util.PubkeyDatabase extends org.connectbot.util.RobustSQLiteOpenHelper
+{
+    private android.content.Context context;
+
+    static void <clinit>()
+    {
+        staticinvoke <org.connectbot.util.PubkeyDatabase: void addTableName(java.lang.String)>("pubkeys");
+
+        return;
+    }
+
+    public void <init>(android.content.Context)
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        android.content.Context $r1;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void <init>(android.content.Context,java.lang.String,android.database.sqlite.SQLiteDatabase$CursorFactory,int)>($r1, "pubkeys", null, 2);
+
+        $r0.<org.connectbot.util.PubkeyDatabase: android.content.Context context> = $r1;
+
+        return;
+    }
+
+    private org.connectbot.bean.PubkeyBean createPubkeyBean(android.database.Cursor)
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        android.database.Cursor $r1;
+        org.connectbot.bean.PubkeyBean $r2;
+        boolean $z0, $z1;
+        int $i0;
+        long $l1;
+        java.lang.String $r3;
+        byte[] $r4;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 := @parameter0: android.database.Cursor;
+
+        $z0 = 1;
+
+        $r2 = new org.connectbot.bean.PubkeyBean;
+
+        specialinvoke $r2.<org.connectbot.bean.PubkeyBean: void <init>()>();
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("_id");
+
+        $l1 = interfaceinvoke $r1.<android.database.Cursor: long getLong(int)>($i0);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setId(long)>($l1);
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("nickname");
+
+        $r3 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i0);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setNickname(java.lang.String)>($r3);
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("type");
+
+        $r3 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i0);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setType(java.lang.String)>($r3);
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("private");
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: byte[] getBlob(int)>($i0);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setPrivateKey(byte[])>($r4);
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("public");
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: byte[] getBlob(int)>($i0);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setPublicKey(byte[])>($r4);
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("encrypted");
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getInt(int)>($i0);
+
+        if $i0 <= 0 goto label4;
+
+        $z1 = 1;
+
+     label1:
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setEncrypted(boolean)>($z1);
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("startup");
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getInt(int)>($i0);
+
+        if $i0 <= 0 goto label5;
+
+        $z1 = 1;
+
+     label2:
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setStartup(boolean)>($z1);
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("confirmuse");
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getInt(int)>($i0);
+
+        if $i0 <= 0 goto label6;
+
+     label3:
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setConfirmUse(boolean)>($z0);
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("lifetime");
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getInt(int)>($i0);
+
+        virtualinvoke $r2.<org.connectbot.bean.PubkeyBean: void setLifetime(int)>($i0);
+
+        return $r2;
+
+     label4:
+        $z1 = 0;
+
+        goto label1;
+
+     label5:
+        $z1 = 0;
+
+        goto label2;
+
+     label6:
+        $z0 = 0;
+
+        goto label3;
+    }
+
+    private java.util.List getPubkeys(java.lang.String, java.lang.String[])
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        java.lang.String $r1;
+        java.lang.String[] $r2;
+        org.connectbot.bean.PubkeyBean $r3;
+        java.util.LinkedList $r4;
+        android.database.sqlite.SQLiteDatabase $r5;
+        android.database.Cursor $r6;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i10;
+        boolean $z0;
+        long $l9;
+        byte[] $r7;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String[];
+
+        $r5 = virtualinvoke $r0.<org.connectbot.util.PubkeyDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r4 = new java.util.LinkedList;
+
+        specialinvoke $r4.<java.util.LinkedList: void <init>()>();
+
+        $r6 = virtualinvoke $r5.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("pubkeys", null, $r1, $r2, null, null, null);
+
+        if $r6 == null goto label9;
+
+        $i0 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("_id");
+
+        $i1 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("nickname");
+
+        $i2 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("type");
+
+        $i3 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("private");
+
+        $i4 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("public");
+
+        $i5 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("encrypted");
+
+        $i6 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("startup");
+
+        $i7 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("confirmuse");
+
+        $i8 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("lifetime");
+
+     label1:
+        $z0 = interfaceinvoke $r6.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label8;
+
+        $r3 = new org.connectbot.bean.PubkeyBean;
+
+        specialinvoke $r3.<org.connectbot.bean.PubkeyBean: void <init>()>();
+
+        $l9 = interfaceinvoke $r6.<android.database.Cursor: long getLong(int)>($i0);
+
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setId(long)>($l9);
+
+        $r1 = interfaceinvoke $r6.<android.database.Cursor: java.lang.String getString(int)>($i1);
+
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setNickname(java.lang.String)>($r1);
+
+        $r1 = interfaceinvoke $r6.<android.database.Cursor: java.lang.String getString(int)>($i2);
+
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setType(java.lang.String)>($r1);
+
+        $r7 = interfaceinvoke $r6.<android.database.Cursor: byte[] getBlob(int)>($i3);
+
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setPrivateKey(byte[])>($r7);
+
+        $r7 = interfaceinvoke $r6.<android.database.Cursor: byte[] getBlob(int)>($i4);
+
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setPublicKey(byte[])>($r7);
+
+        $i10 = interfaceinvoke $r6.<android.database.Cursor: int getInt(int)>($i5);
+
+        if $i10 <= 0 goto label5;
+
+        $z0 = 1;
+
+     label2:
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setEncrypted(boolean)>($z0);
+
+        $i10 = interfaceinvoke $r6.<android.database.Cursor: int getInt(int)>($i6);
+
+        if $i10 <= 0 goto label6;
+
+        $z0 = 1;
+
+     label3:
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setStartup(boolean)>($z0);
+
+        $i10 = interfaceinvoke $r6.<android.database.Cursor: int getInt(int)>($i7);
+
+        if $i10 <= 0 goto label7;
+
+        $z0 = 1;
+
+     label4:
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setConfirmUse(boolean)>($z0);
+
+        $i10 = interfaceinvoke $r6.<android.database.Cursor: int getInt(int)>($i8);
+
+        virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: void setLifetime(int)>($i10);
+
+        interfaceinvoke $r4.<java.util.List: boolean add(java.lang.Object)>($r3);
+
+        goto label1;
+
+     label5:
+        $z0 = 0;
+
+        goto label2;
+
+     label6:
+        $z0 = 0;
+
+        goto label3;
+
+     label7:
+        $z0 = 0;
+
+        goto label4;
+
+     label8:
+        interfaceinvoke $r6.<android.database.Cursor: void close()>();
+
+     label9:
+        virtualinvoke $r5.<android.database.sqlite.SQLiteDatabase: void close()>();
+
+        return $r4;
+    }
+
+    public java.util.List allPubkeys()
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        java.util.List $r1;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 = specialinvoke $r0.<org.connectbot.util.PubkeyDatabase: java.util.List getPubkeys(java.lang.String,java.lang.String[])>(null, null);
+
+        return $r1;
+    }
+
+    public java.util.List allValues(java.lang.String)
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        java.lang.String $r1;
+        java.util.LinkedList $r2;
+        android.database.sqlite.SQLiteDatabase $r3;
+        java.lang.String[] $r4;
+        android.database.Cursor $r5;
+        int $i0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = new java.util.LinkedList;
+
+        specialinvoke $r2.<java.util.LinkedList: void <init>()>();
+
+        $r3 = virtualinvoke $r0.<org.connectbot.util.PubkeyDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r4 = newarray (java.lang.String)[2];
+
+        $r4[0] = "_id";
+
+        $r4[1] = $r1;
+
+        $r5 = virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("pubkeys", $r4, null, null, null, null, "_id ASC");
+
+        if $r5 == null goto label3;
+
+        $i0 = interfaceinvoke $r5.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>($r1);
+
+     label1:
+        $z0 = interfaceinvoke $r5.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r1 = interfaceinvoke $r5.<android.database.Cursor: java.lang.String getString(int)>($i0);
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        goto label1;
+
+     label2:
+        interfaceinvoke $r5.<android.database.Cursor: void close()>();
+
+     label3:
+        virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: void close()>();
+
+        return $r2;
+    }
+
+    public void deletePubkey(org.connectbot.bean.PubkeyBean)
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        org.connectbot.bean.PubkeyBean $r1;
+        org.connectbot.util.HostDatabase $r2;
+        android.content.Context $r3;
+        long $l0;
+        android.database.sqlite.SQLiteDatabase $r4;
+        java.lang.String[] $r5;
+        java.lang.String $r6;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.PubkeyBean;
+
+        $r2 = new org.connectbot.util.HostDatabase;
+
+        $r3 = $r0.<org.connectbot.util.PubkeyDatabase: android.content.Context context>;
+
+        specialinvoke $r2.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r3);
+
+        $l0 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: long getId()>();
+
+        virtualinvoke $r2.<org.connectbot.util.HostDatabase: void stopUsingPubkey(long)>($l0);
+
+        virtualinvoke $r2.<org.connectbot.util.HostDatabase: void close()>();
+
+        $r4 = virtualinvoke $r0.<org.connectbot.util.PubkeyDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $r5 = newarray (java.lang.String)[1];
+
+        $l0 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: long getId()>();
+
+        $r6 = staticinvoke <java.lang.Long: java.lang.String toString(long)>($l0);
+
+        $r5[0] = $r6;
+
+        virtualinvoke $r4.<android.database.sqlite.SQLiteDatabase: int delete(java.lang.String,java.lang.String,java.lang.String[])>("pubkeys", "_id = ?", $r5);
+
+        virtualinvoke $r4.<android.database.sqlite.SQLiteDatabase: void close()>();
+
+        return;
+    }
+
+    public org.connectbot.bean.PubkeyBean findPubkeyById(long)
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        long $l0;
+        org.connectbot.bean.PubkeyBean $r1;
+        android.database.sqlite.SQLiteDatabase $r2;
+        java.lang.String[] $r3;
+        java.lang.String $r4;
+        android.database.Cursor $r5;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $l0 := @parameter0: long;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.util.PubkeyDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r3 = newarray (java.lang.String)[1];
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r3[0] = $r4;
+
+        $r5 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("pubkeys", null, "_id = ?", $r3, null, null, null);
+
+        $r1 = null;
+
+        if $r5 == null goto label2;
+
+        $z0 = interfaceinvoke $r5.<android.database.Cursor: boolean moveToFirst()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = specialinvoke $r0.<org.connectbot.util.PubkeyDatabase: org.connectbot.bean.PubkeyBean createPubkeyBean(android.database.Cursor)>($r5);
+
+     label1:
+        interfaceinvoke $r5.<android.database.Cursor: void close()>();
+
+     label2:
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void close()>();
+
+        return $r1;
+    }
+
+    public java.util.List getAllStartPubkeys()
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        java.util.List $r1;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 = specialinvoke $r0.<org.connectbot.util.PubkeyDatabase: java.util.List getPubkeys(java.lang.String,java.lang.String[])>("startup = 1 AND encrypted = 0", null);
+
+        return $r1;
+    }
+
+    public java.lang.String getNickname(long)
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        long $l0;
+        java.lang.String $r1, $r5;
+        android.database.sqlite.SQLiteDatabase $r2;
+        java.lang.String[] $r3, $r4;
+        android.database.Cursor $r6;
+        boolean $z0;
+        int $i1;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $l0 := @parameter0: long;
+
+        $r1 = null;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.util.PubkeyDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r3 = newarray (java.lang.String)[2];
+
+        $r3[0] = "_id";
+
+        $r3[1] = "nickname";
+
+        $r4 = newarray (java.lang.String)[1];
+
+        $r5 = staticinvoke <java.lang.Long: java.lang.String toString(long)>($l0);
+
+        $r4[0] = $r5;
+
+        $r6 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("pubkeys", $r3, "_id = ?", $r4, null, null, null);
+
+        if $r6 == null goto label2;
+
+        $z0 = interfaceinvoke $r6.<android.database.Cursor: boolean moveToFirst()>();
+
+        if $z0 == 0 goto label1;
+
+        $i1 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("nickname");
+
+        $r1 = interfaceinvoke $r6.<android.database.Cursor: java.lang.String getString(int)>($i1);
+
+     label1:
+        interfaceinvoke $r6.<android.database.Cursor: void close()>();
+
+     label2:
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void close()>();
+
+        return $r1;
+    }
+
+    public void onCreate(android.database.sqlite.SQLiteDatabase)
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void onCreate(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE TABLE pubkeys (_id INTEGER PRIMARY KEY, nickname TEXT, type TEXT, private BLOB, public BLOB, encrypted INTEGER, startup INTEGER, confirmuse INTEGER DEFAULT 0, lifetime INTEGER DEFAULT 0)");
+
+        return;
+    }
+
+    public void onRobustUpgrade(android.database.sqlite.SQLiteDatabase, int, int) throws android.database.sqlite.SQLiteException
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+        int $i0, $i1;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        lookupswitch($i0)
+        {
+            case 1: goto label2;
+            default: goto label1;
+        };
+
+     label1:
+        return;
+
+     label2:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("ALTER TABLE pubkeys ADD COLUMN confirmuse INTEGER DEFAULT 0");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("ALTER TABLE pubkeys ADD COLUMN lifetime INTEGER DEFAULT 0");
+
+        return;
+    }
+
+    public org.connectbot.bean.PubkeyBean savePubkey(org.connectbot.bean.PubkeyBean)
+    {
+        org.connectbot.util.PubkeyDatabase $r0;
+        org.connectbot.bean.PubkeyBean $r1;
+        boolean $z0;
+        byte $b0;
+        android.database.sqlite.SQLiteDatabase $r2;
+        android.content.ContentValues $r3;
+        long $l1;
+        java.lang.String[] $r4;
+        java.lang.String $r5;
+        int $i2;
+
+        $r0 := @this: org.connectbot.util.PubkeyDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.PubkeyBean;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.util.PubkeyDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $z0 = 0;
+
+        $r3 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: android.content.ContentValues getValues()>();
+
+        $l1 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: long getId()>();
+
+        $b0 = $l1 cmp 0L;
+
+        if $b0 <= 0 goto label1;
+
+        virtualinvoke $r3.<android.content.ContentValues: void remove(java.lang.String)>("_id");
+
+        $r4 = newarray (java.lang.String)[1];
+
+        $l1 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: long getId()>();
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l1);
+
+        $r4[0] = $r5;
+
+        $i2 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("pubkeys", $r3, "_id = ?", $r4);
+
+        if $i2 <= 0 goto label1;
+
+        $z0 = 1;
+
+     label1:
+        if $z0 != 0 goto label2;
+
+        $r3 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: android.content.ContentValues getValues()>();
+
+        $l1 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("pubkeys", null, $r3);
+
+        virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: void setId(long)>($l1);
+
+     label2:
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void close()>();
+
+        return $r1;
+    }
+}

@@ -1,0 +1,211 @@
+public class com.trilead.ssh2.crypto.cipher.CTRMode extends java.lang.Object implements com.trilead.ssh2.crypto.cipher.BlockCipher
+{
+    byte[] X;
+    byte[] Xenc;
+    com.trilead.ssh2.crypto.cipher.BlockCipher bc;
+    int blockSize;
+    int count;
+    boolean doEncrypt;
+
+    public void <init>(com.trilead.ssh2.crypto.cipher.BlockCipher, byte[], boolean) throws java.lang.IllegalArgumentException
+    {
+        com.trilead.ssh2.crypto.cipher.CTRMode $r0;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r1;
+        byte[] $r2, $r6;
+        boolean $z0;
+        int $i0, $i1;
+        java.lang.IllegalArgumentException $r3;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CTRMode;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.cipher.BlockCipher;
+
+        $r2 := @parameter1: byte[];
+
+        $z0 := @parameter2: boolean;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int count> = 0;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: com.trilead.ssh2.crypto.cipher.BlockCipher bc> = $r1;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: com.trilead.ssh2.crypto.cipher.BlockCipher bc>;
+
+        $i0 = interfaceinvoke $r1.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize> = $i0;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: boolean doEncrypt> = $z0;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize>;
+
+        $i0 = lengthof $r2;
+
+        if $i1 == $i0 goto label1;
+
+        $r3 = new java.lang.IllegalArgumentException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IV must be ");
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize>;
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" bytes long! (currently ");
+
+        $i1 = lengthof $r2;
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r5);
+
+        throw $r3;
+
+     label1:
+        $i1 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize>;
+
+        $r6 = newarray (byte)[$i1];
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: byte[] X> = $r6;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize>;
+
+        $r6 = newarray (byte)[$i1];
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: byte[] Xenc> = $r6;
+
+        $r6 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: byte[] X>;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r6, 0, $i1);
+
+        return;
+    }
+
+    public final int getBlockSize()
+    {
+        com.trilead.ssh2.crypto.cipher.CTRMode $r0;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CTRMode;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize>;
+
+        return $i0;
+    }
+
+    public void init(boolean, byte[])
+    {
+        com.trilead.ssh2.crypto.cipher.CTRMode $r0;
+        boolean $z0;
+        byte[] $r1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CTRMode;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 := @parameter1: byte[];
+
+        return;
+    }
+
+    public final void transformBlock(byte[], int, byte[], int)
+    {
+        com.trilead.ssh2.crypto.cipher.CTRMode $r0;
+        byte[] $r1, $r2, $r4, $r5;
+        int $i0, $i1, $i2, $i3, $i4;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r3;
+        byte $b5, $b6;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CTRMode;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: byte[];
+
+        $i1 := @parameter3: int;
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: com.trilead.ssh2.crypto.cipher.BlockCipher bc>;
+
+        $r4 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: byte[] X>;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: byte[] Xenc>;
+
+        interfaceinvoke $r3.<com.trilead.ssh2.crypto.cipher.BlockCipher: void transformBlock(byte[],int,byte[],int)>($r4, 0, $r5, 0);
+
+        $i2 = 0;
+
+     label1:
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize>;
+
+        if $i2 >= $i3 goto label2;
+
+        $i3 = $i1 + $i2;
+
+        $i4 = $i0 + $i2;
+
+        $b5 = $r1[$i4];
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: byte[] Xenc>;
+
+        $b6 = $r5[$i2];
+
+        $b6 = $b5 ^ $b6;
+
+        $b6 = (byte) $b6;
+
+        $r2[$i3] = $b6;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label2:
+        $i4 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: int blockSize>;
+
+        $i4 = $i4 + -1;
+
+     label3:
+        if $i4 < 0 goto label5;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: byte[] X>;
+
+        $b6 = $r5[$i4];
+
+        $i3 = $b6 + 1;
+
+        $b6 = (byte) $i3;
+
+        $r5[$i4] = $b6;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.cipher.CTRMode: byte[] X>;
+
+        $b6 = $r5[$i4];
+
+        if $b6 == 0 goto label4;
+
+        return;
+
+     label4:
+        $i4 = $i4 + -1;
+
+        goto label3;
+
+     label5:
+        return;
+    }
+}

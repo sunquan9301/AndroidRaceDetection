@@ -1,0 +1,74 @@
+public class com.trilead.ssh2.packets.PacketDisconnect extends java.lang.Object
+{
+    java.lang.String desc;
+    java.lang.String lang;
+    byte[] payload;
+    int reason;
+
+    public void <init>(int, java.lang.String, java.lang.String)
+    {
+        com.trilead.ssh2.packets.PacketDisconnect $r0;
+        int $i0;
+        java.lang.String $r1, $r2;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketDisconnect;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: java.lang.String;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketDisconnect: int reason> = $i0;
+
+        $r0.<com.trilead.ssh2.packets.PacketDisconnect: java.lang.String desc> = $r1;
+
+        $r0.<com.trilead.ssh2.packets.PacketDisconnect: java.lang.String lang> = $r2;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketDisconnect $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2;
+        int $i0;
+        java.lang.String $r3;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketDisconnect;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketDisconnect: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(1);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketDisconnect: int reason>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketDisconnect: java.lang.String desc>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>($r3);
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketDisconnect: java.lang.String lang>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketDisconnect: byte[] payload> = $r2;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketDisconnect: byte[] payload>;
+
+        return $r2;
+    }
+}

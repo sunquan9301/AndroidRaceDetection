@@ -1,0 +1,189 @@
+public class com.trilead.ssh2.packets.Packets extends java.lang.Object
+{
+    private static final java.lang.String[] reverseNames;
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[101];
+
+        <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames> = $r0;
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[1] = "SSH_MSG_DISCONNECT";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[2] = "SSH_MSG_IGNORE";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[3] = "SSH_MSG_UNIMPLEMENTED";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[4] = "SSH_MSG_DEBUG";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[5] = "SSH_MSG_SERVICE_REQUEST";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[6] = "SSH_MSG_SERVICE_ACCEPT";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[20] = "SSH_MSG_KEXINIT";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[21] = "SSH_MSG_NEWKEYS";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[30] = "SSH_MSG_KEXDH_INIT";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[31] = "SSH_MSG_KEXDH_REPLY/SSH_MSG_KEX_DH_GEX_GROUP";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[32] = "SSH_MSG_KEX_DH_GEX_INIT";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[33] = "SSH_MSG_KEX_DH_GEX_REPLY";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[34] = "SSH_MSG_KEX_DH_GEX_REQUEST";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[50] = "SSH_MSG_USERAUTH_REQUEST";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[51] = "SSH_MSG_USERAUTH_FAILURE";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[52] = "SSH_MSG_USERAUTH_SUCCESS";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[53] = "SSH_MSG_USERAUTH_BANNER";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[60] = "SSH_MSG_USERAUTH_INFO_REQUEST";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[61] = "SSH_MSG_USERAUTH_INFO_RESPONSE";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[80] = "SSH_MSG_GLOBAL_REQUEST";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[81] = "SSH_MSG_REQUEST_SUCCESS";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[82] = "SSH_MSG_REQUEST_FAILURE";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[90] = "SSH_MSG_CHANNEL_OPEN";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[91] = "SSH_MSG_CHANNEL_OPEN_CONFIRMATION";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[92] = "SSH_MSG_CHANNEL_OPEN_FAILURE";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[93] = "SSH_MSG_CHANNEL_WINDOW_ADJUST";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[94] = "SSH_MSG_CHANNEL_DATA";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[95] = "SSH_MSG_CHANNEL_EXTENDED_DATA";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[96] = "SSH_MSG_CHANNEL_EOF";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[97] = "SSH_MSG_CHANNEL_CLOSE";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[98] = "SSH_MSG_CHANNEL_REQUEST";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[99] = "SSH_MSG_CHANNEL_SUCCESS";
+
+        $r0 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0[100] = "SSH_MSG_CHANNEL_FAILURE";
+
+        return;
+    }
+
+    public static final java.lang.String getMessageName(int)
+    {
+        int $i0, $i1;
+        java.lang.String $r0;
+        java.lang.String[] $r1;
+        java.lang.StringBuilder $r2;
+
+        $i0 := @parameter0: int;
+
+        $r0 = null;
+
+        if $i0 < 0 goto label1;
+
+        $r1 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $i1 = lengthof $r1;
+
+        if $i0 >= $i1 goto label1;
+
+        $r1 = <com.trilead.ssh2.packets.Packets: java.lang.String[] reverseNames>;
+
+        $r0 = $r1[$i0];
+
+     label1:
+        if $r0 != null goto label2;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UNKNOWN MSG ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r0 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r0;
+
+     label2:
+        return $r0;
+    }
+}

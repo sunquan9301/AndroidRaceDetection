@@ -1,0 +1,5 @@
+public interface  com.trilead.ssh2.transport.MessageHandler extends java.lang.Object
+{
+
+    public abstract void handleMessage(byte[], int) throws java.io.IOException;
+}

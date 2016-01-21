@@ -1,0 +1,128 @@
+public class org.connectbot.HelpActivity extends android.app.Activity
+{
+
+    public void <init>()
+    {
+        org.connectbot.HelpActivity $r0;
+
+        $r0 := @this: org.connectbot.HelpActivity;
+
+        specialinvoke $r0.<android.app.Activity: void <init>()>();
+
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        org.connectbot.HelpActivity $r0;
+        android.os.Bundle $r1;
+        android.widget.Button $r2;
+        java.io.IOException $r3;
+        int $i0, $i1, $i2, $i3;
+        java.lang.String $r4, $r12;
+        android.content.res.Resources $r5;
+        java.lang.Object[] $r6;
+        java.lang.CharSequence $r7;
+        android.content.res.AssetManager $r8;
+        android.view.View $r9;
+        android.widget.LinearLayout $r10;
+        java.lang.String[] $r11;
+        boolean $z0;
+        org.connectbot.HelpActivity$1 $r13;
+
+        $r0 := @this: org.connectbot.HelpActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.app.Activity: void onCreate(android.os.Bundle)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.HelpActivity: void setContentView(int)>(2130903043);
+
+        $r6 = newarray (java.lang.Object)[2];
+
+        $r5 = virtualinvoke $r0.<org.connectbot.HelpActivity: android.content.res.Resources getResources()>();
+
+        $r7 = virtualinvoke $r5.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165411);
+
+        $r6[0] = $r7;
+
+        $r5 = virtualinvoke $r0.<org.connectbot.HelpActivity: android.content.res.Resources getResources()>();
+
+        $r7 = virtualinvoke $r5.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165218);
+
+        $r6[1] = $r7;
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s: %s", $r6);
+
+        virtualinvoke $r0.<org.connectbot.HelpActivity: void setTitle(java.lang.CharSequence)>($r4);
+
+        $r8 = virtualinvoke $r0.<org.connectbot.HelpActivity: android.content.res.AssetManager getAssets()>();
+
+        $r9 = virtualinvoke $r0.<org.connectbot.HelpActivity: android.view.View findViewById(int)>(2131427361);
+
+        $r10 = (android.widget.LinearLayout) $r9;
+
+     label1:
+        $r11 = virtualinvoke $r8.<android.content.res.AssetManager: java.lang.String[] list(java.lang.String)>("help");
+
+     label2:
+        $i1 = lengthof $r11;
+
+        $i0 = 0;
+
+     label3:
+        if $i0 >= $i1 goto label9;
+
+     label4:
+        $r4 = $r11[$i0];
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean endsWith(java.lang.String)>(".html");
+
+     label5:
+        if $z0 == 0 goto label7;
+
+     label6:
+        $r2 = new android.widget.Button;
+
+        specialinvoke $r2.<android.widget.Button: void <init>(android.content.Context)>($r0);
+
+        $i2 = virtualinvoke $r4.<java.lang.String: int length()>();
+
+        $r12 = ".html";
+
+        $i3 = virtualinvoke $r12.<java.lang.String: int length()>();
+
+        $i3 = $i2 - $i3;
+
+        $r12 = virtualinvoke $r4.<java.lang.String: java.lang.String substring(int,int)>(0, $i3);
+
+        virtualinvoke $r2.<android.widget.Button: void setText(java.lang.CharSequence)>($r12);
+
+        $r13 = new org.connectbot.HelpActivity$1;
+
+        specialinvoke $r13.<org.connectbot.HelpActivity$1: void <init>(org.connectbot.HelpActivity,java.lang.String)>($r0, $r12);
+
+        virtualinvoke $r2.<android.widget.Button: void setOnClickListener(android.view.View$OnClickListener)>($r13);
+
+        virtualinvoke $r10.<android.widget.LinearLayout: void addView(android.view.View)>($r2);
+
+     label7:
+        $i0 = $i0 + 1;
+
+        goto label3;
+
+     label8:
+        $r3 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.HelpActivity", "couldn\'t get list of help assets", $r3);
+
+        return;
+
+     label9:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label8;
+        catch java.io.IOException from label4 to label5 with label8;
+        catch java.io.IOException from label6 to label7 with label8;
+    }
+}

@@ -1,0 +1,7849 @@
+public abstract class de.mud.terminal.vt320 extends de.mud.terminal.VDUBuffer
+{
+    private static char[] DECSPECIAL;
+    private static final char[] unimap;
+    private java.lang.String[] BackSpace;
+    int C;
+    private int DCEvar;
+    private int[] DCEvars;
+    private java.lang.String Do;
+    private java.lang.String[] Escape;
+    private java.lang.String Find;
+    private java.lang.String[] FunctionKey;
+    private java.lang.String[] FunctionKeyAlt;
+    private java.lang.String[] FunctionKeyCtrl;
+    private java.lang.String[] FunctionKeyShift;
+    private java.lang.String Help;
+    private java.lang.String[] Insert;
+    private java.lang.String KPComma;
+    private java.lang.String KPEnter;
+    private java.lang.String KPMinus;
+    private java.lang.String KPPeriod;
+    private java.lang.String[] KeyDown;
+    private java.lang.String[] KeyEnd;
+    private java.lang.String[] KeyHome;
+    private java.lang.String[] KeyLeft;
+    private java.lang.String[] KeyRight;
+    private java.lang.String[] KeyUp;
+    private java.lang.String[] NUMDot;
+    private java.lang.String[] NUMPlus;
+    private java.lang.String[] NextScn;
+    private java.lang.String[] Numpad;
+    private java.lang.String PF1;
+    private java.lang.String PF2;
+    private java.lang.String PF3;
+    private java.lang.String PF4;
+    private java.lang.String[] PrevScn;
+    int R;
+    private java.lang.String[] Remove;
+    int Sa;
+    int Sc;
+    private java.lang.String Select;
+    char Sgl;
+    char Sgr;
+    char[] Sgx;
+    int Sr;
+    private java.lang.String[] TabKey;
+    private byte[] Tabs;
+    private java.lang.String answerBack;
+    int attributes;
+    boolean capslock;
+    private java.lang.String dcs;
+    private java.lang.StringBuilder debugStr;
+    char gl;
+    char gr;
+    char[] gx;
+    int insertmode;
+    boolean keypadmode;
+    int lastwaslf;
+    private boolean localecho;
+    byte mousebut;
+    int mouserpt;
+    boolean moveoutsidemargins;
+    int normalcursor;
+    boolean numlock;
+    int onegl;
+    private java.lang.String osc;
+    boolean output8bit;
+    boolean sendcrlf;
+    int statusmode;
+    private int term_state;
+    private java.lang.String terminalID;
+    boolean usedcharsets;
+    boolean useibmcharset;
+    private boolean vms;
+    boolean vt52mode;
+    boolean wraparound;
+
+    static void <clinit>()
+    {
+        char[] $r0;
+
+        $r0 = newarray (char)[32];
+
+        $r0[0] = 64;
+
+        $r0[1] = 9830;
+
+        $r0[2] = 9618;
+
+        $r0[3] = 9225;
+
+        $r0[4] = 9228;
+
+        $r0[5] = 9229;
+
+        $r0[6] = 9226;
+
+        $r0[7] = 186;
+
+        $r0[8] = 177;
+
+        $r0[9] = 9252;
+
+        $r0[10] = 9227;
+
+        $r0[11] = 9496;
+
+        $r0[12] = 9488;
+
+        $r0[13] = 9484;
+
+        $r0[14] = 9492;
+
+        $r0[15] = 9532;
+
+        $r0[16] = 9620;
+
+        $r0[17] = 9600;
+
+        $r0[18] = 9472;
+
+        $r0[19] = 9644;
+
+        $r0[20] = 95;
+
+        $r0[21] = 9500;
+
+        $r0[22] = 9508;
+
+        $r0[23] = 9524;
+
+        $r0[24] = 9516;
+
+        $r0[25] = 9474;
+
+        $r0[26] = 8804;
+
+        $r0[27] = 8805;
+
+        $r0[28] = 182;
+
+        $r0[29] = 8800;
+
+        $r0[30] = 163;
+
+        $r0[31] = 183;
+
+        <de.mud.terminal.vt320: char[] DECSPECIAL> = $r0;
+
+        $r0 = newarray (char)[256];
+
+        $r0[0] = 0;
+
+        $r0[1] = 1;
+
+        $r0[2] = 2;
+
+        $r0[3] = 3;
+
+        $r0[4] = 4;
+
+        $r0[5] = 5;
+
+        $r0[6] = 6;
+
+        $r0[7] = 7;
+
+        $r0[8] = 8;
+
+        $r0[9] = 9;
+
+        $r0[10] = 10;
+
+        $r0[11] = 11;
+
+        $r0[12] = 12;
+
+        $r0[13] = 13;
+
+        $r0[14] = 14;
+
+        $r0[15] = 15;
+
+        $r0[16] = 16;
+
+        $r0[17] = 17;
+
+        $r0[18] = 18;
+
+        $r0[19] = 19;
+
+        $r0[20] = 20;
+
+        $r0[21] = 21;
+
+        $r0[22] = 22;
+
+        $r0[23] = 23;
+
+        $r0[24] = 24;
+
+        $r0[25] = 25;
+
+        $r0[26] = 26;
+
+        $r0[27] = 27;
+
+        $r0[28] = 28;
+
+        $r0[29] = 29;
+
+        $r0[30] = 30;
+
+        $r0[31] = 31;
+
+        $r0[32] = 32;
+
+        $r0[33] = 33;
+
+        $r0[34] = 34;
+
+        $r0[35] = 35;
+
+        $r0[36] = 36;
+
+        $r0[37] = 37;
+
+        $r0[38] = 38;
+
+        $r0[39] = 39;
+
+        $r0[40] = 40;
+
+        $r0[41] = 41;
+
+        $r0[42] = 42;
+
+        $r0[43] = 43;
+
+        $r0[44] = 44;
+
+        $r0[45] = 45;
+
+        $r0[46] = 46;
+
+        $r0[47] = 47;
+
+        $r0[48] = 48;
+
+        $r0[49] = 49;
+
+        $r0[50] = 50;
+
+        $r0[51] = 51;
+
+        $r0[52] = 52;
+
+        $r0[53] = 53;
+
+        $r0[54] = 54;
+
+        $r0[55] = 55;
+
+        $r0[56] = 56;
+
+        $r0[57] = 57;
+
+        $r0[58] = 58;
+
+        $r0[59] = 59;
+
+        $r0[60] = 60;
+
+        $r0[61] = 61;
+
+        $r0[62] = 62;
+
+        $r0[63] = 63;
+
+        $r0[64] = 64;
+
+        $r0[65] = 65;
+
+        $r0[66] = 66;
+
+        $r0[67] = 67;
+
+        $r0[68] = 68;
+
+        $r0[69] = 69;
+
+        $r0[70] = 70;
+
+        $r0[71] = 71;
+
+        $r0[72] = 72;
+
+        $r0[73] = 73;
+
+        $r0[74] = 74;
+
+        $r0[75] = 75;
+
+        $r0[76] = 76;
+
+        $r0[77] = 77;
+
+        $r0[78] = 78;
+
+        $r0[79] = 79;
+
+        $r0[80] = 80;
+
+        $r0[81] = 81;
+
+        $r0[82] = 82;
+
+        $r0[83] = 83;
+
+        $r0[84] = 84;
+
+        $r0[85] = 85;
+
+        $r0[86] = 86;
+
+        $r0[87] = 87;
+
+        $r0[88] = 88;
+
+        $r0[89] = 89;
+
+        $r0[90] = 90;
+
+        $r0[91] = 91;
+
+        $r0[92] = 92;
+
+        $r0[93] = 93;
+
+        $r0[94] = 94;
+
+        $r0[95] = 95;
+
+        $r0[96] = 96;
+
+        $r0[97] = 97;
+
+        $r0[98] = 98;
+
+        $r0[99] = 99;
+
+        $r0[100] = 100;
+
+        $r0[101] = 101;
+
+        $r0[102] = 102;
+
+        $r0[103] = 103;
+
+        $r0[104] = 104;
+
+        $r0[105] = 105;
+
+        $r0[106] = 106;
+
+        $r0[107] = 107;
+
+        $r0[108] = 108;
+
+        $r0[109] = 109;
+
+        $r0[110] = 110;
+
+        $r0[111] = 111;
+
+        $r0[112] = 112;
+
+        $r0[113] = 113;
+
+        $r0[114] = 114;
+
+        $r0[115] = 115;
+
+        $r0[116] = 116;
+
+        $r0[117] = 117;
+
+        $r0[118] = 118;
+
+        $r0[119] = 119;
+
+        $r0[120] = 120;
+
+        $r0[121] = 121;
+
+        $r0[122] = 122;
+
+        $r0[123] = 123;
+
+        $r0[124] = 124;
+
+        $r0[125] = 125;
+
+        $r0[126] = 126;
+
+        $r0[127] = 127;
+
+        $r0[128] = 199;
+
+        $r0[129] = 252;
+
+        $r0[130] = 233;
+
+        $r0[131] = 226;
+
+        $r0[132] = 228;
+
+        $r0[133] = 224;
+
+        $r0[134] = 229;
+
+        $r0[135] = 231;
+
+        $r0[136] = 234;
+
+        $r0[137] = 235;
+
+        $r0[138] = 232;
+
+        $r0[139] = 239;
+
+        $r0[140] = 238;
+
+        $r0[141] = 236;
+
+        $r0[142] = 196;
+
+        $r0[143] = 197;
+
+        $r0[144] = 201;
+
+        $r0[145] = 230;
+
+        $r0[146] = 198;
+
+        $r0[147] = 244;
+
+        $r0[148] = 246;
+
+        $r0[149] = 242;
+
+        $r0[150] = 251;
+
+        $r0[151] = 249;
+
+        $r0[152] = 255;
+
+        $r0[153] = 214;
+
+        $r0[154] = 220;
+
+        $r0[155] = 162;
+
+        $r0[156] = 163;
+
+        $r0[157] = 165;
+
+        $r0[158] = 8359;
+
+        $r0[159] = 402;
+
+        $r0[160] = 225;
+
+        $r0[161] = 237;
+
+        $r0[162] = 243;
+
+        $r0[163] = 250;
+
+        $r0[164] = 241;
+
+        $r0[165] = 209;
+
+        $r0[166] = 170;
+
+        $r0[167] = 186;
+
+        $r0[168] = 191;
+
+        $r0[169] = 8976;
+
+        $r0[170] = 172;
+
+        $r0[171] = 189;
+
+        $r0[172] = 188;
+
+        $r0[173] = 161;
+
+        $r0[174] = 171;
+
+        $r0[175] = 187;
+
+        $r0[176] = 9617;
+
+        $r0[177] = 9618;
+
+        $r0[178] = 9619;
+
+        $r0[179] = 9474;
+
+        $r0[180] = 9508;
+
+        $r0[181] = 9569;
+
+        $r0[182] = 9570;
+
+        $r0[183] = 9558;
+
+        $r0[184] = 9557;
+
+        $r0[185] = 9571;
+
+        $r0[186] = 9553;
+
+        $r0[187] = 9559;
+
+        $r0[188] = 9565;
+
+        $r0[189] = 9564;
+
+        $r0[190] = 9563;
+
+        $r0[191] = 9488;
+
+        $r0[192] = 9492;
+
+        $r0[193] = 9524;
+
+        $r0[194] = 9516;
+
+        $r0[195] = 9500;
+
+        $r0[196] = 9472;
+
+        $r0[197] = 9532;
+
+        $r0[198] = 9566;
+
+        $r0[199] = 9567;
+
+        $r0[200] = 9562;
+
+        $r0[201] = 9556;
+
+        $r0[202] = 9577;
+
+        $r0[203] = 9574;
+
+        $r0[204] = 9568;
+
+        $r0[205] = 9552;
+
+        $r0[206] = 9580;
+
+        $r0[207] = 9575;
+
+        $r0[208] = 9576;
+
+        $r0[209] = 9572;
+
+        $r0[210] = 9573;
+
+        $r0[211] = 9561;
+
+        $r0[212] = 9560;
+
+        $r0[213] = 9554;
+
+        $r0[214] = 9555;
+
+        $r0[215] = 9579;
+
+        $r0[216] = 9578;
+
+        $r0[217] = 9496;
+
+        $r0[218] = 9484;
+
+        $r0[219] = 9608;
+
+        $r0[220] = 9604;
+
+        $r0[221] = 9612;
+
+        $r0[222] = 9616;
+
+        $r0[223] = 9600;
+
+        $r0[224] = 945;
+
+        $r0[225] = 223;
+
+        $r0[226] = 915;
+
+        $r0[227] = 960;
+
+        $r0[228] = 931;
+
+        $r0[229] = 963;
+
+        $r0[230] = 181;
+
+        $r0[231] = 964;
+
+        $r0[232] = 934;
+
+        $r0[233] = 920;
+
+        $r0[234] = 937;
+
+        $r0[235] = 948;
+
+        $r0[236] = 8734;
+
+        $r0[237] = 966;
+
+        $r0[238] = 949;
+
+        $r0[239] = 8745;
+
+        $r0[240] = 8801;
+
+        $r0[241] = 177;
+
+        $r0[242] = 8805;
+
+        $r0[243] = 8804;
+
+        $r0[244] = 8992;
+
+        $r0[245] = 8993;
+
+        $r0[246] = 247;
+
+        $r0[247] = 8776;
+
+        $r0[248] = 176;
+
+        $r0[249] = 8729;
+
+        $r0[250] = 183;
+
+        $r0[251] = 8730;
+
+        $r0[252] = 8319;
+
+        $r0[253] = 178;
+
+        $r0[254] = 9632;
+
+        $r0[255] = 160;
+
+        <de.mud.terminal.vt320: char[] unimap> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        de.mud.terminal.vt320 $r0;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void <init>(int,int)>(80, 24);
+
+        return;
+    }
+
+    public void <init>(int, int)
+    {
+        de.mud.terminal.vt320 $r0;
+        int $i0, $i1;
+        java.lang.String[] $r1, $r2, $r3, $r7;
+        int[] $r4;
+        java.lang.StringBuilder $r5;
+        char[] $r6;
+        boolean $z0;
+        java.lang.String $r8;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        specialinvoke $r0.<de.mud.terminal.VDUBuffer: void <init>(int,int)>($i0, $i1);
+
+        $r0.<de.mud.terminal.vt320: boolean localecho> = 0;
+
+        $r0.<de.mud.terminal.vt320: java.lang.String terminalID> = "vt320";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String answerBack> = "Use Terminal.answerback to set ...\n";
+
+        $r0.<de.mud.terminal.vt320: int attributes> = 0;
+
+        $r0.<de.mud.terminal.vt320: int insertmode> = 0;
+
+        $r0.<de.mud.terminal.vt320: int statusmode> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean vt52mode> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean keypadmode> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean output8bit> = 0;
+
+        $r0.<de.mud.terminal.vt320: int normalcursor> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean moveoutsidemargins> = 1;
+
+        $r0.<de.mud.terminal.vt320: boolean wraparound> = 1;
+
+        $r0.<de.mud.terminal.vt320: boolean sendcrlf> = 1;
+
+        $r0.<de.mud.terminal.vt320: boolean capslock> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean numlock> = 0;
+
+        $r0.<de.mud.terminal.vt320: int mouserpt> = 0;
+
+        $r0.<de.mud.terminal.vt320: byte mousebut> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean useibmcharset> = 0;
+
+        $r0.<de.mud.terminal.vt320: int lastwaslf> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 0;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean vms> = 0;
+
+        $r4 = newarray (int)[30];
+
+        $r0.<de.mud.terminal.vt320: int[] DCEvars> = $r4;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr> = $r5;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setVMS(boolean)>(0);
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setIBMCharset(boolean)>(0);
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setTerminalID(java.lang.String)>("vt320");
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setBufferSize(int)>(100);
+
+        $r6 = newarray (char)[4];
+
+        $r0.<de.mud.terminal.vt320: char[] gx> = $r6;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void reset()>();
+
+        $r0.<de.mud.terminal.vt320: java.lang.String PF1> = "\u001bOP";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String PF2> = "\u001bOQ";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String PF3> = "\u001bOR";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String PF4> = "\u001bOS";
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] Insert> = $r3;
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] Remove> = $r3;
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] KeyHome> = $r3;
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] KeyEnd> = $r3;
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn> = $r3;
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn> = $r3;
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] Escape> = $r3;
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace> = $r3;
+
+        $r3 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey> = $r3;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Insert>;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Insert>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] Insert>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] Insert>;
+
+        $r3[3] = "\u001b[2~";
+
+        $r2[2] = "\u001b[2~";
+
+        $r1[1] = "\u001b[2~";
+
+        $r7[0] = "\u001b[2~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Remove>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] Remove>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] Remove>;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Remove>;
+
+        $r1[3] = "\u001b[3~";
+
+        $r2[2] = "\u001b[3~";
+
+        $r3[1] = "\u001b[3~";
+
+        $r7[0] = "\u001b[3~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r1[3] = "\u001b[5~";
+
+        $r2[2] = "\u001b[5~";
+
+        $r3[1] = "\u001b[5~";
+
+        $r7[0] = "\u001b[5~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r1[3] = "\u001b[6~";
+
+        $r2[2] = "\u001b[6~";
+
+        $r3[1] = "\u001b[6~";
+
+        $r7[0] = "\u001b[6~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyHome>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyHome>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyHome>;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyHome>;
+
+        $r1[3] = "\u001b[H";
+
+        $r2[2] = "\u001b[H";
+
+        $r3[1] = "\u001b[H";
+
+        $r7[0] = "\u001b[H";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyEnd>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyEnd>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyEnd>;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyEnd>;
+
+        $r1[3] = "\u001b[F";
+
+        $r2[2] = "\u001b[F";
+
+        $r3[1] = "\u001b[F";
+
+        $r7[0] = "\u001b[F";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Escape>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] Escape>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] Escape>;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Escape>;
+
+        $r1[3] = "\u001b";
+
+        $r2[2] = "\u001b";
+
+        $r3[1] = "\u001b";
+
+        $r7[0] = "\u001b";
+
+        $z0 = $r0.<de.mud.terminal.vt320: boolean vms>;
+
+        if $z0 == 0 goto label3;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r7[1] = "\n";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r7[2] = "\u0018";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r3[3] = "\u007f";
+
+        $r7[0] = "\u007f";
+
+     label1:
+        $r0.<de.mud.terminal.vt320: java.lang.String Find> = "\u001b[1~";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String Select> = "\u001b[4~";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String Help> = "\u001b[28~";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String Do> = "\u001b[29~";
+
+        $r7 = newarray (java.lang.String)[21];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey> = $r7;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[0] = "";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String PF1>;
+
+        $r7[1] = $r8;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String PF2>;
+
+        $r7[2] = $r8;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String PF3>;
+
+        $r7[3] = $r8;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String PF4>;
+
+        $r7[4] = $r8;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[5] = "\u001b[15~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[6] = "\u001b[17~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[7] = "\u001b[18~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[8] = "\u001b[19~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[9] = "\u001b[20~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[10] = "\u001b[21~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[11] = "\u001b[23~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[12] = "\u001b[24~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[13] = "\u001b[25~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[14] = "\u001b[26~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String Help>;
+
+        $r7[15] = $r8;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String Do>;
+
+        $r7[16] = $r8;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[17] = "\u001b[31~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[18] = "\u001b[32~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[19] = "\u001b[33~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r7[20] = "\u001b[34~";
+
+        $r7 = newarray (java.lang.String)[21];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyShift> = $r7;
+
+        $r7 = newarray (java.lang.String)[21];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyAlt> = $r7;
+
+        $r7 = newarray (java.lang.String)[21];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyCtrl> = $r7;
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= 20 goto label4;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyShift>;
+
+        $r7[$i1] = "";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyAlt>;
+
+        $r7[$i1] = "";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyCtrl>;
+
+        $r7[$i1] = "";
+
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label3:
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r7[0] = "\u0008";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r7[1] = "\u007f";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r7[2] = "\u001b[3~";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r7[3] = "\u001b[2~";
+
+        goto label1;
+
+     label4:
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyShift>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String Find>;
+
+        $r7[15] = $r8;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyShift>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String Select>;
+
+        $r7[16] = $r8;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey>;
+
+        $r7[0] = "\t";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey>;
+
+        $r7[1] = "\u001bOP\t";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey>;
+
+        $r3[3] = "";
+
+        $r7[2] = "";
+
+        $r7 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] KeyUp> = $r7;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyUp>;
+
+        $r7[0] = "\u001b[A";
+
+        $r7 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] KeyDown> = $r7;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyDown>;
+
+        $r7[0] = "\u001b[B";
+
+        $r7 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] KeyRight> = $r7;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyRight>;
+
+        $r7[0] = "\u001b[C";
+
+        $r7 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] KeyLeft> = $r7;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyLeft>;
+
+        $r7[0] = "\u001b[D";
+
+        $r7 = newarray (java.lang.String)[10];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad> = $r7;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[0] = "\u001bOp";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[1] = "\u001bOq";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[2] = "\u001bOr";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[3] = "\u001bOs";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[4] = "\u001bOt";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[5] = "\u001bOu";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[6] = "\u001bOv";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[7] = "\u001bOw";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[8] = "\u001bOx";
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r7[9] = "\u001bOy";
+
+        $r8 = $r0.<de.mud.terminal.vt320: java.lang.String PF4>;
+
+        $r0.<de.mud.terminal.vt320: java.lang.String KPMinus> = $r8;
+
+        $r0.<de.mud.terminal.vt320: java.lang.String KPComma> = "\u001bOl";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String KPPeriod> = "\u001bOn";
+
+        $r0.<de.mud.terminal.vt320: java.lang.String KPEnter> = "\u001bOM";
+
+        $r7 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] NUMPlus> = $r7;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] NUMPlus>;
+
+        $r7[0] = "+";
+
+        $r7 = newarray (java.lang.String)[4];
+
+        $r0.<de.mud.terminal.vt320: java.lang.String[] NUMDot> = $r7;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.String[] NUMDot>;
+
+        $r7[0] = ".";
+
+        return;
+    }
+
+    private void _SetCursor(int, int)
+    {
+        de.mud.terminal.vt320 $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        boolean $z0;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i3 = 0;
+
+        $i2 = $r0.<de.mud.terminal.vt320: int height>;
+
+        $i2 = $i2 + -1;
+
+        $i4 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        if $i0 >= 0 goto label1;
+
+        $i0 = 0;
+
+     label1:
+        $r0.<de.mud.terminal.vt320: int R> = $i0;
+
+        if $i1 >= 0 goto label4;
+
+     label2:
+        $r0.<de.mud.terminal.vt320: int C> = $i3;
+
+        $z0 = $r0.<de.mud.terminal.vt320: boolean moveoutsidemargins>;
+
+        if $z0 != 0 goto label3;
+
+        $i3 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i4 = $i3 + $i4;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i4;
+
+        $i2 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+     label3:
+        $i4 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i4 <= $i2 goto label6;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i2;
+
+        return;
+
+     label4:
+        $i3 = $r0.<de.mud.terminal.vt320: int width>;
+
+        if $i1 < $i3 goto label5;
+
+        $i3 = $r0.<de.mud.terminal.vt320: int width>;
+
+        $i3 = $i3 + -1;
+
+        goto label2;
+
+     label5:
+        $i3 = $i1;
+
+        goto label2;
+
+     label6:
+        return;
+    }
+
+    private void handle_dcs(java.lang.String)
+    {
+        de.mud.terminal.vt320 $r0;
+        java.lang.String $r1;
+        java.lang.StringBuilder $r2;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("DCS: ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r1);
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        return;
+    }
+
+    private void handle_osc(java.lang.String)
+    {
+        de.mud.terminal.vt320 $r0;
+        java.lang.String $r1, $r3, $r5;
+        int $i0, $i1, $i2, $i3;
+        java.lang.Exception $r2;
+        boolean $z0;
+        java.lang.String[] $r4;
+        de.mud.terminal.VDUDisplay $r6;
+        java.lang.StringBuilder $r7;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i2 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i2 <= 2 goto label4;
+
+        $r3 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int,int)>(0, 2);
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("4;");
+
+        if $z0 == 0 goto label4;
+
+        $r4 = virtualinvoke $r1.<java.lang.String: java.lang.String[] split(java.lang.String)>(";");
+
+     label1:
+        $r3 = $r4[1];
+
+        $i3 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r3);
+
+        $r3 = "rgb:";
+
+        $r5 = $r4[2];
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int,int)>(0, 4);
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r5);
+
+        if $z0 == 0 goto label5;
+
+        $r5 = $r4[2];
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int)>(4);
+
+        $r4 = virtualinvoke $r5.<java.lang.String: java.lang.String[] split(java.lang.String)>("/");
+
+        $r5 = $r4[0];
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int,int)>(0, 2);
+
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String,int)>($r5, 16);
+
+        $i2 = $i2 & 255;
+
+        $r5 = $r4[1];
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int,int)>(0, 2);
+
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String,int)>($r5, 16);
+
+        $i1 = $i1 & 255;
+
+        $r5 = $r4[2];
+
+        $r5 = virtualinvoke $r5.<java.lang.String: java.lang.String substring(int,int)>(0, 2);
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String,int)>($r5, 16);
+
+        $i0 = $i0 & 255;
+
+        $r6 = $r0.<de.mud.terminal.vt320: de.mud.terminal.VDUDisplay display>;
+
+        interfaceinvoke $r6.<de.mud.terminal.VDUDisplay: void setColor(int,int,int,int)>($i3, $i2, $i1, $i0);
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("OSC: invalid color sequence encountered: ");
+
+        virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r5 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r5);
+
+        $r7 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        virtualinvoke $r7.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        return;
+
+     label4:
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("OSC: ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r5 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r5);
+
+        return;
+
+     label5:
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    private void putChar(char, boolean, boolean)
+    {
+        de.mud.terminal.vt320 $r0;
+        char $c0, $c2;
+        boolean $z0, $z1, $z2;
+        int $i1, $i3, $i4, $i5, $i6, $i7;
+        java.lang.String $r1, $r6;
+        char[] $r2, $r7;
+        java.lang.StringBuilder $r3;
+        byte[] $r4;
+        int[] $r5, $r8;
+        byte $b8;
+        short $s9;
+        java.lang.String[] $r9;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $c0 := @parameter0: char;
+
+        $z0 := @parameter1: boolean;
+
+        $z1 := @parameter2: boolean;
+
+        $i4 = $r0.<de.mud.terminal.vt320: int height>;
+
+        $i3 = $r0.<de.mud.terminal.vt320: int width>;
+
+        $i1 = $r0.<de.mud.terminal.vt320: int term_state>;
+
+        lookupswitch($i1)
+        {
+            case 0: goto label003;
+            case 1: goto label077;
+            case 2: goto label212;
+            case 3: goto label150;
+            case 4: goto label152;
+            case 5: goto label143;
+            case 6: goto label070;
+            case 7: goto label131;
+            case 8: goto label134;
+            case 9: goto label137;
+            case 10: goto label140;
+            case 11: goto label208;
+            case 12: goto label192;
+            case 13: goto label073;
+            case 14: goto label125;
+            case 15: goto label128;
+            case 16: goto label195;
+            case 17: goto label200;
+            case 18: goto label336;
+            default: goto label001;
+        };
+
+     label001:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+     label002:
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i1 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setCursorPosition(int,int)>($i6, $i1);
+
+        return;
+
+     label003:
+        $z1 = $r0.<de.mud.terminal.vt320: boolean useibmcharset>;
+
+        if $z1 != 0 goto label006;
+
+        $z1 = 1;
+
+        lookupswitch($c0)
+        {
+            case 132: goto label026;
+            case 133: goto label029;
+            case 136: goto label033;
+            case 141: goto label024;
+            case 144: goto label034;
+            case 157: goto label023;
+            default: goto label004;
+        };
+
+     label004:
+        $z1 = 0;
+
+     label005:
+        if $z1 != 0 goto label002;
+
+     label006:
+        lookupswitch($c0)
+        {
+            case 5: goto label039;
+            case 7: goto label051;
+            case 8: goto label041;
+            case 9: goto label043;
+            case 10: goto label046;
+            case 12: goto label040;
+            case 13: goto label045;
+            case 14: goto label052;
+            case 15: goto label053;
+            case 27: goto label038;
+            case 142: goto label036;
+            case 143: goto label035;
+            case 155: goto label037;
+            default: goto label007;
+        };
+
+     label007:
+        $i1 = $r0.<de.mud.terminal.vt320: char gl>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int onegl>;
+
+        if $i6 < 0 goto label008;
+
+        $i1 = $r0.<de.mud.terminal.vt320: int onegl>;
+
+        $r0.<de.mud.terminal.vt320: int onegl> = -1;
+
+     label008:
+        $r0.<de.mud.terminal.vt320: int lastwaslf> = 0;
+
+        if $c0 >= 32 goto label010;
+
+        if $c0 == 0 goto label009;
+
+     label009:
+        if $c0 == 0 goto label002;
+
+     label010:
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i6 < $i3 goto label013;
+
+        $z1 = $r0.<de.mud.terminal.vt320: boolean wraparound>;
+
+        if $z1 == 0 goto label055;
+
+        $i5 = $i4;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        if $i7 > $i6 goto label011;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        if $i7 < $i6 goto label011;
+
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        $i5 = $i7 + 1;
+
+     label011:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i5 + -1;
+
+        if $i7 >= $i6 goto label054;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+     label012:
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+     label013:
+        $z1 = 0;
+
+        $z2 = $r0.<de.mud.terminal.vt320: boolean usedcharsets>;
+
+        if $z2 == 0 goto label017;
+
+        if $c0 < 32 goto label015;
+
+        if $c0 > 127 goto label015;
+
+        $r2 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $c2 = $r2[$i1];
+
+        lookupswitch($c2)
+        {
+            case 48: goto label056;
+            case 60: goto label061;
+            case 65: goto label062;
+            case 66: goto label062;
+            default: goto label014;
+        };
+
+     label014:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported GL mapping: ");
+
+        $r2 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $c2 = $r2[$i1];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r1);
+
+     label015:
+        if $z1 != 0 goto label017;
+
+        if $c0 < 128 goto label017;
+
+        if $c0 > 255 goto label017;
+
+        $r2 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $c2 = $r0.<de.mud.terminal.vt320: char gr>;
+
+        $c2 = $r2[$c2];
+
+        lookupswitch($c2)
+        {
+            case 48: goto label063;
+            case 60: goto label064;
+            case 65: goto label064;
+            case 66: goto label064;
+            default: goto label016;
+        };
+
+     label016:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unsupported GR mapping: ");
+
+        $r2 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $c2 = $r0.<de.mud.terminal.vt320: char gr>;
+
+        $c2 = $r2[$c2];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c2);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r1);
+
+     label017:
+        if $z1 != 0 goto label018;
+
+        $z2 = $r0.<de.mud.terminal.vt320: boolean useibmcharset>;
+
+        if $z2 == 0 goto label018;
+
+        $c0 = virtualinvoke $r0.<de.mud.terminal.vt320: char map_cp850_unicode(char)>($c0);
+
+     label018:
+        if $z0 == 0 goto label021;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i3 + -1;
+
+        if $i7 < $i6 goto label021;
+
+        $z2 = $r0.<de.mud.terminal.vt320: boolean wraparound>;
+
+        if $z2 == 0 goto label066;
+
+        $i7 = $i4;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        if $i6 > $i5 goto label019;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        if $i6 < $i5 goto label019;
+
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        $i7 = $i7 + 1;
+
+     label019:
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + -1;
+
+        if $i6 >= $i7 goto label065;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+     label020:
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+     label021:
+        $i7 = $r0.<de.mud.terminal.vt320: int insertmode>;
+
+        if $i7 != 1 goto label068;
+
+        if $z0 == 0 goto label067;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i5 = $i5 | 134217728;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertChar(int,int,char,int)>($i7, $i6, $c0, $i5);
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i5 = $i5 | 134217728;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertChar(int,int,char,int)>($i7, $i6, 32, $i5);
+
+     label022:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label002;
+
+     label023:
+        $r0.<de.mud.terminal.vt320: java.lang.String osc> = "";
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 6;
+
+        goto label005;
+
+     label024:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        if $i7 <= $i6 goto label025;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label005;
+
+     label025:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 1);
+
+        goto label005;
+
+     label026:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        if $i7 == $i6 goto label027;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i4 + -1;
+
+        if $i7 != $i6 goto label028;
+
+     label027:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 0);
+
+        goto label005;
+
+     label028:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label005;
+
+     label029:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        if $i7 == $i6 goto label030;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i4 + -1;
+
+        if $i7 != $i6 goto label032;
+
+     label030:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 0);
+
+     label031:
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+        goto label005;
+
+     label032:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label031;
+
+     label033:
+        $r4 = $r0.<de.mud.terminal.vt320: byte[] Tabs>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $r4[$i7] = 1;
+
+        goto label005;
+
+     label034:
+        $r0.<de.mud.terminal.vt320: java.lang.String dcs> = "";
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 3;
+
+        goto label005;
+
+     label035:
+        $r0.<de.mud.terminal.vt320: int onegl> = 3;
+
+        goto label002;
+
+     label036:
+        $r0.<de.mud.terminal.vt320: int onegl> = 2;
+
+        goto label002;
+
+     label037:
+        $r0.<de.mud.terminal.vt320: int DCEvar> = 0;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r5[0] = 0;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r5[1] = 0;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r5[2] = 0;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r5[3] = 0;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 2;
+
+        goto label002;
+
+     label038:
+        $r0.<de.mud.terminal.vt320: int term_state> = 1;
+
+        $r0.<de.mud.terminal.vt320: int lastwaslf> = 0;
+
+        goto label002;
+
+     label039:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String answerBack>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean write(java.lang.String,boolean)>($r1, 0);
+
+        goto label002;
+
+     label040:
+        $i7 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, 0, $i3, $i4, $i7);
+
+        $r0.<de.mud.terminal.vt320: int R> = 0;
+
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+        goto label002;
+
+     label041:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 >= 0 goto label042;
+
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+     label042:
+        $r0.<de.mud.terminal.vt320: int lastwaslf> = 0;
+
+        goto label002;
+
+     label043:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 >= $i3 goto label044;
+
+        $r4 = $r0.<de.mud.terminal.vt320: byte[] Tabs>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $b8 = $r4[$i7];
+
+        if $b8 == 0 goto label043;
+
+     label044:
+        $r0.<de.mud.terminal.vt320: int lastwaslf> = 0;
+
+        goto label002;
+
+     label045:
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+        goto label002;
+
+     label046:
+        $z2 = $r0.<de.mud.terminal.vt320: boolean vms>;
+
+        if $z2 != 0 goto label048;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int lastwaslf>;
+
+        if $i7 == 0 goto label047;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int lastwaslf>;
+
+        if $i7 != $c0 goto label002;
+
+     label047:
+        $r0.<de.mud.terminal.vt320: int lastwaslf> = $c0;
+
+     label048:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        if $i7 == $i6 goto label049;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i4 + -1;
+
+        if $i7 < $i6 goto label050;
+
+     label049:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 0);
+
+        goto label002;
+
+     label050:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label002;
+
+     label051:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void beep()>();
+
+        goto label002;
+
+     label052:
+        $r0.<de.mud.terminal.vt320: char gl> = 1;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label053:
+        $r0.<de.mud.terminal.vt320: char gl> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label054:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 0);
+
+        goto label012;
+
+     label055:
+        $i7 = $i3 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label013;
+
+     label056:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String terminalID>;
+
+        $z2 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("scoansi");
+
+        if $z2 != 0 goto label057;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String terminalID>;
+
+        $z2 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("ansi");
+
+        if $z2 == 0 goto label059;
+
+     label057:
+        $i5 = 0;
+
+     label058:
+        $r1 = "Tm7k3x4u?kZl@mYjEnB\u2566DqCtAvM\u2550:\u2551N\u2557I\u2554;\u2557H\u255a0a<\u255d";
+
+        $i7 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i5 >= $i7 goto label059;
+
+        $r1 = "Tm7k3x4u?kZl@mYjEnB\u2566DqCtAvM\u2550:\u2551N\u2557I\u2554;\u2557H\u255a0a<\u255d";
+
+        $c2 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i5);
+
+        if $c0 != $c2 goto label060;
+
+        $r1 = "Tm7k3x4u?kZl@mYjEnB\u2566DqCtAvM\u2550:\u2551N\u2557I\u2554;\u2557H\u255a0a<\u255d";
+
+        $i7 = $i5 + 1;
+
+        $c0 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i7);
+
+     label059:
+        if $c0 < 95 goto label015;
+
+        if $c0 > 126 goto label015;
+
+        $r2 = <de.mud.terminal.vt320: char[] DECSPECIAL>;
+
+        $s9 = (short) $c0;
+
+        $i7 = $s9 + -95;
+
+        $c0 = $r2[$i7];
+
+        $z1 = 1;
+
+        goto label015;
+
+     label060:
+        $i5 = $i5 + 2;
+
+        goto label058;
+
+     label061:
+        $c2 = $c0 & 127;
+
+        $c2 = $c2 | 128;
+
+        $c0 = (char) $c2;
+
+        $z1 = 1;
+
+        goto label015;
+
+     label062:
+        $z1 = 1;
+
+        goto label015;
+
+     label063:
+        if $c0 < 223 goto label017;
+
+        if $c0 > 254 goto label017;
+
+        $r2 = <de.mud.terminal.vt320: char[] DECSPECIAL>;
+
+        $i7 = $c0 + -223;
+
+        $c0 = $r2[$i7];
+
+        $z1 = 1;
+
+        goto label017;
+
+     label064:
+        $z1 = 1;
+
+        goto label017;
+
+     label065:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 0);
+
+        goto label020;
+
+     label066:
+        $i7 = $i3 + -2;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label021;
+
+     label067:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertChar(int,int,char,int)>($i7, $i6, $c0, $i5);
+
+        goto label022;
+
+     label068:
+        if $z0 == 0 goto label069;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i5 = $i5 | 134217728;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putChar(int,int,char,int)>($i7, $i6, $c0, $i5);
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i5 = $i5 | 134217728;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putChar(int,int,char,int)>($i7, $i6, 32, $i5);
+
+        goto label022;
+
+     label069:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putChar(int,int,char,int)>($i7, $i6, $c0, $i5);
+
+        goto label022;
+
+     label070:
+        if $c0 >= 32 goto label071;
+
+        if $c0 == 27 goto label071;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String osc>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void handle_osc(java.lang.String)>($r1);
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label071:
+        if $c0 != 92 goto label072;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String osc>;
+
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String osc>;
+
+        $i7 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        $i7 = $i7 + -1;
+
+        $c2 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i7);
+
+        if $c2 != 27 goto label072;
+
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String osc>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void handle_osc(java.lang.String)>($r6);
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label072:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String osc>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0.<de.mud.terminal.vt320: java.lang.String osc> = $r6;
+
+        goto label002;
+
+     label073:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        lookupswitch($c0)
+        {
+            case 70: goto label075;
+            case 71: goto label076;
+            default: goto label074;
+        };
+
+     label074:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC <space> ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" unhandled.");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label075:
+        $r0.<de.mud.terminal.vt320: boolean output8bit> = 0;
+
+        goto label002;
+
+     label076:
+        $r0.<de.mud.terminal.vt320: boolean output8bit> = 1;
+
+        goto label002;
+
+     label077:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        lookupswitch($c0)
+        {
+            case 32: goto label079;
+            case 35: goto label080;
+            case 40: goto label113;
+            case 41: goto label114;
+            case 42: goto label115;
+            case 43: goto label116;
+            case 55: goto label108;
+            case 56: goto label110;
+            case 60: goto label106;
+            case 61: goto label105;
+            case 62: goto label107;
+            case 65: goto label085;
+            case 66: goto label086;
+            case 67: goto label087;
+            case 68: goto label093;
+            case 69: goto label089;
+            case 72: goto label101;
+            case 73: goto label088;
+            case 74: goto label096;
+            case 75: goto label098;
+            case 77: goto label099;
+            case 78: goto label103;
+            case 79: goto label104;
+            case 80: goto label084;
+            case 89: goto label122;
+            case 91: goto label082;
+            case 92: goto label124;
+            case 93: goto label083;
+            case 95: goto label123;
+            case 99: goto label081;
+            case 110: goto label118;
+            case 111: goto label120;
+            case 124: goto label121;
+            case 125: goto label119;
+            case 126: goto label117;
+            default: goto label078;
+        };
+
+     label078:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC unknown letter: ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label079:
+        $r0.<de.mud.terminal.vt320: int term_state> = 13;
+
+        goto label002;
+
+     label080:
+        $r0.<de.mud.terminal.vt320: int term_state> = 5;
+
+        goto label002;
+
+     label081:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void reset()>();
+
+        goto label002;
+
+     label082:
+        $r0.<de.mud.terminal.vt320: int DCEvar> = 0;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r5[0] = 0;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r5[1] = 0;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r5[2] = 0;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r5[3] = 0;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 2;
+
+        goto label002;
+
+     label083:
+        $r0.<de.mud.terminal.vt320: java.lang.String osc> = "";
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 6;
+
+        goto label002;
+
+     label084:
+        $r0.<de.mud.terminal.vt320: java.lang.String dcs> = "";
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 3;
+
+        goto label002;
+
+     label085:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 >= 0 goto label002;
+
+        $r0.<de.mud.terminal.vt320: int R> = 0;
+
+        goto label002;
+
+     label086:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 < $i4 goto label002;
+
+        $i7 = $i4 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label002;
+
+     label087:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 < $i3 goto label002;
+
+        $i7 = $i3 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label002;
+
+     label088:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 1);
+
+        goto label002;
+
+     label089:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        if $i7 == $i6 goto label090;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i4 + -1;
+
+        if $i7 != $i6 goto label092;
+
+     label090:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 0);
+
+     label091:
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+        goto label002;
+
+     label092:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label091;
+
+     label093:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        if $i7 == $i6 goto label094;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i4 + -1;
+
+        if $i7 != $i6 goto label095;
+
+     label094:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 0);
+
+        goto label002;
+
+     label095:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label002;
+
+     label096:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i4 + -1;
+
+        if $i7 >= $i6 goto label097;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i1 = $i7 + 1;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i4 - $i7;
+
+        $i4 = $i7 + -1;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, $i1, $i3, $i4, $i5);
+
+     label097:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i3 + -1;
+
+        if $i7 >= $i6 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i5 = $i3 - $i5;
+
+        $i4 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>($i7, $i6, $i5, 1, $i4);
+
+        goto label002;
+
+     label098:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i3 + -1;
+
+        if $i7 >= $i6 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i5 = $i3 - $i5;
+
+        $i4 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>($i7, $i6, $i5, 1, $i4);
+
+        goto label002;
+
+     label099:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC M : R is ");
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", tm is ");
+
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", bm is ");
+
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        if $i7 <= $i6 goto label100;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label002;
+
+     label100:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, 1, 1);
+
+        goto label002;
+
+     label101:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 < $i3 goto label102;
+
+        $i7 = $i3 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+     label102:
+        $r4 = $r0.<de.mud.terminal.vt320: byte[] Tabs>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $r4[$i7] = 1;
+
+        goto label002;
+
+     label103:
+        $r0.<de.mud.terminal.vt320: int onegl> = 2;
+
+        goto label002;
+
+     label104:
+        $r0.<de.mud.terminal.vt320: int onegl> = 3;
+
+        goto label002;
+
+     label105:
+        $r0.<de.mud.terminal.vt320: boolean keypadmode> = 1;
+
+        goto label002;
+
+     label106:
+        $r0.<de.mud.terminal.vt320: boolean vt52mode> = 0;
+
+        goto label002;
+
+     label107:
+        $r0.<de.mud.terminal.vt320: boolean keypadmode> = 0;
+
+        goto label002;
+
+     label108:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $r0.<de.mud.terminal.vt320: int Sc> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $r0.<de.mud.terminal.vt320: int Sr> = $i7;
+
+        $c2 = $r0.<de.mud.terminal.vt320: char gl>;
+
+        $r0.<de.mud.terminal.vt320: char Sgl> = $c2;
+
+        $c2 = $r0.<de.mud.terminal.vt320: char gr>;
+
+        $r0.<de.mud.terminal.vt320: char Sgr> = $c2;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $r0.<de.mud.terminal.vt320: int Sa> = $i7;
+
+        $r2 = newarray (char)[4];
+
+        $r0.<de.mud.terminal.vt320: char[] Sgx> = $r2;
+
+        $i7 = 0;
+
+     label109:
+        if $i7 >= 4 goto label002;
+
+        $r2 = $r0.<de.mud.terminal.vt320: char[] Sgx>;
+
+        $r7 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $c2 = $r7[$i7];
+
+        $r2[$i7] = $c2;
+
+        $i7 = $i7 + 1;
+
+        goto label109;
+
+     label110:
+        $i7 = $r0.<de.mud.terminal.vt320: int Sc>;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int Sr>;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        $c2 = $r0.<de.mud.terminal.vt320: char Sgl>;
+
+        $r0.<de.mud.terminal.vt320: char gl> = $c2;
+
+        $c2 = $r0.<de.mud.terminal.vt320: char Sgr>;
+
+        $r0.<de.mud.terminal.vt320: char gr> = $c2;
+
+        $r7 = $r0.<de.mud.terminal.vt320: char[] Sgx>;
+
+        if $r7 == null goto label112;
+
+        $i7 = 0;
+
+     label111:
+        if $i7 >= 4 goto label112;
+
+        $r7 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: char[] Sgx>;
+
+        $c2 = $r2[$i7];
+
+        $r7[$i7] = $c2;
+
+        $i7 = $i7 + 1;
+
+        goto label111;
+
+     label112:
+        $i7 = $r0.<de.mud.terminal.vt320: int Sa>;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i7;
+
+        goto label002;
+
+     label113:
+        $r0.<de.mud.terminal.vt320: int term_state> = 7;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label114:
+        $r0.<de.mud.terminal.vt320: int term_state> = 8;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label115:
+        $r0.<de.mud.terminal.vt320: int term_state> = 9;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label116:
+        $r0.<de.mud.terminal.vt320: int term_state> = 10;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label117:
+        $r0.<de.mud.terminal.vt320: char gr> = 1;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label118:
+        $r0.<de.mud.terminal.vt320: char gl> = 2;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label119:
+        $r0.<de.mud.terminal.vt320: char gr> = 2;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label120:
+        $r0.<de.mud.terminal.vt320: char gl> = 3;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label121:
+        $r0.<de.mud.terminal.vt320: char gr> = 3;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label002;
+
+     label122:
+        $r0.<de.mud.terminal.vt320: int term_state> = 15;
+
+        goto label002;
+
+     label123:
+        $r0.<de.mud.terminal.vt320: int term_state> = 18;
+
+        goto label002;
+
+     label124:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label125:
+        $i7 = $c0 + -37;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 >= 0 goto label127;
+
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+     label126:
+        $r0.<de.mud.terminal.vt320: int term_state> = 15;
+
+        goto label002;
+
+     label127:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int width>;
+
+        if $i7 < $i6 goto label126;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int width>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label126;
+
+     label128:
+        $i7 = $c0 + -37;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 >= 0 goto label130;
+
+        $r0.<de.mud.terminal.vt320: int R> = 0;
+
+     label129:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label130:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int height>;
+
+        if $i7 < $i6 goto label129;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int height>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label129;
+
+     label131:
+        if $c0 == 48 goto label133;
+
+        if $c0 == 65 goto label133;
+
+        if $c0 == 66 goto label133;
+
+        if $c0 == 60 goto label133;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC ( ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(": G0 char set?  (");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+     label132:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label133:
+        $r7 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r7[0] = $c0;
+
+        goto label132;
+
+     label134:
+        if $c0 == 48 goto label136;
+
+        if $c0 == 65 goto label136;
+
+        if $c0 == 66 goto label136;
+
+        if $c0 == 60 goto label136;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC ) ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") :G1 char set?");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+     label135:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label136:
+        $r7 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r7[1] = $c0;
+
+        goto label135;
+
+     label137:
+        if $c0 == 48 goto label139;
+
+        if $c0 == 65 goto label139;
+
+        if $c0 == 66 goto label139;
+
+        if $c0 == 60 goto label139;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC*:G2 char set?  (");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+     label138:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label139:
+        $r7 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r7[2] = $c0;
+
+        goto label138;
+
+     label140:
+        if $c0 == 48 goto label142;
+
+        if $c0 == 65 goto label142;
+
+        if $c0 == 66 goto label142;
+
+        if $c0 == 60 goto label142;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC+:G3 char set?  (");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+     label141:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label142:
+        $r7 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r7[3] = $c0;
+
+        goto label141;
+
+     label143:
+        lookupswitch($c0)
+        {
+            case 56: goto label146;
+            default: goto label144;
+        };
+
+     label144:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC # ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" not supported.");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+     label145:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label146:
+        $i7 = 0;
+
+     label147:
+        if $i7 >= $i3 goto label145;
+
+        $i5 = 0;
+
+     label148:
+        if $i5 >= $i4 goto label149;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putChar(int,int,char,int)>($i7, $i5, 69, 0);
+
+        $i5 = $i5 + 1;
+
+        goto label148;
+
+     label149:
+        $i7 = $i7 + 1;
+
+        goto label147;
+
+     label150:
+        if $c0 != 92 goto label151;
+
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String dcs>;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String dcs>;
+
+        $i7 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $i7 = $i7 + -1;
+
+        $c2 = virtualinvoke $r6.<java.lang.String: char charAt(int)>($i7);
+
+        if $c2 != 27 goto label151;
+
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String dcs>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void handle_dcs(java.lang.String)>($r6);
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        goto label002;
+
+     label151:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String dcs>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0.<de.mud.terminal.vt320: java.lang.String dcs> = $r6;
+
+        goto label002;
+
+     label152:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        lookupswitch($c0)
+        {
+            case 48: goto label154;
+            case 49: goto label154;
+            case 50: goto label154;
+            case 51: goto label154;
+            case 52: goto label154;
+            case 53: goto label154;
+            case 54: goto label154;
+            case 55: goto label154;
+            case 56: goto label154;
+            case 57: goto label154;
+            case 59: goto label155;
+            case 104: goto label165;
+            case 105: goto label176;
+            case 108: goto label178;
+            case 110: goto label189;
+            case 114: goto label157;
+            case 115: goto label156;
+            default: goto label153;
+        };
+
+     label153:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ? ");
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r5[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", unsupported.");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label154:
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $i6 = $r8[$i6];
+
+        $i6 = $i6 * 10;
+
+        $i6 = $i6 + $c0;
+
+        $i6 = $i6 + -48;
+
+        $r5[$i7] = $i6;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 4;
+
+        goto label002;
+
+     label155:
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int DCEvar> = $i7;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $r8[$i7] = 0;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 4;
+
+        goto label002;
+
+     label156:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ? ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" s unimplemented!");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label157:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ? ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" r");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $i7 = 0;
+
+     label158:
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        if $i7 > $i6 goto label002;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[$i7];
+
+        lookupswitch($i6)
+        {
+            case 3: goto label161;
+            case 4: goto label160;
+            case 5: goto label160;
+            case 6: goto label162;
+            case 7: goto label163;
+            case 9: goto label164;
+            case 12: goto label160;
+            case 1000: goto label164;
+            case 1001: goto label164;
+            case 1002: goto label164;
+            case 1003: goto label164;
+            default: goto label159;
+        };
+
+     label159:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ? ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" r, unimplemented!");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+     label160:
+        $i7 = $i7 + 1;
+
+        goto label158;
+
+     label161:
+        $i6 = $r0.<de.mud.terminal.vt320: int height>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setScreenSize(int,int,boolean)>(80, $i6, 1);
+
+        goto label160;
+
+     label162:
+        $r0.<de.mud.terminal.vt320: boolean moveoutsidemargins> = 1;
+
+        goto label160;
+
+     label163:
+        $r0.<de.mud.terminal.vt320: boolean wraparound> = 0;
+
+        goto label160;
+
+     label164:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[$i7];
+
+        $r0.<de.mud.terminal.vt320: int mouserpt> = $i6;
+
+        goto label160;
+
+     label165:
+        $i7 = 0;
+
+     label166:
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        if $i7 > $i6 goto label002;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[$i7];
+
+        lookupswitch($i6)
+        {
+            case 1: goto label169;
+            case 2: goto label170;
+            case 3: goto label171;
+            case 6: goto label172;
+            case 7: goto label173;
+            case 9: goto label175;
+            case 25: goto label174;
+            case 1000: goto label175;
+            case 1001: goto label175;
+            case 1002: goto label175;
+            case 1003: goto label175;
+            default: goto label167;
+        };
+
+     label167:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ? ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" h, unsupported.");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+     label168:
+        $i7 = $i7 + 1;
+
+        goto label166;
+
+     label169:
+        $r9 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyUp>;
+
+        $r9[0] = "\u001bOA";
+
+        $r9 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyDown>;
+
+        $r9[0] = "\u001bOB";
+
+        $r9 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyRight>;
+
+        $r9[0] = "\u001bOC";
+
+        $r9 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyLeft>;
+
+        $r9[0] = "\u001bOD";
+
+        goto label168;
+
+     label170:
+        $r0.<de.mud.terminal.vt320: boolean vt52mode> = 0;
+
+        goto label168;
+
+     label171:
+        $i6 = $r0.<de.mud.terminal.vt320: int height>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setScreenSize(int,int,boolean)>(132, $i6, 1);
+
+        goto label168;
+
+     label172:
+        $r0.<de.mud.terminal.vt320: boolean moveoutsidemargins> = 0;
+
+        goto label168;
+
+     label173:
+        $r0.<de.mud.terminal.vt320: boolean wraparound> = 1;
+
+        goto label168;
+
+     label174:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void showCursor(boolean)>(1);
+
+        goto label168;
+
+     label175:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[$i7];
+
+        $r0.<de.mud.terminal.vt320: int mouserpt> = $i6;
+
+        goto label168;
+
+     label176:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 1: goto label002;
+            case 2: goto label177;
+            case 3: goto label177;
+            case 4: goto label002;
+            default: goto label177;
+        };
+
+     label177:
+        goto label002;
+
+     label178:
+        $i7 = 0;
+
+     label179:
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        if $i7 > $i6 goto label002;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[$i7];
+
+        lookupswitch($i6)
+        {
+            case 1: goto label182;
+            case 2: goto label183;
+            case 3: goto label184;
+            case 6: goto label185;
+            case 7: goto label186;
+            case 9: goto label188;
+            case 25: goto label187;
+            case 1000: goto label188;
+            case 1001: goto label188;
+            case 1002: goto label188;
+            case 1003: goto label188;
+            default: goto label180;
+        };
+
+     label180:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ? ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" l, unsupported.");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+     label181:
+        $i7 = $i7 + 1;
+
+        goto label179;
+
+     label182:
+        $r9 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyUp>;
+
+        $r9[0] = "\u001b[A";
+
+        $r9 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyDown>;
+
+        $r9[0] = "\u001b[B";
+
+        $r9 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyRight>;
+
+        $r9[0] = "\u001b[C";
+
+        $r9 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyLeft>;
+
+        $r9[0] = "\u001b[D";
+
+        goto label181;
+
+     label183:
+        $r0.<de.mud.terminal.vt320: boolean vt52mode> = 1;
+
+        goto label181;
+
+     label184:
+        $i6 = $r0.<de.mud.terminal.vt320: int height>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setScreenSize(int,int,boolean)>(80, $i6, 1);
+
+        goto label181;
+
+     label185:
+        $r0.<de.mud.terminal.vt320: boolean moveoutsidemargins> = 1;
+
+        goto label181;
+
+     label186:
+        $r0.<de.mud.terminal.vt320: boolean wraparound> = 0;
+
+        goto label181;
+
+     label187:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void showCursor(boolean)>(0);
+
+        goto label181;
+
+     label188:
+        $r0.<de.mud.terminal.vt320: int mouserpt> = 0;
+
+        goto label181;
+
+     label189:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 15: goto label191;
+            default: goto label190;
+        };
+
+     label190:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ? ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" n, unsupported.");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label191:
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean write(java.lang.String,boolean)>("\u001b[?13n", 0);
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>("ESC[5n");
+
+        goto label002;
+
+     label192:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        lookupswitch($c0)
+        {
+            case 27: goto label194;
+            default: goto label193;
+        };
+
+     label193:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown character ESC[! character is ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($c0);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label194:
+        $r0.<de.mud.terminal.vt320: int term_state> = 1;
+
+        goto label002;
+
+     label195:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        lookupswitch($c0)
+        {
+            case 112: goto label197;
+            default: goto label196;
+        };
+
+     label196:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown ESC [...  \"");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label197:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Conformance level: ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (unsupported),");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[1];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 61 goto label198;
+
+        $r0.<de.mud.terminal.vt320: boolean output8bit> = 0;
+
+        goto label002;
+
+     label198:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[1];
+
+        if $i7 != 1 goto label199;
+
+        $r0.<de.mud.terminal.vt320: boolean output8bit> = 0;
+
+        goto label002;
+
+     label199:
+        $r0.<de.mud.terminal.vt320: boolean output8bit> = 1;
+
+        goto label002;
+
+     label200:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        lookupswitch($c0)
+        {
+            case 48: goto label203;
+            case 49: goto label203;
+            case 50: goto label203;
+            case 51: goto label203;
+            case 52: goto label203;
+            case 53: goto label203;
+            case 54: goto label203;
+            case 55: goto label203;
+            case 56: goto label203;
+            case 57: goto label203;
+            case 58: goto label201;
+            case 59: goto label204;
+            case 60: goto label201;
+            case 61: goto label201;
+            case 62: goto label201;
+            case 63: goto label201;
+            case 64: goto label201;
+            case 65: goto label201;
+            case 66: goto label201;
+            case 67: goto label201;
+            case 68: goto label201;
+            case 69: goto label201;
+            case 70: goto label205;
+            case 71: goto label206;
+            default: goto label201;
+        };
+
+     label201:
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown ESC [ = ");
+
+        $i7 = 0;
+
+     label202:
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        if $i7 > $i6 goto label207;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[$i7];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(44);
+
+        $i7 = $i7 + 1;
+
+        goto label202;
+
+     label203:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $i6 = $r5[$i6];
+
+        $i6 = $i6 * 10;
+
+        $i6 = $i6 + $c0;
+
+        $i6 = $i6 + -48;
+
+        $r8[$i7] = $i6;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 17;
+
+        goto label002;
+
+     label204:
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int DCEvar> = $i7;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $r8[$i7] = 0;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 17;
+
+        goto label002;
+
+     label205:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ = ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" F");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $i7 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i7 = $i7 & -16353;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i7;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $i7 = $i7 & 1;
+
+        $i7 = $i7 << 2;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $i6 = $i6 & 2;
+
+        $i7 = $i7 | $i6;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $i6 = $i6 & 4;
+
+        $i6 = $i6 >> 2;
+
+        $i5 = $i7 | $i6;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i5 + 1;
+
+        $i6 = $i6 << 5;
+
+        $i7 = $i7 | $i6;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i7;
+
+        goto label002;
+
+     label206:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ = ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" G");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $i7 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i7 = $i7 & -8372225;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i7;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $i7 = $i7 & 1;
+
+        $i7 = $i7 << 2;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $i6 = $i6 & 2;
+
+        $i7 = $i7 | $i6;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $i6 = $i6 & 4;
+
+        $i6 = $i6 >> 2;
+
+        $i7 = $i7 | $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i7 = $i7 + 1;
+
+        $i7 = $i7 << 14;
+
+        $i7 = $i6 | $i7;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i7;
+
+        goto label002;
+
+     label207:
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        goto label002;
+
+     label208:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        lookupswitch($c0)
+        {
+            case 125: goto label210;
+            case 126: goto label211;
+            default: goto label209;
+        };
+
+     label209:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UNKNOWN Status Display code ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", with Pn=");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label210:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Active Status Display now ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r0.<de.mud.terminal.vt320: int statusmode> = $i7;
+
+        goto label002;
+
+     label211:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Status Line mode now ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label212:
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        lookupswitch($c0)
+        {
+            case 33: goto label217;
+            case 34: goto label214;
+            case 35: goto label213;
+            case 36: goto label215;
+            case 37: goto label213;
+            case 38: goto label213;
+            case 39: goto label213;
+            case 40: goto label213;
+            case 41: goto label213;
+            case 42: goto label213;
+            case 43: goto label213;
+            case 44: goto label213;
+            case 45: goto label213;
+            case 46: goto label213;
+            case 47: goto label213;
+            case 48: goto label219;
+            case 49: goto label219;
+            case 50: goto label219;
+            case 51: goto label219;
+            case 52: goto label219;
+            case 53: goto label219;
+            case 54: goto label219;
+            case 55: goto label219;
+            case 56: goto label219;
+            case 57: goto label219;
+            case 58: goto label213;
+            case 59: goto label220;
+            case 60: goto label213;
+            case 61: goto label216;
+            case 62: goto label213;
+            case 63: goto label218;
+            case 64: goto label290;
+            case 65: goto label239;
+            case 66: goto label244;
+            case 67: goto label249;
+            case 68: goto label254;
+            case 69: goto label213;
+            case 70: goto label213;
+            case 71: goto label262;
+            case 72: goto label264;
+            case 73: goto label213;
+            case 74: goto label283;
+            case 75: goto label278;
+            case 76: goto label271;
+            case 77: goto label275;
+            case 78: goto label213;
+            case 79: goto label213;
+            case 80: goto label296;
+            case 81: goto label213;
+            case 82: goto label213;
+            case 83: goto label269;
+            case 84: goto label273;
+            case 85: goto label213;
+            case 86: goto label213;
+            case 87: goto label213;
+            case 88: goto label293;
+            case 89: goto label213;
+            case 90: goto label213;
+            case 91: goto label213;
+            case 92: goto label213;
+            case 93: goto label213;
+            case 94: goto label213;
+            case 95: goto label213;
+            case 96: goto label213;
+            case 97: goto label213;
+            case 98: goto label213;
+            case 99: goto label221;
+            case 100: goto label252;
+            case 101: goto label213;
+            case 102: goto label265;
+            case 103: goto label225;
+            case 104: goto label229;
+            case 105: goto label233;
+            case 106: goto label213;
+            case 107: goto label213;
+            case 108: goto label235;
+            case 109: goto label305;
+            case 110: goto label299;
+            case 111: goto label213;
+            case 112: goto label213;
+            case 113: goto label002;
+            case 114: goto label257;
+            case 115: goto label303;
+            case 116: goto label213;
+            case 117: goto label304;
+            default: goto label213;
+        };
+
+     label213:
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ unknown letter: ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($c0);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(41);
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: void setLength(int)>(0);
+
+        goto label002;
+
+     label214:
+        $r0.<de.mud.terminal.vt320: int term_state> = 16;
+
+        goto label002;
+
+     label215:
+        $r0.<de.mud.terminal.vt320: int term_state> = 11;
+
+        goto label002;
+
+     label216:
+        $r0.<de.mud.terminal.vt320: int term_state> = 17;
+
+        goto label002;
+
+     label217:
+        $r0.<de.mud.terminal.vt320: int term_state> = 12;
+
+        goto label002;
+
+     label218:
+        $r0.<de.mud.terminal.vt320: int DCEvar> = 0;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r8[0] = 0;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 4;
+
+        goto label002;
+
+     label219:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $r5 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $i6 = $r5[$i6];
+
+        $i6 = $i6 * 10;
+
+        $i6 = $i6 + $c0;
+
+        $i6 = $i6 + -48;
+
+        $r8[$i7] = $i6;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 2;
+
+        goto label002;
+
+     label220:
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int DCEvar> = $i7;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $r8[$i7] = 0;
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 2;
+
+        goto label002;
+
+     label221:
+        $r1 = "";
+
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String terminalID>;
+
+        $z2 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("vt320");
+
+        if $z2 == 0 goto label222;
+
+        $r1 = "63;";
+
+     label222:
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String terminalID>;
+
+        $z2 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("vt220");
+
+        if $z2 == 0 goto label223;
+
+        $r1 = "62;";
+
+     label223:
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String terminalID>;
+
+        $z2 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("vt100");
+
+        if $z2 == 0 goto label224;
+
+        $r1 = "61;";
+
+     label224:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u001b[?");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("1;2c");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean write(java.lang.String,boolean)>($r6, 0);
+
+        goto label002;
+
+     label225:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 0: goto label227;
+            case 1: goto label226;
+            case 2: goto label226;
+            case 3: goto label228;
+            default: goto label226;
+        };
+
+     label226:
+        goto label002;
+
+     label227:
+        $r4 = $r0.<de.mud.terminal.vt320: byte[] Tabs>;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $r4[$i7] = 0;
+
+        goto label002;
+
+     label228:
+        $i7 = $r0.<de.mud.terminal.vt320: int width>;
+
+        $r4 = newarray (byte)[$i7];
+
+        $r0.<de.mud.terminal.vt320: byte[] Tabs> = $r4;
+
+        goto label002;
+
+     label229:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 4: goto label231;
+            case 20: goto label232;
+            default: goto label230;
+        };
+
+     label230:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("unsupported: ESC [ ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" h");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label231:
+        $r0.<de.mud.terminal.vt320: int insertmode> = 1;
+
+        goto label002;
+
+     label232:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>("Setting CRLF to TRUE");
+
+        $r0.<de.mud.terminal.vt320: boolean sendcrlf> = 1;
+
+        goto label002;
+
+     label233:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 0: goto label002;
+            case 1: goto label234;
+            case 2: goto label234;
+            case 3: goto label234;
+            case 4: goto label002;
+            case 5: goto label002;
+            default: goto label234;
+        };
+
+     label234:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" i, unimplemented!");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label235:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 4: goto label237;
+            case 20: goto label238;
+            default: goto label236;
+        };
+
+     label236:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" l, unimplemented!");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        goto label002;
+
+     label237:
+        $r0.<de.mud.terminal.vt320: int insertmode> = 0;
+
+        goto label002;
+
+     label238:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>("Setting CRLF to FALSE");
+
+        $r0.<de.mud.terminal.vt320: boolean sendcrlf> = 0;
+
+        goto label002;
+
+     label239:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        if $i7 < $i6 goto label242;
+
+        $i5 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+     label240:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label243;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+     label241:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 >= $i5 goto label002;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i5;
+
+        goto label002;
+
+     label242:
+        $i5 = 0;
+
+        goto label240;
+
+     label243:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $i7 = $i7 - $i6;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label241;
+
+     label244:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        if $i7 > $i6 goto label247;
+
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+     label245:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        if $i6 != 0 goto label248;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i6 + 1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i6;
+
+     label246:
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i6 <= $i7 goto label002;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label002;
+
+     label247:
+        $i7 = $i4 + -1;
+
+        goto label245;
+
+     label248:
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i5 = $r8[0];
+
+        $i6 = $i6 + $i5;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i6;
+
+        goto label246;
+
+     label249:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label250;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r8[0] = 1;
+
+     label250:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $i6 = $i7 + -1;
+
+        $r8[0] = $i6;
+
+        if $i7 <= 0 goto label251;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label250;
+
+     label251:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 < $i3 goto label002;
+
+        $i7 = $i3 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label002;
+
+     label252:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 >= 0 goto label253;
+
+        $r0.<de.mud.terminal.vt320: int R> = 0;
+
+        goto label002;
+
+     label253:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int height>;
+
+        if $i7 < $i6 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int height>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label002;
+
+     label254:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label255;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r8[0] = 1;
+
+     label255:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $i6 = $i7 + -1;
+
+        $r8[0] = $i6;
+
+        if $i7 <= 0 goto label256;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label255;
+
+     label256:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 >= 0 goto label002;
+
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+        goto label002;
+
+     label257:
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        if $i7 <= 0 goto label261;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[1];
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 >= 0 goto label260;
+
+        $i7 = $i4 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+     label258:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i5 = $r8[0];
+
+        if $i6 < $i5 goto label259;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        $i6 = $i6 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i6 >= 0 goto label259;
+
+        $r0.<de.mud.terminal.vt320: int R> = 0;
+
+     label259:
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setMargins(int,int)>($i6, $i7);
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void _SetCursor(int,int)>(0, 0);
+
+        goto label002;
+
+     label260:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 < $i4 goto label258;
+
+        $i7 = $i4 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label258;
+
+     label261:
+        $i7 = $i4 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label258;
+
+     label262:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 >= 0 goto label263;
+
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+        goto label002;
+
+     label263:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int width>;
+
+        if $i7 < $i6 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int width>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label002;
+
+     label264:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $i7 = $i7 + -1;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[1];
+
+        $i6 = $i6 + -1;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void _SetCursor(int,int)>($i7, $i6);
+
+        goto label002;
+
+     label265:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[1];
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 >= 0 goto label267;
+
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+     label266:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 >= 0 goto label268;
+
+        $r0.<de.mud.terminal.vt320: int R> = 0;
+
+        goto label002;
+
+     label267:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int width>;
+
+        if $i7 < $i6 goto label266;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int width>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        goto label266;
+
+     label268:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int height>;
+
+        if $i7 < $i6 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int height>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        goto label002;
+
+     label269:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label270;
+
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,boolean)>($i7, 0);
+
+        goto label002;
+
+     label270:
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getBottomMargin()>();
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, $i6, 0);
+
+        goto label002;
+
+     label271:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label272;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,boolean)>($i7, 1);
+
+        goto label002;
+
+     label272:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, $i6, 1);
+
+        goto label002;
+
+     label273:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label274;
+
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,boolean)>($i7, 1);
+
+        goto label002;
+
+     label274:
+        $i7 = virtualinvoke $r0.<de.mud.terminal.vt320: int getTopMargin()>();
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertLine(int,int,boolean)>($i7, $i6, 1);
+
+        goto label002;
+
+     label275:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label276;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteLine(int)>($i7);
+
+        goto label002;
+
+     label276:
+        $i7 = 0;
+
+     label277:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        if $i7 >= $i6 goto label002;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteLine(int)>($i6);
+
+        $i7 = $i7 + 1;
+
+        goto label277;
+
+     label278:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 0: goto label280;
+            case 1: goto label281;
+            case 2: goto label282;
+            case 3: goto label279;
+            case 4: goto label279;
+            case 5: goto label279;
+            case 6: goto label280;
+            default: goto label279;
+        };
+
+     label279:
+        goto label002;
+
+     label280:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i3 + -1;
+
+        if $i7 >= $i6 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i5 = $i3 - $i5;
+
+        $i4 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>($i7, $i6, $i5, 1, $i4);
+
+        goto label002;
+
+     label281:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 <= 0 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i6 + 1;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, $i7, $i6, 1, $i5);
+
+        goto label002;
+
+     label282:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, $i7, $i3, 1, $i6);
+
+        goto label002;
+
+     label283:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 0: goto label285;
+            case 1: goto label287;
+            case 2: goto label289;
+            default: goto label284;
+        };
+
+     label284:
+        goto label002;
+
+     label285:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i4 + -1;
+
+        if $i7 >= $i6 goto label286;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i7 = $i7 + 1;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $i4 - $i6;
+
+        $i6 = $i6 + -1;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, $i7, $i3, $i6, $i5);
+
+     label286:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i3 + -1;
+
+        if $i7 >= $i6 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i5 = $i3 - $i5;
+
+        $i4 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>($i7, $i6, $i5, 1, $i4);
+
+        goto label002;
+
+     label287:
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i7 <= 0 goto label288;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, 0, $i3, $i7, $i6);
+
+     label288:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i7 <= 0 goto label002;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i6 + 1;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, $i7, $i6, 1, $i5);
+
+        goto label002;
+
+     label289:
+        $i7 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, 0, $i3, $i4, $i7);
+
+        goto label002;
+
+     label290:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label291;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r8[0] = 1;
+
+     label291:
+        $i7 = 0;
+
+     label292:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        if $i7 >= $i6 goto label002;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i4 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void insertChar(int,int,char,int)>($i6, $i5, 32, $i4);
+
+        $i7 = $i7 + 1;
+
+        goto label292;
+
+     label293:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label294;
+
+        $i7 = 1;
+
+     label294:
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i6 = $i6 + $i7;
+
+        if $i6 <= $i3 goto label295;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i7 = $i3 - $i7;
+
+     label295:
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $i4 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>($i6, $i5, $i7, 1, $i4);
+
+        goto label002;
+
+     label296:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label297;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $r8[0] = 1;
+
+     label297:
+        $i7 = 0;
+
+     label298:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[0];
+
+        if $i7 >= $i6 goto label002;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteChar(int,int)>($i6, $i5);
+
+        $i7 = $i7 + 1;
+
+        goto label298;
+
+     label299:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        lookupswitch($i7)
+        {
+            case 5: goto label301;
+            case 6: goto label302;
+            default: goto label300;
+        };
+
+     label300:
+        goto label002;
+
+     label301:
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>("\u001b[0n");
+
+        goto label002;
+
+     label302:
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u001b[");
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(";");
+
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("R");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r6);
+
+        goto label002;
+
+     label303:
+        $i7 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $r0.<de.mud.terminal.vt320: int Sc> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int R>;
+
+        $r0.<de.mud.terminal.vt320: int Sr> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $r0.<de.mud.terminal.vt320: int Sa> = $i7;
+
+        goto label002;
+
+     label304:
+        $i7 = $r0.<de.mud.terminal.vt320: int Sc>;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int Sr>;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i7;
+
+        $i7 = $r0.<de.mud.terminal.vt320: int Sa>;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i7;
+
+        goto label002;
+
+     label305:
+        $i7 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        if $i7 != 0 goto label306;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i7 = $r8[0];
+
+        if $i7 != 0 goto label306;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = 0;
+
+     label306:
+        $i7 = 0;
+
+     label307:
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        if $i7 > $i6 goto label002;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[$i7];
+
+        lookupswitch($i6)
+        {
+            case 0: goto label310;
+            case 1: goto label312;
+            case 2: goto label313;
+            case 3: goto label316;
+            case 4: goto label317;
+            case 5: goto label309;
+            case 6: goto label308;
+            case 7: goto label318;
+            case 8: goto label319;
+            case 9: goto label308;
+            case 10: goto label320;
+            case 11: goto label321;
+            case 12: goto label321;
+            case 13: goto label308;
+            case 14: goto label308;
+            case 15: goto label308;
+            case 16: goto label308;
+            case 17: goto label308;
+            case 18: goto label308;
+            case 19: goto label308;
+            case 20: goto label308;
+            case 21: goto label322;
+            case 22: goto label327;
+            case 23: goto label323;
+            case 24: goto label326;
+            case 25: goto label309;
+            case 26: goto label308;
+            case 27: goto label324;
+            case 28: goto label325;
+            case 29: goto label308;
+            case 30: goto label328;
+            case 31: goto label328;
+            case 32: goto label328;
+            case 33: goto label328;
+            case 34: goto label328;
+            case 35: goto label328;
+            case 36: goto label328;
+            case 37: goto label328;
+            case 38: goto label329;
+            case 39: goto label330;
+            case 40: goto label331;
+            case 41: goto label331;
+            case 42: goto label331;
+            case 43: goto label331;
+            case 44: goto label331;
+            case 45: goto label331;
+            case 46: goto label331;
+            case 47: goto label331;
+            case 48: goto label332;
+            case 49: goto label333;
+            case 50: goto label308;
+            case 51: goto label308;
+            case 52: goto label308;
+            case 53: goto label308;
+            case 54: goto label308;
+            case 55: goto label308;
+            case 56: goto label308;
+            case 57: goto label308;
+            case 58: goto label308;
+            case 59: goto label308;
+            case 60: goto label308;
+            case 61: goto label308;
+            case 62: goto label308;
+            case 63: goto label308;
+            case 64: goto label308;
+            case 65: goto label308;
+            case 66: goto label308;
+            case 67: goto label308;
+            case 68: goto label308;
+            case 69: goto label308;
+            case 70: goto label308;
+            case 71: goto label308;
+            case 72: goto label308;
+            case 73: goto label308;
+            case 74: goto label308;
+            case 75: goto label308;
+            case 76: goto label308;
+            case 77: goto label308;
+            case 78: goto label308;
+            case 79: goto label308;
+            case 80: goto label308;
+            case 81: goto label308;
+            case 82: goto label308;
+            case 83: goto label308;
+            case 84: goto label308;
+            case 85: goto label308;
+            case 86: goto label308;
+            case 87: goto label308;
+            case 88: goto label308;
+            case 89: goto label308;
+            case 90: goto label334;
+            case 91: goto label334;
+            case 92: goto label334;
+            case 93: goto label334;
+            case 94: goto label334;
+            case 95: goto label334;
+            case 96: goto label334;
+            case 97: goto label334;
+            case 98: goto label308;
+            case 99: goto label308;
+            case 100: goto label335;
+            case 101: goto label335;
+            case 102: goto label335;
+            case 103: goto label335;
+            case 104: goto label335;
+            case 105: goto label335;
+            case 106: goto label335;
+            case 107: goto label335;
+            default: goto label308;
+        };
+
+     label308:
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ESC [ ");
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $r8[$i7];
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" m unknown...");
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>($r6);
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.StringBuilder debugStr>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: void setLength(int)>(0);
+
+     label309:
+        $i7 = $i7 + 1;
+
+        goto label307;
+
+     label310:
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        if $i6 <= 0 goto label309;
+
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String terminalID>;
+
+        $z2 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("scoansi");
+
+        if $z2 == 0 goto label311;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & 8388576;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label311:
+        $r0.<de.mud.terminal.vt320: int attributes> = 0;
+
+        goto label309;
+
+     label312:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 | 1;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -9;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label313:
+        $r6 = $r0.<de.mud.terminal.vt320: java.lang.String terminalID>;
+
+        $z2 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("scoansi");
+
+        if $z2 == 0 goto label315;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int DCEvar>;
+
+        $i6 = $i6 - $i7;
+
+        if $i6 < 2 goto label315;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -8388578;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $i7 + 1;
+
+        $i5 = $r8[$i6];
+
+        $i6 = $i5 & 8;
+
+        if $i6 != 8 goto label314;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 | 1;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+     label314:
+        $i6 = $i5 & 1;
+
+        $i6 = $i6 << 2;
+
+        $i4 = $i5 & 2;
+
+        $i6 = $i6 | $i4;
+
+        $i5 = $i5 & 4;
+
+        $i5 = $i5 >> 2;
+
+        $i6 = $i6 | $i5;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 + 1;
+
+        $i6 = $i6 << 5;
+
+        $i6 = $i5 | $i6;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $i7 + 2;
+
+        $i6 = $r8[$i6];
+
+        $i5 = $i6 & 1;
+
+        $i5 = $i5 << 2;
+
+        $i4 = $i6 & 2;
+
+        $i5 = $i5 | $i4;
+
+        $i6 = $i6 & 4;
+
+        $i6 = $i6 >> 2;
+
+        $i6 = $i5 | $i6;
+
+        $i5 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 + 1;
+
+        $i6 = $i6 << 14;
+
+        $i6 = $i5 | $i6;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i7 = $i7 + 2;
+
+        goto label309;
+
+     label315:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 | 8;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label316:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 | 4;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label317:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 | 2;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label318:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 | 4;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label319:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 | 16;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label320:
+        $r0.<de.mud.terminal.vt320: char gl> = 0;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label309;
+
+     label321:
+        $r0.<de.mud.terminal.vt320: char gl> = 1;
+
+        $r0.<de.mud.terminal.vt320: boolean usedcharsets> = 1;
+
+        goto label309;
+
+     label322:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -10;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label323:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -5;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label324:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -5;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label325:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -17;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label326:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -3;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label327:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -2;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label328:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -16353;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i5 = $r8[$i7];
+
+        $i5 = $i5 + -30;
+
+        $i5 = $i5 + 1;
+
+        $i5 = $i5 << 5;
+
+        $i6 = $i6 | $i5;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label329:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $i7 + 1;
+
+        $i6 = $r8[$i6];
+
+        if $i6 != 5 goto label309;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -16353;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i5 = $i7 + 2;
+
+        $i5 = $r8[$i5];
+
+        $i5 = $i5 + 1;
+
+        $i5 = $i5 << 5;
+
+        $i6 = $i6 | $i5;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i7 = $i7 + 2;
+
+        goto label309;
+
+     label330:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -16353;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label331:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -8372225;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i5 = $r8[$i7];
+
+        $i5 = $i5 + -40;
+
+        $i5 = $i5 + 1;
+
+        $i5 = $i5 << 14;
+
+        $i6 = $i6 | $i5;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label332:
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i6 = $i7 + 1;
+
+        $i6 = $r8[$i6];
+
+        if $i6 != 5 goto label309;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -8372225;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i5 = $i7 + 2;
+
+        $i5 = $r8[$i5];
+
+        $i5 = $i5 + 1;
+
+        $i5 = $i5 << 14;
+
+        $i6 = $i6 | $i5;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i7 = $i7 + 2;
+
+        goto label309;
+
+     label333:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -8372225;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label334:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -16353;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i5 = $r8[$i7];
+
+        $i5 = $i5 + -82;
+
+        $i5 = $i5 + 1;
+
+        $i5 = $i5 << 5;
+
+        $i6 = $i6 | $i5;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label335:
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $i6 = $i6 & -8372225;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        $i6 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        $r8 = $r0.<de.mud.terminal.vt320: int[] DCEvars>;
+
+        $i5 = $r8[$i7];
+
+        $i5 = $i5 + -92;
+
+        $i5 = $i5 + 1;
+
+        $i5 = $i5 << 14;
+
+        $i6 = $i6 | $i5;
+
+        $r0.<de.mud.terminal.vt320: int attributes> = $i6;
+
+        goto label309;
+
+     label336:
+        lookupswitch($c0)
+        {
+            case 27: goto label338;
+            default: goto label337;
+        };
+
+     label337:
+        goto label002;
+
+     label338:
+        $r0.<de.mud.terminal.vt320: int term_state> = 1;
+
+        goto label002;
+    }
+
+    static java.lang.String unEscape(java.lang.String)
+    {
+        java.lang.String $r0, $r1;
+        int $i0, $i1, $i2;
+        java.lang.StringBuilder $r2;
+        char $c3;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $i0 = 0;
+
+        $r1 = "";
+
+     label01:
+        $i1 = virtualinvoke $r0.<java.lang.String: int indexOf(int,int)>(92, $i0);
+
+        if $i1 < 0 goto label16;
+
+        $i2 = $i1 + 1;
+
+        $i1 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i2 > $i1 goto label16;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $i1 = $i2 + -1;
+
+        $r1 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>($i0, $i1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i1 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i2 != $i1 goto label02;
+
+        return $r1;
+
+     label02:
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i2);
+
+        lookupswitch($c3)
+        {
+            case 97: goto label13;
+            case 98: goto label07;
+            case 101: goto label08;
+            case 110: goto label09;
+            case 114: goto label10;
+            case 116: goto label11;
+            case 118: goto label12;
+            default: goto label03;
+        };
+
+     label03:
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i2);
+
+        if $c3 < 48 goto label15;
+
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i2);
+
+        if $c3 > 57 goto label15;
+
+        $i0 = $i2;
+
+     label04:
+        $i1 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 >= $i1 goto label05;
+
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i0);
+
+        if $c3 < 48 goto label05;
+
+        $c3 = virtualinvoke $r0.<java.lang.String: char charAt(int)>($i0);
+
+        if $c3 <= 57 goto label14;
+
+     label05:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>($i2, $i0);
+
+        $i2 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r1);
+
+        $c3 = (char) $i2;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($c3);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i2 = $i0 + -1;
+
+     label06:
+        $i0 = $i2 + 1;
+
+        goto label01;
+
+     label07:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u0008");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label08:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u001b");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label09:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label10:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\r");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label11:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\t");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label12:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u000b");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label13:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u0012");
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label06;
+
+     label14:
+        $i0 = $i0 + 1;
+
+        goto label04;
+
+     label15:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $i0 = $i2 + 1;
+
+        $r1 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int,int)>($i2, $i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i2 = $i0;
+
+        goto label06;
+
+     label16:
+        $i2 = virtualinvoke $r0.<java.lang.String: int length()>();
+
+        if $i0 > $i2 goto label17;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r0.<java.lang.String: java.lang.String substring(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label17:
+        return $r1;
+    }
+
+    private boolean write(java.lang.String, boolean)
+    {
+        de.mud.terminal.vt320 $r0;
+        java.lang.String $r1;
+        boolean $z0;
+        byte[] $r2;
+        int $i0, $i1;
+        char $c2;
+        byte $b3;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        if $r1 != null goto label1;
+
+        return 1;
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $r2 = newarray (byte)[$i0];
+
+        $i0 = 0;
+
+     label2:
+        $i1 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 >= $i1 goto label3;
+
+        $c2 = virtualinvoke $r1.<java.lang.String: char charAt(int)>($i0);
+
+        $b3 = (byte) $c2;
+
+        $r2[$i0] = $b3;
+
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label3:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void write(byte[])>($r2);
+
+        if $z0 == 0 goto label4;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putString(java.lang.String)>($r1);
+
+        return 1;
+
+     label4:
+        return 1;
+    }
+
+    private boolean writeSpecial(java.lang.String)
+    {
+        de.mud.terminal.vt320 $r0;
+        java.lang.String $r1;
+        int $i0;
+        char $c1;
+        boolean $z0;
+        java.lang.StringBuilder $r2;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 := @parameter0: java.lang.String;
+
+        if $r1 != null goto label1;
+
+        return 1;
+
+     label1:
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 < 3 goto label2;
+
+        $c1 = virtualinvoke $r1.<java.lang.String: char charAt(int)>(0);
+
+        if $c1 != 27 goto label2;
+
+        $c1 = virtualinvoke $r1.<java.lang.String: char charAt(int)>(1);
+
+        if $c1 != 79 goto label2;
+
+        $z0 = $r0.<de.mud.terminal.vt320: boolean vt52mode>;
+
+        if $z0 == 0 goto label5;
+
+        $c1 = virtualinvoke $r1.<java.lang.String: char charAt(int)>(2);
+
+        if $c1 < 80 goto label4;
+
+        $c1 = virtualinvoke $r1.<java.lang.String: char charAt(int)>(2);
+
+        if $c1 > 83 goto label4;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u001b");
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>(2);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label2:
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 < 3 goto label3;
+
+        $c1 = virtualinvoke $r1.<java.lang.String: char charAt(int)>(0);
+
+        if $c1 != 27 goto label3;
+
+        $c1 = virtualinvoke $r1.<java.lang.String: char charAt(int)>(1);
+
+        if $c1 != 91 goto label3;
+
+        $z0 = $r0.<de.mud.terminal.vt320: boolean output8bit>;
+
+        if $z0 == 0 goto label3;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u009b");
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>(2);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label3:
+        $z0 = specialinvoke $r0.<de.mud.terminal.vt320: boolean write(java.lang.String,boolean)>($r1, 0);
+
+        return $z0;
+
+     label4:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u001b?");
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>(2);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label2;
+
+     label5:
+        $z0 = $r0.<de.mud.terminal.vt320: boolean output8bit>;
+
+        if $z0 == 0 goto label2;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\u008f");
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>(2);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label2;
+    }
+
+    public void beep()
+    {
+        de.mud.terminal.vt320 $r0;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        return;
+    }
+
+    public abstract void debug(java.lang.String);
+
+    public void keyPressed(int, char, int)
+    {
+        de.mud.terminal.vt320 $r0;
+        int $i0, $i2, $i4;
+        char $c1;
+        boolean $z0, $z1, $z2, $z3;
+        java.lang.String[] $r1;
+        byte $b3;
+        java.lang.String $r2;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $i0 := @parameter0: int;
+
+        $c1 := @parameter1: char;
+
+        $i2 := @parameter2: int;
+
+        $z3 = 1;
+
+        $i4 = $i2 & 1;
+
+        if $i4 == 0 goto label08;
+
+        $z1 = 1;
+
+     label01:
+        $i4 = $i2 & 2;
+
+        if $i4 == 0 goto label09;
+
+        $z2 = 1;
+
+     label02:
+        $i4 = $i2 & 4;
+
+        if $i4 == 0 goto label10;
+
+        $z0 = 1;
+
+     label03:
+        $b3 = 0;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        if $z2 == 0 goto label04;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyShift>;
+
+        $b3 = 1;
+
+     label04:
+        if $z1 == 0 goto label05;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyCtrl>;
+
+        $b3 = 2;
+
+     label05:
+        if $z0 == 0 goto label06;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKeyAlt>;
+
+        $b3 = 3;
+
+     label06:
+        lookupswitch($i0)
+        {
+            case 1: goto label11;
+            case 2: goto label13;
+            case 3: goto label14;
+            case 4: goto label15;
+            case 5: goto label16;
+            case 6: goto label17;
+            case 7: goto label18;
+            case 8: goto label19;
+            case 9: goto label20;
+            case 10: goto label21;
+            case 11: goto label22;
+            case 12: goto label23;
+            case 13: goto label24;
+            case 14: goto label25;
+            case 15: goto label26;
+            case 16: goto label27;
+            case 17: goto label28;
+            case 18: goto label29;
+            case 19: goto label30;
+            case 20: goto label31;
+            case 21: goto label32;
+            case 22: goto label33;
+            case 23: goto label35;
+            case 24: goto label36;
+            case 25: goto label37;
+            case 26: goto label41;
+            case 27: goto label07;
+            case 28: goto label07;
+            case 29: goto label07;
+            default: goto label07;
+        };
+
+     label07:
+        return;
+
+     label08:
+        $z1 = 0;
+
+        goto label01;
+
+     label09:
+        $z2 = 0;
+
+        goto label02;
+
+     label10:
+        $z0 = 0;
+
+        goto label03;
+
+     label11:
+        if $z2 != 0 goto label12;
+
+        if $z1 == 0 goto label44;
+
+     label12:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void sendTelnetCommand(byte)>(-13);
+
+        return;
+
+     label13:
+        $r2 = $r1[1];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label14:
+        $r2 = $r1[2];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label15:
+        $r2 = $r1[3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label16:
+        $r2 = $r1[4];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label17:
+        $r2 = $r1[5];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label18:
+        $r2 = $r1[6];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label19:
+        $r2 = $r1[7];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label20:
+        $r2 = $r1[8];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label21:
+        $r2 = $r1[9];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label22:
+        $r2 = $r1[10];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label23:
+        $r2 = $r1[11];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label24:
+        $r2 = $r1[12];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label25:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyUp>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label26:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyDown>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label27:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyLeft>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label28:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyRight>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label29:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label30:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label31:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Insert>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label32:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Remove>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label33:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        $z3 = $r0.<de.mud.terminal.vt320: boolean localecho>;
+
+        if $z3 == 0 goto label45;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r2 = $r1[$b3];
+
+        if $r2 != "\u0008" goto label34;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putString(java.lang.String)>("\u0008 \u0008");
+
+        return;
+
+     label34:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r2 = $r1[$b3];
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putString(java.lang.String)>($r2);
+
+        return;
+
+     label35:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyHome>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label36:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] KeyEnd>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label37:
+        $z2 = $r0.<de.mud.terminal.vt320: boolean vms>;
+
+        if $z2 == 0 goto label38;
+
+        if $z1 == 0 goto label38;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String PF1>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+     label38:
+        if $z1 != 0 goto label46;
+
+        $z2 = $r0.<de.mud.terminal.vt320: boolean numlock>;
+
+        if $z2 != 0 goto label40;
+
+     label39:
+        $r0.<de.mud.terminal.vt320: boolean numlock> = $z3;
+
+        return;
+
+     label40:
+        $z3 = 0;
+
+        goto label39;
+
+     label41:
+        $z2 = $r0.<de.mud.terminal.vt320: boolean capslock>;
+
+        if $z2 != 0 goto label43;
+
+     label42:
+        $r0.<de.mud.terminal.vt320: boolean capslock> = $z3;
+
+        return;
+
+     label43:
+        $z3 = 0;
+
+        goto label42;
+
+     label44:
+        return;
+
+     label45:
+        return;
+
+     label46:
+        return;
+    }
+
+    public void keyTyped(int, char, int)
+    {
+        de.mud.terminal.vt320 $r0;
+        int $i0, $i2, $i4;
+        char $c1;
+        boolean $z0, $z1, $z2, $z3;
+        byte $b3;
+        java.lang.String[] $r1;
+        java.lang.String $r2;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $i0 := @parameter0: int;
+
+        $c1 := @parameter1: char;
+
+        $i2 := @parameter2: int;
+
+        $i4 = $i2 & 1;
+
+        if $i4 == 0 goto label04;
+
+        $z1 = 1;
+
+     label01:
+        $i4 = $i2 & 2;
+
+        if $i4 == 0 goto label05;
+
+        $z2 = 1;
+
+     label02:
+        $i4 = $i2 & 4;
+
+        if $i4 == 0 goto label06;
+
+        $z0 = 1;
+
+     label03:
+        if $c1 != 9 goto label10;
+
+        if $z2 == 0 goto label07;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey>;
+
+        $r2 = $r1[1];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean write(java.lang.String,boolean)>($r2, 0);
+
+        return;
+
+     label04:
+        $z1 = 0;
+
+        goto label01;
+
+     label05:
+        $z2 = 0;
+
+        goto label02;
+
+     label06:
+        $z0 = 0;
+
+        goto label03;
+
+     label07:
+        if $z1 == 0 goto label08;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey>;
+
+        $r2 = $r1[2];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean write(java.lang.String,boolean)>($r2, 0);
+
+        return;
+
+     label08:
+        if $z0 == 0 goto label09;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey>;
+
+        $r2 = $r1[3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean write(java.lang.String,boolean)>($r2, 0);
+
+        return;
+
+     label09:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] TabKey>;
+
+        $r2 = $r1[0];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean write(java.lang.String,boolean)>($r2, 0);
+
+        return;
+
+     label10:
+        if $z0 == 0 goto label11;
+
+        $c1 = $c1 | 128;
+
+        $c1 = (char) $c1;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void write(int)>($c1);
+
+        return;
+
+     label11:
+        if $i0 == 30 goto label12;
+
+        if $c1 != 10 goto label13;
+
+     label12:
+        if $z1 != 0 goto label13;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void write(int)>(13);
+
+        $z2 = $r0.<de.mud.terminal.vt320: boolean localecho>;
+
+        if $z2 == 0 goto label54;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putString(java.lang.String)>("\r\n");
+
+        return;
+
+     label13:
+        if $i0 != 10 goto label14;
+
+        if $z1 != 0 goto label14;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void debug(java.lang.String)>("Sending \\r");
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void write(int)>(13);
+
+        return;
+
+     label14:
+        $z3 = $r0.<de.mud.terminal.vt320: boolean vms>;
+
+        if $z3 != 0 goto label15;
+
+        if $c1 == 50 goto label16;
+
+     label15:
+        if $c1 != 32 goto label17;
+
+     label16:
+        if $z1 == 0 goto label17;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void write(int)>(0);
+
+     label17:
+        $z3 = $r0.<de.mud.terminal.vt320: boolean vms>;
+
+        if $z3 == 0 goto label20;
+
+        if $c1 != 127 goto label19;
+
+        if $z1 != 0 goto label19;
+
+        if $z2 == 0 goto label18;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Insert>;
+
+        $r2 = $r1[0];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label18:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Remove>;
+
+        $r2 = $r1[0];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label19:
+        if $z1 == 0 goto label20;
+
+        lookupswitch($c1)
+        {
+            case 10: goto label37;
+            case 31: goto label35;
+            case 42: goto label39;
+            case 43: goto label36;
+            case 45: goto label35;
+            case 46: goto label34;
+            case 47: goto label38;
+            case 48: goto label24;
+            case 49: goto label25;
+            case 50: goto label26;
+            case 51: goto label27;
+            case 52: goto label28;
+            case 53: goto label29;
+            case 54: goto label30;
+            case 55: goto label31;
+            case 56: goto label32;
+            case 57: goto label33;
+            default: goto label20;
+        };
+
+     label20:
+        $b3 = 0;
+
+        if $z2 == 0 goto label21;
+
+        $b3 = 1;
+
+     label21:
+        if $z1 == 0 goto label22;
+
+        $b3 = 2;
+
+     label22:
+        if $z0 == 0 goto label23;
+
+        $b3 = 3;
+
+     label23:
+        if $i0 != 43 goto label40;
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Escape>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label24:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[0];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label25:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[1];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label26:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[2];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label27:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label28:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[4];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label29:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[5];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label30:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[6];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label31:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[7];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label32:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[8];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label33:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[9];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label34:
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String KPPeriod>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label35:
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String KPMinus>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label36:
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String KPComma>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label37:
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String KPEnter>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label38:
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String PF2>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label39:
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String PF3>;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label40:
+        $i4 = $i2 & 8;
+
+        if $i4 == 0 goto label41;
+
+        lookupswitch($i0)
+        {
+            case 31: goto label42;
+            case 32: goto label43;
+            case 33: goto label44;
+            case 34: goto label45;
+            case 35: goto label46;
+            case 36: goto label47;
+            case 37: goto label48;
+            case 38: goto label49;
+            case 39: goto label50;
+            case 40: goto label51;
+            case 41: goto label52;
+            case 42: goto label53;
+            default: goto label41;
+        };
+
+     label41:
+        if $c1 == 8 goto label55;
+
+        if $c1 == 127 goto label56;
+
+        if $c1 == 13 goto label57;
+
+        if $c1 == 10 goto label58;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void write(int)>($c1);
+
+        return;
+
+     label42:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[0];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label43:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[1];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label44:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[2];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label45:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label46:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[4];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label47:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[5];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label48:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[6];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label49:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[7];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label50:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[8];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label51:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] Numpad>;
+
+        $r2 = $r1[9];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label52:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] NUMDot>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label53:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] NUMPlus>;
+
+        $r2 = $r1[$b3];
+
+        specialinvoke $r0.<de.mud.terminal.vt320: boolean writeSpecial(java.lang.String)>($r2);
+
+        return;
+
+     label54:
+        return;
+
+     label55:
+        return;
+
+     label56:
+        return;
+
+     label57:
+        return;
+
+     label58:
+        return;
+    }
+
+    public char map_cp850_unicode(char)
+    {
+        de.mud.terminal.vt320 $r0;
+        char $c0;
+        char[] $r1;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $c0 := @parameter0: char;
+
+        if $c0 < 256 goto label1;
+
+        return $c0;
+
+     label1:
+        $r1 = <de.mud.terminal.vt320: char[] unimap>;
+
+        $c0 = $r1[$c0];
+
+        return $c0;
+    }
+
+    public void putString(java.lang.String)
+    {
+        de.mud.terminal.vt320 $r0;
+        java.lang.String $r1;
+        char[] $r2;
+        int $i0;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        $r2 = newarray (char)[$i0];
+
+        virtualinvoke $r1.<java.lang.String: void getChars(int,int,char[],int)>(0, $i0, $r2, 0);
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void putString(char[],byte[],int,int)>($r2, null, 0, $i0);
+
+        return;
+    }
+
+    public void putString(char[], byte[], int, int)
+    {
+        de.mud.terminal.vt320 $r0;
+        char[] $r1;
+        byte[] $r2;
+        int $i0, $i1, $i3, $i4, $i6;
+        char $c2, $c7;
+        boolean $z0, $z1;
+        byte $b5;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 := @parameter0: char[];
+
+        $r2 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        if $i1 <= 0 goto label12;
+
+        $i4 = -1;
+
+        $z0 = 0;
+
+        $i3 = 0;
+
+     label01:
+        if $i3 >= $i1 goto label10;
+
+        $i6 = $i0 + $i3;
+
+        $c2 = $r1[$i6];
+
+        if $c2 > 127 goto label04;
+
+        if $i4 == -1 goto label02;
+
+        $c7 = (char) $i4;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void putChar(char,boolean,boolean)>($c7, $z0, 0);
+
+     label02:
+        $i4 = $c2;
+
+        $z0 = 0;
+
+     label03:
+        $i3 = $i3 + 1;
+
+        goto label01;
+
+     label04:
+        $z1 = staticinvoke <java.lang.Character: boolean isLowSurrogate(char)>($c2);
+
+        if $z1 != 0 goto label03;
+
+        $z1 = staticinvoke <java.lang.Character: boolean isHighSurrogate(char)>($c2);
+
+        if $z1 != 0 goto label03;
+
+        $i6 = staticinvoke <java.lang.Character: int getType(char)>($c2);
+
+        if $i6 != 6 goto label05;
+
+        if $i4 == -1 goto label03;
+
+        $c7 = (char) $i4;
+
+        $c7 = staticinvoke <de.mud.terminal.Precomposer: char precompose(char,char)>($c7, $c2);
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void putChar(char,boolean,boolean)>($c7, $z0, 0);
+
+        $i4 = -1;
+
+        goto label03;
+
+     label05:
+        if $i4 == -1 goto label06;
+
+        $c7 = (char) $i4;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void putChar(char,boolean,boolean)>($c7, $z0, 0);
+
+     label06:
+        $i4 = $c2;
+
+        if $r2 == null goto label03;
+
+        $b5 = $r2[$i3];
+
+        if $b5 == 5 goto label07;
+
+        if $b5 != 3 goto label09;
+
+     label07:
+        $z0 = 1;
+
+     label08:
+        goto label03;
+
+     label09:
+        $z0 = 0;
+
+        goto label08;
+
+     label10:
+        if $i4 == -1 goto label11;
+
+        $c7 = (char) $i4;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void putChar(char,boolean,boolean)>($c7, $z0, 0);
+
+     label11:
+        $i6 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i4 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setCursorPosition(int,int)>($i6, $i4);
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void redraw()>();
+
+        return;
+
+     label12:
+        return;
+    }
+
+    public void reset()
+    {
+        de.mud.terminal.vt320 $r0;
+        char[] $r1;
+        int $i0, $i1, $i2;
+        byte[] $r2;
+        de.mud.terminal.VDUDisplay $r3;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r1[0] = 66;
+
+        $r1 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r1[1] = 66;
+
+        $r1 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r1[2] = 66;
+
+        $r1 = $r0.<de.mud.terminal.vt320: char[] gx>;
+
+        $r1[3] = 66;
+
+        $r0.<de.mud.terminal.vt320: char gl> = 0;
+
+        $r0.<de.mud.terminal.vt320: char gr> = 2;
+
+        $r0.<de.mud.terminal.vt320: int onegl> = -1;
+
+        $i1 = $r0.<de.mud.terminal.vt320: int width>;
+
+        if $i1 >= 132 goto label1;
+
+        $i1 = 132;
+
+     label1:
+        $r2 = newarray (byte)[$i1];
+
+        $r0.<de.mud.terminal.vt320: byte[] Tabs> = $r2;
+
+        $i0 = 0;
+
+     label2:
+        if $i0 >= $i1 goto label3;
+
+        $r2 = $r0.<de.mud.terminal.vt320: byte[] Tabs>;
+
+        $r2[$i0] = 1;
+
+        $i0 = $i0 + 8;
+
+        goto label2;
+
+     label3:
+        $i1 = $r0.<de.mud.terminal.vt320: int width>;
+
+        $i2 = $r0.<de.mud.terminal.vt320: int height>;
+
+        $i0 = $r0.<de.mud.terminal.vt320: int attributes>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void deleteArea(int,int,int,int,int)>(0, 0, $i1, $i2, $i0);
+
+        $i2 = $r0.<de.mud.terminal.vt320: int height>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setMargins(int,int)>(0, $i2);
+
+        $r0.<de.mud.terminal.vt320: int R> = 0;
+
+        $r0.<de.mud.terminal.vt320: int C> = 0;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void _SetCursor(int,int)>(0, 0);
+
+        $r3 = $r0.<de.mud.terminal.vt320: de.mud.terminal.VDUDisplay display>;
+
+        if $r3 == null goto label4;
+
+        $r3 = $r0.<de.mud.terminal.vt320: de.mud.terminal.VDUDisplay display>;
+
+        interfaceinvoke $r3.<de.mud.terminal.VDUDisplay: void resetColors()>();
+
+     label4:
+        virtualinvoke $r0.<de.mud.terminal.vt320: void showCursor(boolean)>(1);
+
+        $r0.<de.mud.terminal.vt320: int term_state> = 0;
+
+        return;
+    }
+
+    protected void sendTelnetCommand(byte)
+    {
+        de.mud.terminal.vt320 $r0;
+        byte $b0;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $b0 := @parameter0: byte;
+
+        return;
+    }
+
+    public void setAnswerBack(java.lang.String)
+    {
+        de.mud.terminal.vt320 $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r1 = staticinvoke <de.mud.terminal.vt320: java.lang.String unEscape(java.lang.String)>($r1);
+
+        $r0.<de.mud.terminal.vt320: java.lang.String answerBack> = $r1;
+
+        return;
+    }
+
+    public void setBackspace(int)
+    {
+        de.mud.terminal.vt320 $r0;
+        int $i0;
+        java.lang.String[] $r1;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $i0 := @parameter0: int;
+
+        lookupswitch($i0)
+        {
+            case 0: goto label2;
+            case 1: goto label3;
+            default: goto label1;
+        };
+
+     label1:
+        return;
+
+     label2:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r1[0] = "\u007f";
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r1[1] = "\u0008";
+
+        return;
+
+     label3:
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r1[0] = "\u0008";
+
+        $r1 = $r0.<de.mud.terminal.vt320: java.lang.String[] BackSpace>;
+
+        $r1[1] = "\u007f";
+
+        return;
+    }
+
+    public void setIBMCharset(boolean)
+    {
+        de.mud.terminal.vt320 $r0;
+        boolean $z0;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<de.mud.terminal.vt320: boolean useibmcharset> = $z0;
+
+        return;
+    }
+
+    public void setScreenSize(int, int, boolean)
+    {
+        de.mud.terminal.vt320 $r0;
+        int $i0, $i1, $i2, $i3;
+        boolean $z0, $z1;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        specialinvoke $r0.<de.mud.terminal.VDUBuffer: void setScreenSize(int,int,boolean)>($i0, $i1, 0);
+
+        $z1 = 0;
+
+        $i2 = $r0.<de.mud.terminal.vt320: int C>;
+
+        if $i2 < $i0 goto label1;
+
+        $i2 = $i0 + -1;
+
+        $r0.<de.mud.terminal.vt320: int C> = $i2;
+
+        $z1 = 1;
+
+     label1:
+        $i2 = $r0.<de.mud.terminal.vt320: int R>;
+
+        if $i2 < $i1 goto label2;
+
+        $i2 = $i1 + -1;
+
+        $r0.<de.mud.terminal.vt320: int R> = $i2;
+
+        $z1 = 1;
+
+     label2:
+        if $z1 == 0 goto label3;
+
+        $i3 = $r0.<de.mud.terminal.vt320: int C>;
+
+        $i2 = $r0.<de.mud.terminal.vt320: int R>;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setCursorPosition(int,int)>($i3, $i2);
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void redraw()>();
+
+     label3:
+        if $z0 == 0 goto label4;
+
+        virtualinvoke $r0.<de.mud.terminal.vt320: void setWindowSize(int,int)>($i0, $i1);
+
+        return;
+
+     label4:
+        return;
+    }
+
+    public void setTerminalID(java.lang.String)
+    {
+        de.mud.terminal.vt320 $r0;
+        java.lang.String $r1;
+        java.lang.String[] $r2, $r3, $r4, $r5;
+        boolean $z0;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<de.mud.terminal.vt320: java.lang.String terminalID> = $r1;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>("scoansi");
+
+        if $z0 == 0 goto label1;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[1] = "\u001b[M";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[2] = "\u001b[N";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[3] = "\u001b[O";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[4] = "\u001b[P";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[5] = "\u001b[Q";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[6] = "\u001b[R";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[7] = "\u001b[S";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[8] = "\u001b[T";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[9] = "\u001b[U";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[10] = "\u001b[V";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[11] = "\u001b[W";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[12] = "\u001b[X";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[13] = "\u001b[Y";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[14] = "?";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[15] = "\u001b[a";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[16] = "\u001b[b";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[17] = "\u001b[c";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[18] = "\u001b[d";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[19] = "\u001b[e";
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] FunctionKey>;
+
+        $r2[20] = "\u001b[f";
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r4 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r5 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] PrevScn>;
+
+        $r2[3] = "\u001b[I";
+
+        $r5[2] = "\u001b[I";
+
+        $r4[1] = "\u001b[I";
+
+        $r3[0] = "\u001b[I";
+
+        $r5 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r4 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r3 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r2 = $r0.<de.mud.terminal.vt320: java.lang.String[] NextScn>;
+
+        $r2[3] = "\u001b[G";
+
+        $r3[2] = "\u001b[G";
+
+        $r4[1] = "\u001b[G";
+
+        $r5[0] = "\u001b[G";
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void setVMS(boolean)
+    {
+        de.mud.terminal.vt320 $r0;
+        boolean $z0;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<de.mud.terminal.vt320: boolean vms> = $z0;
+
+        return;
+    }
+
+    protected void setWindowSize(int, int)
+    {
+        de.mud.terminal.vt320 $r0;
+        int $i0, $i1;
+
+        $r0 := @this: de.mud.terminal.vt320;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        return;
+    }
+
+    public abstract void write(int);
+
+    public abstract void write(byte[]);
+}

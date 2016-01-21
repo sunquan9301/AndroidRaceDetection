@@ -1,0 +1,81 @@
+class org.connectbot.PubkeyListActivity$11$1 extends java.lang.Object implements android.content.DialogInterface$OnClickListener
+{
+    final org.connectbot.PubkeyListActivity$11 this$1;
+
+    void <init>(org.connectbot.PubkeyListActivity$11)
+    {
+        org.connectbot.PubkeyListActivity$11$1 $r0;
+        org.connectbot.PubkeyListActivity$11 $r1;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$11$1;
+
+        $r1 := @parameter0: org.connectbot.PubkeyListActivity$11;
+
+        $r0.<org.connectbot.PubkeyListActivity$11$1: org.connectbot.PubkeyListActivity$11 this$1> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.content.DialogInterface, int)
+    {
+        org.connectbot.PubkeyListActivity$11$1 $r0;
+        android.content.DialogInterface $r1;
+        int $i0;
+        org.connectbot.PubkeyListActivity$11 $r2;
+        java.lang.String $r3;
+        boolean $z0;
+        org.connectbot.PubkeyListActivity $r4;
+        org.connectbot.service.TerminalManager $r5;
+        org.connectbot.bean.PubkeyBean $r6;
+        org.connectbot.util.PubkeyDatabase $r7;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$11$1;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $i0 := @parameter1: int;
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity$11$1: org.connectbot.PubkeyListActivity$11 this$1>;
+
+        $z0 = $r2.<org.connectbot.PubkeyListActivity$11: boolean val$loaded>;
+
+        if $z0 == 0 goto label1;
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity$11$1: org.connectbot.PubkeyListActivity$11 this$1>;
+
+        $r4 = $r2.<org.connectbot.PubkeyListActivity$11: org.connectbot.PubkeyListActivity this$0>;
+
+        $r5 = $r4.<org.connectbot.PubkeyListActivity: org.connectbot.service.TerminalManager bound>;
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity$11$1: org.connectbot.PubkeyListActivity$11 this$1>;
+
+        $r6 = $r2.<org.connectbot.PubkeyListActivity$11: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $r3 = virtualinvoke $r6.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        virtualinvoke $r5.<org.connectbot.service.TerminalManager: boolean removeKey(java.lang.String)>($r3);
+
+     label1:
+        $r2 = $r0.<org.connectbot.PubkeyListActivity$11$1: org.connectbot.PubkeyListActivity$11 this$1>;
+
+        $r4 = $r2.<org.connectbot.PubkeyListActivity$11: org.connectbot.PubkeyListActivity this$0>;
+
+        $r7 = $r4.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity$11$1: org.connectbot.PubkeyListActivity$11 this$1>;
+
+        $r6 = $r2.<org.connectbot.PubkeyListActivity$11: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        virtualinvoke $r7.<org.connectbot.util.PubkeyDatabase: void deletePubkey(org.connectbot.bean.PubkeyBean)>($r6);
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity$11$1: org.connectbot.PubkeyListActivity$11 this$1>;
+
+        $r4 = $r2.<org.connectbot.PubkeyListActivity$11: org.connectbot.PubkeyListActivity this$0>;
+
+        virtualinvoke $r4.<org.connectbot.PubkeyListActivity: void updateList()>();
+
+        return;
+    }
+}

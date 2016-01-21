@@ -1,0 +1,37 @@
+class org.connectbot.HostListActivity$1 extends android.os.Handler
+{
+    final org.connectbot.HostListActivity this$0;
+
+    void <init>(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity$1 $r0;
+        org.connectbot.HostListActivity $r1;
+
+        $r0 := @this: org.connectbot.HostListActivity$1;
+
+        $r1 := @parameter0: org.connectbot.HostListActivity;
+
+        $r0.<org.connectbot.HostListActivity$1: org.connectbot.HostListActivity this$0> = $r1;
+
+        specialinvoke $r0.<android.os.Handler: void <init>()>();
+
+        return;
+    }
+
+    public void handleMessage(android.os.Message)
+    {
+        org.connectbot.HostListActivity$1 $r0;
+        android.os.Message $r1;
+        org.connectbot.HostListActivity $r2;
+
+        $r0 := @this: org.connectbot.HostListActivity$1;
+
+        $r1 := @parameter0: android.os.Message;
+
+        $r2 = $r0.<org.connectbot.HostListActivity$1: org.connectbot.HostListActivity this$0>;
+
+        virtualinvoke $r2.<org.connectbot.HostListActivity: void updateList()>();
+
+        return;
+    }
+}

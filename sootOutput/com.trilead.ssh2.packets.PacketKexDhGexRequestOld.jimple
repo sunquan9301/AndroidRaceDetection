@@ -1,0 +1,57 @@
+public class com.trilead.ssh2.packets.PacketKexDhGexRequestOld extends java.lang.Object
+{
+    int n;
+    byte[] payload;
+
+    public void <init>(com.trilead.ssh2.DHGexParameters)
+    {
+        com.trilead.ssh2.packets.PacketKexDhGexRequestOld $r0;
+        com.trilead.ssh2.DHGexParameters $r1;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketKexDhGexRequestOld;
+
+        $r1 := @parameter0: com.trilead.ssh2.DHGexParameters;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $i0 = virtualinvoke $r1.<com.trilead.ssh2.DHGexParameters: int getPref_group_len()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketKexDhGexRequestOld: int n> = $i0;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketKexDhGexRequestOld $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketKexDhGexRequestOld;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketKexDhGexRequestOld: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(30);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketKexDhGexRequestOld: int n>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketKexDhGexRequestOld: byte[] payload> = $r2;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketKexDhGexRequestOld: byte[] payload>;
+
+        return $r2;
+    }
+}

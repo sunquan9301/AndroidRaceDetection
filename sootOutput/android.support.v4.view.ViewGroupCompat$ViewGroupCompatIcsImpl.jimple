@@ -1,0 +1,14 @@
+class android.support.v4.view.ViewGroupCompat$ViewGroupCompatIcsImpl extends android.support.v4.view.ViewGroupCompat$ViewGroupCompatHCImpl
+{
+
+    void <init>()
+    {
+        android.support.v4.view.ViewGroupCompat$ViewGroupCompatIcsImpl $r0;
+
+        $r0 := @this: android.support.v4.view.ViewGroupCompat$ViewGroupCompatIcsImpl;
+
+        specialinvoke $r0.<android.support.v4.view.ViewGroupCompat$ViewGroupCompatHCImpl: void <init>()>();
+
+        return;
+    }
+}

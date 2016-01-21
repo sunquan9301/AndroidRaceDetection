@@ -1,0 +1,316 @@
+public class com.jcraft.jzlib.GZIPHeader extends java.lang.Object implements java.lang.Cloneable
+{
+    byte[] comment;
+    long crc;
+    boolean done;
+    byte[] extra;
+    private boolean fhcrc;
+    int hcrc;
+    long mtime;
+    byte[] name;
+    int os;
+    boolean text;
+    long time;
+    int xflags;
+
+    public void <init>()
+    {
+        com.jcraft.jzlib.GZIPHeader $r0;
+
+        $r0 := @this: com.jcraft.jzlib.GZIPHeader;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: boolean text> = 0;
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: boolean fhcrc> = 0;
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: int os> = 255;
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: boolean done> = 0;
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: long mtime> = 0L;
+
+        return;
+    }
+
+    public java.lang.Object clone() throws java.lang.CloneNotSupportedException
+    {
+        com.jcraft.jzlib.GZIPHeader $r0;
+        byte[] $r1, $r3;
+        int $i0;
+        java.lang.Object $r2;
+
+        $r0 := @this: com.jcraft.jzlib.GZIPHeader;
+
+        $r2 = specialinvoke $r0.<java.lang.Object: java.lang.Object clone()>();
+
+        $r0 = (com.jcraft.jzlib.GZIPHeader) $r2;
+
+        $r1 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        $i0 = lengthof $r1;
+
+        $r1 = newarray (byte)[$i0];
+
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        $i0 = lengthof $r1;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, 0, $r1, 0, $i0);
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra> = $r1;
+
+     label1:
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] name>;
+
+        if $r3 == null goto label2;
+
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] name>;
+
+        $i0 = lengthof $r3;
+
+        $r3 = newarray (byte)[$i0];
+
+        $r1 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] name>;
+
+        $i0 = lengthof $r3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r3, 0, $i0);
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: byte[] name> = $r3;
+
+     label2:
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] comment>;
+
+        if $r3 == null goto label3;
+
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] comment>;
+
+        $i0 = lengthof $r3;
+
+        $r3 = newarray (byte)[$i0];
+
+        $r1 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] comment>;
+
+        $i0 = lengthof $r3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r3, 0, $i0);
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: byte[] comment> = $r3;
+
+        return $r0;
+
+     label3:
+        return $r0;
+    }
+
+    void put(com.jcraft.jzlib.Deflate)
+    {
+        com.jcraft.jzlib.GZIPHeader $r0;
+        com.jcraft.jzlib.Deflate $r1;
+        byte $b0, $b1;
+        boolean $z0;
+        byte[] $r2, $r3;
+        int $i2;
+        long $l3;
+
+        $r0 := @this: com.jcraft.jzlib.GZIPHeader;
+
+        $r1 := @parameter0: com.jcraft.jzlib.Deflate;
+
+        $b0 = 0;
+
+        $z0 = $r0.<com.jcraft.jzlib.GZIPHeader: boolean text>;
+
+        if $z0 == 0 goto label01;
+
+        $b0 = 0 | 1;
+
+     label01:
+        $z0 = $r0.<com.jcraft.jzlib.GZIPHeader: boolean fhcrc>;
+
+        if $z0 == 0 goto label02;
+
+        $b0 = $b0 | 2;
+
+     label02:
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        if $r2 == null goto label03;
+
+        $b0 = $b0 | 4;
+
+     label03:
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] name>;
+
+        if $r2 == null goto label04;
+
+        $b0 = $b0 | 8;
+
+     label04:
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] comment>;
+
+        if $r2 == null goto label05;
+
+        $b0 = $b0 | 16;
+
+     label05:
+        $b1 = 0;
+
+        $i2 = $r1.<com.jcraft.jzlib.Deflate: int level>;
+
+        if $i2 != 1 goto label09;
+
+        $b1 = 0 | 4;
+
+     label06:
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_short(int)>(-29921);
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>(8);
+
+        $b0 = (byte) $b0;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b0);
+
+        $l3 = $r0.<com.jcraft.jzlib.GZIPHeader: long mtime>;
+
+        $i2 = (int) $l3;
+
+        $b0 = (byte) $i2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b0);
+
+        $l3 = $r0.<com.jcraft.jzlib.GZIPHeader: long mtime>;
+
+        $l3 = $l3 >> 8;
+
+        $i2 = (int) $l3;
+
+        $b0 = (byte) $i2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b0);
+
+        $l3 = $r0.<com.jcraft.jzlib.GZIPHeader: long mtime>;
+
+        $l3 = $l3 >> 16;
+
+        $i2 = (int) $l3;
+
+        $b0 = (byte) $i2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b0);
+
+        $l3 = $r0.<com.jcraft.jzlib.GZIPHeader: long mtime>;
+
+        $l3 = $l3 >> 24;
+
+        $i2 = (int) $l3;
+
+        $b0 = (byte) $i2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b0);
+
+        $b1 = (byte) $b1;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b1);
+
+        $i2 = $r0.<com.jcraft.jzlib.GZIPHeader: int os>;
+
+        $b1 = (byte) $i2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b1);
+
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        if $r2 == null goto label07;
+
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        $i2 = lengthof $r2;
+
+        $b1 = (byte) $i2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b1);
+
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        $i2 = lengthof $r2;
+
+        $i2 = $i2 >> 8;
+
+        $b1 = (byte) $i2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b1);
+
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        $i2 = lengthof $r3;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte[],int,int)>($r2, 0, $i2);
+
+     label07:
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] name>;
+
+        if $r3 == null goto label08;
+
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] name>;
+
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] name>;
+
+        $i2 = lengthof $r2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte[],int,int)>($r3, 0, $i2);
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>(0);
+
+     label08:
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] comment>;
+
+        if $r3 == null goto label10;
+
+        $r3 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] comment>;
+
+        $r2 = $r0.<com.jcraft.jzlib.GZIPHeader: byte[] comment>;
+
+        $i2 = lengthof $r2;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte[],int,int)>($r3, 0, $i2);
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Deflate: void put_byte(byte)>(0);
+
+        return;
+
+     label09:
+        $i2 = $r1.<com.jcraft.jzlib.Deflate: int level>;
+
+        if $i2 != 9 goto label06;
+
+        $b1 = 0 | 2;
+
+        goto label06;
+
+     label10:
+        return;
+    }
+
+    public void setCRC(long)
+    {
+        com.jcraft.jzlib.GZIPHeader $r0;
+        long $l0;
+
+        $r0 := @this: com.jcraft.jzlib.GZIPHeader;
+
+        $l0 := @parameter0: long;
+
+        $r0.<com.jcraft.jzlib.GZIPHeader: long crc> = $l0;
+
+        return;
+    }
+}

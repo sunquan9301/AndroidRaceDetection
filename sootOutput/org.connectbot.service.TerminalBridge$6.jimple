@@ -1,0 +1,82 @@
+class org.connectbot.service.TerminalBridge$6 extends java.lang.Object implements java.lang.Runnable
+{
+    final org.connectbot.service.TerminalBridge this$0;
+
+    void <init>(org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.service.TerminalBridge$6 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$6;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r0.<org.connectbot.service.TerminalBridge$6: org.connectbot.service.TerminalBridge this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.service.TerminalBridge$6 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+        java.lang.String $r2;
+        org.connectbot.service.PromptHelper $r3;
+        org.connectbot.service.TerminalManager $r4;
+        android.content.res.Resources $r5;
+        java.lang.Boolean $r6;
+        boolean $z0;
+        org.connectbot.service.BridgeDisconnectedListener $r7;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$6;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$6: org.connectbot.service.TerminalBridge this$0>;
+
+        $r3 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.service.PromptHelper promptHelper>;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$6: org.connectbot.service.TerminalBridge this$0>;
+
+        $r4 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $r5 = $r4.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r2 = virtualinvoke $r5.<android.content.res.Resources: java.lang.String getString(int)>(2131165362);
+
+        $r6 = virtualinvoke $r3.<org.connectbot.service.PromptHelper: java.lang.Boolean requestBooleanPrompt(java.lang.String,java.lang.String)>(null, $r2);
+
+        if $r6 == null goto label1;
+
+        $z0 = virtualinvoke $r6.<java.lang.Boolean: boolean booleanValue()>();
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$6: org.connectbot.service.TerminalBridge this$0>;
+
+        staticinvoke <org.connectbot.service.TerminalBridge: boolean access$102(org.connectbot.service.TerminalBridge,boolean)>($r1, 1);
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$6: org.connectbot.service.TerminalBridge this$0>;
+
+        $r7 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.service.BridgeDisconnectedListener disconnectListener>;
+
+        if $r7 == null goto label3;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$6: org.connectbot.service.TerminalBridge this$0>;
+
+        $r7 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.service.BridgeDisconnectedListener disconnectListener>;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$6: org.connectbot.service.TerminalBridge this$0>;
+
+        interfaceinvoke $r7.<org.connectbot.service.BridgeDisconnectedListener: void onDisconnected(org.connectbot.service.TerminalBridge)>($r1);
+
+        return;
+
+     label2:
+        return;
+
+     label3:
+        return;
+    }
+}

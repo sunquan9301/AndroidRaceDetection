@@ -1,0 +1,209 @@
+public abstract class org.connectbot.transport.AbsTransport extends java.lang.Object
+{
+    org.connectbot.service.TerminalBridge bridge;
+    java.lang.String emulation;
+    org.connectbot.bean.HostBean host;
+    org.connectbot.service.TerminalManager manager;
+
+    public void <init>()
+    {
+        org.connectbot.transport.AbsTransport $r0;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.String getFormatHint(android.content.Context)
+    {
+        android.content.Context $r0;
+
+        $r0 := @parameter0: android.content.Context;
+
+        return "???";
+    }
+
+    public boolean addPortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        return 0;
+    }
+
+    public boolean canForwardPorts()
+    {
+        org.connectbot.transport.AbsTransport $r0;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        return 0;
+    }
+
+    public abstract void close();
+
+    public abstract void connect();
+
+    public abstract org.connectbot.bean.HostBean createHost(android.net.Uri);
+
+    public boolean disablePortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        return 0;
+    }
+
+    public boolean enablePortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        return 0;
+    }
+
+    public abstract void flush() throws java.io.IOException;
+
+    public java.lang.String getEmulation()
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 = $r0.<org.connectbot.transport.AbsTransport: java.lang.String emulation>;
+
+        return $r1;
+    }
+
+    public java.util.List getPortForwards()
+    {
+        org.connectbot.transport.AbsTransport $r0;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        return null;
+    }
+
+    public abstract void getSelectionArgs(android.net.Uri, java.util.Map);
+
+    public abstract boolean isConnected();
+
+    public abstract boolean isSessionOpen();
+
+    public abstract int read(byte[], int, int) throws java.io.IOException;
+
+    public boolean removePortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        return 0;
+    }
+
+    public void setBridge(org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        org.connectbot.service.TerminalBridge $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r0.<org.connectbot.transport.AbsTransport: org.connectbot.service.TerminalBridge bridge> = $r1;
+
+        return;
+    }
+
+    public void setCompression(boolean)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $z0 := @parameter0: boolean;
+
+        return;
+    }
+
+    public abstract void setDimensions(int, int, int, int);
+
+    public void setEmulation(java.lang.String)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.transport.AbsTransport: java.lang.String emulation> = $r1;
+
+        return;
+    }
+
+    public void setHost(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        org.connectbot.bean.HostBean $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $r0.<org.connectbot.transport.AbsTransport: org.connectbot.bean.HostBean host> = $r1;
+
+        return;
+    }
+
+    public void setManager(org.connectbot.service.TerminalManager)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        org.connectbot.service.TerminalManager $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager;
+
+        $r0.<org.connectbot.transport.AbsTransport: org.connectbot.service.TerminalManager manager> = $r1;
+
+        return;
+    }
+
+    public void setUseAuthAgent(java.lang.String)
+    {
+        org.connectbot.transport.AbsTransport $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.transport.AbsTransport;
+
+        $r1 := @parameter0: java.lang.String;
+
+        return;
+    }
+
+    public abstract boolean usesNetwork();
+
+    public abstract void write(int) throws java.io.IOException;
+
+    public abstract void write(byte[]) throws java.io.IOException;
+}

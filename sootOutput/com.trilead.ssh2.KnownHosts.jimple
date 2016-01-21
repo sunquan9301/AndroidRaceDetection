@@ -1,0 +1,1079 @@
+public class com.trilead.ssh2.KnownHosts extends java.lang.Object
+{
+    private java.util.LinkedList publicKeys;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.KnownHosts $r0;
+        java.util.LinkedList $r1;
+
+        $r0 := @this: com.trilead.ssh2.KnownHosts;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r1 = new java.util.LinkedList;
+
+        specialinvoke $r1.<java.util.LinkedList: void <init>()>();
+
+        $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys> = $r1;
+
+        return;
+    }
+
+    private final boolean checkHashed(java.lang.String, java.lang.String)
+    {
+        com.trilead.ssh2.KnownHosts $r0;
+        java.lang.String $r1, $r2, $r4;
+        java.io.IOException $r3;
+        int $i0, $i1;
+        boolean $z0;
+        char[] $r5;
+        byte[] $r6, $r7;
+        java.security.MessageDigest $r8;
+        byte $b2, $b3;
+        java.security.NoSuchAlgorithmException $r9;
+        java.lang.RuntimeException $r10;
+
+        $r0 := @this: com.trilead.ssh2.KnownHosts;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean startsWith(java.lang.String)>("|1|");
+
+        if $z0 != 0 goto label01;
+
+        return 0;
+
+     label01:
+        $i0 = virtualinvoke $r1.<java.lang.String: int indexOf(int,int)>(124, 3);
+
+        if $i0 == -1 goto label09;
+
+        $r4 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int,int)>(3, $i0);
+
+        $i0 = $i0 + 1;
+
+        $r1 = virtualinvoke $r1.<java.lang.String: java.lang.String substring(int)>($i0);
+
+     label02:
+        $r5 = virtualinvoke $r4.<java.lang.String: char[] toCharArray()>();
+
+        $r6 = staticinvoke <com.trilead.ssh2.crypto.Base64: byte[] decode(char[])>($r5);
+
+        $r5 = virtualinvoke $r1.<java.lang.String: char[] toCharArray()>();
+
+        $r7 = staticinvoke <com.trilead.ssh2.crypto.Base64: byte[] decode(char[])>($r5);
+
+     label03:
+        $r8 = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>("SHA1");
+
+        $i0 = lengthof $r6;
+
+        $i1 = virtualinvoke $r8.<java.security.MessageDigest: int getDigestLength()>();
+
+     label04:
+        if $i0 != $i1 goto label10;
+
+        $r6 = staticinvoke <com.trilead.ssh2.KnownHosts: byte[] hmacSha1Hash(byte[],java.lang.String)>($r6, $r2);
+
+        $i0 = 0;
+
+     label05:
+        $i1 = lengthof $r6;
+
+        if $i0 >= $i1 goto label08;
+
+        $b2 = $r6[$i0];
+
+        $b3 = $r7[$i0];
+
+        if $b2 != $b3 goto label11;
+
+        $i0 = $i0 + 1;
+
+        goto label05;
+
+     label06:
+        $r3 := @caughtexception;
+
+        return 0;
+
+     label07:
+        $r9 := @caughtexception;
+
+        $r10 = new java.lang.RuntimeException;
+
+        specialinvoke $r10.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("VM does not support SHA1", $r9);
+
+        throw $r10;
+
+     label08:
+        return 1;
+
+     label09:
+        return 0;
+
+     label10:
+        return 0;
+
+     label11:
+        return 0;
+
+        catch java.io.IOException from label02 to label03 with label06;
+        catch java.security.NoSuchAlgorithmException from label03 to label04 with label07;
+    }
+
+    private int checkKey(java.lang.String, java.security.PublicKey)
+    {
+        com.trilead.ssh2.KnownHosts $r0;
+        java.lang.String $r1;
+        java.security.PublicKey $r2, $r9;
+        byte $b0;
+        java.util.LinkedList $r3, $r4;
+        java.util.Iterator $r5;
+        boolean $z0;
+        java.lang.Object $r6;
+        com.trilead.ssh2.KnownHosts$KnownHostsEntry $r7;
+        java.lang.String[] $r8;
+        java.lang.Throwable $r10;
+
+        $r0 := @this: com.trilead.ssh2.KnownHosts;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.security.PublicKey;
+
+        $b0 = 1;
+
+        $r4 = $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys>;
+
+        entermonitor $r4;
+
+     label1:
+        $r3 = $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys>;
+
+        $r5 = virtualinvoke $r3.<java.util.LinkedList: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (com.trilead.ssh2.KnownHosts$KnownHostsEntry) $r6;
+
+        $r8 = $r7.<com.trilead.ssh2.KnownHosts$KnownHostsEntry: java.lang.String[] patterns>;
+
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.KnownHosts: boolean hostnameMatches(java.lang.String[],java.lang.String)>($r8, $r1);
+
+        if $z0 == 0 goto label2;
+
+        $r9 = $r7.<com.trilead.ssh2.KnownHosts$KnownHostsEntry: java.security.PublicKey key>;
+
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.KnownHosts: boolean matchKeys(java.security.PublicKey,java.security.PublicKey)>($r9, $r2);
+
+        if $z0 != 1 goto label4;
+
+        exitmonitor $r4;
+
+     label3:
+        return 0;
+
+     label4:
+        $b0 = 2;
+
+     label5:
+        goto label2;
+
+     label6:
+        exitmonitor $r4;
+
+     label7:
+        return $b0;
+
+     label8:
+        $r10 := @caughtexception;
+
+        exitmonitor $r4;
+
+     label9:
+        throw $r10;
+
+        catch java.lang.Throwable from label1 to label3 with label8;
+        catch java.lang.Throwable from label5 to label7 with label8;
+        catch java.lang.Throwable from label8 to label9 with label8;
+    }
+
+    public static final java.lang.String createHexFingerprint(java.lang.String, byte[])
+    {
+        java.lang.String $r0;
+        byte[] $r1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: byte[];
+
+        $r1 = staticinvoke <com.trilead.ssh2.KnownHosts: byte[] rawFingerPrint(java.lang.String,java.lang.String,byte[])>("md5", $r0, $r1);
+
+        $r0 = staticinvoke <com.trilead.ssh2.KnownHosts: java.lang.String rawToHexFingerprint(byte[])>($r1);
+
+        return $r0;
+    }
+
+    private static final byte[] hmacSha1Hash(byte[], java.lang.String)
+    {
+        byte[] $r0;
+        java.lang.String $r1;
+        java.security.NoSuchAlgorithmException $r2;
+        java.io.UnsupportedEncodingException $r3;
+        javax.crypto.Mac $r4;
+        int $i0, $i1;
+        java.lang.IllegalArgumentException $r5;
+        java.lang.StringBuilder $r6;
+        java.lang.RuntimeException $r7;
+        javax.crypto.spec.SecretKeySpec $r8;
+        java.security.InvalidKeyException $r9;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: java.lang.String;
+
+     label01:
+        $r4 = staticinvoke <javax.crypto.Mac: javax.crypto.Mac getInstance(java.lang.String)>("HmacSHA1");
+
+        $i0 = lengthof $r0;
+
+        $i1 = virtualinvoke $r4.<javax.crypto.Mac: int getMacLength()>();
+
+     label02:
+        if $i0 == $i1 goto label06;
+
+        $r5 = new java.lang.IllegalArgumentException;
+
+     label03:
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Salt has wrong length (");
+
+        $i1 = lengthof $r0;
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r1 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r1);
+
+     label04:
+        throw $r5;
+
+     label05:
+        $r2 := @caughtexception;
+
+        $r7 = new java.lang.RuntimeException;
+
+        specialinvoke $r7.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("Unable to HMAC-SHA1", $r2);
+
+        throw $r7;
+
+     label06:
+        $r8 = new javax.crypto.spec.SecretKeySpec;
+
+     label07:
+        specialinvoke $r8.<javax.crypto.spec.SecretKeySpec: void <init>(byte[],java.lang.String)>($r0, "HmacSHA1");
+
+        virtualinvoke $r4.<javax.crypto.Mac: void init(java.security.Key)>($r8);
+
+     label08:
+        $r0 = virtualinvoke $r1.<java.lang.String: byte[] getBytes(java.lang.String)>("ISO-8859-1");
+
+        virtualinvoke $r4.<javax.crypto.Mac: void update(byte[])>($r0);
+
+     label09:
+        $r0 = virtualinvoke $r4.<javax.crypto.Mac: byte[] doFinal()>();
+
+        return $r0;
+
+     label10:
+        $r9 := @caughtexception;
+
+        $r7 = new java.lang.RuntimeException;
+
+        specialinvoke $r7.<java.lang.RuntimeException: void <init>(java.lang.String,java.lang.Throwable)>("Unable to create SecretKey", $r9);
+
+        throw $r7;
+
+     label11:
+        $r3 := @caughtexception;
+
+        $r0 = virtualinvoke $r1.<java.lang.String: byte[] getBytes()>();
+
+        virtualinvoke $r4.<javax.crypto.Mac: void update(byte[])>($r0);
+
+        goto label09;
+
+        catch java.security.NoSuchAlgorithmException from label01 to label02 with label05;
+        catch java.security.NoSuchAlgorithmException from label03 to label04 with label05;
+        catch java.security.InvalidKeyException from label01 to label02 with label10;
+        catch java.security.InvalidKeyException from label03 to label04 with label10;
+        catch java.security.NoSuchAlgorithmException from label07 to label08 with label05;
+        catch java.security.InvalidKeyException from label07 to label08 with label10;
+        catch java.io.UnsupportedEncodingException from label08 to label09 with label11;
+    }
+
+    private final boolean hostnameMatches(java.lang.String[], java.lang.String)
+    {
+        com.trilead.ssh2.KnownHosts $r0;
+        java.lang.String[] $r1;
+        java.lang.String $r2, $r4;
+        boolean $z0, $z1, $z2;
+        int $i0, $i1;
+        java.util.Locale $r3;
+        char $c2;
+        char[] $r5, $r6;
+
+        $r0 := @this: com.trilead.ssh2.KnownHosts;
+
+        $r1 := @parameter0: java.lang.String[];
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 = 0;
+
+        $r3 = <java.util.Locale: java.util.Locale US>;
+
+        $r4 = virtualinvoke $r2.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($r3);
+
+        $i0 = 0;
+
+     label01:
+        $i1 = lengthof $r1;
+
+        if $i0 >= $i1 goto label13;
+
+        $r2 = $r1[$i0];
+
+        if $r2 != null goto label03;
+
+     label02:
+        $i0 = $i0 + 1;
+
+        goto label01;
+
+     label03:
+        $r2 = $r1[$i0];
+
+        $i1 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i1 <= 0 goto label06;
+
+        $r2 = $r1[$i0];
+
+        $c2 = virtualinvoke $r2.<java.lang.String: char charAt(int)>(0);
+
+        if $c2 != 33 goto label06;
+
+        $r2 = $r1[$i0];
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int)>(1);
+
+        $z1 = 1;
+
+     label04:
+        if $z0 == 0 goto label05;
+
+        if $z1 == 0 goto label02;
+
+     label05:
+        $c2 = virtualinvoke $r2.<java.lang.String: char charAt(int)>(0);
+
+        if $c2 != 124 goto label08;
+
+        $z2 = specialinvoke $r0.<com.trilead.ssh2.KnownHosts: boolean checkHashed(java.lang.String,java.lang.String)>($r2, $r4);
+
+        if $z2 == 0 goto label02;
+
+        if $z1 == 0 goto label07;
+
+        return 0;
+
+     label06:
+        $r2 = $r1[$i0];
+
+        $z1 = 0;
+
+        goto label04;
+
+     label07:
+        $z0 = 1;
+
+        goto label02;
+
+     label08:
+        $r3 = <java.util.Locale: java.util.Locale US>;
+
+        $r2 = virtualinvoke $r2.<java.lang.String: java.lang.String toLowerCase(java.util.Locale)>($r3);
+
+        $i1 = virtualinvoke $r2.<java.lang.String: int indexOf(int)>(63);
+
+        if $i1 != -1 goto label09;
+
+        $i1 = virtualinvoke $r2.<java.lang.String: int indexOf(int)>(42);
+
+        if $i1 == -1 goto label11;
+
+     label09:
+        $r5 = virtualinvoke $r2.<java.lang.String: char[] toCharArray()>();
+
+        $r6 = virtualinvoke $r4.<java.lang.String: char[] toCharArray()>();
+
+        $z2 = specialinvoke $r0.<com.trilead.ssh2.KnownHosts: boolean pseudoRegex(char[],int,char[],int)>($r5, 0, $r6, 0);
+
+        if $z2 == 0 goto label02;
+
+        if $z1 == 0 goto label10;
+
+        return 0;
+
+     label10:
+        $z0 = 1;
+
+        goto label02;
+
+     label11:
+        $i1 = virtualinvoke $r2.<java.lang.String: int compareTo(java.lang.String)>($r4);
+
+        if $i1 != 0 goto label02;
+
+        if $z1 == 0 goto label12;
+
+        return 0;
+
+     label12:
+        $z0 = 1;
+
+        goto label02;
+
+     label13:
+        return $z0;
+    }
+
+    private final boolean matchKeys(java.security.PublicKey, java.security.PublicKey)
+    {
+        com.trilead.ssh2.KnownHosts $r0;
+        java.security.PublicKey $r1, $r2;
+        boolean $z0;
+
+        $r0 := @this: com.trilead.ssh2.KnownHosts;
+
+        $r1 := @parameter0: java.security.PublicKey;
+
+        $r2 := @parameter1: java.security.PublicKey;
+
+        $z0 = virtualinvoke $r1.<java.lang.Object: boolean equals(java.lang.Object)>($r2);
+
+        return $z0;
+    }
+
+    private final boolean pseudoRegex(char[], int, char[], int)
+    {
+        com.trilead.ssh2.KnownHosts $r0;
+        char[] $r1, $r2;
+        int $i0, $i1, $i2, $i5;
+        char $c3, $c4;
+        boolean $z0;
+
+        $r0 := @this: com.trilead.ssh2.KnownHosts;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: char[];
+
+        $i1 := @parameter3: int;
+
+     label01:
+        $i2 = lengthof $r1;
+
+        if $i2 != $i0 goto label03;
+
+        $i2 = lengthof $r2;
+
+        if $i2 != $i1 goto label02;
+
+        return 1;
+
+     label02:
+        return 0;
+
+     label03:
+        $c3 = $r1[$i0];
+
+        if $c3 != 42 goto label07;
+
+        $i2 = $i0 + 1;
+
+        $i0 = lengthof $r1;
+
+        if $i0 == $i2 goto label10;
+
+        $c3 = $r1[$i2];
+
+        if $c3 == 42 goto label06;
+
+        $c3 = $r1[$i2];
+
+        if $c3 == 63 goto label06;
+
+     label04:
+        $c4 = $r1[$i2];
+
+        $c3 = $r2[$i1];
+
+        if $c4 != $c3 goto label05;
+
+        $i0 = $i2 + 1;
+
+        $i5 = $i1 + 1;
+
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.KnownHosts: boolean pseudoRegex(char[],int,char[],int)>($r1, $i0, $r2, $i5);
+
+        if $z0 != 0 goto label11;
+
+     label05:
+        $i1 = $i1 + 1;
+
+        $i5 = lengthof $r2;
+
+        if $i5 != $i1 goto label04;
+
+        return 0;
+
+     label06:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.KnownHosts: boolean pseudoRegex(char[],int,char[],int)>($r1, $i2, $r2, $i1);
+
+        if $z0 != 0 goto label12;
+
+        $i1 = $i1 + 1;
+
+        $i5 = lengthof $r2;
+
+        if $i5 != $i1 goto label06;
+
+        return 0;
+
+     label07:
+        $i5 = lengthof $r2;
+
+        if $i5 != $i1 goto label08;
+
+        return 0;
+
+     label08:
+        $c4 = $r1[$i0];
+
+        if $c4 == 63 goto label09;
+
+        $c4 = $r1[$i0];
+
+        $c3 = $r2[$i1];
+
+        if $c4 == $c3 goto label09;
+
+        return 0;
+
+     label09:
+        $i0 = $i0 + 1;
+
+        $i1 = $i1 + 1;
+
+        goto label01;
+
+     label10:
+        return 1;
+
+     label11:
+        return 1;
+
+     label12:
+        return 1;
+    }
+
+    private static final byte[] rawFingerPrint(java.lang.String, java.lang.String, byte[])
+    {
+        java.lang.String $r0, $r1, $r5;
+        byte[] $r2;
+        java.security.MessageDigest $r3;
+        java.security.NoSuchAlgorithmException $r4;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r6;
+        java.lang.StringBuilder $r7;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: byte[];
+
+        $r5 = "md5";
+
+     label01:
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label04;
+
+        $r3 = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>("MD5");
+
+     label02:
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean startsWith(java.lang.String)>("ecdsa-sha2-");
+
+        if $z0 == 0 goto label11;
+
+     label03:
+        if $r2 != null goto label12;
+
+        $r6 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("hostkey is null");
+
+        throw $r6;
+
+     label04:
+        $r5 = "sha1";
+
+     label05:
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label07;
+
+        $r3 = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>("SHA1");
+
+     label06:
+        goto label02;
+
+     label07:
+        $r6 = new java.lang.IllegalArgumentException;
+
+     label08:
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown hash type ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        $r5 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r5);
+
+     label09:
+        throw $r6;
+
+     label10:
+        $r4 := @caughtexception;
+
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown hash type ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        $r5 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r5);
+
+        throw $r6;
+
+     label11:
+        $r5 = "ssh-rsa";
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label03;
+
+        $r5 = "ssh-dss";
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label03;
+
+        $r6 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown key type ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r5 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r5);
+
+        throw $r6;
+
+     label12:
+        virtualinvoke $r3.<java.security.MessageDigest: void update(byte[])>($r2);
+
+        $r2 = virtualinvoke $r3.<java.security.MessageDigest: byte[] digest()>();
+
+        return $r2;
+
+        catch java.security.NoSuchAlgorithmException from label01 to label02 with label10;
+        catch java.security.NoSuchAlgorithmException from label05 to label06 with label10;
+        catch java.security.NoSuchAlgorithmException from label08 to label09 with label10;
+    }
+
+    private static final java.lang.String rawToHexFingerprint(byte[])
+    {
+        byte[] $r0;
+        short $s0, $s4;
+        int $i1, $i2;
+        java.lang.StringBuffer $r1;
+        java.lang.String $r2;
+        char[] $r3;
+        byte $b3;
+        char $c5;
+
+        $r0 := @parameter0: byte[];
+
+        $r2 = "0123456789abcdef";
+
+        $r3 = virtualinvoke $r2.<java.lang.String: char[] toCharArray()>();
+
+        $r1 = new java.lang.StringBuffer;
+
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+
+        $i1 = 0;
+
+     label1:
+        $i2 = lengthof $r0;
+
+        if $i1 >= $i2 goto label3;
+
+        if $i1 == 0 goto label2;
+
+        virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(58);
+
+     label2:
+        $b3 = $r0[$i1];
+
+        $s0 = $b3 & 255;
+
+        $s4 = $s0 >> 4;
+
+        $c5 = $r3[$s4];
+
+        virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c5);
+
+        $s4 = $s0 & 15;
+
+        $c5 = $r3[$s4];
+
+        virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>($c5);
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        $r2 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        return $r2;
+    }
+
+    public void addHostkey(java.lang.String[], java.lang.String, byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.KnownHosts $r0;
+        java.lang.String[] $r1;
+        java.lang.String $r2, $r6;
+        byte[] $r3;
+        java.lang.IllegalArgumentException $r4;
+        com.trilead.ssh2.KnownHosts$KnownHostsEntry $r5;
+        boolean $z0;
+        java.security.interfaces.RSAPublicKey $r7;
+        java.util.LinkedList $r8, $r9;
+        java.lang.Throwable $r10, $r12, $r14;
+        java.security.interfaces.DSAPublicKey $r11;
+        java.security.interfaces.ECPublicKey $r13;
+        java.io.IOException $r15;
+        java.lang.StringBuilder $r16;
+
+        $r0 := @this: com.trilead.ssh2.KnownHosts;
+
+        $r1 := @parameter0: java.lang.String[];
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: byte[];
+
+        if $r1 != null goto label01;
+
+        $r4 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("hostnames may not be null");
+
+        throw $r4;
+
+     label01:
+        $r6 = "ssh-rsa";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label06;
+
+        $r7 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: java.security.interfaces.RSAPublicKey decodeSSHRSAPublicKey(byte[])>($r3);
+
+        $r8 = $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys>;
+
+        entermonitor $r8;
+
+     label02:
+        $r9 = $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys>;
+
+        $r5 = new com.trilead.ssh2.KnownHosts$KnownHostsEntry;
+
+        specialinvoke $r5.<com.trilead.ssh2.KnownHosts$KnownHostsEntry: void <init>(com.trilead.ssh2.KnownHosts,java.lang.String[],java.security.PublicKey)>($r0, $r1, $r7);
+
+        virtualinvoke $r9.<java.util.LinkedList: boolean add(java.lang.Object)>($r5);
+
+        exitmonitor $r8;
+
+     label03:
+        return;
+
+     label04:
+        $r10 := @caughtexception;
+
+        exitmonitor $r8;
+
+     label05:
+        throw $r10;
+
+     label06:
+        $r6 = "ssh-dss";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label11;
+
+        $r11 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: java.security.interfaces.DSAPublicKey decodeSSHDSAPublicKey(byte[])>($r3);
+
+        $r9 = $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys>;
+
+        entermonitor $r9;
+
+     label07:
+        $r8 = $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys>;
+
+        $r5 = new com.trilead.ssh2.KnownHosts$KnownHostsEntry;
+
+        specialinvoke $r5.<com.trilead.ssh2.KnownHosts$KnownHostsEntry: void <init>(com.trilead.ssh2.KnownHosts,java.lang.String[],java.security.PublicKey)>($r0, $r1, $r11);
+
+        virtualinvoke $r8.<java.util.LinkedList: boolean add(java.lang.Object)>($r5);
+
+        exitmonitor $r9;
+
+     label08:
+        return;
+
+     label09:
+        $r12 := @caughtexception;
+
+        exitmonitor $r9;
+
+     label10:
+        throw $r12;
+
+     label11:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("ecdsa-sha2-");
+
+        if $z0 == 0 goto label16;
+
+        $r13 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.security.interfaces.ECPublicKey decodeSSHECDSAPublicKey(byte[])>($r3);
+
+        $r9 = $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys>;
+
+        entermonitor $r9;
+
+     label12:
+        $r8 = $r0.<com.trilead.ssh2.KnownHosts: java.util.LinkedList publicKeys>;
+
+        $r5 = new com.trilead.ssh2.KnownHosts$KnownHostsEntry;
+
+        specialinvoke $r5.<com.trilead.ssh2.KnownHosts$KnownHostsEntry: void <init>(com.trilead.ssh2.KnownHosts,java.lang.String[],java.security.PublicKey)>($r0, $r1, $r13);
+
+        virtualinvoke $r8.<java.util.LinkedList: boolean add(java.lang.Object)>($r5);
+
+        exitmonitor $r9;
+
+     label13:
+        return;
+
+     label14:
+        $r14 := @caughtexception;
+
+        exitmonitor $r9;
+
+     label15:
+        throw $r14;
+
+     label16:
+        $r15 = new java.io.IOException;
+
+        $r16 = new java.lang.StringBuilder;
+
+        specialinvoke $r16.<java.lang.StringBuilder: void <init>()>();
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknwon host key type (");
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r16 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r15.<java.io.IOException: void <init>(java.lang.String)>($r6);
+
+        throw $r15;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label04 to label05 with label04;
+        catch java.lang.Throwable from label07 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+        catch java.lang.Throwable from label12 to label13 with label14;
+        catch java.lang.Throwable from label14 to label15 with label14;
+    }
+
+    public int verifyHostkey(java.lang.String, java.lang.String, byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.KnownHosts $r0;
+        java.lang.String $r1, $r2, $r6;
+        byte[] $r3;
+        java.net.UnknownHostException $r4;
+        int $i0, $i1, $i2;
+        java.security.PublicKey $r5;
+        java.lang.StringBuilder $r7;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r11;
+        java.net.InetAddress[] $r12;
+        java.net.InetAddress $r13;
+
+        $r0 := @this: com.trilead.ssh2.KnownHosts;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: byte[];
+
+        $r6 = "ssh-rsa";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label02;
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: java.security.interfaces.RSAPublicKey decodeSSHRSAPublicKey(byte[])>($r3);
+
+     label01:
+        $i0 = specialinvoke $r0.<com.trilead.ssh2.KnownHosts: int checkKey(java.lang.String,java.security.PublicKey)>($r1, $r5);
+
+        $i1 = $i0;
+
+        if $i0 != 0 goto label05;
+
+        return $i0;
+
+     label02:
+        $r6 = "ssh-dss";
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label03;
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: java.security.interfaces.DSAPublicKey decodeSSHDSAPublicKey(byte[])>($r3);
+
+        goto label01;
+
+     label03:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("ecdsa-sha2-");
+
+        if $z0 == 0 goto label04;
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.security.interfaces.ECPublicKey decodeSSHECDSAPublicKey(byte[])>($r3);
+
+        goto label01;
+
+     label04:
+        $r11 = new java.lang.IllegalArgumentException;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown hostkey type ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r11.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r6);
+
+        throw $r11;
+
+     label05:
+        $r12 = staticinvoke <java.net.InetAddress: java.net.InetAddress[] getAllByName(java.lang.String)>($r1);
+
+     label06:
+        $i0 = 0;
+
+     label07:
+        $i2 = lengthof $r12;
+
+        if $i0 >= $i2 goto label10;
+
+        $r13 = $r12[$i0];
+
+        $r6 = virtualinvoke $r13.<java.net.InetAddress: java.lang.String getHostAddress()>();
+
+        $i2 = specialinvoke $r0.<com.trilead.ssh2.KnownHosts: int checkKey(java.lang.String,java.security.PublicKey)>($r6, $r5);
+
+        if $i2 == 0 goto label11;
+
+        if $i2 != 2 goto label08;
+
+        $i1 = 2;
+
+     label08:
+        $i0 = $i0 + 1;
+
+        goto label07;
+
+     label09:
+        $r4 := @caughtexception;
+
+        return $i0;
+
+     label10:
+        return $i1;
+
+     label11:
+        return $i2;
+
+        catch java.net.UnknownHostException from label05 to label06 with label09;
+    }
+}

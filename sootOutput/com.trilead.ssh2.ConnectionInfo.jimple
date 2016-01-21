@@ -1,0 +1,24 @@
+public class com.trilead.ssh2.ConnectionInfo extends java.lang.Object
+{
+    public java.lang.String clientToServerCryptoAlgorithm;
+    public java.lang.String clientToServerMACAlgorithm;
+    public java.lang.String keyExchangeAlgorithm;
+    public int keyExchangeCounter;
+    public byte[] serverHostKey;
+    public java.lang.String serverHostKeyAlgorithm;
+    public java.lang.String serverToClientCryptoAlgorithm;
+    public java.lang.String serverToClientMACAlgorithm;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.ConnectionInfo $r0;
+
+        $r0 := @this: com.trilead.ssh2.ConnectionInfo;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.ConnectionInfo: int keyExchangeCounter> = 0;
+
+        return;
+    }
+}

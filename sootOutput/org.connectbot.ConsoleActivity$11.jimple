@@ -1,0 +1,46 @@
+class org.connectbot.ConsoleActivity$11 extends java.lang.Object implements org.connectbot.ActionBarWrapper$OnMenuVisibilityListener
+{
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$11 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$11;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$11: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onMenuVisibilityChanged(boolean)
+    {
+        org.connectbot.ConsoleActivity$11 $r0;
+        boolean $z0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$11;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$11: org.connectbot.ConsoleActivity this$0>;
+
+        staticinvoke <org.connectbot.ConsoleActivity: boolean access$402(org.connectbot.ConsoleActivity,boolean)>($r1, $z0);
+
+        if $z0 != 0 goto label1;
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$11: org.connectbot.ConsoleActivity this$0>;
+
+        staticinvoke <org.connectbot.ConsoleActivity: void access$1100(org.connectbot.ConsoleActivity)>($r1);
+
+        return;
+
+     label1:
+        return;
+    }
+}

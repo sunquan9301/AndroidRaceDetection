@@ -1,0 +1,22 @@
+public class android.support.v4.app.NotificationCompat$InboxStyle extends android.support.v4.app.NotificationCompat$Style
+{
+    java.util.ArrayList mTexts;
+
+    public void <init>()
+    {
+        android.support.v4.app.NotificationCompat$InboxStyle $r0;
+        java.util.ArrayList $r1;
+
+        $r0 := @this: android.support.v4.app.NotificationCompat$InboxStyle;
+
+        specialinvoke $r0.<android.support.v4.app.NotificationCompat$Style: void <init>()>();
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        $r0.<android.support.v4.app.NotificationCompat$InboxStyle: java.util.ArrayList mTexts> = $r1;
+
+        return;
+    }
+}

@@ -1,0 +1,67 @@
+public class org.connectbot.HelpTopicActivity extends android.app.Activity
+{
+
+    public void <init>()
+    {
+        org.connectbot.HelpTopicActivity $r0;
+
+        $r0 := @this: org.connectbot.HelpTopicActivity;
+
+        specialinvoke $r0.<android.app.Activity: void <init>()>();
+
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        org.connectbot.HelpTopicActivity $r0;
+        android.os.Bundle $r1;
+        android.content.Intent $r2;
+        java.lang.String $r3, $r7;
+        java.lang.Object[] $r4;
+        android.content.res.Resources $r5;
+        java.lang.CharSequence $r6;
+        android.view.View $r8;
+        org.connectbot.util.HelpTopicView $r9;
+
+        $r0 := @this: org.connectbot.HelpTopicActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.app.Activity: void onCreate(android.os.Bundle)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.HelpTopicActivity: void setContentView(int)>(2130903044);
+
+        $r2 = virtualinvoke $r0.<org.connectbot.HelpTopicActivity: android.content.Intent getIntent()>();
+
+        $r3 = virtualinvoke $r2.<android.content.Intent: java.lang.String getStringExtra(java.lang.String)>("android.intent.extra.TITLE");
+
+        $r4 = newarray (java.lang.Object)[3];
+
+        $r5 = virtualinvoke $r0.<org.connectbot.HelpTopicActivity: android.content.res.Resources getResources()>();
+
+        $r6 = virtualinvoke $r5.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165411);
+
+        $r4[0] = $r6;
+
+        $r5 = virtualinvoke $r0.<org.connectbot.HelpTopicActivity: android.content.res.Resources getResources()>();
+
+        $r6 = virtualinvoke $r5.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165218);
+
+        $r4[1] = $r6;
+
+        $r4[2] = $r3;
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s: %s - %s", $r4);
+
+        virtualinvoke $r0.<org.connectbot.HelpTopicActivity: void setTitle(java.lang.CharSequence)>($r7);
+
+        $r8 = virtualinvoke $r0.<org.connectbot.HelpTopicActivity: android.view.View findViewById(int)>(2131427362);
+
+        $r9 = (org.connectbot.util.HelpTopicView) $r8;
+
+        virtualinvoke $r9.<org.connectbot.util.HelpTopicView: org.connectbot.util.HelpTopicView setTopic(java.lang.String)>($r3);
+
+        return;
+    }
+}

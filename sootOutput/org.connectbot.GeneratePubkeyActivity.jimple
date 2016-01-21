@@ -1,0 +1,745 @@
+public class org.connectbot.GeneratePubkeyActivity extends android.app.Activity implements org.connectbot.util.OnEntropyGatheredListener
+{
+    static final int ECDSA_DEFAULT_BITS;
+    static final int[] ECDSA_SIZES;
+    private int bits;
+    private android.widget.SeekBar bitsSlider;
+    private android.widget.EditText bitsText;
+    private android.widget.CheckBox confirmUse;
+    private byte[] entropy;
+    private android.app.Dialog entropyDialog;
+    private android.view.LayoutInflater inflater;
+    private java.lang.String keyType;
+    private android.widget.RadioGroup keyTypeGroup;
+    private final java.lang.Runnable mKeyGen;
+    private int minBits;
+    private android.widget.EditText nickname;
+    private android.widget.EditText password1;
+    private android.widget.EditText password2;
+    private android.app.ProgressDialog progress;
+    private android.widget.Button save;
+    private final android.text.TextWatcher textChecker;
+    private android.widget.CheckBox unlockAtStartup;
+
+    static void <clinit>()
+    {
+        int[] $r0;
+        int $i0;
+
+        $r0 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: int[] getCurveSizes()>();
+
+        <org.connectbot.GeneratePubkeyActivity: int[] ECDSA_SIZES> = $r0;
+
+        $r0 = <org.connectbot.GeneratePubkeyActivity: int[] ECDSA_SIZES>;
+
+        $i0 = $r0[0];
+
+        <org.connectbot.GeneratePubkeyActivity: int ECDSA_DEFAULT_BITS> = $i0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        org.connectbot.GeneratePubkeyActivity$5 $r1;
+        org.connectbot.GeneratePubkeyActivity$6 $r2;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity;
+
+        specialinvoke $r0.<android.app.Activity: void <init>()>();
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.view.LayoutInflater inflater> = null;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: java.lang.String keyType> = "RSA";
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: int minBits> = 768;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: int bits> = 2048;
+
+        $r1 = new org.connectbot.GeneratePubkeyActivity$5;
+
+        specialinvoke $r1.<org.connectbot.GeneratePubkeyActivity$5: void <init>(org.connectbot.GeneratePubkeyActivity)>($r0);
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: java.lang.Runnable mKeyGen> = $r1;
+
+        $r2 = new org.connectbot.GeneratePubkeyActivity$6;
+
+        specialinvoke $r2.<org.connectbot.GeneratePubkeyActivity$6: void <init>(org.connectbot.GeneratePubkeyActivity)>($r0);
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.text.TextWatcher textChecker> = $r2;
+
+        return;
+    }
+
+    static int access$000(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        int $i0;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $i0 = $r0.<org.connectbot.GeneratePubkeyActivity: int minBits>;
+
+        return $i0;
+    }
+
+    static int access$002(org.connectbot.GeneratePubkeyActivity, int)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        int $i0;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $i0 := @parameter1: int;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: int minBits> = $i0;
+
+        return $i0;
+    }
+
+    static android.widget.SeekBar access$100(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.widget.SeekBar $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar bitsSlider>;
+
+        return $r1;
+    }
+
+    static android.widget.EditText access$1000(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.widget.EditText $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText nickname>;
+
+        return $r1;
+    }
+
+    static android.widget.CheckBox access$1100(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.widget.CheckBox $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.CheckBox unlockAtStartup>;
+
+        return $r1;
+    }
+
+    static android.widget.CheckBox access$1200(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.widget.CheckBox $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.CheckBox confirmUse>;
+
+        return $r1;
+    }
+
+    static android.app.ProgressDialog access$1300(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.app.ProgressDialog $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.app.ProgressDialog progress>;
+
+        return $r1;
+    }
+
+    static void access$1400(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        specialinvoke $r0.<org.connectbot.GeneratePubkeyActivity: void checkEntries()>();
+
+        return;
+    }
+
+    static android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.widget.EditText $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText bitsText>;
+
+        return $r1;
+    }
+
+    static java.lang.String access$300(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        java.lang.String $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: java.lang.String keyType>;
+
+        return $r1;
+    }
+
+    static java.lang.String access$302(org.connectbot.GeneratePubkeyActivity, java.lang.String)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        java.lang.String $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: java.lang.String keyType> = $r1;
+
+        return $r1;
+    }
+
+    static int access$400(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        int $i0;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $i0 = $r0.<org.connectbot.GeneratePubkeyActivity: int bits>;
+
+        return $i0;
+    }
+
+    static int access$402(org.connectbot.GeneratePubkeyActivity, int)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        int $i0;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $i0 := @parameter1: int;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: int bits> = $i0;
+
+        return $i0;
+    }
+
+    static int access$500(org.connectbot.GeneratePubkeyActivity, int)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        int $i0;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $i0 := @parameter1: int;
+
+        $i0 = specialinvoke $r0.<org.connectbot.GeneratePubkeyActivity: int getClosestFieldSize(int)>($i0);
+
+        return $i0;
+    }
+
+    static android.widget.Button access$600(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.widget.Button $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.Button save>;
+
+        return $r1;
+    }
+
+    static void access$700(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        specialinvoke $r0.<org.connectbot.GeneratePubkeyActivity: void startEntropyGather()>();
+
+        return;
+    }
+
+    static byte[] access$800(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        byte[] $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: byte[] entropy>;
+
+        return $r1;
+    }
+
+    static android.widget.EditText access$900(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.widget.EditText $r1;
+
+        $r0 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText password1>;
+
+        return $r1;
+    }
+
+    private void checkEntries()
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        boolean $z0, $z1;
+        android.widget.EditText $r1;
+        android.text.Editable $r2;
+        java.lang.String $r3, $r4;
+        int $i0;
+        android.widget.Button $r5;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity;
+
+        $z0 = 1;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText password1>;
+
+        $r2 = virtualinvoke $r1.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r3 = virtualinvoke $r2.<java.lang.Object: java.lang.String toString()>();
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText password2>;
+
+        $r2 = virtualinvoke $r1.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r4 = virtualinvoke $r2.<java.lang.Object: java.lang.String toString()>();
+
+        $z1 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z1 != 0 goto label1;
+
+        $z0 = 0;
+
+     label1:
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText nickname>;
+
+        $r2 = virtualinvoke $r1.<android.widget.EditText: android.text.Editable getText()>();
+
+        $i0 = interfaceinvoke $r2.<android.text.Editable: int length()>();
+
+        if $i0 != 0 goto label2;
+
+        $z0 = 0;
+
+     label2:
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.Button save>;
+
+        virtualinvoke $r5.<android.widget.Button: void setEnabled(boolean)>($z0);
+
+        return;
+    }
+
+    private int getClosestFieldSize(int)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        int[] $r1;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity;
+
+        $i0 := @parameter0: int;
+
+        $i3 = <org.connectbot.GeneratePubkeyActivity: int ECDSA_DEFAULT_BITS>;
+
+        $i2 = <org.connectbot.GeneratePubkeyActivity: int ECDSA_DEFAULT_BITS>;
+
+        $i2 = $i0 - $i2;
+
+        $i1 = staticinvoke <java.lang.Math: int abs(int)>($i2);
+
+        $i2 = 1;
+
+     label1:
+        $r1 = <org.connectbot.GeneratePubkeyActivity: int[] ECDSA_SIZES>;
+
+        $i4 = lengthof $r1;
+
+        if $i2 >= $i4 goto label3;
+
+        $r1 = <org.connectbot.GeneratePubkeyActivity: int[] ECDSA_SIZES>;
+
+        $i4 = $r1[$i2];
+
+        $i4 = $i0 - $i4;
+
+        $i4 = staticinvoke <java.lang.Math: int abs(int)>($i4);
+
+        if $i4 >= $i1 goto label2;
+
+        $i1 = $i4;
+
+        $r1 = <org.connectbot.GeneratePubkeyActivity: int[] ECDSA_SIZES>;
+
+        $i3 = $r1[$i2];
+
+     label2:
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label3:
+        return $i3;
+    }
+
+    private int measureNumberOfSetBits(byte)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        byte $b0, $b3;
+        int $i1, $i2;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity;
+
+        $b0 := @parameter0: byte;
+
+        $i2 = 0;
+
+        $i1 = 0;
+
+     label1:
+        if $i1 >= 8 goto label3;
+
+        $b3 = $b0 & 1;
+
+        if $b3 != 1 goto label2;
+
+        $i2 = $i2 + 1;
+
+     label2:
+        $b3 = $b0 >> 1;
+
+        $b0 = (byte) $b3;
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        return $i2;
+    }
+
+    private void startEntropyGather()
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.view.LayoutInflater $r1;
+        android.view.View $r2, $r3;
+        org.connectbot.util.EntropyView $r4;
+        org.connectbot.util.EntropyDialog $r5;
+        android.app.Dialog $r6;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: android.view.LayoutInflater inflater>;
+
+        $r2 = virtualinvoke $r1.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup,boolean)>(2130903050, null, 0);
+
+        $r3 = virtualinvoke $r2.<android.view.View: android.view.View findViewById(int)>(2131427371);
+
+        $r4 = (org.connectbot.util.EntropyView) $r3;
+
+        virtualinvoke $r4.<org.connectbot.util.EntropyView: void addOnEntropyGatheredListener(org.connectbot.util.OnEntropyGatheredListener)>($r0);
+
+        $r5 = new org.connectbot.util.EntropyDialog;
+
+        specialinvoke $r5.<org.connectbot.util.EntropyDialog: void <init>(android.content.Context,android.view.View)>($r0, $r2);
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.app.Dialog entropyDialog> = $r5;
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity: android.app.Dialog entropyDialog>;
+
+        virtualinvoke $r6.<android.app.Dialog: void show()>();
+
+        return;
+    }
+
+    private void startKeyGen()
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        java.lang.Thread $r1;
+        android.app.ProgressDialog $r2;
+        android.content.res.Resources $r3;
+        java.lang.CharSequence $r4;
+        java.lang.Runnable $r5;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity;
+
+        $r2 = new android.app.ProgressDialog;
+
+        specialinvoke $r2.<android.app.ProgressDialog: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.app.ProgressDialog progress> = $r2;
+
+        $r2 = $r0.<org.connectbot.GeneratePubkeyActivity: android.app.ProgressDialog progress>;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.content.res.Resources getResources()>();
+
+        $r4 = virtualinvoke $r3.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165237);
+
+        virtualinvoke $r2.<android.app.ProgressDialog: void setMessage(java.lang.CharSequence)>($r4);
+
+        $r2 = $r0.<org.connectbot.GeneratePubkeyActivity: android.app.ProgressDialog progress>;
+
+        virtualinvoke $r2.<android.app.ProgressDialog: void setIndeterminate(boolean)>(1);
+
+        $r2 = $r0.<org.connectbot.GeneratePubkeyActivity: android.app.ProgressDialog progress>;
+
+        virtualinvoke $r2.<android.app.ProgressDialog: void setCancelable(boolean)>(0);
+
+        $r2 = $r0.<org.connectbot.GeneratePubkeyActivity: android.app.ProgressDialog progress>;
+
+        virtualinvoke $r2.<android.app.ProgressDialog: void show()>();
+
+        $r1 = new java.lang.Thread;
+
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity: java.lang.Runnable mKeyGen>;
+
+        specialinvoke $r1.<java.lang.Thread: void <init>(java.lang.Runnable)>($r5);
+
+        virtualinvoke $r1.<java.lang.Thread: void setName(java.lang.String)>("KeyGen");
+
+        virtualinvoke $r1.<java.lang.Thread: void start()>();
+
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        android.os.Bundle $r1;
+        android.text.TextWatcher $r2;
+        android.view.View $r3;
+        android.widget.EditText $r4;
+        android.widget.RadioGroup $r5;
+        android.widget.SeekBar $r6;
+        android.widget.CheckBox $r7;
+        android.widget.Button $r8;
+        android.view.LayoutInflater $r9;
+        java.security.Provider[] $r10;
+        android.widget.RadioButton $r11;
+        org.connectbot.GeneratePubkeyActivity$1 $r12;
+        org.connectbot.GeneratePubkeyActivity$2 $r13;
+        org.connectbot.GeneratePubkeyActivity$3 $r14;
+        org.connectbot.GeneratePubkeyActivity$4 $r15;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.app.Activity: void onCreate(android.os.Bundle)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: void setContentView(int)>(2130903042);
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427349);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText nickname> = $r4;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427350);
+
+        $r5 = (android.widget.RadioGroup) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.RadioGroup keyTypeGroup> = $r5;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427354);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText bitsText> = $r4;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427355);
+
+        $r6 = (android.widget.SeekBar) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar bitsSlider> = $r6;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427356);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText password1> = $r4;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427357);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText password2> = $r4;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427358);
+
+        $r7 = (android.widget.CheckBox) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.CheckBox unlockAtStartup> = $r7;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427359);
+
+        $r7 = (android.widget.CheckBox) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.CheckBox confirmUse> = $r7;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427360);
+
+        $r8 = (android.widget.Button) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.Button save> = $r8;
+
+        $r9 = staticinvoke <android.view.LayoutInflater: android.view.LayoutInflater 'from'(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: android.view.LayoutInflater inflater> = $r9;
+
+        $r4 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText nickname>;
+
+        $r2 = $r0.<org.connectbot.GeneratePubkeyActivity: android.text.TextWatcher textChecker>;
+
+        virtualinvoke $r4.<android.widget.EditText: void addTextChangedListener(android.text.TextWatcher)>($r2);
+
+        $r4 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText password1>;
+
+        $r2 = $r0.<org.connectbot.GeneratePubkeyActivity: android.text.TextWatcher textChecker>;
+
+        virtualinvoke $r4.<android.widget.EditText: void addTextChangedListener(android.text.TextWatcher)>($r2);
+
+        $r4 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText password2>;
+
+        $r2 = $r0.<org.connectbot.GeneratePubkeyActivity: android.text.TextWatcher textChecker>;
+
+        virtualinvoke $r4.<android.widget.EditText: void addTextChangedListener(android.text.TextWatcher)>($r2);
+
+        $r10 = staticinvoke <java.security.Security: java.security.Provider[] getProviders(java.lang.String)>("KeyPairGenerator.EC");
+
+        if $r10 != null goto label1;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: android.view.View findViewById(int)>(2131427353);
+
+        $r11 = (android.widget.RadioButton) $r3;
+
+        virtualinvoke $r11.<android.widget.RadioButton: void setEnabled(boolean)>(0);
+
+     label1:
+        $r5 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.RadioGroup keyTypeGroup>;
+
+        $r12 = new org.connectbot.GeneratePubkeyActivity$1;
+
+        specialinvoke $r12.<org.connectbot.GeneratePubkeyActivity$1: void <init>(org.connectbot.GeneratePubkeyActivity)>($r0);
+
+        virtualinvoke $r5.<android.widget.RadioGroup: void setOnCheckedChangeListener(android.widget.RadioGroup$OnCheckedChangeListener)>($r12);
+
+        $r6 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar bitsSlider>;
+
+        $r13 = new org.connectbot.GeneratePubkeyActivity$2;
+
+        specialinvoke $r13.<org.connectbot.GeneratePubkeyActivity$2: void <init>(org.connectbot.GeneratePubkeyActivity)>($r0);
+
+        virtualinvoke $r6.<android.widget.SeekBar: void setOnSeekBarChangeListener(android.widget.SeekBar$OnSeekBarChangeListener)>($r13);
+
+        $r4 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.EditText bitsText>;
+
+        $r14 = new org.connectbot.GeneratePubkeyActivity$3;
+
+        specialinvoke $r14.<org.connectbot.GeneratePubkeyActivity$3: void <init>(org.connectbot.GeneratePubkeyActivity)>($r0);
+
+        virtualinvoke $r4.<android.widget.EditText: void setOnFocusChangeListener(android.view.View$OnFocusChangeListener)>($r14);
+
+        $r8 = $r0.<org.connectbot.GeneratePubkeyActivity: android.widget.Button save>;
+
+        $r15 = new org.connectbot.GeneratePubkeyActivity$4;
+
+        specialinvoke $r15.<org.connectbot.GeneratePubkeyActivity$4: void <init>(org.connectbot.GeneratePubkeyActivity)>($r0);
+
+        virtualinvoke $r8.<android.widget.Button: void setOnClickListener(android.view.View$OnClickListener)>($r15);
+
+        return;
+    }
+
+    public void onEntropyGathered(byte[])
+    {
+        org.connectbot.GeneratePubkeyActivity $r0;
+        byte[] $r1;
+        int $i0, $i1, $i3;
+        java.lang.StringBuilder $r2;
+        double $d0;
+        java.lang.Object $r3;
+        byte $b2;
+        java.lang.String $r4;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity;
+
+        $r1 := @parameter0: byte[];
+
+        if $r1 != null goto label1;
+
+        virtualinvoke $r0.<org.connectbot.GeneratePubkeyActivity: void finish()>();
+
+        return;
+
+     label1:
+        $r3 = virtualinvoke $r1.<java.lang.Object: java.lang.Object clone()>();
+
+        $r1 = (byte[]) $r3;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity: byte[] entropy> = $r1;
+
+        $i1 = 0;
+
+        $i0 = 0;
+
+     label2:
+        if $i0 >= 20 goto label3;
+
+        $r1 = $r0.<org.connectbot.GeneratePubkeyActivity: byte[] entropy>;
+
+        $b2 = $r1[$i0];
+
+        $i3 = specialinvoke $r0.<org.connectbot.GeneratePubkeyActivity: int measureNumberOfSetBits(byte)>($b2);
+
+        $i1 = $i1 + $i3;
+
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label3:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Entropy distribution=");
+
+        $d0 = (double) $i1;
+
+        $d0 = 100.0 * $d0;
+
+        $d0 = $d0 / 160.0;
+
+        $i3 = (int) $d0;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("%");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.GeneratePubkeyAct", $r4);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.GeneratePubkeyAct", "entropy gathered; attemping to generate key...");
+
+        specialinvoke $r0.<org.connectbot.GeneratePubkeyActivity: void startKeyGen()>();
+
+        return;
+    }
+}

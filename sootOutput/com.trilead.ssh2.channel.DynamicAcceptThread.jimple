@@ -1,0 +1,132 @@
+public class com.trilead.ssh2.channel.DynamicAcceptThread extends java.lang.Thread implements com.trilead.ssh2.channel.IChannelWorkerThread
+{
+    private com.trilead.ssh2.channel.ChannelManager cm;
+    private java.net.ServerSocket ss;
+
+    public void <init>(com.trilead.ssh2.channel.ChannelManager, java.net.InetSocketAddress) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread $r0;
+        com.trilead.ssh2.channel.ChannelManager $r1;
+        java.net.InetSocketAddress $r2;
+        java.net.ServerSocket $r3;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.ChannelManager;
+
+        $r2 := @parameter1: java.net.InetSocketAddress;
+
+        specialinvoke $r0.<java.lang.Thread: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: com.trilead.ssh2.channel.ChannelManager cm> = $r1;
+
+        $r3 = new java.net.ServerSocket;
+
+        specialinvoke $r3.<java.net.ServerSocket: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: java.net.ServerSocket ss> = $r3;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: java.net.ServerSocket ss>;
+
+        virtualinvoke $r3.<java.net.ServerSocket: void bind(java.net.SocketAddress)>($r2);
+
+        return;
+    }
+
+    static com.trilead.ssh2.channel.ChannelManager access$000(com.trilead.ssh2.channel.DynamicAcceptThread)
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread $r0;
+        com.trilead.ssh2.channel.ChannelManager $r1;
+
+        $r0 := @parameter0: com.trilead.ssh2.channel.DynamicAcceptThread;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        return $r1;
+    }
+
+    public void run()
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread $r0;
+        com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable $r1;
+        java.io.IOException $r2, $r8;
+        java.lang.Thread $r3;
+        com.trilead.ssh2.channel.ChannelManager $r4;
+        java.net.Socket $r5;
+        java.net.ServerSocket $r6;
+        net.sourceforge.jsocks.server.ServerAuthenticatorNone $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread;
+
+        $r4 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: com.trilead.ssh2.channel.ChannelManager cm>;
+
+     label1:
+        virtualinvoke $r4.<com.trilead.ssh2.channel.ChannelManager: void registerThread(com.trilead.ssh2.channel.IChannelWorkerThread)>($r0);
+
+     label2:
+        $r6 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: java.net.ServerSocket ss>;
+
+     label3:
+        $r5 = virtualinvoke $r6.<java.net.ServerSocket: java.net.Socket accept()>();
+
+     label4:
+        $r1 = new com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable;
+
+        $r7 = new net.sourceforge.jsocks.server.ServerAuthenticatorNone;
+
+        specialinvoke $r7.<net.sourceforge.jsocks.server.ServerAuthenticatorNone: void <init>()>();
+
+        specialinvoke $r1.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: void <init>(com.trilead.ssh2.channel.DynamicAcceptThread,net.sourceforge.jsocks.server.ServerAuthenticator,java.net.Socket)>($r0, $r7, $r5);
+
+        $r3 = new java.lang.Thread;
+
+        specialinvoke $r3.<java.lang.Thread: void <init>(java.lang.Runnable)>($r1);
+
+        virtualinvoke $r3.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r3.<java.lang.Thread: void start()>();
+
+        goto label2;
+
+     label5:
+        $r2 := @caughtexception;
+
+        virtualinvoke $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: void stopWorking()>();
+
+        return;
+
+     label6:
+        $r8 := @caughtexception;
+
+        virtualinvoke $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: void stopWorking()>();
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label5;
+        catch java.io.IOException from label3 to label4 with label6;
+    }
+
+    public void stopWorking()
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread $r0;
+        java.net.ServerSocket $r1;
+        java.io.IOException $r2;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread: java.net.ServerSocket ss>;
+
+     label1:
+        virtualinvoke $r1.<java.net.ServerSocket: void close()>();
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+}

@@ -1,0 +1,81 @@
+class org.connectbot.PortForwardListActivity$3 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.PortForwardListActivity this$0;
+
+    void <init>(org.connectbot.PortForwardListActivity)
+    {
+        org.connectbot.PortForwardListActivity$3 $r0;
+        org.connectbot.PortForwardListActivity $r1;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$3;
+
+        $r1 := @parameter0: org.connectbot.PortForwardListActivity;
+
+        $r0.<org.connectbot.PortForwardListActivity$3: org.connectbot.PortForwardListActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.PortForwardListActivity$3 $r0;
+        android.view.MenuItem $r1;
+        org.connectbot.PortForwardListActivity $r2;
+        android.view.View $r3, $r5;
+        android.view.LayoutInflater $r4;
+        android.widget.EditText $r6;
+        android.widget.Spinner $r7;
+        org.connectbot.PortForwardListActivity$3$1 $r8;
+        android.app.AlertDialog$Builder $r9;
+        org.connectbot.PortForwardListActivity$3$2 $r10;
+        android.app.AlertDialog $r11;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$3;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity$3: org.connectbot.PortForwardListActivity this$0>;
+
+        $r4 = $r2.<org.connectbot.PortForwardListActivity: android.view.LayoutInflater inflater>;
+
+        $r3 = virtualinvoke $r4.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup,boolean)>(2130903052, null, 0);
+
+        $r5 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427374);
+
+        $r6 = (android.widget.EditText) $r5;
+
+        $r5 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427372);
+
+        $r7 = (android.widget.Spinner) $r5;
+
+        $r8 = new org.connectbot.PortForwardListActivity$3$1;
+
+        specialinvoke $r8.<org.connectbot.PortForwardListActivity$3$1: void <init>(org.connectbot.PortForwardListActivity$3,android.widget.EditText)>($r0, $r6);
+
+        virtualinvoke $r7.<android.widget.Spinner: void setOnItemSelectedListener(android.widget.AdapterView$OnItemSelectedListener)>($r8);
+
+        $r9 = new android.app.AlertDialog$Builder;
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity$3: org.connectbot.PortForwardListActivity this$0>;
+
+        specialinvoke $r9.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r2);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setView(android.view.View)>($r3);
+
+        $r10 = new org.connectbot.PortForwardListActivity$3$2;
+
+        specialinvoke $r10.<org.connectbot.PortForwardListActivity$3$2: void <init>(org.connectbot.PortForwardListActivity$3,android.view.View,android.widget.Spinner,android.widget.EditText)>($r0, $r3, $r7, $r6);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(2131165326, $r10);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(2131165266, null);
+
+        $r11 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r11.<android.app.AlertDialog: void show()>();
+
+        return 1;
+    }
+}

@@ -1,0 +1,76 @@
+public final class org.connectbot.R$array extends java.lang.Object
+{
+    public static final int list_authagent;
+    public static final int list_authagent_values;
+    public static final int list_camera;
+    public static final int list_camera_values;
+    public static final int list_color_values;
+    public static final int list_colors;
+    public static final int list_delkey;
+    public static final int list_delkey_values;
+    public static final int list_emulation_modes;
+    public static final int list_keymode;
+    public static final int list_keymode_values;
+    public static final int list_portforward_types;
+    public static final int list_pubkeyids;
+    public static final int list_pubkeyids_value;
+    public static final int list_rotation;
+    public static final int list_rotation_values;
+    public static final int list_stickymodifiers;
+    public static final int list_stickymodifiers_values;
+    public static final int list_wizard_topics;
+
+    public void <init>()
+    {
+        org.connectbot.R$array $r0;
+
+        $r0 := @this: org.connectbot.R$array;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$array: int list_wizard_topics> = 2131296274;
+
+        <org.connectbot.R$array: int list_stickymodifiers_values> = 2131296273;
+
+        <org.connectbot.R$array: int list_stickymodifiers> = 2131296272;
+
+        <org.connectbot.R$array: int list_rotation_values> = 2131296271;
+
+        <org.connectbot.R$array: int list_rotation> = 2131296270;
+
+        <org.connectbot.R$array: int list_pubkeyids_value> = 2131296269;
+
+        <org.connectbot.R$array: int list_pubkeyids> = 2131296268;
+
+        <org.connectbot.R$array: int list_portforward_types> = 2131296267;
+
+        <org.connectbot.R$array: int list_keymode_values> = 2131296266;
+
+        <org.connectbot.R$array: int list_keymode> = 2131296265;
+
+        <org.connectbot.R$array: int list_emulation_modes> = 2131296264;
+
+        <org.connectbot.R$array: int list_delkey_values> = 2131296263;
+
+        <org.connectbot.R$array: int list_delkey> = 2131296262;
+
+        <org.connectbot.R$array: int list_colors> = 2131296261;
+
+        <org.connectbot.R$array: int list_color_values> = 2131296260;
+
+        <org.connectbot.R$array: int list_camera_values> = 2131296259;
+
+        <org.connectbot.R$array: int list_camera> = 2131296258;
+
+        <org.connectbot.R$array: int list_authagent_values> = 2131296257;
+
+        <org.connectbot.R$array: int list_authagent> = 2131296256;
+
+        return;
+    }
+}

@@ -1,0 +1,14 @@
+class android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl extends android.support.v4.view.ViewParentCompat$ViewParentCompatStubImpl
+{
+
+    void <init>()
+    {
+        android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl $r0;
+
+        $r0 := @this: android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl;
+
+        specialinvoke $r0.<android.support.v4.view.ViewParentCompat$ViewParentCompatStubImpl: void <init>()>();
+
+        return;
+    }
+}

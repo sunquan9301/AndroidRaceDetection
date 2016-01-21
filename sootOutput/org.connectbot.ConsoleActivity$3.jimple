@@ -1,0 +1,60 @@
+class org.connectbot.ConsoleActivity$3 extends android.os.Handler
+{
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$3 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$3;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$3: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<android.os.Handler: void <init>()>();
+
+        return;
+    }
+
+    public void handleMessage(android.os.Message)
+    {
+        org.connectbot.ConsoleActivity$3 $r0;
+        android.os.Message $r1;
+        java.lang.Object $r2;
+        boolean $z0;
+        org.connectbot.service.TerminalBridge $r3;
+        org.connectbot.ConsoleActivity $r4;
+        org.connectbot.ConsoleActivity$TerminalPagerAdapter $r5;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$3;
+
+        $r1 := @parameter0: android.os.Message;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.ConsoleActivity", "Someone sending HANDLE_DISCONNECT to parentHandler");
+
+        $r2 = $r1.<android.os.Message: java.lang.Object obj>;
+
+        $r3 = (org.connectbot.service.TerminalBridge) $r2;
+
+        $r4 = $r0.<org.connectbot.ConsoleActivity$3: org.connectbot.ConsoleActivity this$0>;
+
+        $r5 = $r4.<org.connectbot.ConsoleActivity: org.connectbot.ConsoleActivity$TerminalPagerAdapter adapter>;
+
+        virtualinvoke $r5.<org.connectbot.ConsoleActivity$TerminalPagerAdapter: void notifyDataSetChanged()>();
+
+        $z0 = virtualinvoke $r3.<org.connectbot.service.TerminalBridge: boolean isAwaitingClose()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = $r0.<org.connectbot.ConsoleActivity$3: org.connectbot.ConsoleActivity this$0>;
+
+        staticinvoke <org.connectbot.ConsoleActivity: void access$100(org.connectbot.ConsoleActivity,org.connectbot.service.TerminalBridge)>($r4, $r3);
+
+        return;
+
+     label1:
+        return;
+    }
+}

@@ -1,0 +1,14 @@
+abstract class org.connectbot.bean.AbstractBean extends java.lang.Object
+{
+
+    void <init>()
+    {
+        org.connectbot.bean.AbstractBean $r0;
+
+        $r0 := @this: org.connectbot.bean.AbstractBean;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

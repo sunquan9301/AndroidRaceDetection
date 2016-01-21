@@ -1,0 +1,1133 @@
+public class org.connectbot.PubkeyListActivity extends android.app.ListActivity implements java.util.EventListener
+{
+    protected org.connectbot.service.TerminalManager bound;
+    protected android.text.ClipboardManager clipboard;
+    private android.view.MenuItem confirmUse;
+    private android.content.ServiceConnection connection;
+    protected android.view.LayoutInflater inflater;
+    private android.view.MenuItem onstartToggle;
+    protected org.connectbot.util.PubkeyDatabase pubkeydb;
+    private java.util.List pubkeys;
+
+    public void <init>()
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        org.connectbot.PubkeyListActivity$1 $r1;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void <init>()>();
+
+        $r0.<org.connectbot.PubkeyListActivity: android.view.LayoutInflater inflater> = null;
+
+        $r0.<org.connectbot.PubkeyListActivity: org.connectbot.service.TerminalManager bound> = null;
+
+        $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem onstartToggle> = null;
+
+        $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem confirmUse> = null;
+
+        $r1 = new org.connectbot.PubkeyListActivity$1;
+
+        specialinvoke $r1.<org.connectbot.PubkeyListActivity$1: void <init>(org.connectbot.PubkeyListActivity)>($r0);
+
+        $r0.<org.connectbot.PubkeyListActivity: android.content.ServiceConnection connection> = $r1;
+
+        return;
+    }
+
+    static void access$000(org.connectbot.PubkeyListActivity)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+
+        $r0 := @parameter0: org.connectbot.PubkeyListActivity;
+
+        specialinvoke $r0.<org.connectbot.PubkeyListActivity: void pickFileSimple()>();
+
+        return;
+    }
+
+    static void access$100(org.connectbot.PubkeyListActivity, java.io.File)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        java.io.File $r1;
+
+        $r0 := @parameter0: org.connectbot.PubkeyListActivity;
+
+        $r1 := @parameter1: java.io.File;
+
+        specialinvoke $r0.<org.connectbot.PubkeyListActivity: void readKeyFromFile(java.io.File)>($r1);
+
+        return;
+    }
+
+    private void pickFileSimple()
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        java.io.File $r1, $r3;
+        int $i0, $i1;
+        java.util.LinkedList $r2;
+        java.lang.String $r4, $r5;
+        boolean $z0;
+        android.app.AlertDialog$Builder $r6;
+        android.app.AlertDialog $r7;
+        java.io.File[] $r8;
+        java.lang.String[] $r9;
+        java.lang.Object[] $r10;
+        org.connectbot.PubkeyListActivity$12 $r11;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $r3 = staticinvoke <android.os.Environment: java.io.File getExternalStorageDirectory()>();
+
+        $r4 = virtualinvoke $r3.<java.io.File: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.PubkeyListActivity", $r4);
+
+        $r4 = staticinvoke <android.os.Environment: java.lang.String getExternalStorageState()>();
+
+        $r5 = "mounted_ro";
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 != 0 goto label1;
+
+        $r5 = "mounted";
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z0 != 0 goto label1;
+
+        $r6 = new android.app.AlertDialog$Builder;
+
+        specialinvoke $r6.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r0);
+
+        $r6 = virtualinvoke $r6.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setMessage(int)>(2131165242);
+
+        $r6 = virtualinvoke $r6.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(17039360, null);
+
+        $r7 = virtualinvoke $r6.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r7.<android.app.AlertDialog: void show()>();
+
+        return;
+
+     label1:
+        $r2 = new java.util.LinkedList;
+
+        specialinvoke $r2.<java.util.LinkedList: void <init>()>();
+
+        $r8 = virtualinvoke $r3.<java.io.File: java.io.File[] listFiles()>();
+
+        if $r8 == null goto label5;
+
+        $r8 = virtualinvoke $r3.<java.io.File: java.io.File[] listFiles()>();
+
+        $i1 = lengthof $r8;
+
+        $i0 = 0;
+
+     label2:
+        if $i0 >= $i1 goto label5;
+
+        $r1 = $r8[$i0];
+
+        $z0 = virtualinvoke $r1.<java.io.File: boolean isDirectory()>();
+
+        if $z0 == 0 goto label4;
+
+     label3:
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label4:
+        $r5 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r5);
+
+        goto label3;
+
+     label5:
+        staticinvoke <java.util.Collections: void sort(java.util.List)>($r2);
+
+        $r9 = newarray (java.lang.String)[0];
+
+        $r10 = interfaceinvoke $r2.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r9);
+
+        $r9 = (java.lang.String[]) $r10;
+
+        $r5 = virtualinvoke $r2.<java.lang.Object: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.PubkeyListActivity", $r5);
+
+        $r6 = new android.app.AlertDialog$Builder;
+
+        specialinvoke $r6.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r0);
+
+        $r6 = virtualinvoke $r6.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setTitle(int)>(2131165210);
+
+        $r11 = new org.connectbot.PubkeyListActivity$12;
+
+        specialinvoke $r11.<org.connectbot.PubkeyListActivity$12: void <init>(org.connectbot.PubkeyListActivity,java.lang.String[],java.io.File)>($r0, $r9, $r3);
+
+        $r6 = virtualinvoke $r6.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setItems(java.lang.CharSequence[],android.content.DialogInterface$OnClickListener)>($r9, $r11);
+
+        $r6 = virtualinvoke $r6.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(17039360, null);
+
+        $r7 = virtualinvoke $r6.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r7.<android.app.AlertDialog: void show()>();
+
+        return;
+    }
+
+    private void readKeyFromFile(java.io.File)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        java.io.File $r1;
+        java.lang.String $r2, $r7;
+        java.lang.Exception $r3;
+        org.connectbot.bean.PubkeyBean $r4;
+        int $i0, $i3;
+        long $l1;
+        byte $b2;
+        android.widget.Toast $r5;
+        byte[] $r6;
+        boolean $z0;
+        char[] $r8;
+        java.lang.StringBuilder $r9;
+        java.security.KeyPair $r10;
+        java.security.PrivateKey $r11;
+        java.security.PublicKey $r12;
+        org.connectbot.util.PubkeyDatabase $r13;
+        com.trilead.ssh2.crypto.PEMStructure $r14;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $r1 := @parameter0: java.io.File;
+
+        $r4 = new org.connectbot.bean.PubkeyBean;
+
+        specialinvoke $r4.<org.connectbot.bean.PubkeyBean: void <init>()>();
+
+        $r2 = virtualinvoke $r1.<java.io.File: java.lang.String getName()>();
+
+        virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: void setNickname(java.lang.String)>($r2);
+
+        $l1 = virtualinvoke $r1.<java.io.File: long length()>();
+
+        $b2 = $l1 cmp 8192L;
+
+        if $b2 <= 0 goto label1;
+
+        $r5 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,int,int)>($r0, 2131165238, 1);
+
+        virtualinvoke $r5.<android.widget.Toast: void show()>();
+
+        return;
+
+     label1:
+        $r6 = staticinvoke <org.connectbot.PubkeyListActivity: byte[] readRaw(java.io.File)>($r1);
+
+        $r2 = new java.lang.String;
+
+        specialinvoke $r2.<java.lang.String: void <init>(byte[])>($r6);
+
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("-----BEGIN PRIVATE KEY-----");
+
+        if $z0 == 0 goto label7;
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int indexOf(java.lang.String)>("-----BEGIN PRIVATE KEY-----");
+
+        $r7 = "-----BEGIN PRIVATE KEY-----";
+
+        $i3 = virtualinvoke $r7.<java.lang.String: int length()>();
+
+        $i0 = $i0 + $i3;
+
+        $i3 = virtualinvoke $r2.<java.lang.String: int indexOf(java.lang.String)>("-----END PRIVATE KEY-----");
+
+        if $i3 <= $i0 goto label6;
+
+        $i3 = $i3 + -1;
+
+        $r7 = virtualinvoke $r2.<java.lang.String: java.lang.String substring(int,int)>($i0, $i3);
+
+        $r8 = virtualinvoke $r7.<java.lang.String: char[] toCharArray()>();
+
+        $r9 = new java.lang.StringBuilder;
+
+        specialinvoke $r9.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("encoded: ");
+
+        $r7 = new java.lang.String;
+
+        specialinvoke $r7.<java.lang.String: void <init>(char[])>($r8);
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r7 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.PubkeyListActivity", $r7);
+
+        $r6 = staticinvoke <com.trilead.ssh2.crypto.Base64: byte[] decode(char[])>($r8);
+
+        $r10 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.KeyPair recoverKeyPair(byte[])>($r6);
+
+        $r11 = virtualinvoke $r10.<java.security.KeyPair: java.security.PrivateKey getPrivate()>();
+
+        $r7 = interfaceinvoke $r11.<java.security.PrivateKey: java.lang.String getAlgorithm()>();
+
+        virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: void setType(java.lang.String)>($r7);
+
+        $r11 = virtualinvoke $r10.<java.security.KeyPair: java.security.PrivateKey getPrivate()>();
+
+        $r6 = interfaceinvoke $r11.<java.security.PrivateKey: byte[] getEncoded()>();
+
+        virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: void setPrivateKey(byte[])>($r6);
+
+        $r12 = virtualinvoke $r10.<java.security.KeyPair: java.security.PublicKey getPublic()>();
+
+        $r6 = interfaceinvoke $r12.<java.security.PublicKey: byte[] getEncoded()>();
+
+        virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: void setPublicKey(byte[])>($r6);
+
+     label2:
+        $r13 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        if $r13 != null goto label3;
+
+        $r13 = new org.connectbot.util.PubkeyDatabase;
+
+        specialinvoke $r13.<org.connectbot.util.PubkeyDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb> = $r13;
+
+     label3:
+        $r13 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        virtualinvoke $r13.<org.connectbot.util.PubkeyDatabase: org.connectbot.bean.PubkeyBean savePubkey(org.connectbot.bean.PubkeyBean)>($r4);
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void updateList()>();
+
+     label4:
+        return;
+
+     label5:
+        $r3 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.PubkeyListActivity", "Problem parsing imported private key", $r3);
+
+        $r5 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,int,int)>($r0, 2131165238, 1);
+
+        virtualinvoke $r5.<android.widget.Toast: void show()>();
+
+        return;
+
+     label6:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("CB.PubkeyListActivity", "Problem parsing PKCS#8 file; corrupt?");
+
+        $r5 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,int,int)>($r0, 2131165238, 1);
+
+        virtualinvoke $r5.<android.widget.Toast: void show()>();
+
+        goto label2;
+
+     label7:
+        $r7 = new java.lang.String;
+
+        specialinvoke $r7.<java.lang.String: void <init>(byte[])>($r6);
+
+        $r8 = virtualinvoke $r7.<java.lang.String: char[] toCharArray()>();
+
+        $r14 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: com.trilead.ssh2.crypto.PEMStructure parsePEM(char[])>($r8);
+
+        $z0 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: boolean isPEMEncrypted(com.trilead.ssh2.crypto.PEMStructure)>($r14);
+
+        virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: void setEncrypted(boolean)>($z0);
+
+        virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: void setType(java.lang.String)>("IMPORTED");
+
+        virtualinvoke $r4.<org.connectbot.bean.PubkeyBean: void setPrivateKey(byte[])>($r6);
+
+     label8:
+        goto label2;
+
+        catch java.lang.Exception from label1 to label4 with label5;
+        catch java.lang.Exception from label6 to label8 with label5;
+    }
+
+    protected static byte[] readRaw(java.io.File) throws java.lang.Exception
+    {
+        java.io.File $r0;
+        byte[] $r1;
+        java.io.FileInputStream $r2;
+        java.io.ByteArrayOutputStream $r3;
+        int $i0;
+
+        $r0 := @parameter0: java.io.File;
+
+        $r2 = new java.io.FileInputStream;
+
+        specialinvoke $r2.<java.io.FileInputStream: void <init>(java.io.File)>($r0);
+
+        $r3 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $r3.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        $r1 = newarray (byte)[1024];
+
+     label1:
+        $i0 = virtualinvoke $r2.<java.io.InputStream: int read(byte[])>($r1);
+
+        if $i0 == -1 goto label2;
+
+        virtualinvoke $r3.<java.io.ByteArrayOutputStream: void write(byte[],int,int)>($r1, 0, $i0);
+
+        goto label1;
+
+     label2:
+        virtualinvoke $r3.<java.io.ByteArrayOutputStream: void flush()>();
+
+        virtualinvoke $r3.<java.io.ByteArrayOutputStream: void close()>();
+
+        virtualinvoke $r2.<java.io.InputStream: void close()>();
+
+        $r1 = virtualinvoke $r3.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+        return $r1;
+    }
+
+    protected void handleAddKey(org.connectbot.bean.PubkeyBean)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        org.connectbot.bean.PubkeyBean $r1;
+        org.connectbot.PubkeyListActivity$4 $r2;
+        boolean $z0;
+        android.view.LayoutInflater $r3;
+        android.view.View $r4, $r5;
+        android.widget.EditText $r6;
+        android.app.AlertDialog$Builder $r7;
+        android.app.AlertDialog $r8;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $r1 := @parameter0: org.connectbot.bean.PubkeyBean;
+
+        $z0 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: boolean isEncrypted()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = $r0.<org.connectbot.PubkeyListActivity: android.view.LayoutInflater inflater>;
+
+        $r4 = virtualinvoke $r3.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup)>(2130903051, null);
+
+        $r5 = virtualinvoke $r4.<android.view.View: android.view.View findViewById(int)>(16908308);
+
+        $r6 = (android.widget.EditText) $r5;
+
+        $r7 = new android.app.AlertDialog$Builder;
+
+        specialinvoke $r7.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r0);
+
+        $r7 = virtualinvoke $r7.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setView(android.view.View)>($r4);
+
+        $r2 = new org.connectbot.PubkeyListActivity$4;
+
+        specialinvoke $r2.<org.connectbot.PubkeyListActivity$4: void <init>(org.connectbot.PubkeyListActivity,org.connectbot.bean.PubkeyBean,android.widget.EditText)>($r0, $r1, $r6);
+
+        $r7 = virtualinvoke $r7.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(2131165215, $r2);
+
+        $r7 = virtualinvoke $r7.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(17039360, null);
+
+        $r8 = virtualinvoke $r7.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r8.<android.app.AlertDialog: void show()>();
+
+        return;
+
+     label1:
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void handleAddKey(org.connectbot.bean.PubkeyBean,java.lang.String)>($r1, null);
+
+        return;
+    }
+
+    protected void handleAddKey(org.connectbot.bean.PubkeyBean, java.lang.String)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        org.connectbot.bean.PubkeyBean $r1;
+        java.lang.String $r2, $r5, $r6;
+        java.lang.Exception $r3, $r16;
+        java.security.KeyPair $r4, $r9;
+        boolean $z0;
+        byte[] $r7;
+        char[] $r8;
+        android.content.res.Resources $r10;
+        java.lang.Object[] $r11;
+        android.widget.Toast $r12;
+        java.security.PrivateKey $r13;
+        java.security.PublicKey $r14;
+        java.lang.StringBuilder $r15;
+        org.connectbot.service.TerminalManager $r17;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $r1 := @parameter0: org.connectbot.bean.PubkeyBean;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r4 = null;
+
+        $r5 = "IMPORTED";
+
+        $r6 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $z0 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+        if $z0 == 0 goto label5;
+
+        $r6 = new java.lang.String;
+
+     label1:
+        $r7 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: byte[] getPrivateKey()>();
+
+        specialinvoke $r6.<java.lang.String: void <init>(byte[])>($r7);
+
+        $r8 = virtualinvoke $r6.<java.lang.String: char[] toCharArray()>();
+
+        $r9 = staticinvoke <com.trilead.ssh2.crypto.PEMDecoder: java.security.KeyPair decode(char[],java.lang.String)>($r8, $r2);
+
+     label2:
+        $r4 = $r9;
+
+     label3:
+        if $r4 != null goto label8;
+
+        return;
+
+     label4:
+        $r3 := @caughtexception;
+
+        $r10 = virtualinvoke $r0.<org.connectbot.PubkeyListActivity: android.content.res.Resources getResources()>();
+
+        $r11 = newarray (java.lang.Object)[1];
+
+        $r6 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        $r11[0] = $r6;
+
+        $r6 = virtualinvoke $r10.<android.content.res.Resources: java.lang.String getString(int,java.lang.Object[])>(2131165365, $r11);
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.PubkeyListActivity", $r6, $r3);
+
+        $r12 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,java.lang.CharSequence,int)>($r0, $r6, 1);
+
+        virtualinvoke $r12.<android.widget.Toast: void show()>();
+
+        goto label3;
+
+     label5:
+        $r7 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: byte[] getPrivateKey()>();
+
+        $r6 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $r13 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PrivateKey decodePrivate(byte[],java.lang.String,java.lang.String)>($r7, $r6, $r2);
+
+        $r7 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: byte[] getPublicKey()>();
+
+        $r6 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $r14 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PublicKey decodePublic(byte[],java.lang.String)>($r7, $r6);
+
+        $r15 = new java.lang.StringBuilder;
+
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
+
+        $r15 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unlocked key ");
+
+        $r6 = staticinvoke <org.connectbot.util.PubkeyUtils: java.lang.String formatKey(java.security.Key)>($r14);
+
+        $r15 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r6 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.PubkeyListActivity", $r6);
+
+        $r4 = new java.security.KeyPair;
+
+        specialinvoke $r4.<java.security.KeyPair: void <init>(java.security.PublicKey,java.security.PrivateKey)>($r14, $r13);
+
+     label6:
+        goto label3;
+
+     label7:
+        $r16 := @caughtexception;
+
+        $r10 = virtualinvoke $r0.<org.connectbot.PubkeyListActivity: android.content.res.Resources getResources()>();
+
+        $r11 = newarray (java.lang.Object)[1];
+
+        $r6 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        $r11[0] = $r6;
+
+        $r6 = virtualinvoke $r10.<android.content.res.Resources: java.lang.String getString(int,java.lang.Object[])>(2131165365, $r11);
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.PubkeyListActivity", $r6, $r16);
+
+        $r12 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,java.lang.CharSequence,int)>($r0, $r6, 1);
+
+        virtualinvoke $r12.<android.widget.Toast: void show()>();
+
+        return;
+
+     label8:
+        $r11 = newarray (java.lang.Object)[1];
+
+        $r6 = virtualinvoke $r1.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        $r11[0] = $r6;
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Unlocked key \'%s\'", $r11);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.PubkeyListActivity", $r6);
+
+        $r17 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.service.TerminalManager bound>;
+
+        virtualinvoke $r17.<org.connectbot.service.TerminalManager: void addKey(org.connectbot.bean.PubkeyBean,java.security.KeyPair,boolean)>($r1, $r4, 1);
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void updateList()>();
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label4;
+        catch java.lang.Exception from label5 to label6 with label7;
+    }
+
+    protected void onActivityResult(int, int, android.content.Intent)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        int $i0, $i1;
+        android.content.Intent $r1;
+        java.lang.IllegalArgumentException $r2;
+        android.net.Uri $r3;
+        java.io.File $r4;
+        java.lang.String $r5;
+        java.net.URI $r6;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 := @parameter2: android.content.Intent;
+
+        specialinvoke $r0.<android.app.ListActivity: void onActivityResult(int,int,android.content.Intent)>($i0, $i1, $r1);
+
+        lookupswitch($i0)
+        {
+            case 1: goto label02;
+            default: goto label01;
+        };
+
+     label01:
+        return;
+
+     label02:
+        if $i1 != -1 goto label10;
+
+        if $r1 == null goto label11;
+
+        $r3 = virtualinvoke $r1.<android.content.Intent: android.net.Uri getData()>();
+
+        if $r3 == null goto label06;
+
+        $r4 = new java.io.File;
+
+     label03:
+        $r5 = virtualinvoke $r3.<android.net.Uri: java.lang.String toString()>();
+
+        $r6 = staticinvoke <java.net.URI: java.net.URI create(java.lang.String)>($r5);
+
+        specialinvoke $r4.<java.io.File: void <init>(java.net.URI)>($r6);
+
+        specialinvoke $r0.<org.connectbot.PubkeyListActivity: void readKeyFromFile(java.io.File)>($r4);
+
+     label04:
+        return;
+
+     label05:
+        $r2 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.PubkeyListActivity", "Couldn\'t read from picked file", $r2);
+
+        return;
+
+     label06:
+        $r5 = virtualinvoke $r1.<android.content.Intent: java.lang.String getDataString()>();
+
+     label07:
+        if $r5 == null goto label12;
+
+     label08:
+        $r4 = new java.io.File;
+
+        $r6 = staticinvoke <java.net.URI: java.net.URI create(java.lang.String)>($r5);
+
+        specialinvoke $r4.<java.io.File: void <init>(java.net.URI)>($r6);
+
+        specialinvoke $r0.<org.connectbot.PubkeyListActivity: void readKeyFromFile(java.io.File)>($r4);
+
+     label09:
+        return;
+
+     label10:
+        return;
+
+     label11:
+        return;
+
+     label12:
+        return;
+
+        catch java.lang.IllegalArgumentException from label03 to label04 with label05;
+        catch java.lang.IllegalArgumentException from label06 to label07 with label05;
+        catch java.lang.IllegalArgumentException from label08 to label09 with label05;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        android.os.Bundle $r1;
+        android.content.res.Resources $r2;
+        java.lang.Object[] $r3;
+        java.lang.CharSequence $r4;
+        java.lang.String $r5;
+        org.connectbot.util.PubkeyDatabase $r6;
+        android.widget.ListView $r7;
+        org.connectbot.PubkeyListActivity$2 $r8;
+        java.lang.Object $r9;
+        android.text.ClipboardManager $r10;
+        android.view.LayoutInflater $r11;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.app.ListActivity: void onCreate(android.os.Bundle)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void setContentView(int)>(2130903047);
+
+        $r3 = newarray (java.lang.Object)[2];
+
+        $r2 = virtualinvoke $r0.<org.connectbot.PubkeyListActivity: android.content.res.Resources getResources()>();
+
+        $r4 = virtualinvoke $r2.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165411);
+
+        $r3[0] = $r4;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.PubkeyListActivity: android.content.res.Resources getResources()>();
+
+        $r4 = virtualinvoke $r2.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165222);
+
+        $r3[1] = $r4;
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s: %s", $r3);
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void setTitle(java.lang.CharSequence)>($r5);
+
+        $r6 = new org.connectbot.util.PubkeyDatabase;
+
+        specialinvoke $r6.<org.connectbot.util.PubkeyDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb> = $r6;
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void updateList()>();
+
+        $r7 = virtualinvoke $r0.<org.connectbot.PubkeyListActivity: android.widget.ListView getListView()>();
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void registerForContextMenu(android.view.View)>($r7);
+
+        $r7 = virtualinvoke $r0.<org.connectbot.PubkeyListActivity: android.widget.ListView getListView()>();
+
+        $r8 = new org.connectbot.PubkeyListActivity$2;
+
+        specialinvoke $r8.<org.connectbot.PubkeyListActivity$2: void <init>(org.connectbot.PubkeyListActivity)>($r0);
+
+        virtualinvoke $r7.<android.widget.ListView: void setOnItemClickListener(android.widget.AdapterView$OnItemClickListener)>($r8);
+
+        $r9 = virtualinvoke $r0.<org.connectbot.PubkeyListActivity: java.lang.Object getSystemService(java.lang.String)>("clipboard");
+
+        $r10 = (android.text.ClipboardManager) $r9;
+
+        $r0.<org.connectbot.PubkeyListActivity: android.text.ClipboardManager clipboard> = $r10;
+
+        $r11 = staticinvoke <android.view.LayoutInflater: android.view.LayoutInflater 'from'(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.PubkeyListActivity: android.view.LayoutInflater inflater> = $r11;
+
+        return;
+    }
+
+    public void onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu$ContextMenuInfo)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        android.view.ContextMenu $r1;
+        android.view.View $r2;
+        android.view.ContextMenu$ContextMenuInfo $r3;
+        boolean $z0, $z1, $z2;
+        int $i0;
+        android.widget.ListView $r4;
+        android.widget.AdapterView$AdapterContextMenuInfo $r5;
+        java.lang.Object $r6;
+        org.connectbot.bean.PubkeyBean $r7;
+        java.lang.String $r8, $r9;
+        org.connectbot.service.TerminalManager $r10;
+        android.view.MenuItem $r11;
+        org.connectbot.PubkeyListActivity$5 $r12;
+        org.connectbot.PubkeyListActivity$6 $r13;
+        org.connectbot.PubkeyListActivity$7 $r14;
+        org.connectbot.PubkeyListActivity$8 $r15;
+        org.connectbot.PubkeyListActivity$9 $r16;
+        org.connectbot.PubkeyListActivity$10 $r17;
+        org.connectbot.PubkeyListActivity$11 $r18;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $r1 := @parameter0: android.view.ContextMenu;
+
+        $r2 := @parameter1: android.view.View;
+
+        $r3 := @parameter2: android.view.ContextMenu$ContextMenuInfo;
+
+        $r5 = (android.widget.AdapterView$AdapterContextMenuInfo) $r3;
+
+        $r4 = virtualinvoke $r0.<org.connectbot.PubkeyListActivity: android.widget.ListView getListView()>();
+
+        $i0 = $r5.<android.widget.AdapterView$AdapterContextMenuInfo: int position>;
+
+        $r6 = virtualinvoke $r4.<android.widget.ListView: java.lang.Object getItemAtPosition(int)>($i0);
+
+        $r7 = (org.connectbot.bean.PubkeyBean) $r6;
+
+        $r8 = virtualinvoke $r7.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        interfaceinvoke $r1.<android.view.ContextMenu: android.view.ContextMenu setHeaderTitle(java.lang.CharSequence)>($r8);
+
+        $r8 = "IMPORTED";
+
+        $r9 = virtualinvoke $r7.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $z1 = virtualinvoke $r8.<java.lang.String: boolean equals(java.lang.Object)>($r9);
+
+        $r10 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.service.TerminalManager bound>;
+
+        if $r10 == null goto label08;
+
+        $r10 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.service.TerminalManager bound>;
+
+        $r9 = virtualinvoke $r7.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        $z0 = virtualinvoke $r10.<org.connectbot.service.TerminalManager: boolean isKeyLoaded(java.lang.String)>($r9);
+
+        if $z0 == 0 goto label08;
+
+        $z0 = 1;
+
+     label01:
+        if $z0 == 0 goto label09;
+
+        $i0 = 2131165259;
+
+     label02:
+        $r11 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>($i0);
+
+        $r12 = new org.connectbot.PubkeyListActivity$5;
+
+        specialinvoke $r12.<org.connectbot.PubkeyListActivity$5: void <init>(org.connectbot.PubkeyListActivity,boolean,org.connectbot.bean.PubkeyBean)>($r0, $z0, $r7);
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r12);
+
+        $r11 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165258);
+
+        $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem onstartToggle> = $r11;
+
+        $r11 = $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem onstartToggle>;
+
+        $z2 = virtualinvoke $r7.<org.connectbot.bean.PubkeyBean: boolean isEncrypted()>();
+
+        if $z2 != 0 goto label10;
+
+        $z2 = 1;
+
+     label03:
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setEnabled(boolean)>($z2);
+
+        $r11 = $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem onstartToggle>;
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setCheckable(boolean)>(1);
+
+        $r11 = $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem onstartToggle>;
+
+        $z2 = virtualinvoke $r7.<org.connectbot.bean.PubkeyBean: boolean isStartup()>();
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setChecked(boolean)>($z2);
+
+        $r11 = $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem onstartToggle>;
+
+        $r13 = new org.connectbot.PubkeyListActivity$6;
+
+        specialinvoke $r13.<org.connectbot.PubkeyListActivity$6: void <init>(org.connectbot.PubkeyListActivity,org.connectbot.bean.PubkeyBean)>($r0, $r7);
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r13);
+
+        $r11 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165204);
+
+        if $z1 != 0 goto label11;
+
+        $z2 = 1;
+
+     label04:
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setEnabled(boolean)>($z2);
+
+        $r14 = new org.connectbot.PubkeyListActivity$7;
+
+        specialinvoke $r14.<org.connectbot.PubkeyListActivity$7: void <init>(org.connectbot.PubkeyListActivity,org.connectbot.bean.PubkeyBean)>($r0, $r7);
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r14);
+
+        $r11 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165203);
+
+        $z2 = virtualinvoke $r7.<org.connectbot.bean.PubkeyBean: boolean isEncrypted()>();
+
+        if $z2 == 0 goto label05;
+
+        if $z1 == 0 goto label12;
+
+     label05:
+        $z2 = 1;
+
+     label06:
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setEnabled(boolean)>($z2);
+
+        $r15 = new org.connectbot.PubkeyListActivity$8;
+
+        specialinvoke $r15.<org.connectbot.PubkeyListActivity$8: void <init>(org.connectbot.PubkeyListActivity,boolean,org.connectbot.bean.PubkeyBean)>($r0, $z1, $r7);
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r15);
+
+        $r11 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165201);
+
+        if $z1 != 0 goto label13;
+
+        $z2 = 1;
+
+     label07:
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setEnabled(boolean)>($z2);
+
+        $r16 = new org.connectbot.PubkeyListActivity$9;
+
+        specialinvoke $r16.<org.connectbot.PubkeyListActivity$9: void <init>(org.connectbot.PubkeyListActivity,org.connectbot.bean.PubkeyBean)>($r0, $r7);
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r16);
+
+        $r11 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165202);
+
+        $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem confirmUse> = $r11;
+
+        $r11 = $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem confirmUse>;
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setCheckable(boolean)>(1);
+
+        $r11 = $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem confirmUse>;
+
+        $z2 = virtualinvoke $r7.<org.connectbot.bean.PubkeyBean: boolean isConfirmUse()>();
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setChecked(boolean)>($z2);
+
+        $r11 = $r0.<org.connectbot.PubkeyListActivity: android.view.MenuItem confirmUse>;
+
+        $r17 = new org.connectbot.PubkeyListActivity$10;
+
+        specialinvoke $r17.<org.connectbot.PubkeyListActivity$10: void <init>(org.connectbot.PubkeyListActivity,org.connectbot.bean.PubkeyBean)>($r0, $r7);
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r17);
+
+        $r11 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165205);
+
+        $r18 = new org.connectbot.PubkeyListActivity$11;
+
+        specialinvoke $r18.<org.connectbot.PubkeyListActivity$11: void <init>(org.connectbot.PubkeyListActivity,org.connectbot.bean.PubkeyBean,boolean)>($r0, $r7, $z0);
+
+        interfaceinvoke $r11.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r18);
+
+        return;
+
+     label08:
+        $z0 = 0;
+
+        goto label01;
+
+     label09:
+        $i0 = 2131165211;
+
+        goto label02;
+
+     label10:
+        $z2 = 0;
+
+        goto label03;
+
+     label11:
+        $z2 = 0;
+
+        goto label04;
+
+     label12:
+        $z2 = 0;
+
+        goto label06;
+
+     label13:
+        $z2 = 0;
+
+        goto label07;
+    }
+
+    public boolean onCreateOptionsMenu(android.view.Menu)
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        android.view.Menu $r1;
+        android.view.MenuItem $r2;
+        android.content.Intent $r3;
+        org.connectbot.PubkeyListActivity$3 $r4;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $r1 := @parameter0: android.view.Menu;
+
+        specialinvoke $r0.<android.app.ListActivity: boolean onCreateOptionsMenu(android.view.Menu)>($r1);
+
+        $r2 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165207);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301570);
+
+        $r3 = new android.content.Intent;
+
+        specialinvoke $r3.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/GeneratePubkeyActivity");
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setIntent(android.content.Intent)>($r3);
+
+        $r2 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165208);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301589);
+
+        $r4 = new org.connectbot.PubkeyListActivity$3;
+
+        specialinvoke $r4.<org.connectbot.PubkeyListActivity$3: void <init>(org.connectbot.PubkeyListActivity)>($r0);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r4);
+
+        return 1;
+    }
+
+    public void onStart()
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        android.content.Intent $r1;
+        android.content.ServiceConnection $r2;
+        org.connectbot.util.PubkeyDatabase $r3;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void onStart()>();
+
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/service/TerminalManager");
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity: android.content.ServiceConnection connection>;
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: boolean bindService(android.content.Intent,android.content.ServiceConnection,int)>($r1, $r2, 1);
+
+        $r3 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        if $r3 != null goto label1;
+
+        $r3 = new org.connectbot.util.PubkeyDatabase;
+
+        specialinvoke $r3.<org.connectbot.util.PubkeyDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb> = $r3;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void onStop()
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        android.content.ServiceConnection $r1;
+        org.connectbot.util.PubkeyDatabase $r2;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void onStop()>();
+
+        $r1 = $r0.<org.connectbot.PubkeyListActivity: android.content.ServiceConnection connection>;
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void unbindService(android.content.ServiceConnection)>($r1);
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        virtualinvoke $r2.<org.connectbot.util.PubkeyDatabase: void close()>();
+
+        $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb> = null;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    protected void updateList()
+    {
+        org.connectbot.PubkeyListActivity $r0;
+        org.connectbot.PubkeyListActivity$PubkeyAdapter $r1;
+        org.connectbot.util.PubkeyDatabase $r2;
+        java.util.List $r3;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity;
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        if $r2 != null goto label1;
+
+        return;
+
+     label1:
+        $r2 = $r0.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.util.PubkeyDatabase: java.util.List allPubkeys()>();
+
+        $r0.<org.connectbot.PubkeyListActivity: java.util.List pubkeys> = $r3;
+
+        $r1 = new org.connectbot.PubkeyListActivity$PubkeyAdapter;
+
+        $r3 = $r0.<org.connectbot.PubkeyListActivity: java.util.List pubkeys>;
+
+        specialinvoke $r1.<org.connectbot.PubkeyListActivity$PubkeyAdapter: void <init>(org.connectbot.PubkeyListActivity,android.content.Context,java.util.List)>($r0, $r0, $r3);
+
+        virtualinvoke $r0.<org.connectbot.PubkeyListActivity: void setListAdapter(android.widget.ListAdapter)>($r1);
+
+        return;
+    }
+}

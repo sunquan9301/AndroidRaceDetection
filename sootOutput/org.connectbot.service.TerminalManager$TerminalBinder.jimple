@@ -1,0 +1,32 @@
+public class org.connectbot.service.TerminalManager$TerminalBinder extends android.os.Binder
+{
+    final org.connectbot.service.TerminalManager this$0;
+
+    public void <init>(org.connectbot.service.TerminalManager)
+    {
+        org.connectbot.service.TerminalManager$TerminalBinder $r0;
+        org.connectbot.service.TerminalManager $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$TerminalBinder;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager;
+
+        $r0.<org.connectbot.service.TerminalManager$TerminalBinder: org.connectbot.service.TerminalManager this$0> = $r1;
+
+        specialinvoke $r0.<android.os.Binder: void <init>()>();
+
+        return;
+    }
+
+    public org.connectbot.service.TerminalManager getService()
+    {
+        org.connectbot.service.TerminalManager$TerminalBinder $r0;
+        org.connectbot.service.TerminalManager $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$TerminalBinder;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager$TerminalBinder: org.connectbot.service.TerminalManager this$0>;
+
+        return $r1;
+    }
+}

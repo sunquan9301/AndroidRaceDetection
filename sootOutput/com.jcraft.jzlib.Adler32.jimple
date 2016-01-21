@@ -1,0 +1,238 @@
+public final class com.jcraft.jzlib.Adler32 extends java.lang.Object implements com.jcraft.jzlib.Checksum
+{
+    private long s1;
+    private long s2;
+
+    public void <init>()
+    {
+        com.jcraft.jzlib.Adler32 $r0;
+
+        $r0 := @this: com.jcraft.jzlib.Adler32;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = 1L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = 0L;
+
+        return;
+    }
+
+    public long getValue()
+    {
+        com.jcraft.jzlib.Adler32 $r0;
+        long $l0, $l1;
+
+        $r0 := @this: com.jcraft.jzlib.Adler32;
+
+        $l0 = $r0.<com.jcraft.jzlib.Adler32: long s2>;
+
+        $l0 = $l0 << 16;
+
+        $l1 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $l1 = $l0 | $l1;
+
+        return $l1;
+    }
+
+    public void reset()
+    {
+        com.jcraft.jzlib.Adler32 $r0;
+
+        $r0 := @this: com.jcraft.jzlib.Adler32;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = 1L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = 0L;
+
+        return;
+    }
+
+    public void reset(long)
+    {
+        com.jcraft.jzlib.Adler32 $r0;
+        long $l0, $l1;
+
+        $r0 := @this: com.jcraft.jzlib.Adler32;
+
+        $l0 := @parameter0: long;
+
+        $l1 = $l0 & 65535L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = $l1;
+
+        $l1 = $l0 >> 16;
+
+        $l1 = $l1 & 65535L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = $l1;
+
+        return;
+    }
+
+    public void update(byte[], int, int)
+    {
+        com.jcraft.jzlib.Adler32 $r0;
+        byte[] $r1;
+        int $i0, $i1, $i2, $i3, $i8, $i9;
+        byte $b4;
+        long $l5, $l7;
+        short $s6;
+
+        $r0 := @this: com.jcraft.jzlib.Adler32;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        if $i1 != 1 goto label1;
+
+        $l5 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $b4 = $r1[$i0];
+
+        $s6 = $b4 & 255;
+
+        $l7 = (long) $s6;
+
+        $l7 = $l5 + $l7;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = $l7;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s2>;
+
+        $l5 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $l7 = $l7 + $l5;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = $l7;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $l7 = $l7 % 65521L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = $l7;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s2>;
+
+        $l7 = $l7 % 65521L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = $l7;
+
+        return;
+
+     label1:
+        $i3 = $i1 % 5552;
+
+        $i2 = $i1 / 5552;
+
+     label2:
+        $i8 = $i2 + -1;
+
+        if $i2 <= 0 goto label5;
+
+        $i2 = 5552;
+
+        $i1 = $i0;
+
+     label3:
+        if $i2 <= 0 goto label4;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $b4 = $r1[$i1];
+
+        $s6 = $b4 & 255;
+
+        $l5 = (long) $s6;
+
+        $l7 = $l7 + $l5;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = $l7;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s2>;
+
+        $l5 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $l7 = $l7 + $l5;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = $l7;
+
+        $i2 = $i2 + -1;
+
+        $i1 = $i1 + 1;
+
+        goto label3;
+
+     label4:
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $l7 = $l7 % 65521L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = $l7;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s2>;
+
+        $l7 = $l7 % 65521L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = $l7;
+
+        $i2 = $i8;
+
+        $i0 = $i1;
+
+        goto label2;
+
+     label5:
+        $i9 = $i3;
+
+        $i8 = $i0;
+
+     label6:
+        if $i9 <= 0 goto label7;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $b4 = $r1[$i8];
+
+        $s6 = $b4 & 255;
+
+        $l5 = (long) $s6;
+
+        $l7 = $l7 + $l5;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = $l7;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s2>;
+
+        $l5 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $l7 = $l7 + $l5;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = $l7;
+
+        $i9 = $i9 + -1;
+
+        $i8 = $i8 + 1;
+
+        goto label6;
+
+     label7:
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s1>;
+
+        $l7 = $l7 % 65521L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s1> = $l7;
+
+        $l7 = $r0.<com.jcraft.jzlib.Adler32: long s2>;
+
+        $l7 = $l7 % 65521L;
+
+        $r0.<com.jcraft.jzlib.Adler32: long s2> = $l7;
+
+        return;
+    }
+}

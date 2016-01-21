@@ -1,0 +1,78 @@
+public class com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest extends java.lang.Object
+{
+    public java.lang.String bindAddress;
+    public int bindPort;
+    byte[] payload;
+    public boolean wantReply;
+
+    public void <init>(boolean, java.lang.String, int)
+    {
+        com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest $r0;
+        boolean $z0;
+        java.lang.String $r1;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $i0 := @parameter2: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: boolean wantReply> = $z0;
+
+        $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: java.lang.String bindAddress> = $r1;
+
+        $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: int bindPort> = $i0;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2;
+        boolean $z0;
+        java.lang.String $r3;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(80);
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>("cancel-tcpip-forward");
+
+        $z0 = $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: boolean wantReply>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeBoolean(boolean)>($z0);
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: java.lang.String bindAddress>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>($r3);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: int bindPort>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: byte[] payload> = $r2;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: byte[] payload>;
+
+        return $r2;
+    }
+}

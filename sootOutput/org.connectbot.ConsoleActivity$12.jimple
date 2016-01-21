@@ -1,0 +1,232 @@
+class org.connectbot.ConsoleActivity$12 extends android.view.GestureDetector$SimpleOnGestureListener
+{
+    final org.connectbot.ConsoleActivity this$0;
+    private float totalY;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$12 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$12;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$12: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<android.view.GestureDetector$SimpleOnGestureListener: void <init>()>();
+
+        $r0.<org.connectbot.ConsoleActivity$12: float totalY> = 0.0F;
+
+        return;
+    }
+
+    public void onLongPress(android.view.MotionEvent)
+    {
+        org.connectbot.ConsoleActivity$12 $r0;
+        android.view.MotionEvent $r1;
+        org.connectbot.ConsoleActivity $r2, $r3;
+        android.support.v4.view.ViewPager $r4;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$12;
+
+        $r1 := @parameter0: android.view.MotionEvent;
+
+        specialinvoke $r0.<android.view.GestureDetector$SimpleOnGestureListener: void onLongPress(android.view.MotionEvent)>($r1);
+
+        $r2 = $r0.<org.connectbot.ConsoleActivity$12: org.connectbot.ConsoleActivity this$0>;
+
+        $r3 = $r0.<org.connectbot.ConsoleActivity$12: org.connectbot.ConsoleActivity this$0>;
+
+        $r4 = $r3.<org.connectbot.ConsoleActivity: android.support.v4.view.ViewPager pager>;
+
+        virtualinvoke $r2.<org.connectbot.ConsoleActivity: void openContextMenu(android.view.View)>($r4);
+
+        return;
+    }
+
+    public boolean onScroll(android.view.MotionEvent, android.view.MotionEvent, float, float)
+    {
+        org.connectbot.ConsoleActivity$12 $r0;
+        android.view.MotionEvent $r1, $r2;
+        float $f0, $f1, $f2;
+        int $i0, $i2;
+        org.connectbot.ConsoleActivity $r3;
+        boolean $z0;
+        org.connectbot.service.TerminalBridge $r4;
+        android.view.ViewConfiguration $r5;
+        byte $b1;
+        org.connectbot.ConsoleActivity$TerminalPagerAdapter $r6;
+        org.connectbot.TerminalView $r7, $r8;
+        de.mud.terminal.VDUBuffer $r9;
+        de.mud.terminal.vt320 $r10;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$12;
+
+        $r1 := @parameter0: android.view.MotionEvent;
+
+        $r2 := @parameter1: android.view.MotionEvent;
+
+        $f0 := @parameter2: float;
+
+        $f1 := @parameter3: float;
+
+        $r3 = $r0.<org.connectbot.ConsoleActivity$12: org.connectbot.ConsoleActivity this$0>;
+
+        $r4 = $r3.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalBridge copySource>;
+
+        if $r4 == null goto label1;
+
+        $r3 = $r0.<org.connectbot.ConsoleActivity$12: org.connectbot.ConsoleActivity this$0>;
+
+        $r4 = $r3.<org.connectbot.ConsoleActivity: org.connectbot.service.TerminalBridge copySource>;
+
+        $z0 = virtualinvoke $r4.<org.connectbot.service.TerminalBridge: boolean isSelectingForCopy()>();
+
+        if $z0 == 0 goto label1;
+
+        return 0;
+
+     label1:
+        if $r1 == null goto label2;
+
+        if $r2 != null goto label3;
+
+     label2:
+        return 0;
+
+     label3:
+        $i0 = virtualinvoke $r2.<android.view.MotionEvent: int getAction()>();
+
+        if $i0 != 1 goto label4;
+
+        $r0.<org.connectbot.ConsoleActivity$12: float totalY> = 0.0F;
+
+     label4:
+        $r3 = $r0.<org.connectbot.ConsoleActivity$12: org.connectbot.ConsoleActivity this$0>;
+
+        $r5 = staticinvoke <android.view.ViewConfiguration: android.view.ViewConfiguration get(android.content.Context)>($r3);
+
+        $i0 = virtualinvoke $r5.<android.view.ViewConfiguration: int getScaledTouchSlop()>();
+
+        $f0 = virtualinvoke $r1.<android.view.MotionEvent: float getX()>();
+
+        $f2 = virtualinvoke $r2.<android.view.MotionEvent: float getX()>();
+
+        $f2 = $f0 - $f2;
+
+        $f2 = staticinvoke <java.lang.Math: float abs(float)>($f2);
+
+        $i0 = $i0 * 4;
+
+        $f0 = (float) $i0;
+
+        $b1 = $f2 cmpg $f0;
+
+        if $b1 >= 0 goto label8;
+
+        $r3 = $r0.<org.connectbot.ConsoleActivity$12: org.connectbot.ConsoleActivity this$0>;
+
+        $r6 = $r3.<org.connectbot.ConsoleActivity: org.connectbot.ConsoleActivity$TerminalPagerAdapter adapter>;
+
+        $r7 = virtualinvoke $r6.<org.connectbot.ConsoleActivity$TerminalPagerAdapter: org.connectbot.TerminalView getCurrentTerminalView()>();
+
+        if $r7 != null goto label5;
+
+        return 0;
+
+     label5:
+        $r8 = (org.connectbot.TerminalView) $r7;
+
+        $f2 = $r0.<org.connectbot.ConsoleActivity$12: float totalY>;
+
+        $f2 = $f2 + $f1;
+
+        $r0.<org.connectbot.ConsoleActivity$12: float totalY> = $f2;
+
+        $f2 = $r0.<org.connectbot.ConsoleActivity$12: float totalY>;
+
+        $r4 = $r8.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $i0 = $r4.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $f1 = (float) $i0;
+
+        $f2 = $f2 / $f1;
+
+        $i0 = (int) $f2;
+
+        $f2 = virtualinvoke $r2.<android.view.MotionEvent: float getX()>();
+
+        $i2 = virtualinvoke $r7.<android.view.View: int getWidth()>();
+
+        $i2 = $i2 / 2;
+
+        $f1 = (float) $i2;
+
+        $b1 = $f2 cmpl $f1;
+
+        if $b1 <= 0 goto label6;
+
+        if $i0 == 0 goto label8;
+
+        $r4 = $r8.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r9 = $r4.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i2 = virtualinvoke $r9.<de.mud.terminal.VDUBuffer: int getWindowBase()>();
+
+        $r4 = $r8.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r9 = $r4.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i2 = $i2 + $i0;
+
+        virtualinvoke $r9.<de.mud.terminal.VDUBuffer: void setWindowBase(int)>($i2);
+
+        $r0.<org.connectbot.ConsoleActivity$12: float totalY> = 0.0F;
+
+        return 1;
+
+     label6:
+        if $i0 <= 5 goto label7;
+
+        $r4 = $r8.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r9 = $r4.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r10 = (de.mud.terminal.vt320) $r9;
+
+        virtualinvoke $r10.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(18, 32, 0);
+
+        $r4 = $r8.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r4.<org.connectbot.service.TerminalBridge: void tryKeyVibrate()>();
+
+        $r0.<org.connectbot.ConsoleActivity$12: float totalY> = 0.0F;
+
+        return 1;
+
+     label7:
+        if $i0 >= -5 goto label8;
+
+        $r4 = $r8.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r9 = $r4.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r10 = (de.mud.terminal.vt320) $r9;
+
+        virtualinvoke $r10.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(19, 32, 0);
+
+        $r4 = $r8.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r4.<org.connectbot.service.TerminalBridge: void tryKeyVibrate()>();
+
+        $r0.<org.connectbot.ConsoleActivity$12: float totalY> = 0.0F;
+
+        return 1;
+
+     label8:
+        return 0;
+    }
+}

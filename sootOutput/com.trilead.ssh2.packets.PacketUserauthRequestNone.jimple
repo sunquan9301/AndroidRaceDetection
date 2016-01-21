@@ -1,0 +1,65 @@
+public class com.trilead.ssh2.packets.PacketUserauthRequestNone extends java.lang.Object
+{
+    byte[] payload;
+    java.lang.String serviceName;
+    java.lang.String userName;
+
+    public void <init>(java.lang.String, java.lang.String)
+    {
+        com.trilead.ssh2.packets.PacketUserauthRequestNone $r0;
+        java.lang.String $r1, $r2;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketUserauthRequestNone;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketUserauthRequestNone: java.lang.String serviceName> = $r1;
+
+        $r0.<com.trilead.ssh2.packets.PacketUserauthRequestNone: java.lang.String userName> = $r2;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketUserauthRequestNone $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2;
+        java.lang.String $r3;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketUserauthRequestNone;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketUserauthRequestNone: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(50);
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketUserauthRequestNone: java.lang.String userName>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>($r3);
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketUserauthRequestNone: java.lang.String serviceName>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>("none");
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketUserauthRequestNone: byte[] payload> = $r2;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketUserauthRequestNone: byte[] payload>;
+
+        return $r2;
+    }
+}

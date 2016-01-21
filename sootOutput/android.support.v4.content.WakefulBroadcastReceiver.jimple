@@ -1,0 +1,31 @@
+public abstract class android.support.v4.content.WakefulBroadcastReceiver extends android.content.BroadcastReceiver
+{
+    private static final android.util.SparseArray mActiveWakeLocks;
+    private static int mNextId;
+
+    static void <clinit>()
+    {
+        android.util.SparseArray $r0;
+
+        $r0 = new android.util.SparseArray;
+
+        specialinvoke $r0.<android.util.SparseArray: void <init>()>();
+
+        <android.support.v4.content.WakefulBroadcastReceiver: android.util.SparseArray mActiveWakeLocks> = $r0;
+
+        <android.support.v4.content.WakefulBroadcastReceiver: int mNextId> = 1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        android.support.v4.content.WakefulBroadcastReceiver $r0;
+
+        $r0 := @this: android.support.v4.content.WakefulBroadcastReceiver;
+
+        specialinvoke $r0.<android.content.BroadcastReceiver: void <init>()>();
+
+        return;
+    }
+}

@@ -1,0 +1,121 @@
+class org.connectbot.ConsoleActivity$URLItemListener extends java.lang.Object implements android.widget.AdapterView$OnItemClickListener
+{
+    private java.lang.ref.WeakReference contextRef;
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity, android.content.Context)
+    {
+        org.connectbot.ConsoleActivity$URLItemListener $r0;
+        org.connectbot.ConsoleActivity $r1;
+        android.content.Context $r2;
+        java.lang.ref.WeakReference $r3;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$URLItemListener;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r2 := @parameter1: android.content.Context;
+
+        $r0.<org.connectbot.ConsoleActivity$URLItemListener: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r3 = new java.lang.ref.WeakReference;
+
+        specialinvoke $r3.<java.lang.ref.WeakReference: void <init>(java.lang.Object)>($r2);
+
+        $r0.<org.connectbot.ConsoleActivity$URLItemListener: java.lang.ref.WeakReference contextRef> = $r3;
+
+        return;
+    }
+
+    public void onItemClick(android.widget.AdapterView, android.view.View, int, long)
+    {
+        org.connectbot.ConsoleActivity$URLItemListener $r0;
+        android.widget.AdapterView $r1;
+        android.view.View $r2;
+        int $i0;
+        long $l1;
+        java.lang.Exception $r3;
+        android.content.Intent $r4;
+        java.lang.String $r5, $r11;
+        java.lang.ref.WeakReference $r6;
+        java.lang.Object $r7;
+        android.content.Context $r8;
+        android.widget.TextView $r9;
+        java.lang.CharSequence $r10;
+        java.lang.StringBuilder $r12;
+        android.net.Uri $r13;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$URLItemListener;
+
+        $r1 := @parameter0: android.widget.AdapterView;
+
+        $r2 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $l1 := @parameter3: long;
+
+        $r6 = $r0.<org.connectbot.ConsoleActivity$URLItemListener: java.lang.ref.WeakReference contextRef>;
+
+        $r7 = virtualinvoke $r6.<java.lang.ref.WeakReference: java.lang.Object get()>();
+
+        $r8 = (android.content.Context) $r7;
+
+        if $r8 != null goto label1;
+
+        return;
+
+     label1:
+        $r9 = (android.widget.TextView) $r2;
+
+        $r10 = virtualinvoke $r9.<android.widget.TextView: java.lang.CharSequence getText()>();
+
+        $r11 = interfaceinvoke $r10.<java.lang.CharSequence: java.lang.String toString()>();
+
+        $r5 = $r11;
+
+        $i0 = virtualinvoke $r11.<java.lang.String: int indexOf(java.lang.String)>("://");
+
+     label2:
+        if $i0 >= 0 goto label5;
+
+     label3:
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("http://");
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r11);
+
+        $r11 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label4:
+        $r5 = $r11;
+
+     label5:
+        $r4 = new android.content.Intent;
+
+        $r13 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r5);
+
+        specialinvoke $r4.<android.content.Intent: void <init>(java.lang.String,android.net.Uri)>("android.intent.action.VIEW", $r13);
+
+        virtualinvoke $r8.<android.content.Context: void startActivity(android.content.Intent)>($r4);
+
+     label6:
+        return;
+
+     label7:
+        $r3 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.ConsoleActivity", "couldn\'t open URL", $r3);
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label7;
+        catch java.lang.Exception from label3 to label4 with label7;
+        catch java.lang.Exception from label5 to label6 with label7;
+    }
+}

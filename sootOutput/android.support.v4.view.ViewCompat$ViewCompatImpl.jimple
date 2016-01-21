@@ -1,0 +1,49 @@
+interface  android.support.v4.view.ViewCompat$ViewCompatImpl extends java.lang.Object
+{
+
+    public abstract boolean canScrollHorizontally(android.view.View, int);
+
+    public abstract boolean canScrollVertically(android.view.View, int);
+
+    public abstract boolean getFitsSystemWindows(android.view.View);
+
+    public abstract int getImportantForAccessibility(android.view.View);
+
+    public abstract int getLayerType(android.view.View);
+
+    public abstract int getLayoutDirection(android.view.View);
+
+    public abstract int getOverScrollMode(android.view.View);
+
+    public abstract android.view.ViewParent getParentForAccessibility(android.view.View);
+
+    public abstract float getScaleX(android.view.View);
+
+    public abstract boolean isOpaque(android.view.View);
+
+    public abstract void postInvalidateOnAnimation(android.view.View);
+
+    public abstract void postInvalidateOnAnimation(android.view.View, int, int, int, int);
+
+    public abstract void postOnAnimation(android.view.View, java.lang.Runnable);
+
+    public abstract void setAccessibilityDelegate(android.view.View, android.support.v4.view.AccessibilityDelegateCompat);
+
+    public abstract void setChildrenDrawingOrderEnabled(android.view.ViewGroup, boolean);
+
+    public abstract void setElevation(android.view.View, float);
+
+    public abstract void setImportantForAccessibility(android.view.View, int);
+
+    public abstract void setLayerPaint(android.view.View, android.graphics.Paint);
+
+    public abstract void setLayerType(android.view.View, int, android.graphics.Paint);
+
+    public abstract void setSaveFromParentEnabled(android.view.View, boolean);
+
+    public abstract void setScaleX(android.view.View, float);
+
+    public abstract void setScaleY(android.view.View, float);
+
+    public abstract void stopNestedScroll(android.view.View);
+}

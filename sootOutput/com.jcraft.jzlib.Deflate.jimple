@@ -1,0 +1,4614 @@
+public final class com.jcraft.jzlib.Deflate extends java.lang.Object implements java.lang.Cloneable
+{
+    private static final com.jcraft.jzlib.Deflate$Config[] config_table;
+    private static final java.lang.String[] z_errmsg;
+    short bi_buf;
+    int bi_valid;
+    short[] bl_count;
+    com.jcraft.jzlib.Tree bl_desc;
+    short[] bl_tree;
+    int block_start;
+    int d_buf;
+    com.jcraft.jzlib.Tree d_desc;
+    byte data_type;
+    byte[] depth;
+    short[] dyn_dtree;
+    short[] dyn_ltree;
+    com.jcraft.jzlib.GZIPHeader gheader;
+    int good_match;
+    int hash_bits;
+    int hash_mask;
+    int hash_shift;
+    int hash_size;
+    short[] head;
+    int[] heap;
+    int heap_len;
+    int heap_max;
+    int ins_h;
+    byte[] l_buf;
+    com.jcraft.jzlib.Tree l_desc;
+    int last_eob_len;
+    int last_flush;
+    int last_lit;
+    int level;
+    int lit_bufsize;
+    int lookahead;
+    int match_available;
+    int match_length;
+    int match_start;
+    int matches;
+    int max_chain_length;
+    int max_lazy_match;
+    byte method;
+    short[] next_code;
+    int nice_match;
+    int opt_len;
+    int pending;
+    byte[] pending_buf;
+    int pending_buf_size;
+    int pending_out;
+    short[] prev;
+    int prev_length;
+    int prev_match;
+    int static_len;
+    int status;
+    int strategy;
+    com.jcraft.jzlib.ZStream strm;
+    int strstart;
+    int w_bits;
+    int w_mask;
+    int w_size;
+    byte[] window;
+    int window_size;
+    int wrap;
+
+    static void <clinit>()
+    {
+        com.jcraft.jzlib.Deflate$Config[] $r0;
+        com.jcraft.jzlib.Deflate$Config $r1;
+        java.lang.String[] $r2;
+
+        $r0 = newarray (com.jcraft.jzlib.Deflate$Config)[10];
+
+        <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table> = $r0;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(0, 0, 0, 0, 0);
+
+        $r0[0] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(4, 4, 8, 4, 1);
+
+        $r0[1] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(4, 5, 16, 8, 1);
+
+        $r0[2] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(4, 6, 32, 32, 1);
+
+        $r0[3] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(4, 4, 16, 16, 2);
+
+        $r0[4] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(8, 16, 32, 32, 2);
+
+        $r0[5] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(8, 16, 128, 128, 2);
+
+        $r0[6] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(8, 32, 128, 256, 2);
+
+        $r0[7] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(32, 128, 258, 1024, 2);
+
+        $r0[8] = $r1;
+
+        $r0 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $r1 = new com.jcraft.jzlib.Deflate$Config;
+
+        specialinvoke $r1.<com.jcraft.jzlib.Deflate$Config: void <init>(int,int,int,int,int)>(32, 258, 258, 4096, 2);
+
+        $r0[9] = $r1;
+
+        $r2 = newarray (java.lang.String)[10];
+
+        $r2[0] = "need dictionary";
+
+        $r2[1] = "stream end";
+
+        $r2[2] = "";
+
+        $r2[3] = "file error";
+
+        $r2[4] = "stream error";
+
+        $r2[5] = "data error";
+
+        $r2[6] = "insufficient memory";
+
+        $r2[7] = "buffer error";
+
+        $r2[8] = "incompatible version";
+
+        $r2[9] = "";
+
+        <com.jcraft.jzlib.Deflate: java.lang.String[] z_errmsg> = $r2;
+
+        return;
+    }
+
+    void <init>(com.jcraft.jzlib.ZStream)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        com.jcraft.jzlib.ZStream $r1;
+        com.jcraft.jzlib.Tree $r2;
+        short[] $r3;
+        int[] $r4;
+        byte[] $r5;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: com.jcraft.jzlib.ZStream;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Deflate: int wrap> = 1;
+
+        $r2 = new com.jcraft.jzlib.Tree;
+
+        specialinvoke $r2.<com.jcraft.jzlib.Tree: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree l_desc> = $r2;
+
+        $r2 = new com.jcraft.jzlib.Tree;
+
+        specialinvoke $r2.<com.jcraft.jzlib.Tree: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree d_desc> = $r2;
+
+        $r2 = new com.jcraft.jzlib.Tree;
+
+        specialinvoke $r2.<com.jcraft.jzlib.Tree: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree bl_desc> = $r2;
+
+        $r3 = newarray (short)[16];
+
+        $r0.<com.jcraft.jzlib.Deflate: short[] bl_count> = $r3;
+
+        $r3 = newarray (short)[16];
+
+        $r0.<com.jcraft.jzlib.Deflate: short[] next_code> = $r3;
+
+        $r4 = newarray (int)[573];
+
+        $r0.<com.jcraft.jzlib.Deflate: int[] heap> = $r4;
+
+        $r5 = newarray (byte)[573];
+
+        $r0.<com.jcraft.jzlib.Deflate: byte[] depth> = $r5;
+
+        $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader gheader> = null;
+
+        $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm> = $r1;
+
+        $r3 = newarray (short)[1146];
+
+        $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree> = $r3;
+
+        $r3 = newarray (short)[122];
+
+        $r0.<com.jcraft.jzlib.Deflate: short[] dyn_dtree> = $r3;
+
+        $r3 = newarray (short)[78];
+
+        $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree> = $r3;
+
+        return;
+    }
+
+    private int deflateInit(int, int, int, int, int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        byte $b5;
+        com.jcraft.jzlib.ZStream $r1;
+        com.jcraft.jzlib.CRC32 $r2;
+        byte[] $r3;
+        short[] $r4;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        $i4 := @parameter4: int;
+
+        $b5 = 1;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r1.<com.jcraft.jzlib.ZStream: java.lang.String msg> = null;
+
+        if $i0 != -1 goto label1;
+
+        $i0 = 6;
+
+     label1:
+        if $i2 >= 0 goto label4;
+
+        $b5 = 0;
+
+        $i2 = neg $i2;
+
+     label2:
+        if $i3 < 1 goto label3;
+
+        if $i3 > 9 goto label3;
+
+        if $i1 != 8 goto label3;
+
+        if $i2 < 9 goto label3;
+
+        if $i2 > 15 goto label3;
+
+        if $i0 < 0 goto label3;
+
+        if $i0 > 9 goto label3;
+
+        if $i4 < 0 goto label3;
+
+        if $i4 <= 2 goto label5;
+
+     label3:
+        return -2;
+
+     label4:
+        if $i2 <= 15 goto label2;
+
+        $b5 = 2;
+
+        $i2 = $i2 + -16;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r2 = new com.jcraft.jzlib.CRC32;
+
+        specialinvoke $r2.<com.jcraft.jzlib.CRC32: void <init>()>();
+
+        $r1.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler> = $r2;
+
+        goto label2;
+
+     label5:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r1.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Deflate dstate> = $r0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int wrap> = $b5;
+
+        $r0.<com.jcraft.jzlib.Deflate: int w_bits> = $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_bits>;
+
+        $i2 = 1 << $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int w_size> = $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i2 = $i2 + -1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int w_mask> = $i2;
+
+        $i2 = $i3 + 7;
+
+        $r0.<com.jcraft.jzlib.Deflate: int hash_bits> = $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_bits>;
+
+        $i2 = 1 << $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int hash_size> = $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_size>;
+
+        $i2 = $i2 + -1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int hash_mask> = $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_bits>;
+
+        $i2 = $i2 + 3;
+
+        $i2 = $i2 + -1;
+
+        $i2 = $i2 / 3;
+
+        $r0.<com.jcraft.jzlib.Deflate: int hash_shift> = $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i2 = $i2 * 2;
+
+        $r3 = newarray (byte)[$i2];
+
+        $r0.<com.jcraft.jzlib.Deflate: byte[] window> = $r3;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $r4 = newarray (short)[$i2];
+
+        $r0.<com.jcraft.jzlib.Deflate: short[] prev> = $r4;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_size>;
+
+        $r4 = newarray (short)[$i2];
+
+        $r0.<com.jcraft.jzlib.Deflate: short[] head> = $r4;
+
+        $i3 = $i3 + 6;
+
+        $i3 = 1 << $i3;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lit_bufsize> = $i3;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int lit_bufsize>;
+
+        $i3 = $i3 * 3;
+
+        $r3 = newarray (byte)[$i3];
+
+        $r0.<com.jcraft.jzlib.Deflate: byte[] pending_buf> = $r3;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int lit_bufsize>;
+
+        $i3 = $i3 * 3;
+
+        $r0.<com.jcraft.jzlib.Deflate: int pending_buf_size> = $i3;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int lit_bufsize>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int d_buf> = $i3;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int lit_bufsize>;
+
+        $r3 = newarray (byte)[$i3];
+
+        $r0.<com.jcraft.jzlib.Deflate: byte[] l_buf> = $r3;
+
+        $r0.<com.jcraft.jzlib.Deflate: int level> = $i0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strategy> = $i4;
+
+        $b5 = (byte) $i1;
+
+        $r0.<com.jcraft.jzlib.Deflate: byte method> = $b5;
+
+        $i4 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: int deflateReset()>();
+
+        return $i4;
+    }
+
+    private byte[] dup(byte[])
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        byte[] $r1, $r2;
+        int $i0;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 = lengthof $r1;
+
+        $r2 = newarray (byte)[$i0];
+
+        $i0 = lengthof $r2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r2, 0, $i0);
+
+        return $r2;
+    }
+
+    private int[] dup(int[])
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int[] $r1, $r2;
+        int $i0;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: int[];
+
+        $i0 = lengthof $r1;
+
+        $r2 = newarray (int)[$i0];
+
+        $i0 = lengthof $r2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r2, 0, $i0);
+
+        return $r2;
+    }
+
+    private short[] dup(short[])
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        short[] $r1, $r2;
+        int $i0;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: short[];
+
+        $i0 = lengthof $r1;
+
+        $r2 = newarray (short)[$i0];
+
+        $i0 = lengthof $r2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 0, $r2, 0, $i0);
+
+        return $r2;
+    }
+
+    static boolean smaller(short[], int, int, byte[])
+    {
+        short[] $r0;
+        int $i0, $i1, $i4;
+        byte[] $r1;
+        short $s2, $s3;
+        byte $b5, $b6;
+
+        $r0 := @parameter0: short[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r1 := @parameter3: byte[];
+
+        $i4 = $i0 * 2;
+
+        $s3 = $r0[$i4];
+
+        $i4 = $i1 * 2;
+
+        $s2 = $r0[$i4];
+
+        if $s3 < $s2 goto label1;
+
+        if $s3 != $s2 goto label2;
+
+        $b6 = $r1[$i0];
+
+        $b5 = $r1[$i1];
+
+        if $b6 > $b5 goto label2;
+
+     label1:
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    void _tr_align()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        short[] $r1;
+        int $i0, $i1;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>(2, 3);
+
+        $r1 = <com.jcraft.jzlib.StaticTree: short[] static_ltree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>(256, $r1);
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void bi_flush()>();
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int last_eob_len>;
+
+        $i0 = $i0 + 1;
+
+        $i1 = $i0 + 10;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        $i1 = $i1 - $i0;
+
+        if $i1 >= 9 goto label1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>(2, 3);
+
+        $r1 = <com.jcraft.jzlib.StaticTree: short[] static_ltree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>(256, $r1);
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void bi_flush()>();
+
+     label1:
+        $r0.<com.jcraft.jzlib.Deflate: int last_eob_len> = 7;
+
+        return;
+    }
+
+    void _tr_flush_block(int, int, boolean)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3, $i4, $i7;
+        boolean $z0;
+        byte $b5, $b6;
+        com.jcraft.jzlib.Tree $r1;
+        short[] $r2, $r3;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        $b5 = 1;
+
+        $i2 = 0;
+
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int level>;
+
+        if $i4 <= 0 goto label04;
+
+        $b6 = $r0.<com.jcraft.jzlib.Deflate: byte data_type>;
+
+        if $b6 != 2 goto label01;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void set_data_type()>();
+
+     label01:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree l_desc>;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Tree: void build_tree(com.jcraft.jzlib.Deflate)>($r0);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree d_desc>;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.Tree: void build_tree(com.jcraft.jzlib.Deflate)>($r0);
+
+        $i2 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: int build_bl_tree()>();
+
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int opt_len>;
+
+        $i4 = $i4 + 3;
+
+        $i4 = $i4 + 7;
+
+        $i3 = $i4 >>> 3;
+
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int static_len>;
+
+        $i4 = $i4 + 3;
+
+        $i4 = $i4 + 7;
+
+        $i4 = $i4 >>> 3;
+
+        if $i4 > $i3 goto label02;
+
+        $i3 = $i4;
+
+     label02:
+        $i7 = $i1 + 4;
+
+        if $i7 > $i3 goto label05;
+
+        if $i0 == -1 goto label05;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void _tr_stored_block(int,int,boolean)>($i0, $i1, $z0);
+
+     label03:
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void init_block()>();
+
+        if $z0 == 0 goto label11;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void bi_windup()>();
+
+        return;
+
+     label04:
+        $i4 = $i1 + 5;
+
+        $i3 = $i4;
+
+        goto label02;
+
+     label05:
+        if $i4 != $i3 goto label08;
+
+        if $z0 == 0 goto label07;
+
+     label06:
+        $i7 = $b5 + 2;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i7, 3);
+
+        $r2 = <com.jcraft.jzlib.StaticTree: short[] static_ltree>;
+
+        $r3 = <com.jcraft.jzlib.StaticTree: short[] static_dtree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void compress_block(short[],short[])>($r2, $r3);
+
+        goto label03;
+
+     label07:
+        $b5 = 0;
+
+        goto label06;
+
+     label08:
+        if $z0 == 0 goto label10;
+
+     label09:
+        $i7 = $b5 + 4;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i7, 3);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree l_desc>;
+
+        $i7 = $r1.<com.jcraft.jzlib.Tree: int max_code>;
+
+        $i7 = $i7 + 1;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree d_desc>;
+
+        $i4 = $r1.<com.jcraft.jzlib.Tree: int max_code>;
+
+        $i4 = $i4 + 1;
+
+        $i3 = $i2 + 1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_all_trees(int,int,int)>($i7, $i4, $i3);
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void compress_block(short[],short[])>($r3, $r2);
+
+        goto label03;
+
+     label10:
+        $b5 = 0;
+
+        goto label09;
+
+     label11:
+        return;
+    }
+
+    void _tr_stored_block(int, int, boolean)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i3;
+        boolean $z0;
+        byte $b2;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        if $z0 == 0 goto label2;
+
+        $b2 = 1;
+
+     label1:
+        $i3 = $b2 + 0;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i3, 3);
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void copy_block(int,int,boolean)>($i0, $i1, 1);
+
+        return;
+
+     label2:
+        $b2 = 0;
+
+        goto label1;
+    }
+
+    boolean _tr_tally(int, int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3;
+        byte[] $r1;
+        int[] $r2;
+        byte $b4;
+        short[] $r3;
+        short $s5;
+        long $l6, $l7, $l8;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] pending_buf>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int d_buf>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        $i3 = $i3 * 2;
+
+        $i3 = $i2 + $i3;
+
+        $i2 = $i0 >>> 8;
+
+        $b4 = (byte) $i2;
+
+        $r1[$i3] = $b4;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] pending_buf>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int d_buf>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        $i2 = $i2 * 2;
+
+        $i3 = $i3 + $i2;
+
+        $i3 = $i3 + 1;
+
+        $b4 = (byte) $i0;
+
+        $r1[$i3] = $b4;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] l_buf>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        $b4 = (byte) $i1;
+
+        $r1[$i3] = $b4;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        $i3 = $i3 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_lit> = $i3;
+
+        if $i0 != 0 goto label3;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $i3 = $i1 * 2;
+
+        $s5 = $r3[$i3];
+
+        $i2 = $s5 + 1;
+
+        $s5 = (short) $i2;
+
+        $r3[$i3] = $s5;
+
+     label1:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        $i3 = $i3 & 8191;
+
+        if $i3 != 0 goto label5;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int level>;
+
+        if $i3 <= 2 goto label5;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        $i2 = $i3 * 8;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int block_start>;
+
+        $i0 = $i3 - $i1;
+
+        $i1 = 0;
+
+     label2:
+        if $i1 >= 30 goto label4;
+
+        $l6 = (long) $i2;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        $i3 = $i1 * 2;
+
+        $s5 = $r3[$i3];
+
+        $l7 = (long) $s5;
+
+        $r2 = <com.jcraft.jzlib.Tree: int[] extra_dbits>;
+
+        $i3 = $r2[$i1];
+
+        $l8 = (long) $i3;
+
+        $l8 = 5L + $l8;
+
+        $l8 = $l7 * $l8;
+
+        $l8 = $l6 + $l8;
+
+        $i2 = (int) $l8;
+
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label3:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int matches>;
+
+        $i3 = $i3 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int matches> = $i3;
+
+        $i3 = $i0 + -1;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $r1 = <com.jcraft.jzlib.Tree: byte[] _length_code>;
+
+        $b4 = $r1[$i1];
+
+        $i2 = $b4 + 256;
+
+        $i2 = $i2 + 1;
+
+        $i2 = $i2 * 2;
+
+        $s5 = $r3[$i2];
+
+        $i1 = $s5 + 1;
+
+        $s5 = (short) $i1;
+
+        $r3[$i2] = $s5;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        $i3 = staticinvoke <com.jcraft.jzlib.Tree: int d_code(int)>($i3);
+
+        $i3 = $i3 * 2;
+
+        $s5 = $r3[$i3];
+
+        $i2 = $s5 + 1;
+
+        $s5 = (short) $i2;
+
+        $r3[$i3] = $s5;
+
+        goto label1;
+
+     label4:
+        $i3 = $i2 >>> 3;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int matches>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        $i1 = $i1 / 2;
+
+        if $i2 >= $i1 goto label5;
+
+        $i2 = $i0 / 2;
+
+        if $i3 >= $i2 goto label5;
+
+        return 1;
+
+     label5:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lit_bufsize>;
+
+        $i2 = $i2 + -1;
+
+        if $i3 == $i2 goto label6;
+
+        return 0;
+
+     label6:
+        return 1;
+    }
+
+    void bi_flush()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0;
+        short $s1;
+        byte $b2;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        if $i0 != 16 goto label1;
+
+        $s1 = $r0.<com.jcraft.jzlib.Deflate: short bi_buf>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_short(int)>($s1);
+
+        $r0.<com.jcraft.jzlib.Deflate: short bi_buf> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int bi_valid> = 0;
+
+        return;
+
+     label1:
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        if $i0 < 8 goto label2;
+
+        $s1 = $r0.<com.jcraft.jzlib.Deflate: short bi_buf>;
+
+        $b2 = (byte) $s1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b2);
+
+        $s1 = $r0.<com.jcraft.jzlib.Deflate: short bi_buf>;
+
+        $s1 = $s1 >>> 8;
+
+        $s1 = (short) $s1;
+
+        $r0.<com.jcraft.jzlib.Deflate: short bi_buf> = $s1;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        $i0 = $i0 + -8;
+
+        $r0.<com.jcraft.jzlib.Deflate: int bi_valid> = $i0;
+
+        return;
+
+     label2:
+        return;
+    }
+
+    void bi_windup()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0;
+        short $s1;
+        byte $b2;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        if $i0 <= 8 goto label2;
+
+        $s1 = $r0.<com.jcraft.jzlib.Deflate: short bi_buf>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_short(int)>($s1);
+
+     label1:
+        $r0.<com.jcraft.jzlib.Deflate: short bi_buf> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int bi_valid> = 0;
+
+        return;
+
+     label2:
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        if $i0 <= 0 goto label1;
+
+        $s1 = $r0.<com.jcraft.jzlib.Deflate: short bi_buf>;
+
+        $b2 = (byte) $s1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b2);
+
+        goto label1;
+    }
+
+    int build_bl_tree()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i2, $i4;
+        short[] $r1;
+        com.jcraft.jzlib.Tree $r2;
+        byte[] $r3;
+        byte $b1;
+        short $s3;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree l_desc>;
+
+        $i0 = $r2.<com.jcraft.jzlib.Tree: int max_code>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void scan_tree(short[],int)>($r1, $i0);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree d_desc>;
+
+        $i0 = $r2.<com.jcraft.jzlib.Tree: int max_code>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void scan_tree(short[],int)>($r1, $i0);
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree bl_desc>;
+
+        virtualinvoke $r2.<com.jcraft.jzlib.Tree: void build_tree(com.jcraft.jzlib.Deflate)>($r0);
+
+        $i0 = 18;
+
+     label1:
+        if $i0 < 3 goto label2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $r3 = <com.jcraft.jzlib.Tree: byte[] bl_order>;
+
+        $b1 = $r3[$i0];
+
+        $i2 = $b1 * 2;
+
+        $i2 = $i2 + 1;
+
+        $s3 = $r1[$i2];
+
+        if $s3 == 0 goto label3;
+
+     label2:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int opt_len>;
+
+        $i4 = $i0 + 1;
+
+        $i4 = $i4 * 3;
+
+        $i4 = $i4 + 5;
+
+        $i4 = $i4 + 5;
+
+        $i4 = $i4 + 4;
+
+        $i4 = $i2 + $i4;
+
+        $r0.<com.jcraft.jzlib.Deflate: int opt_len> = $i4;
+
+        return $i0;
+
+     label3:
+        $i0 = $i0 + -1;
+
+        goto label1;
+    }
+
+    public java.lang.Object clone() throws java.lang.CloneNotSupportedException
+    {
+        com.jcraft.jzlib.Deflate $r0, $r4;
+        byte[] $r1;
+        short[] $r2;
+        java.lang.Object $r3;
+        int $i0;
+        int[] $r5;
+        com.jcraft.jzlib.Tree $r6;
+        com.jcraft.jzlib.GZIPHeader $r7;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r3 = specialinvoke $r0.<java.lang.Object: java.lang.Object clone()>();
+
+        $r4 = (com.jcraft.jzlib.Deflate) $r3;
+
+        $r1 = $r4.<com.jcraft.jzlib.Deflate: byte[] pending_buf>;
+
+        $r1 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: byte[] dup(byte[])>($r1);
+
+        $r4.<com.jcraft.jzlib.Deflate: byte[] pending_buf> = $r1;
+
+        $i0 = $r4.<com.jcraft.jzlib.Deflate: int d_buf>;
+
+        $r4.<com.jcraft.jzlib.Deflate: int d_buf> = $i0;
+
+        $r1 = $r4.<com.jcraft.jzlib.Deflate: byte[] l_buf>;
+
+        $r1 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: byte[] dup(byte[])>($r1);
+
+        $r4.<com.jcraft.jzlib.Deflate: byte[] l_buf> = $r1;
+
+        $r1 = $r4.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $r1 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: byte[] dup(byte[])>($r1);
+
+        $r4.<com.jcraft.jzlib.Deflate: byte[] window> = $r1;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] prev>;
+
+        $r2 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: short[] dup(short[])>($r2);
+
+        $r4.<com.jcraft.jzlib.Deflate: short[] prev> = $r2;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $r2 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: short[] dup(short[])>($r2);
+
+        $r4.<com.jcraft.jzlib.Deflate: short[] head> = $r2;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $r2 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: short[] dup(short[])>($r2);
+
+        $r4.<com.jcraft.jzlib.Deflate: short[] dyn_ltree> = $r2;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        $r2 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: short[] dup(short[])>($r2);
+
+        $r4.<com.jcraft.jzlib.Deflate: short[] dyn_dtree> = $r2;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $r2 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: short[] dup(short[])>($r2);
+
+        $r4.<com.jcraft.jzlib.Deflate: short[] bl_tree> = $r2;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] bl_count>;
+
+        $r2 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: short[] dup(short[])>($r2);
+
+        $r4.<com.jcraft.jzlib.Deflate: short[] bl_count> = $r2;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] next_code>;
+
+        $r2 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: short[] dup(short[])>($r2);
+
+        $r4.<com.jcraft.jzlib.Deflate: short[] next_code> = $r2;
+
+        $r5 = $r4.<com.jcraft.jzlib.Deflate: int[] heap>;
+
+        $r5 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: int[] dup(int[])>($r5);
+
+        $r4.<com.jcraft.jzlib.Deflate: int[] heap> = $r5;
+
+        $r1 = $r4.<com.jcraft.jzlib.Deflate: byte[] depth>;
+
+        $r1 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: byte[] dup(byte[])>($r1);
+
+        $r4.<com.jcraft.jzlib.Deflate: byte[] depth> = $r1;
+
+        $r6 = $r4.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree l_desc>;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $r6.<com.jcraft.jzlib.Tree: short[] dyn_tree> = $r2;
+
+        $r6 = $r4.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree d_desc>;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        $r6.<com.jcraft.jzlib.Tree: short[] dyn_tree> = $r2;
+
+        $r6 = $r4.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree bl_desc>;
+
+        $r2 = $r4.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $r6.<com.jcraft.jzlib.Tree: short[] dyn_tree> = $r2;
+
+        $r7 = $r4.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r7 == null goto label1;
+
+        $r7 = $r4.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $r3 = virtualinvoke $r7.<com.jcraft.jzlib.GZIPHeader: java.lang.Object clone()>();
+
+        $r7 = (com.jcraft.jzlib.GZIPHeader) $r3;
+
+        $r4.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader gheader> = $r7;
+
+        return $r4;
+
+     label1:
+        return $r4;
+    }
+
+    void compress_block(short[], short[])
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        short[] $r1, $r2;
+        byte $b0;
+        int $i1, $i2, $i4, $i5;
+        short $s3;
+        byte[] $r3;
+        int[] $r4;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: short[];
+
+        $r2 := @parameter1: short[];
+
+        $i4 = 0;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        if $i2 == 0 goto label3;
+
+     label1:
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] pending_buf>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int d_buf>;
+
+        $i1 = $i4 * 2;
+
+        $i2 = $i2 + $i1;
+
+        $b0 = $r3[$i2];
+
+        $i2 = $b0 << 8;
+
+        $i1 = $i2 & 65280;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] pending_buf>;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int d_buf>;
+
+        $i2 = $i4 * 2;
+
+        $i5 = $i5 + $i2;
+
+        $i5 = $i5 + 1;
+
+        $b0 = $r3[$i5];
+
+        $s3 = $b0 & 255;
+
+        $i1 = $i1 | $s3;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] l_buf>;
+
+        $b0 = $r3[$i4];
+
+        $s3 = $b0 & 255;
+
+        $i4 = $i4 + 1;
+
+        if $i1 != 0 goto label4;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>($s3, $r1);
+
+     label2:
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int last_lit>;
+
+        if $i4 < $i5 goto label1;
+
+     label3:
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>(256, $r1);
+
+        $s3 = $r1[513];
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_eob_len> = $s3;
+
+        return;
+
+     label4:
+        $r3 = <com.jcraft.jzlib.Tree: byte[] _length_code>;
+
+        $b0 = $r3[$s3];
+
+        $i5 = $b0 + 256;
+
+        $i5 = $i5 + 1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>($i5, $r1);
+
+        $r4 = <com.jcraft.jzlib.Tree: int[] extra_lbits>;
+
+        $i2 = $r4[$b0];
+
+        if $i2 == 0 goto label5;
+
+        $r4 = <com.jcraft.jzlib.Tree: int[] base_length>;
+
+        $i5 = $r4[$b0];
+
+        $i5 = $s3 - $i5;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i5, $i2);
+
+     label5:
+        $i5 = $i1 + -1;
+
+        $i2 = staticinvoke <com.jcraft.jzlib.Tree: int d_code(int)>($i5);
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>($i2, $r2);
+
+        $r4 = <com.jcraft.jzlib.Tree: int[] extra_dbits>;
+
+        $i1 = $r4[$i2];
+
+        if $i1 == 0 goto label2;
+
+        $r4 = <com.jcraft.jzlib.Tree: int[] base_dist>;
+
+        $i2 = $r4[$i2];
+
+        $i5 = $i5 - $i2;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i5, $i1);
+
+        goto label2;
+    }
+
+    void copy_block(int, int, boolean)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i3;
+        boolean $z0;
+        short $s2;
+        byte[] $r1;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $z0 := @parameter2: boolean;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void bi_windup()>();
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_eob_len> = 8;
+
+        if $z0 == 0 goto label1;
+
+        $s2 = (short) $i1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_short(int)>($s2);
+
+        $i3 = $i1 ^ -1;
+
+        $s2 = (short) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_short(int)>($s2);
+
+     label1:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte[],int,int)>($r1, $i0, $i1);
+
+        return;
+    }
+
+    int deflate(int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3;
+        com.jcraft.jzlib.GZIPHeader $r1;
+        com.jcraft.jzlib.ZStream $r2;
+        byte[] $r3;
+        java.lang.String[] $r4;
+        java.lang.String $r5;
+        com.jcraft.jzlib.Checksum $r6;
+        long $l4, $l5;
+        com.jcraft.jzlib.Deflate$Config[] $r7;
+        com.jcraft.jzlib.Deflate$Config $r8;
+        short[] $r9;
+        byte $b6;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        if $i0 > 4 goto label01;
+
+        if $i0 >= 0 goto label02;
+
+     label01:
+        return -2;
+
+     label02:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_out>;
+
+        if $r3 == null goto label04;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        if $r3 != null goto label03;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i3 != 0 goto label04;
+
+     label03:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int status>;
+
+        if $i3 != 666 goto label05;
+
+        if $i0 == 4 goto label05;
+
+     label04:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r4 = <com.jcraft.jzlib.Deflate: java.lang.String[] z_errmsg>;
+
+        $r5 = $r4[4];
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = $r5;
+
+        return -2;
+
+     label05:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i3 != 0 goto label06;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r4 = <com.jcraft.jzlib.Deflate: java.lang.String[] z_errmsg>;
+
+        $r5 = $r4[7];
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = $r5;
+
+        return -5;
+
+     label06:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int last_flush>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_flush> = $i0;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int status>;
+
+        if $i2 != 42 goto label07;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int wrap>;
+
+        if $i2 != 2 goto label08;
+
+        $r1 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader getGZIPHeader()>();
+
+        virtualinvoke $r1.<com.jcraft.jzlib.GZIPHeader: void put(com.jcraft.jzlib.Deflate)>($r0);
+
+        $r0.<com.jcraft.jzlib.Deflate: int status> = 113;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r6 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        interfaceinvoke $r6.<com.jcraft.jzlib.Checksum: void reset()>();
+
+     label07:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int pending>;
+
+        if $i2 == 0 goto label12;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        virtualinvoke $r2.<com.jcraft.jzlib.ZStream: void flush_pending()>();
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i3 != 0 goto label13;
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_flush> = -1;
+
+        return 0;
+
+     label08:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_bits>;
+
+        $i2 = $i2 + -8;
+
+        $i2 = $i2 << 4;
+
+        $i2 = $i2 + 8;
+
+        $i1 = $i2 << 8;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int level>;
+
+        $i2 = $i2 + -1;
+
+        $i2 = $i2 & 255;
+
+        $i2 = $i2 >> 1;
+
+        if $i2 <= 3 goto label09;
+
+        $i2 = 3;
+
+     label09:
+        $i2 = $i2 << 6;
+
+        $i2 = $i1 | $i2;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        if $i1 == 0 goto label10;
+
+        $i2 = $i2 | 32;
+
+     label10:
+        $i1 = $i2 % 31;
+
+        $i1 = 31 - $i1;
+
+        $i2 = $i2 + $i1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int status> = 113;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void putShortMSB(int)>($i2);
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        if $i2 == 0 goto label11;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r6 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $l4 = interfaceinvoke $r6.<com.jcraft.jzlib.Checksum: long getValue()>();
+
+        $l5 = $l4 >>> 16;
+
+        $i2 = (int) $l5;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void putShortMSB(int)>($i2);
+
+        $l5 = 65535L & $l4;
+
+        $i2 = (int) $l5;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void putShortMSB(int)>($i2);
+
+     label11:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r6 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        interfaceinvoke $r6.<com.jcraft.jzlib.Checksum: void reset()>();
+
+        goto label07;
+
+     label12:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i2 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i2 != 0 goto label13;
+
+        if $i0 > $i3 goto label13;
+
+        if $i0 == 4 goto label13;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r4 = <com.jcraft.jzlib.Deflate: java.lang.String[] z_errmsg>;
+
+        $r5 = $r4[7];
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = $r5;
+
+        return -5;
+
+     label13:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int status>;
+
+        if $i3 != 666 goto label14;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i3 == 0 goto label14;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r4 = <com.jcraft.jzlib.Deflate: java.lang.String[] z_errmsg>;
+
+        $r5 = $r4[7];
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = $r5;
+
+        return -5;
+
+     label14:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i3 != 0 goto label15;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i3 != 0 goto label15;
+
+        if $i0 == 0 goto label28;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int status>;
+
+        if $i3 == 666 goto label28;
+
+     label15:
+        $i1 = -1;
+
+        $r7 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int level>;
+
+        $r8 = $r7[$i3];
+
+        $i3 = $r8.<com.jcraft.jzlib.Deflate$Config: int func>;
+
+        lookupswitch($i3)
+        {
+            case 0: goto label21;
+            case 1: goto label22;
+            case 2: goto label23;
+            default: goto label16;
+        };
+
+     label16:
+        if $i1 == 2 goto label17;
+
+        if $i1 != 3 goto label18;
+
+     label17:
+        $r0.<com.jcraft.jzlib.Deflate: int status> = 666;
+
+     label18:
+        if $i1 == 0 goto label19;
+
+        if $i1 != 2 goto label24;
+
+     label19:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i3 != 0 goto label20;
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_flush> = -1;
+
+     label20:
+        return 0;
+
+     label21:
+        $i1 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: int deflate_stored(int)>($i0);
+
+        goto label16;
+
+     label22:
+        $i1 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: int deflate_fast(int)>($i0);
+
+        goto label16;
+
+     label23:
+        $i1 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: int deflate_slow(int)>($i0);
+
+        goto label16;
+
+     label24:
+        if $i1 != 1 goto label28;
+
+        if $i0 != 1 goto label26;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void _tr_align()>();
+
+     label25:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        virtualinvoke $r2.<com.jcraft.jzlib.ZStream: void flush_pending()>();
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i3 != 0 goto label28;
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_flush> = -1;
+
+        return 0;
+
+     label26:
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void _tr_stored_block(int,int,boolean)>(0, 0, 0);
+
+        if $i0 != 3 goto label25;
+
+        $i1 = 0;
+
+     label27:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int hash_size>;
+
+        if $i1 >= $i3 goto label25;
+
+        $r9 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $r9[$i1] = 0;
+
+        $i1 = $i1 + 1;
+
+        goto label27;
+
+     label28:
+        if $i0 == 4 goto label29;
+
+        return 0;
+
+     label29:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int wrap>;
+
+        if $i3 > 0 goto label30;
+
+        return 1;
+
+     label30:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int wrap>;
+
+        if $i3 != 2 goto label33;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r6 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $l5 = interfaceinvoke $r6.<com.jcraft.jzlib.Checksum: long getValue()>();
+
+        $l4 = 255L & $l5;
+
+        $i3 = (int) $l4;
+
+        $b6 = (byte) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b6);
+
+        $l4 = $l5 >> 8;
+
+        $l4 = $l4 & 255L;
+
+        $i3 = (int) $l4;
+
+        $b6 = (byte) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b6);
+
+        $l4 = $l5 >> 16;
+
+        $l4 = $l4 & 255L;
+
+        $i3 = (int) $l4;
+
+        $b6 = (byte) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b6);
+
+        $l4 = $l5 >> 24;
+
+        $l4 = $l4 & 255L;
+
+        $i3 = (int) $l4;
+
+        $b6 = (byte) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b6);
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 & 255L;
+
+        $i3 = (int) $l4;
+
+        $b6 = (byte) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b6);
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 >> 8;
+
+        $l4 = $l4 & 255L;
+
+        $i3 = (int) $l4;
+
+        $b6 = (byte) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b6);
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 >> 16;
+
+        $l4 = $l4 & 255L;
+
+        $i3 = (int) $l4;
+
+        $b6 = (byte) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b6);
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 >> 24;
+
+        $l4 = $l4 & 255L;
+
+        $i3 = (int) $l4;
+
+        $b6 = (byte) $i3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b6);
+
+        $r1 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader getGZIPHeader()>();
+
+        virtualinvoke $r1.<com.jcraft.jzlib.GZIPHeader: void setCRC(long)>($l5);
+
+     label31:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        virtualinvoke $r2.<com.jcraft.jzlib.ZStream: void flush_pending()>();
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int wrap>;
+
+        if $i3 <= 0 goto label32;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int wrap>;
+
+        $i3 = neg $i3;
+
+        $r0.<com.jcraft.jzlib.Deflate: int wrap> = $i3;
+
+     label32:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int pending>;
+
+        if $i3 == 0 goto label34;
+
+        return 0;
+
+     label33:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r6 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $l5 = interfaceinvoke $r6.<com.jcraft.jzlib.Checksum: long getValue()>();
+
+        $l4 = $l5 >>> 16;
+
+        $i3 = (int) $l4;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void putShortMSB(int)>($i3);
+
+        $l5 = 65535L & $l5;
+
+        $i3 = (int) $l5;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void putShortMSB(int)>($i3);
+
+        goto label31;
+
+     label34:
+        return 1;
+    }
+
+    int deflateInit(int, int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i1 = specialinvoke $r0.<com.jcraft.jzlib.Deflate: int deflateInit(int,int,int,int,int)>($i0, 8, $i1, 8, 0);
+
+        return $i1;
+    }
+
+    int deflateReset()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        com.jcraft.jzlib.ZStream $r1, $r2;
+        int $i0;
+        byte $b1;
+        com.jcraft.jzlib.Checksum $r3;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_out> = 0L;
+
+        $r1.<com.jcraft.jzlib.ZStream: long total_in> = 0L;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = null;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r2.<com.jcraft.jzlib.ZStream: int data_type> = 2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int pending> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int pending_out> = 0;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int wrap>;
+
+        if $i0 >= 0 goto label1;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int wrap>;
+
+        $i0 = neg $i0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int wrap> = $i0;
+
+     label1:
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int wrap>;
+
+        if $i0 != 0 goto label3;
+
+        $b1 = 113;
+
+     label2:
+        $r0.<com.jcraft.jzlib.Deflate: int status> = $b1;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        interfaceinvoke $r3.<com.jcraft.jzlib.Checksum: void reset()>();
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_flush> = 0;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void tr_init()>();
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void lm_init()>();
+
+        return 0;
+
+     label3:
+        $b1 = 42;
+
+        goto label2;
+    }
+
+    int deflate_fast(int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i6;
+        boolean $z0;
+        byte $b3, $b4;
+        com.jcraft.jzlib.ZStream $r1;
+        byte[] $r2;
+        short $s5;
+        short[] $r3, $r4;
+        long $l7;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $b3 = 1;
+
+        $i1 = 0;
+
+     label01:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 >= 262 goto label04;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void fill_window()>();
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 >= 262 goto label02;
+
+        if $i0 != 0 goto label02;
+
+        return 0;
+
+     label02:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 != 0 goto label04;
+
+        if $i0 != 4 goto label11;
+
+        $z0 = 1;
+
+     label03:
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void flush_block_only(boolean)>($z0);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i2 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i2 != 0 goto label12;
+
+        if $i0 != 4 goto label14;
+
+        return 2;
+
+     label04:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 < 3 goto label05;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int hash_shift>;
+
+        $i1 = $i2 << $i1;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $i2 + 2;
+
+        $b4 = $r2[$i2];
+
+        $s5 = $b4 & 255;
+
+        $i2 = $i1 ^ $s5;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int hash_mask>;
+
+        $i2 = $i2 & $i1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = $i2;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $s5 = $r3[$i2];
+
+        $i1 = $s5 & 65535;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] prev>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int w_mask>;
+
+        $i6 = $i2 & $i6;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $s5 = $r4[$i2];
+
+        $r3[$i6] = $s5;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $s5 = (short) $i2;
+
+        $r4[$i6] = $s5;
+
+     label05:
+        $l7 = (long) $i1;
+
+        $b4 = $l7 cmp 0L;
+
+        if $b4 == 0 goto label06;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $i6 - $i1;
+
+        $i6 = $i6 & 65535;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i2 = $i2 + -262;
+
+        if $i6 > $i2 goto label06;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strategy>;
+
+        if $i6 == 2 goto label06;
+
+        $i2 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: int longest_match(int)>($i1);
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = $i2;
+
+     label06:
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        if $i6 < 3 goto label10;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int match_start>;
+
+        $i6 = $i6 - $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        $i2 = $i2 + -3;
+
+        $z0 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: boolean _tr_tally(int,int)>($i6, $i2);
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        $i6 = $i6 - $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = $i6;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int max_lazy_match>;
+
+        if $i6 > $i2 goto label09;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i6 < 3 goto label09;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        $i6 = $i6 + -1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = $i6;
+
+     label07:
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $i6 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i6;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_shift>;
+
+        $i6 = $i6 << $i2;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $i2 + 2;
+
+        $b4 = $r2[$i2];
+
+        $s5 = $b4 & 255;
+
+        $i6 = $i6 ^ $s5;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_mask>;
+
+        $i6 = $i6 & $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = $i6;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $s5 = $r4[$i6];
+
+        $i1 = $s5 & 65535;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] prev>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_mask>;
+
+        $i6 = $i6 & $i2;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $s5 = $r3[$i2];
+
+        $r4[$i6] = $s5;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $s5 = (short) $i2;
+
+        $r4[$i6] = $s5;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        $i6 = $i6 + -1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = $i6;
+
+        if $i6 != 0 goto label07;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $i6 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i6;
+
+     label08:
+        if $z0 == 0 goto label01;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void flush_block_only(boolean)>(0);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i6 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i6 != 0 goto label01;
+
+        return 0;
+
+     label09:
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        $i6 = $i6 + $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i6;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = 0;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $b4 = $r2[$i6];
+
+        $s5 = $b4 & 255;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = $s5;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_shift>;
+
+        $i6 = $i6 << $i2;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $i2 + 1;
+
+        $b4 = $r2[$i2];
+
+        $s5 = $b4 & 255;
+
+        $i6 = $i6 ^ $s5;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_mask>;
+
+        $i6 = $i6 & $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = $i6;
+
+        goto label08;
+
+     label10:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $b4 = $r2[$i6];
+
+        $s5 = $b4 & 255;
+
+        $z0 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: boolean _tr_tally(int,int)>(0, $s5);
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i6 = $i6 + -1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = $i6;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $i6 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i6;
+
+        goto label08;
+
+     label11:
+        $z0 = 0;
+
+        goto label03;
+
+     label12:
+        if $i0 != 4 goto label13;
+
+        $b3 = 3;
+
+     label13:
+        return $b3;
+
+     label14:
+        return 0;
+    }
+
+    int deflate_slow(int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i6, $i7;
+        byte $b3, $b4;
+        byte[] $r1;
+        short $s5;
+        boolean $z0;
+        com.jcraft.jzlib.ZStream $r2;
+        short[] $r3, $r4;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $b3 = 1;
+
+        $i1 = 0;
+
+     label01:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 >= 262 goto label05;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void fill_window()>();
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 >= 262 goto label02;
+
+        if $i0 != 0 goto label02;
+
+        return 0;
+
+     label02:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 != 0 goto label05;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int match_available>;
+
+        if $i2 == 0 goto label03;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $i2 + -1;
+
+        $b4 = $r1[$i2];
+
+        $s5 = $b4 & 255;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: boolean _tr_tally(int,int)>(0, $s5);
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_available> = 0;
+
+     label03:
+        if $i0 != 4 goto label15;
+
+        $z0 = 1;
+
+     label04:
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void flush_block_only(boolean)>($z0);
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i2 = $r2.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i2 != 0 goto label16;
+
+        if $i0 != 4 goto label18;
+
+        return 2;
+
+     label05:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 < 3 goto label06;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int hash_shift>;
+
+        $i1 = $i2 << $i1;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $i2 + 2;
+
+        $b4 = $r1[$i2];
+
+        $s5 = $b4 & 255;
+
+        $i2 = $i1 ^ $s5;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int hash_mask>;
+
+        $i2 = $i2 & $i1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = $i2;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $s5 = $r3[$i2];
+
+        $i1 = $s5 & 65535;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] prev>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int w_mask>;
+
+        $i6 = $i2 & $i6;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $s5 = $r4[$i2];
+
+        $r3[$i6] = $s5;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $s5 = (short) $i2;
+
+        $r4[$i6] = $s5;
+
+     label06:
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int prev_length> = $i6;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_start>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int prev_match> = $i6;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = 2;
+
+        if $i1 == 0 goto label09;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int max_lazy_match>;
+
+        if $i6 >= $i2 goto label09;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $i6 - $i1;
+
+        $i6 = $i6 & 65535;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i2 = $i2 + -262;
+
+        if $i6 > $i2 goto label09;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strategy>;
+
+        if $i6 == 2 goto label07;
+
+        $i2 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: int longest_match(int)>($i1);
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = $i2;
+
+     label07:
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        if $i6 > 5 goto label09;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strategy>;
+
+        if $i6 == 1 goto label08;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        if $i6 != 3 goto label09;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int match_start>;
+
+        $i6 = $i6 - $i2;
+
+        if $i6 <= 4096 goto label09;
+
+     label08:
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = 2;
+
+     label09:
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        if $i6 < 3 goto label12;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int match_length>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        if $i6 > $i2 goto label12;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i6 = $i6 + $i2;
+
+        $i2 = $i6 + -3;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $i6 + -1;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int prev_match>;
+
+        $i7 = $i6 - $i7;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        $i6 = $i6 + -3;
+
+        $z0 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: boolean _tr_tally(int,int)>($i7, $i6);
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        $i6 = $i6 + -1;
+
+        $i7 = $i7 - $i6;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = $i7;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        $i7 = $i7 + -2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int prev_length> = $i7;
+
+     label10:
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i7;
+
+        if $i7 > $i2 goto label11;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int hash_shift>;
+
+        $i7 = $i7 << $i6;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $i6 + 2;
+
+        $b4 = $r1[$i6];
+
+        $s5 = $b4 & 255;
+
+        $i7 = $i7 ^ $s5;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int hash_mask>;
+
+        $i7 = $i7 & $i6;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = $i7;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $s5 = $r4[$i7];
+
+        $i1 = $s5 & 65535;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] prev>;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int w_mask>;
+
+        $i7 = $i7 & $i6;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $s5 = $r3[$i6];
+
+        $r4[$i7] = $s5;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $s5 = (short) $i6;
+
+        $r4[$i7] = $s5;
+
+     label11:
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int prev_length> = $i7;
+
+        if $i7 != 0 goto label10;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_available> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = 2;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i7;
+
+        if $z0 == 0 goto label01;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void flush_block_only(boolean)>(0);
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i7 = $r2.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i7 != 0 goto label01;
+
+        return 0;
+
+     label12:
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int match_available>;
+
+        if $i7 == 0 goto label14;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i7 = $i7 + -1;
+
+        $b4 = $r1[$i7];
+
+        $s5 = $b4 & 255;
+
+        $z0 = virtualinvoke $r0.<com.jcraft.jzlib.Deflate: boolean _tr_tally(int,int)>(0, $s5);
+
+        if $z0 == 0 goto label13;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void flush_block_only(boolean)>(0);
+
+     label13:
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i7;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = $i7;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i7 = $r2.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i7 != 0 goto label01;
+
+        return 0;
+
+     label14:
+        $r0.<com.jcraft.jzlib.Deflate: int match_available> = 1;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i7 = $i7 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i7;
+
+        $i7 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i7 = $i7 + -1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = $i7;
+
+        goto label01;
+
+     label15:
+        $z0 = 0;
+
+        goto label04;
+
+     label16:
+        if $i0 != 4 goto label17;
+
+        $b3 = 3;
+
+     label17:
+        return $b3;
+
+     label18:
+        return 0;
+    }
+
+    int deflate_stored(int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i4;
+        byte $b3;
+        boolean $z0;
+        com.jcraft.jzlib.ZStream $r1;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $b3 = 1;
+
+        $i1 = 65535;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int pending_buf_size>;
+
+        $i2 = $i2 + -5;
+
+        if 65535 <= $i2 goto label01;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int pending_buf_size>;
+
+        $i1 = $i2 + -5;
+
+     label01:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 > 1 goto label04;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void fill_window()>();
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 != 0 goto label02;
+
+        if $i0 != 0 goto label02;
+
+        return 0;
+
+     label02:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i2 != 0 goto label04;
+
+        if $i0 != 4 goto label07;
+
+        $z0 = 1;
+
+     label03:
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void flush_block_only(boolean)>($z0);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i2 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i2 != 0 goto label08;
+
+        if $i0 != 4 goto label10;
+
+        return 2;
+
+     label04:
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i4 = $i4 + $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i4;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = 0;
+
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int block_start>;
+
+        $i2 = $i4 + $i1;
+
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        if $i4 == 0 goto label05;
+
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        if $i4 < $i2 goto label06;
+
+     label05:
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i4 = $i4 - $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = $i4;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i2;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void flush_block_only(boolean)>(0);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i4 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i4 == 0 goto label11;
+
+     label06:
+        $i4 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int block_start>;
+
+        $i4 = $i4 - $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i2 = $i2 + -262;
+
+        if $i4 < $i2 goto label01;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void flush_block_only(boolean)>(0);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i4 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i4 != 0 goto label01;
+
+        return 0;
+
+     label07:
+        $z0 = 0;
+
+        goto label03;
+
+     label08:
+        if $i0 != 4 goto label09;
+
+        $b3 = 3;
+
+     label09:
+        return $b3;
+
+     label10:
+        return 0;
+
+     label11:
+        return 0;
+    }
+
+    void fill_window()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3, $i5;
+        com.jcraft.jzlib.ZStream $r1;
+        byte[] $r2, $r3;
+        short[] $r4;
+        short $s4;
+        byte $b6;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+     label01:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int window_size>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i3 = $i3 - $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i1 = $i3 - $i2;
+
+        if $i1 != 0 goto label03;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        if $i3 != 0 goto label03;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i3 != 0 goto label03;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+     label02:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i3 = $r1.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i3 != 0 goto label11;
+
+        return;
+
+     label03:
+        if $i1 != -1 goto label04;
+
+        $i1 = $i1 + -1;
+
+        goto label02;
+
+     label04:
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i3 = $i0 + $i3;
+
+        $i3 = $i3 + -262;
+
+        if $i2 < $i3 goto label02;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, $i2, $r3, 0, $i3);
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int match_start>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i3 = $i3 - $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_start> = $i3;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i3 = $i3 - $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = $i3;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int block_start>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i3 = $i3 - $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int block_start> = $i3;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int hash_size>;
+
+        $i3 = $i2;
+
+     label05:
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i3 = $i3 + -1;
+
+        $s4 = $r4[$i3];
+
+        $i0 = $s4 & 65535;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        if $i0 < $i5 goto label09;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i5 = $i0 - $i5;
+
+        $s4 = (short) $i5;
+
+     label06:
+        $r4[$i3] = $s4;
+
+        $i2 = $i2 + -1;
+
+        if $i2 != 0 goto label05;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i3 = $i5;
+
+     label07:
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] prev>;
+
+        $i3 = $i3 + -1;
+
+        $s4 = $r4[$i3];
+
+        $i2 = $s4 & 65535;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: short[] prev>;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        if $i2 < $i0 goto label10;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i2 = $i2 - $i0;
+
+        $s4 = (short) $i2;
+
+     label08:
+        $r4[$i3] = $s4;
+
+        $i5 = $i5 + -1;
+
+        if $i5 != 0 goto label07;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i1 = $i1 + $i5;
+
+        goto label02;
+
+     label09:
+        $s4 = 0;
+
+        goto label06;
+
+     label10:
+        $s4 = 0;
+
+        goto label08;
+
+     label11:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i5 = $i5 + $i3;
+
+        $i3 = virtualinvoke $r1.<com.jcraft.jzlib.ZStream: int read_buf(byte[],int,int)>($r3, $i5, $i1);
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        $i5 = $i5 + $i3;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = $i5;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i5 < 3 goto label12;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $b6 = $r3[$i5];
+
+        $s4 = $b6 & 255;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = $s4;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int ins_h>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int hash_shift>;
+
+        $i5 = $i5 << $i3;
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i3 = $i3 + 1;
+
+        $b6 = $r3[$i3];
+
+        $s4 = $b6 & 255;
+
+        $i5 = $i5 ^ $s4;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int hash_mask>;
+
+        $i5 = $i5 & $i3;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = $i5;
+
+     label12:
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i5 >= 262 goto label13;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        $i5 = $r1.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i5 != 0 goto label01;
+
+        return;
+
+     label13:
+        return;
+    }
+
+    void flush_block_only(boolean)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        boolean $z0;
+        int $i0, $i1, $i2;
+        com.jcraft.jzlib.ZStream $r1;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $z0 := @parameter0: boolean;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int block_start>;
+
+        if $i0 < 0 goto label2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int block_start>;
+
+     label1:
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int block_start>;
+
+        $i1 = $i0 - $i1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void _tr_flush_block(int,int,boolean)>($i2, $i1, $z0);
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int block_start> = $i2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.ZStream strm>;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.ZStream: void flush_pending()>();
+
+        return;
+
+     label2:
+        $i2 = -1;
+
+        goto label1;
+    }
+
+    com.jcraft.jzlib.GZIPHeader getGZIPHeader()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        com.jcraft.jzlib.GZIPHeader $r1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r1 != null goto label2;
+
+        $r1 = new com.jcraft.jzlib.GZIPHeader;
+
+        specialinvoke $r1.<com.jcraft.jzlib.GZIPHeader: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader gheader> = $r1;
+
+     label2:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+     label3:
+        exitmonitor $r0;
+
+        return $r1;
+
+     label4:
+        $r2 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+
+    void init_block()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1;
+        short[] $r1;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 = 0;
+
+     label1:
+        if $i0 >= 286 goto label2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $i1 = $i0 * 2;
+
+        $r1[$i1] = 0;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        $i1 = 0;
+
+     label3:
+        if $i1 >= 30 goto label4;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        $i0 = $i1 * 2;
+
+        $r1[$i0] = 0;
+
+        $i1 = $i1 + 1;
+
+        goto label3;
+
+     label4:
+        $i1 = 0;
+
+     label5:
+        if $i1 >= 19 goto label6;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $i0 = $i1 * 2;
+
+        $r1[$i0] = 0;
+
+        $i1 = $i1 + 1;
+
+        goto label5;
+
+     label6:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $r1[512] = 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int static_len> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int opt_len> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int matches> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_lit> = 0;
+
+        return;
+    }
+
+    void lm_init()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1;
+        short[] $r1;
+        com.jcraft.jzlib.Deflate$Config[] $r2;
+        com.jcraft.jzlib.Deflate$Config $r3;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i0 = $i0 * 2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int window_size> = $i0;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $i0 = $r0.<com.jcraft.jzlib.Deflate: int hash_size>;
+
+        $i0 = $i0 + -1;
+
+        $r1[$i0] = 0;
+
+        $i0 = 0;
+
+     label1:
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int hash_size>;
+
+        $i1 = $i1 + -1;
+
+        if $i0 >= $i1 goto label2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] head>;
+
+        $r1[$i0] = 0;
+
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label2:
+        $r2 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int level>;
+
+        $r3 = $r2[$i1];
+
+        $i1 = $r3.<com.jcraft.jzlib.Deflate$Config: int max_lazy>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int max_lazy_match> = $i1;
+
+        $r2 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int level>;
+
+        $r3 = $r2[$i1];
+
+        $i1 = $r3.<com.jcraft.jzlib.Deflate$Config: int good_length>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int good_match> = $i1;
+
+        $r2 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int level>;
+
+        $r3 = $r2[$i1];
+
+        $i1 = $r3.<com.jcraft.jzlib.Deflate$Config: int nice_length>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int nice_match> = $i1;
+
+        $r2 = <com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Deflate$Config[] config_table>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int level>;
+
+        $r3 = $r2[$i1];
+
+        $i1 = $r3.<com.jcraft.jzlib.Deflate$Config: int max_chain>;
+
+        $r0.<com.jcraft.jzlib.Deflate: int max_chain_length> = $i1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int strstart> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int block_start> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int lookahead> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int prev_length> = 2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_length> = 2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_available> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int ins_h> = 0;
+
+        return;
+    }
+
+    int longest_match(int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i9, $i10, $i11;
+        byte $b7, $b8, $b12, $b13;
+        byte[] $r1;
+        short[] $r2;
+        short $s14;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int max_chain_length>;
+
+        $i6 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        $i10 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i9 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i9 = $i9 + -262;
+
+        if $i10 <= $i9 goto label06;
+
+        $i10 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i9 = $r0.<com.jcraft.jzlib.Deflate: int w_size>;
+
+        $i9 = $i9 + -262;
+
+        $i4 = $i10 - $i9;
+
+     label01:
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int nice_match>;
+
+        $i10 = $r0.<com.jcraft.jzlib.Deflate: int w_mask>;
+
+        $i9 = $r0.<com.jcraft.jzlib.Deflate: int strstart>;
+
+        $i9 = $i9 + 258;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i3 = $i6 + $i1;
+
+        $i3 = $i3 + -1;
+
+        $b8 = $r1[$i3];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i3 = $i6 + $i1;
+
+        $b7 = $r1[$i3];
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int prev_length>;
+
+        $i11 = $r0.<com.jcraft.jzlib.Deflate: int good_match>;
+
+        if $i3 < $i11 goto label02;
+
+        $i2 = $i2 >> 2;
+
+     label02:
+        $i11 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i5 <= $i11 goto label03;
+
+        $i5 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+     label03:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i0 + $i1;
+
+        $b12 = $r1[$i11];
+
+        if $b12 != $b7 goto label04;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i0 + $i1;
+
+        $i11 = $i11 + -1;
+
+        $b12 = $r1[$i11];
+
+        if $b12 != $b8 goto label04;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $b12 = $r1[$i0];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $b13 = $r1[$i6];
+
+        if $b12 != $b13 goto label04;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i0 + 1;
+
+        $b13 = $r1[$i11];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i3 = $i6 + 1;
+
+        $b12 = $r1[$i3];
+
+        if $b13 == $b12 goto label07;
+
+     label04:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] prev>;
+
+        $i11 = $i0 & $i10;
+
+        $s14 = $r2[$i11];
+
+        $i0 = $s14 & 65535;
+
+        if $i0 <= $i4 goto label05;
+
+        $i2 = $i2 + -1;
+
+        if $i2 != 0 goto label03;
+
+     label05:
+        $i11 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        if $i1 > $i11 goto label10;
+
+        return $i1;
+
+     label06:
+        $i4 = 0;
+
+        goto label01;
+
+     label07:
+        $i6 = $i6 + 2;
+
+        $i11 = $i11 + 1;
+
+     label08:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $i6 + 1;
+
+        $b13 = $r1[$i6];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i11 + 1;
+
+        $b12 = $r1[$i11];
+
+        if $b13 != $b12 goto label09;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $i6 + 1;
+
+        $b13 = $r1[$i6];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i11 + 1;
+
+        $b12 = $r1[$i11];
+
+        if $b13 != $b12 goto label09;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $i6 + 1;
+
+        $b13 = $r1[$i6];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i11 + 1;
+
+        $b12 = $r1[$i11];
+
+        if $b13 != $b12 goto label09;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $i6 + 1;
+
+        $b13 = $r1[$i6];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i11 + 1;
+
+        $b12 = $r1[$i11];
+
+        if $b13 != $b12 goto label09;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $i6 + 1;
+
+        $b13 = $r1[$i6];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i11 + 1;
+
+        $b12 = $r1[$i11];
+
+        if $b13 != $b12 goto label09;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $i6 + 1;
+
+        $b13 = $r1[$i6];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i11 + 1;
+
+        $b12 = $r1[$i11];
+
+        if $b13 != $b12 goto label09;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $i6 + 1;
+
+        $b13 = $r1[$i6];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i11 + 1;
+
+        $b12 = $r1[$i11];
+
+        if $b13 != $b12 goto label09;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i6 = $i6 + 1;
+
+        $b13 = $r1[$i6];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i11 + 1;
+
+        $b12 = $r1[$i11];
+
+        if $b13 != $b12 goto label09;
+
+        if $i6 < $i9 goto label08;
+
+     label09:
+        $i11 = $i9 - $i6;
+
+        $i3 = 258 - $i11;
+
+        $i6 = $i9 + -258;
+
+        if $i3 <= $i1 goto label04;
+
+        $r0.<com.jcraft.jzlib.Deflate: int match_start> = $i0;
+
+        $i1 = $i3;
+
+        if $i3 >= $i5 goto label05;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i6 + $i3;
+
+        $i11 = $i11 + -1;
+
+        $b8 = $r1[$i11];
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] window>;
+
+        $i11 = $i6 + $i3;
+
+        $b7 = $r1[$i11];
+
+        goto label04;
+
+     label10:
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int lookahead>;
+
+        return $i1;
+    }
+
+    void pqdownheap(short[], int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        short[] $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+        int[] $r2, $r4;
+        byte[] $r3;
+        boolean $z0;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: short[];
+
+        $i0 := @parameter1: int;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: int[] heap>;
+
+        $i2 = $r2[$i0];
+
+        $i1 = $i0 << 1;
+
+     label1:
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int heap_len>;
+
+        if $i1 > $i3 goto label3;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int heap_len>;
+
+        if $i1 >= $i3 goto label2;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: int[] heap>;
+
+        $i3 = $i1 + 1;
+
+        $i3 = $r2[$i3];
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: int[] heap>;
+
+        $i4 = $r2[$i1];
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] depth>;
+
+        $z0 = staticinvoke <com.jcraft.jzlib.Deflate: boolean smaller(short[],int,int,byte[])>($r1, $i3, $i4, $r3);
+
+        if $z0 == 0 goto label2;
+
+        $i1 = $i1 + 1;
+
+     label2:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: int[] heap>;
+
+        $i4 = $r2[$i1];
+
+        $r3 = $r0.<com.jcraft.jzlib.Deflate: byte[] depth>;
+
+        $z0 = staticinvoke <com.jcraft.jzlib.Deflate: boolean smaller(short[],int,int,byte[])>($r1, $i2, $i4, $r3);
+
+        if $z0 == 0 goto label4;
+
+     label3:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: int[] heap>;
+
+        $r2[$i0] = $i2;
+
+        return;
+
+     label4:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: int[] heap>;
+
+        $r4 = $r0.<com.jcraft.jzlib.Deflate: int[] heap>;
+
+        $i4 = $r4[$i1];
+
+        $r2[$i0] = $i4;
+
+        $i0 = $i1;
+
+        $i1 = $i1 << 1;
+
+        goto label1;
+    }
+
+    final void putShortMSB(int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1;
+        byte $b2;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $i0 >> 8;
+
+        $b2 = (byte) $i1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b2);
+
+        $b2 = (byte) $i0;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b2);
+
+        return;
+    }
+
+    final void put_byte(byte)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        byte $b0;
+        byte[] $r1;
+        int $i1, $i2;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $b0 := @parameter0: byte;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: byte[] pending_buf>;
+
+        $i1 = $r0.<com.jcraft.jzlib.Deflate: int pending>;
+
+        $i2 = $i1 + 1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int pending> = $i2;
+
+        $r1[$i1] = $b0;
+
+        return;
+    }
+
+    final void put_byte(byte[], int, int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        byte[] $r1, $r2;
+        int $i0, $i1, $i2;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: byte[] pending_buf>;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int pending>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, $i0, $r2, $i2, $i1);
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int pending>;
+
+        $i2 = $i2 + $i1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int pending> = $i2;
+
+        return;
+    }
+
+    final void put_short(int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0;
+        byte $b1;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $b1 = (byte) $i0;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b1);
+
+        $i0 = $i0 >>> 8;
+
+        $b1 = (byte) $i0;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_byte(byte)>($b1);
+
+        return;
+    }
+
+    void scan_tree(short[], int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        short[] $r1, $r2;
+        int $i0, $i1, $i5, $i8;
+        short $s2, $s3, $s6, $s7;
+        byte $b4;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: short[];
+
+        $i0 := @parameter1: int;
+
+        $s7 = -1;
+
+        $s6 = $r1[1];
+
+        $i1 = 0;
+
+        $s3 = 7;
+
+        $b4 = 4;
+
+        if $s6 != 0 goto label01;
+
+        $s3 = 138;
+
+        $b4 = 3;
+
+     label01:
+        $i5 = $i0 + 1;
+
+        $i5 = $i5 * 2;
+
+        $i5 = $i5 + 1;
+
+        $r1[$i5] = -1;
+
+        $i5 = 0;
+
+     label02:
+        if $i5 > $i0 goto label12;
+
+        $s2 = $s6;
+
+        $i8 = $i5 + 1;
+
+        $i8 = $i8 * 2;
+
+        $i8 = $i8 + 1;
+
+        $s6 = $r1[$i8];
+
+        $i1 = $i1 + 1;
+
+        if $i1 >= $s3 goto label04;
+
+        if $s2 != $s6 goto label04;
+
+     label03:
+        $i5 = $i5 + 1;
+
+        goto label02;
+
+     label04:
+        if $i1 >= $b4 goto label06;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $i8 = $s2 * 2;
+
+        $s7 = $r2[$i8];
+
+        $i1 = $s7 + $i1;
+
+        $s7 = (short) $i1;
+
+        $r2[$i8] = $s7;
+
+     label05:
+        $i1 = 0;
+
+        $s7 = $s2;
+
+        if $s6 != 0 goto label10;
+
+        $s3 = 138;
+
+        $b4 = 3;
+
+        goto label03;
+
+     label06:
+        if $s2 == 0 goto label08;
+
+        if $s2 == $s7 goto label07;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $i8 = $s2 * 2;
+
+        $s7 = $r2[$i8];
+
+        $i1 = $s7 + 1;
+
+        $s7 = (short) $i1;
+
+        $r2[$i8] = $s7;
+
+     label07:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $s7 = $r2[32];
+
+        $i8 = $s7 + 1;
+
+        $s7 = (short) $i8;
+
+        $r2[32] = $s7;
+
+        goto label05;
+
+     label08:
+        if $i1 > 10 goto label09;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $s7 = $r2[34];
+
+        $i8 = $s7 + 1;
+
+        $s7 = (short) $i8;
+
+        $r2[34] = $s7;
+
+        goto label05;
+
+     label09:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $s7 = $r2[36];
+
+        $i8 = $s7 + 1;
+
+        $s7 = (short) $i8;
+
+        $r2[36] = $s7;
+
+        goto label05;
+
+     label10:
+        if $s2 != $s6 goto label11;
+
+        $s3 = 6;
+
+        $b4 = 3;
+
+        goto label03;
+
+     label11:
+        $s3 = 7;
+
+        $b4 = 4;
+
+        goto label03;
+
+     label12:
+        return;
+    }
+
+    void send_all_trees(int, int, int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3, $i5;
+        short[] $r1;
+        byte[] $r2;
+        byte $b4;
+        short $s6;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 = $i0 + -257;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i3, 5);
+
+        $i3 = $i1 + -1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i3, 5);
+
+        $i3 = $i2 + -4;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i3, 4);
+
+        $i3 = 0;
+
+     label1:
+        if $i3 >= $i2 goto label2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $r2 = <com.jcraft.jzlib.Tree: byte[] bl_order>;
+
+        $b4 = $r2[$i3];
+
+        $i5 = $b4 * 2;
+
+        $i5 = $i5 + 1;
+
+        $s6 = $r1[$i5];
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($s6, 3);
+
+        $i3 = $i3 + 1;
+
+        goto label1;
+
+     label2:
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $i5 = $i0 + -1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_tree(short[],int)>($r1, $i5);
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        $i5 = $i1 + -1;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_tree(short[],int)>($r1, $i5);
+
+        return;
+    }
+
+    void send_bits(int, int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3;
+        short $s4;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        $i3 = 16 - $i1;
+
+        if $i2 <= $i3 goto label1;
+
+        $s4 = $r0.<com.jcraft.jzlib.Deflate: short bi_buf>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        $i3 = $i0 << $i3;
+
+        $i3 = $i3 & 65535;
+
+        $i3 = $s4 | $i3;
+
+        $s4 = (short) $i3;
+
+        $r0.<com.jcraft.jzlib.Deflate: short bi_buf> = $s4;
+
+        $s4 = $r0.<com.jcraft.jzlib.Deflate: short bi_buf>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void put_short(int)>($s4);
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        $i3 = 16 - $i3;
+
+        $i3 = $i0 >>> $i3;
+
+        $s4 = (short) $i3;
+
+        $r0.<com.jcraft.jzlib.Deflate: short bi_buf> = $s4;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        $i2 = $i1 + -16;
+
+        $i3 = $i3 + $i2;
+
+        $r0.<com.jcraft.jzlib.Deflate: int bi_valid> = $i3;
+
+        return;
+
+     label1:
+        $s4 = $r0.<com.jcraft.jzlib.Deflate: short bi_buf>;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        $i3 = $i0 << $i3;
+
+        $i3 = $i3 & 65535;
+
+        $i3 = $s4 | $i3;
+
+        $s4 = (short) $i3;
+
+        $r0.<com.jcraft.jzlib.Deflate: short bi_buf> = $s4;
+
+        $i3 = $r0.<com.jcraft.jzlib.Deflate: int bi_valid>;
+
+        $i3 = $i3 + $i1;
+
+        $r0.<com.jcraft.jzlib.Deflate: int bi_valid> = $i3;
+
+        return;
+    }
+
+    final void send_code(int, short[])
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i2;
+        short[] $r1;
+        short $s1;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: short[];
+
+        $i0 = $i0 * 2;
+
+        $s1 = $r1[$i0];
+
+        $i2 = $s1 & 65535;
+
+        $i0 = $i0 + 1;
+
+        $s1 = $r1[$i0];
+
+        $i0 = $s1 & 65535;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i2, $i0);
+
+        return;
+    }
+
+    void send_tree(short[], int)
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        short[] $r1, $r2;
+        int $i0, $i1, $i5, $i8;
+        short $s2, $s3, $s6, $s7;
+        byte $b4;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 := @parameter0: short[];
+
+        $i0 := @parameter1: int;
+
+        $s7 = -1;
+
+        $s6 = $r1[1];
+
+        $i1 = 0;
+
+        $s3 = 7;
+
+        $b4 = 4;
+
+        if $s6 != 0 goto label01;
+
+        $s3 = 138;
+
+        $b4 = 3;
+
+     label01:
+        $i5 = 0;
+
+     label02:
+        if $i5 > $i0 goto label13;
+
+        $s2 = $s6;
+
+        $i8 = $i5 + 1;
+
+        $i8 = $i8 * 2;
+
+        $i8 = $i8 + 1;
+
+        $s6 = $r1[$i8];
+
+        $i1 = $i1 + 1;
+
+        if $i1 >= $s3 goto label04;
+
+        if $s2 != $s6 goto label04;
+
+     label03:
+        $i5 = $i5 + 1;
+
+        goto label02;
+
+     label04:
+        if $i1 >= $b4 goto label07;
+
+     label05:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>($s2, $r2);
+
+        $i1 = $i1 + -1;
+
+        if $i1 != 0 goto label05;
+
+     label06:
+        $i1 = 0;
+
+        $s7 = $s2;
+
+        if $s6 != 0 goto label11;
+
+        $s3 = 138;
+
+        $b4 = 3;
+
+        goto label03;
+
+     label07:
+        if $s2 == 0 goto label09;
+
+        if $s2 == $s7 goto label08;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>($s2, $r2);
+
+        $i1 = $i1 + -1;
+
+     label08:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>(16, $r2);
+
+        $i8 = $i1 + -3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i8, 2);
+
+        goto label06;
+
+     label09:
+        if $i1 > 10 goto label10;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>(17, $r2);
+
+        $i8 = $i1 + -3;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i8, 3);
+
+        goto label06;
+
+     label10:
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_code(int,short[])>(18, $r2);
+
+        $i8 = $i1 + -11;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void send_bits(int,int)>($i8, 7);
+
+        goto label06;
+
+     label11:
+        if $s2 != $s6 goto label12;
+
+        $s3 = 6;
+
+        $b4 = 3;
+
+        goto label03;
+
+     label12:
+        $s3 = 7;
+
+        $b4 = 4;
+
+        goto label03;
+
+     label13:
+        return;
+    }
+
+    void set_data_type()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        int $i0, $i1, $i2, $i3;
+        short[] $r1;
+        short $s4;
+        boolean $z0;
+        byte $b5;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $i2 = 0;
+
+        $i0 = 0;
+
+        $i1 = 0;
+
+     label1:
+        if $i2 >= 7 goto label2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $i3 = $i2 * 2;
+
+        $s4 = $r1[$i3];
+
+        $i1 = $i1 + $s4;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label2:
+        if $i2 >= 128 goto label3;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $i3 = $i2 * 2;
+
+        $s4 = $r1[$i3];
+
+        $i0 = $i0 + $s4;
+
+        $i2 = $i2 + 1;
+
+        goto label2;
+
+     label3:
+        if $i2 >= 256 goto label4;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $i3 = $i2 * 2;
+
+        $s4 = $r1[$i3];
+
+        $i1 = $i1 + $s4;
+
+        $i2 = $i2 + 1;
+
+        goto label3;
+
+     label4:
+        $i3 = $i0 >>> 2;
+
+        if $i1 <= $i3 goto label6;
+
+        $z0 = 0;
+
+     label5:
+        $b5 = (byte) $z0;
+
+        $r0.<com.jcraft.jzlib.Deflate: byte data_type> = $b5;
+
+        return;
+
+     label6:
+        $z0 = 1;
+
+        goto label5;
+    }
+
+    void tr_init()
+    {
+        com.jcraft.jzlib.Deflate $r0;
+        com.jcraft.jzlib.Tree $r1;
+        short[] $r2;
+        com.jcraft.jzlib.StaticTree $r3;
+
+        $r0 := @this: com.jcraft.jzlib.Deflate;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree l_desc>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_ltree>;
+
+        $r1.<com.jcraft.jzlib.Tree: short[] dyn_tree> = $r2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree l_desc>;
+
+        $r3 = <com.jcraft.jzlib.StaticTree: com.jcraft.jzlib.StaticTree static_l_desc>;
+
+        $r1.<com.jcraft.jzlib.Tree: com.jcraft.jzlib.StaticTree stat_desc> = $r3;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree d_desc>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] dyn_dtree>;
+
+        $r1.<com.jcraft.jzlib.Tree: short[] dyn_tree> = $r2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree d_desc>;
+
+        $r3 = <com.jcraft.jzlib.StaticTree: com.jcraft.jzlib.StaticTree static_d_desc>;
+
+        $r1.<com.jcraft.jzlib.Tree: com.jcraft.jzlib.StaticTree stat_desc> = $r3;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree bl_desc>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Deflate: short[] bl_tree>;
+
+        $r1.<com.jcraft.jzlib.Tree: short[] dyn_tree> = $r2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Deflate: com.jcraft.jzlib.Tree bl_desc>;
+
+        $r3 = <com.jcraft.jzlib.StaticTree: com.jcraft.jzlib.StaticTree static_bl_desc>;
+
+        $r1.<com.jcraft.jzlib.Tree: com.jcraft.jzlib.StaticTree stat_desc> = $r3;
+
+        $r0.<com.jcraft.jzlib.Deflate: short bi_buf> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int bi_valid> = 0;
+
+        $r0.<com.jcraft.jzlib.Deflate: int last_eob_len> = 8;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Deflate: void init_block()>();
+
+        return;
+    }
+}

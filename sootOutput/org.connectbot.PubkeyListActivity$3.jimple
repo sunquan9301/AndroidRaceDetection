@@ -1,0 +1,97 @@
+class org.connectbot.PubkeyListActivity$3 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.PubkeyListActivity this$0;
+
+    void <init>(org.connectbot.PubkeyListActivity)
+    {
+        org.connectbot.PubkeyListActivity$3 $r0;
+        org.connectbot.PubkeyListActivity $r1;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$3;
+
+        $r1 := @parameter0: org.connectbot.PubkeyListActivity;
+
+        $r0.<org.connectbot.PubkeyListActivity$3: org.connectbot.PubkeyListActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.PubkeyListActivity$3 $r0;
+        android.view.MenuItem $r1;
+        android.content.ActivityNotFoundException $r2, $r3;
+        android.content.Intent $r4;
+        java.io.File $r5;
+        android.net.Uri $r6;
+        org.connectbot.PubkeyListActivity $r7;
+        java.lang.String $r8, $r9;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$3;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+        $r5 = staticinvoke <android.os.Environment: java.io.File getExternalStorageDirectory()>();
+
+        $r6 = staticinvoke <android.net.Uri: android.net.Uri fromFile(java.io.File)>($r5);
+
+        $r7 = $r0.<org.connectbot.PubkeyListActivity$3: org.connectbot.PubkeyListActivity this$0>;
+
+        $r8 = virtualinvoke $r7.<org.connectbot.PubkeyListActivity: java.lang.String getString(int)>(2131165210);
+
+        $r4 = new android.content.Intent;
+
+        specialinvoke $r4.<android.content.Intent: void <init>(java.lang.String)>("org.openintents.action.PICK_FILE");
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r6);
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("org.openintents.extra.TITLE", $r8);
+
+        $r7 = $r0.<org.connectbot.PubkeyListActivity$3: org.connectbot.PubkeyListActivity this$0>;
+
+        $r9 = virtualinvoke $r7.<org.connectbot.PubkeyListActivity: java.lang.String getString(int)>(17039370);
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("org.openintents.extra.BUTTON_TEXT", $r9);
+
+        $r7 = $r0.<org.connectbot.PubkeyListActivity$3: org.connectbot.PubkeyListActivity this$0>;
+
+     label1:
+        virtualinvoke $r7.<org.connectbot.PubkeyListActivity: void startActivityForResult(android.content.Intent,int)>($r4, 1);
+
+     label2:
+        return 1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $r4 = new android.content.Intent;
+
+        specialinvoke $r4.<android.content.Intent: void <init>(java.lang.String)>("android.intent.action.PICK");
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent setDataAndType(android.net.Uri,java.lang.String)>($r6, "vnd.android.cursor.dir/lysesoft.andexplorer.file");
+
+        virtualinvoke $r4.<android.content.Intent: android.content.Intent putExtra(java.lang.String,java.lang.String)>("explorer_title", $r8);
+
+        $r7 = $r0.<org.connectbot.PubkeyListActivity$3: org.connectbot.PubkeyListActivity this$0>;
+
+     label4:
+        virtualinvoke $r7.<org.connectbot.PubkeyListActivity: void startActivityForResult(android.content.Intent,int)>($r4, 1);
+
+     label5:
+        return 1;
+
+     label6:
+        $r3 := @caughtexception;
+
+        $r7 = $r0.<org.connectbot.PubkeyListActivity$3: org.connectbot.PubkeyListActivity this$0>;
+
+        staticinvoke <org.connectbot.PubkeyListActivity: void access$000(org.connectbot.PubkeyListActivity)>($r7);
+
+        return 1;
+
+        catch android.content.ActivityNotFoundException from label1 to label2 with label3;
+        catch android.content.ActivityNotFoundException from label4 to label5 with label6;
+    }
+}

@@ -1,0 +1,23 @@
+public class com.trilead.ssh2.compression.ZlibOpenSSH extends com.trilead.ssh2.compression.Zlib
+{
+
+    public void <init>()
+    {
+        com.trilead.ssh2.compression.ZlibOpenSSH $r0;
+
+        $r0 := @this: com.trilead.ssh2.compression.ZlibOpenSSH;
+
+        specialinvoke $r0.<com.trilead.ssh2.compression.Zlib: void <init>()>();
+
+        return;
+    }
+
+    public boolean canCompressPreauth()
+    {
+        com.trilead.ssh2.compression.ZlibOpenSSH $r0;
+
+        $r0 := @this: com.trilead.ssh2.compression.ZlibOpenSSH;
+
+        return 0;
+    }
+}

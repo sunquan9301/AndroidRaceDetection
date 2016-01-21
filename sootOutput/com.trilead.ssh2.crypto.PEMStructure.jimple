@@ -1,0 +1,18 @@
+public class com.trilead.ssh2.crypto.PEMStructure extends java.lang.Object
+{
+    public byte[] data;
+    java.lang.String[] dekInfo;
+    public int pemType;
+    java.lang.String[] procType;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.crypto.PEMStructure $r0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.PEMStructure;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

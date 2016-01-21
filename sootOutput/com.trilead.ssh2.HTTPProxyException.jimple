@@ -1,0 +1,43 @@
+public class com.trilead.ssh2.HTTPProxyException extends java.io.IOException
+{
+    public final int httpErrorCode;
+    public final java.lang.String httpResponse;
+
+    public void <init>(java.lang.String, int)
+    {
+        com.trilead.ssh2.HTTPProxyException $r0;
+        java.lang.String $r1, $r3;
+        int $i0;
+        java.lang.StringBuilder $r2;
+
+        $r0 := @this: com.trilead.ssh2.HTTPProxyException;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("HTTP Proxy Error (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r0.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        $r0.<com.trilead.ssh2.HTTPProxyException: java.lang.String httpResponse> = $r1;
+
+        $r0.<com.trilead.ssh2.HTTPProxyException: int httpErrorCode> = $i0;
+
+        return;
+    }
+}

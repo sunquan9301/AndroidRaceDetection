@@ -1,0 +1,87 @@
+;com.fedex.ida.android.connectors.ConnectorThread java.util.Vector observers-com.fedex.ida.android.connectors.ConnectorThread- java.util.Vector getObservers()-com.fedex.ida.android.connectors.shipmentList.ShipmentListPullCloudConnector- void shipmentListPullErrorRelogin()-4.stm2
+(declare-const O0 Int)
+(declare-const O1 Int)
+(declare-const O2 Int)
+(declare-const O3 Int)
+(declare-const O4 Int)
+(declare-const O5 Int)
+(declare-const O6 Int)
+(declare-const O7 Int)
+(declare-const O8 Int)
+
+
+(declare-const O9 Int)
+(declare-const O10 Int)
+(declare-const O11 Int)
+(declare-const O12 Int)
+(declare-const O13 Int)
+(declare-const O14 Int)
+(declare-const O15 Int)
+(declare-const O16 Int)
+(declare-const O17 Int)
+(declare-const O18 Int)
+(declare-const O19 Int)
+(declare-const O20 Int)
+(declare-const O21 Int)
+(declare-const O22 Int)
+(declare-const O23 Int)
+(declare-const O24 Int)
+
+
+
+
+(assert (< O0 O1))
+(assert (< O1 O2))
+(assert (< O2 O3))
+(assert (< O3 O4))
+(assert (< O4 O5))
+(assert (< O5 O6))
+(assert (< O6 O7))
+(assert (< O7 O8))
+
+
+(assert (< O9 O10))
+(assert (< O10 O11))
+(assert (< O11 O12))
+(assert (< O12 O13))
+(assert (< O13 O14))
+(assert (< O14 O15))
+(assert (< O15 O16))
+(assert (< O16 O17))
+(assert (< O17 O18))
+(assert (< O18 O19))
+(assert (< O19 O20))
+(assert (< O20 O21))
+(assert (< O21 O22))
+(assert (< O22 O23))
+(assert (< O23 O24))
+
+
+
+
+
+
+(push)
+(check-sat)
+(assert (= O6 O13))
+(get-model)
+(pop)
+
+
+(push)
+(check-sat)
+(assert (= O6 O15))
+(get-model)
+(pop)
+
+
+
+
+
+
+
+
+
+
+
+

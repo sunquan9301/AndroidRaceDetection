@@ -1,0 +1,171 @@
+class com.trilead.ssh2.util.TimeoutService$TimeoutThread extends java.lang.Thread
+{
+
+    private void <init>()
+    {
+        com.trilead.ssh2.util.TimeoutService$TimeoutThread $r0;
+
+        $r0 := @this: com.trilead.ssh2.util.TimeoutService$TimeoutThread;
+
+        specialinvoke $r0.<java.lang.Thread: void <init>()>();
+
+        return;
+    }
+
+    void <init>(com.trilead.ssh2.util.TimeoutService$1)
+    {
+        com.trilead.ssh2.util.TimeoutService$TimeoutThread $r0;
+        com.trilead.ssh2.util.TimeoutService$1 $r1;
+
+        $r0 := @this: com.trilead.ssh2.util.TimeoutService$TimeoutThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.util.TimeoutService$1;
+
+        specialinvoke $r0.<com.trilead.ssh2.util.TimeoutService$TimeoutThread: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.trilead.ssh2.util.TimeoutService$TimeoutThread $r0;
+        java.lang.Exception $r1;
+        java.io.StringWriter $r2;
+        java.util.LinkedList $r3, $r4;
+        int $i0;
+        long $l1, $l2;
+        java.lang.Object $r5;
+        com.trilead.ssh2.util.TimeoutService$TimeoutToken $r6;
+        byte $b3;
+        java.lang.InterruptedException $r7;
+        java.lang.Runnable $r8;
+        java.io.PrintWriter $r9;
+        com.trilead.ssh2.log.Logger $r10;
+        java.lang.StringBuilder $r11;
+        java.lang.String $r12;
+        java.lang.Throwable $r13;
+
+        $r0 := @this: com.trilead.ssh2.util.TimeoutService$TimeoutThread;
+
+        $r3 = staticinvoke <com.trilead.ssh2.util.TimeoutService: java.util.LinkedList access$000()>();
+
+        entermonitor $r3;
+
+     label01:
+        $r4 = staticinvoke <com.trilead.ssh2.util.TimeoutService: java.util.LinkedList access$000()>();
+
+        $i0 = virtualinvoke $r4.<java.util.LinkedList: int size()>();
+
+        if $i0 != 0 goto label03;
+
+        staticinvoke <com.trilead.ssh2.util.TimeoutService: java.lang.Thread access$102(java.lang.Thread)>(null);
+
+        exitmonitor $r3;
+
+     label02:
+        return;
+
+     label03:
+        $l1 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $r4 = staticinvoke <com.trilead.ssh2.util.TimeoutService: java.util.LinkedList access$000()>();
+
+        $r5 = virtualinvoke $r4.<java.util.LinkedList: java.lang.Object getFirst()>();
+
+        $r6 = (com.trilead.ssh2.util.TimeoutService$TimeoutToken) $r5;
+
+        $l2 = staticinvoke <com.trilead.ssh2.util.TimeoutService$TimeoutToken: long access$200(com.trilead.ssh2.util.TimeoutService$TimeoutToken)>($r6);
+
+     label04:
+        $b3 = $l2 cmp $l1;
+
+        if $b3 <= 0 goto label08;
+
+     label05:
+        $r4 = staticinvoke <com.trilead.ssh2.util.TimeoutService: java.util.LinkedList access$000()>();
+
+        $l2 = staticinvoke <com.trilead.ssh2.util.TimeoutService$TimeoutToken: long access$200(com.trilead.ssh2.util.TimeoutService$TimeoutToken)>($r6);
+
+        $l2 = $l2 - $l1;
+
+        virtualinvoke $r4.<java.lang.Object: void wait(long)>($l2);
+
+     label06:
+        goto label01;
+
+     label07:
+        $r7 := @caughtexception;
+
+        goto label01;
+
+     label08:
+        $r4 = staticinvoke <com.trilead.ssh2.util.TimeoutService: java.util.LinkedList access$000()>();
+
+        virtualinvoke $r4.<java.util.LinkedList: java.lang.Object removeFirst()>();
+
+     label09:
+        $r8 = staticinvoke <com.trilead.ssh2.util.TimeoutService$TimeoutToken: java.lang.Runnable access$300(com.trilead.ssh2.util.TimeoutService$TimeoutToken)>($r6);
+
+        interfaceinvoke $r8.<java.lang.Runnable: void run()>();
+
+     label10:
+        goto label01;
+
+     label11:
+        $r1 := @caughtexception;
+
+     label12:
+        $r2 = new java.io.StringWriter;
+
+        specialinvoke $r2.<java.io.StringWriter: void <init>()>();
+
+        $r9 = new java.io.PrintWriter;
+
+        specialinvoke $r9.<java.io.PrintWriter: void <init>(java.io.Writer)>($r2);
+
+        virtualinvoke $r1.<java.lang.Exception: void printStackTrace(java.io.PrintWriter)>($r9);
+
+        $r10 = staticinvoke <com.trilead.ssh2.util.TimeoutService: com.trilead.ssh2.log.Logger access$400()>();
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Exeception in Timeout handler:");
+
+        $r12 = virtualinvoke $r1.<java.lang.Exception: java.lang.String getMessage()>();
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r12);
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(");
+
+        $r12 = virtualinvoke $r2.<java.io.StringWriter: java.lang.String toString()>();
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r12);
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r10.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r12);
+
+        goto label01;
+
+     label13:
+        $r13 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label14:
+        throw $r13;
+
+        catch java.lang.Throwable from label01 to label02 with label13;
+        catch java.lang.Throwable from label03 to label04 with label13;
+        catch java.lang.InterruptedException from label05 to label06 with label07;
+        catch java.lang.Throwable from label05 to label06 with label13;
+        catch java.lang.Throwable from label08 to label09 with label13;
+        catch java.lang.Exception from label09 to label10 with label11;
+        catch java.lang.Throwable from label09 to label10 with label13;
+        catch java.lang.Throwable from label12 to label14 with label13;
+    }
+}

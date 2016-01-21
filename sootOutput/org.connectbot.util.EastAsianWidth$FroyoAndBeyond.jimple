@@ -1,0 +1,57 @@
+class org.connectbot.util.EastAsianWidth$FroyoAndBeyond extends org.connectbot.util.EastAsianWidth
+{
+
+    private void <init>()
+    {
+        org.connectbot.util.EastAsianWidth$FroyoAndBeyond $r0;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth$FroyoAndBeyond;
+
+        specialinvoke $r0.<org.connectbot.util.EastAsianWidth: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.util.EastAsianWidth$1)
+    {
+        org.connectbot.util.EastAsianWidth$FroyoAndBeyond $r0;
+        org.connectbot.util.EastAsianWidth$1 $r1;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth$FroyoAndBeyond;
+
+        $r1 := @parameter0: org.connectbot.util.EastAsianWidth$1;
+
+        specialinvoke $r0.<org.connectbot.util.EastAsianWidth$FroyoAndBeyond: void <init>()>();
+
+        return;
+    }
+
+    public void measure(char[], int, int, byte[], android.graphics.Paint, int)
+    {
+        org.connectbot.util.EastAsianWidth$FroyoAndBeyond $r0;
+        char[] $r1;
+        int $i0, $i1, $i2;
+        byte[] $r2;
+        android.graphics.Paint $r3;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth$FroyoAndBeyond;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 := @parameter3: byte[];
+
+        $r3 := @parameter4: android.graphics.Paint;
+
+        $i2 := @parameter5: int;
+
+        $i2 = $i1 - $i0;
+
+        staticinvoke <android.text.AndroidCharacter: void getEastAsianWidths(char[],int,int,byte[])>($r1, $i0, $i2, $r2);
+
+        return;
+    }
+}

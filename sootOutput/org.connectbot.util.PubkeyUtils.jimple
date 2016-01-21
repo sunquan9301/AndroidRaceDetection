@@ -1,0 +1,1006 @@
+public class org.connectbot.util.PubkeyUtils extends java.lang.Object
+{
+    private static final char[] HEX_DIGITS;
+
+    static void <clinit>()
+    {
+        char[] $r0;
+
+        $r0 = newarray (char)[16];
+
+        $r0[0] = 48;
+
+        $r0[1] = 49;
+
+        $r0[2] = 50;
+
+        $r0[3] = 51;
+
+        $r0[4] = 52;
+
+        $r0[5] = 53;
+
+        $r0[6] = 54;
+
+        $r0[7] = 55;
+
+        $r0[8] = 56;
+
+        $r0[9] = 57;
+
+        $r0[10] = 97;
+
+        $r0[11] = 98;
+
+        $r0[12] = 99;
+
+        $r0[13] = 100;
+
+        $r0[14] = 101;
+
+        $r0[15] = 102;
+
+        <org.connectbot.util.PubkeyUtils: char[] HEX_DIGITS> = $r0;
+
+        return;
+    }
+
+    private void <init>()
+    {
+        org.connectbot.util.PubkeyUtils $r0;
+
+        $r0 := @this: org.connectbot.util.PubkeyUtils;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static byte[] cipher(int, byte[], byte[]) throws java.security.NoSuchAlgorithmException, javax.crypto.NoSuchPaddingException, java.security.InvalidKeyException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException
+    {
+        int $i0;
+        byte[] $r0, $r1;
+        javax.crypto.spec.SecretKeySpec $r2;
+        javax.crypto.Cipher $r3;
+
+        $i0 := @parameter0: int;
+
+        $r0 := @parameter1: byte[];
+
+        $r1 := @parameter2: byte[];
+
+        $r2 = new javax.crypto.spec.SecretKeySpec;
+
+        $r1 = staticinvoke <org.connectbot.util.PubkeyUtils: byte[] sha256(byte[])>($r1);
+
+        specialinvoke $r2.<javax.crypto.spec.SecretKeySpec: void <init>(byte[],java.lang.String)>($r1, "AES");
+
+        $r3 = staticinvoke <javax.crypto.Cipher: javax.crypto.Cipher getInstance(java.lang.String)>("AES");
+
+        virtualinvoke $r3.<javax.crypto.Cipher: void init(int,java.security.Key)>($i0, $r2);
+
+        $r1 = virtualinvoke $r3.<javax.crypto.Cipher: byte[] doFinal(byte[])>($r0);
+
+        return $r1;
+    }
+
+    public static java.lang.String convertToOpenSSHFormat(java.security.PublicKey, java.lang.String) throws java.io.IOException, java.security.InvalidKeyException
+    {
+        java.security.PublicKey $r0;
+        java.lang.String $r1, $r2, $r12;
+        boolean $z0;
+        java.lang.StringBuilder $r3;
+        java.security.interfaces.RSAPublicKey $r4;
+        byte[] $r5;
+        char[] $r6;
+        java.security.interfaces.DSAPublicKey $r7;
+        java.security.interfaces.ECPublicKey $r8;
+        java.security.spec.ECParameterSpec $r9;
+        java.security.spec.EllipticCurve $r10;
+        java.security.spec.ECField $r11;
+        int $i0;
+        java.security.InvalidKeyException $r13;
+
+        $r0 := @parameter0: java.security.PublicKey;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = $r1;
+
+        if $r1 != null goto label1;
+
+        $r2 = "connectbot@android";
+
+     label1:
+        $z0 = $r0 instanceof java.security.interfaces.RSAPublicKey;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ssh-rsa ");
+
+        $r4 = (java.security.interfaces.RSAPublicKey) $r0;
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: byte[] encodeSSHRSAPublicKey(java.security.interfaces.RSAPublicKey)>($r4);
+
+        $r6 = staticinvoke <com.trilead.ssh2.crypto.Base64: char[] encode(byte[])>($r5);
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(char[])>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+
+     label2:
+        $z0 = $r0 instanceof java.security.interfaces.DSAPublicKey;
+
+        if $z0 == 0 goto label3;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ssh-dss ");
+
+        $r7 = (java.security.interfaces.DSAPublicKey) $r0;
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: byte[] encodeSSHDSAPublicKey(java.security.interfaces.DSAPublicKey)>($r7);
+
+        $r6 = staticinvoke <com.trilead.ssh2.crypto.Base64: char[] encode(byte[])>($r5);
+
+        $r1 = staticinvoke <java.lang.String: java.lang.String valueOf(char[])>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r1 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+
+     label3:
+        $z0 = $r0 instanceof java.security.interfaces.ECPublicKey;
+
+        if $z0 == 0 goto label4;
+
+        $r8 = (java.security.interfaces.ECPublicKey) $r0;
+
+        $r9 = interfaceinvoke $r8.<java.security.interfaces.ECPublicKey: java.security.spec.ECParameterSpec getParams()>();
+
+        $r10 = virtualinvoke $r9.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r11 = virtualinvoke $r10.<java.security.spec.EllipticCurve: java.security.spec.ECField getField()>();
+
+        $i0 = interfaceinvoke $r11.<java.security.spec.ECField: int getFieldSize()>();
+
+        $r1 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.lang.String getCurveName(int)>($i0);
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: byte[] encodeSSHECDSAPublicKey(java.security.interfaces.ECPublicKey)>($r8);
+
+        $r6 = staticinvoke <com.trilead.ssh2.crypto.Base64: char[] encode(byte[])>($r5);
+
+        $r12 = staticinvoke <java.lang.String: java.lang.String valueOf(char[])>($r6);
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ecdsa-sha2-");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r12);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r12 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r12;
+
+     label4:
+        $r13 = new java.security.InvalidKeyException;
+
+        specialinvoke $r13.<java.security.InvalidKeyException: void <init>(java.lang.String)>("Unknown key type");
+
+        throw $r13;
+    }
+
+    public static java.security.PrivateKey decodePrivate(byte[], java.lang.String) throws java.security.NoSuchAlgorithmException, java.security.spec.InvalidKeySpecException
+    {
+        byte[] $r0;
+        java.lang.String $r1;
+        java.security.spec.PKCS8EncodedKeySpec $r2;
+        java.security.KeyFactory $r3;
+        java.security.PrivateKey $r4;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = new java.security.spec.PKCS8EncodedKeySpec;
+
+        specialinvoke $r2.<java.security.spec.PKCS8EncodedKeySpec: void <init>(byte[])>($r0);
+
+        $r3 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r3.<java.security.KeyFactory: java.security.PrivateKey generatePrivate(java.security.spec.KeySpec)>($r2);
+
+        return $r4;
+    }
+
+    public static java.security.PrivateKey decodePrivate(byte[], java.lang.String, java.lang.String) throws java.lang.Exception
+    {
+        byte[] $r0;
+        java.lang.String $r1, $r2;
+        int $i0;
+        java.security.PrivateKey $r3;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 := @parameter2: java.lang.String;
+
+        if $r2 == null goto label1;
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r0 = staticinvoke <org.connectbot.util.PubkeyUtils: byte[] decrypt(byte[],java.lang.String)>($r0, $r2);
+
+        $r3 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PrivateKey decodePrivate(byte[],java.lang.String)>($r0, $r1);
+
+        return $r3;
+
+     label1:
+        $r3 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PrivateKey decodePrivate(byte[],java.lang.String)>($r0, $r1);
+
+        return $r3;
+    }
+
+    public static java.security.PublicKey decodePublic(byte[], java.lang.String) throws java.security.NoSuchAlgorithmException, java.security.spec.InvalidKeySpecException
+    {
+        byte[] $r0;
+        java.lang.String $r1;
+        java.security.spec.X509EncodedKeySpec $r2;
+        java.security.KeyFactory $r3;
+        java.security.PublicKey $r4;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = new java.security.spec.X509EncodedKeySpec;
+
+        specialinvoke $r2.<java.security.spec.X509EncodedKeySpec: void <init>(byte[])>($r0);
+
+        $r3 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r3.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r2);
+
+        return $r4;
+    }
+
+    public static byte[] decrypt(byte[], java.lang.String) throws java.lang.Exception
+    {
+        byte[] $r0, $r2, $r4;
+        java.lang.String $r1;
+        java.lang.Exception $r3;
+        int $i0, $i1;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: java.lang.String;
+
+     label1:
+        $r4 = newarray (byte)[8];
+
+        $i1 = lengthof $r0;
+
+        $i0 = lengthof $r4;
+
+        $i1 = $i1 - $i0;
+
+        $r2 = newarray (byte)[$i1];
+
+        $i0 = lengthof $r4;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, 0, $r4, 0, $i0);
+
+        $i1 = lengthof $r4;
+
+        $i0 = lengthof $r2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r0, $i1, $r2, 0, $i0);
+
+        $r4 = staticinvoke <org.connectbot.util.Encryptor: byte[] decrypt(byte[],int,java.lang.String,byte[])>($r4, 1000, $r1, $r2);
+
+     label2:
+        return $r4;
+
+     label3:
+        $r3 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String,java.lang.Throwable)>("decrypt", "Could not decrypt with new method", $r3);
+
+        $r4 = virtualinvoke $r1.<java.lang.String: byte[] getBytes()>();
+
+        $r4 = staticinvoke <org.connectbot.util.PubkeyUtils: byte[] cipher(int,byte[],byte[])>(2, $r0, $r4);
+
+        return $r4;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    protected static java.lang.String encodeHex(byte[])
+    {
+        byte[] $r0;
+        byte $b0, $b4;
+        char[] $r1, $r3;
+        int $i1, $i2, $i3, $i5;
+        java.lang.String $r2;
+        char $c6;
+
+        $r0 := @parameter0: byte[];
+
+        $i3 = lengthof $r0;
+
+        $i3 = $i3 * 2;
+
+        $r1 = newarray (char)[$i3];
+
+        $i3 = lengthof $r0;
+
+        $i2 = 0;
+
+        $i1 = 0;
+
+     label1:
+        if $i2 >= $i3 goto label2;
+
+        $b0 = $r0[$i2];
+
+        $i5 = $i1 + 1;
+
+        $r3 = <org.connectbot.util.PubkeyUtils: char[] HEX_DIGITS>;
+
+        $b4 = $b0 >> 4;
+
+        $b4 = $b4 & 15;
+
+        $c6 = $r3[$b4];
+
+        $r1[$i1] = $c6;
+
+        $i1 = $i5 + 1;
+
+        $r3 = <org.connectbot.util.PubkeyUtils: char[] HEX_DIGITS>;
+
+        $b4 = $b0 & 15;
+
+        $c6 = $r3[$b4];
+
+        $r1[$i5] = $c6;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label2:
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(char[])>($r1);
+
+        return $r2;
+    }
+
+    public static byte[] encrypt(byte[], java.lang.String) throws java.lang.Exception
+    {
+        byte[] $r0, $r2, $r3;
+        java.lang.String $r1;
+        int $i0, $i1;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = newarray (byte)[8];
+
+        $r3 = staticinvoke <org.connectbot.util.Encryptor: byte[] encrypt(byte[],int,java.lang.String,byte[])>($r2, 1000, $r1, $r0);
+
+        $i1 = lengthof $r2;
+
+        $i0 = lengthof $r3;
+
+        $i1 = $i1 + $i0;
+
+        $r0 = newarray (byte)[$i1];
+
+        $i1 = lengthof $r2;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, 0, $r0, 0, $i1);
+
+        $i1 = lengthof $r2;
+
+        $i0 = lengthof $r3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, 0, $r0, $i1, $i0);
+
+        staticinvoke <java.util.Arrays: void fill(byte[],byte)>($r2, 0);
+
+        staticinvoke <java.util.Arrays: void fill(byte[],byte)>($r3, 0);
+
+        return $r0;
+    }
+
+    public static java.lang.String exportPEM(java.security.PrivateKey, java.lang.String) throws java.security.NoSuchAlgorithmException, java.security.spec.InvalidParameterSpecException, javax.crypto.NoSuchPaddingException, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException, java.security.spec.InvalidKeySpecException, javax.crypto.IllegalBlockSizeException, java.io.IOException
+    {
+        java.security.PrivateKey $r0;
+        java.lang.String $r1, $r9;
+        byte[] $r2, $r7;
+        javax.crypto.spec.PBEParameterSpec $r3;
+        javax.crypto.spec.PBEKeySpec $r4;
+        javax.crypto.EncryptedPrivateKeyInfo $r5;
+        java.security.SecureRandom $r6;
+        java.lang.StringBuilder $r8;
+        java.security.AlgorithmParameters $r10;
+        char[] $r11;
+        javax.crypto.SecretKeyFactory $r12;
+        javax.crypto.Cipher $r13;
+        javax.crypto.SecretKey $r14;
+        int $i0, $i1;
+
+        $r0 := @parameter0: java.security.PrivateKey;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = interfaceinvoke $r0.<java.security.PrivateKey: byte[] getEncoded()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-----BEGIN PRIVATE KEY-----");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        if $r1 == null goto label1;
+
+        $r7 = newarray (byte)[8];
+
+        $r6 = new java.security.SecureRandom;
+
+        specialinvoke $r6.<java.security.SecureRandom: void <init>()>();
+
+        virtualinvoke $r6.<java.security.SecureRandom: void nextBytes(byte[])>($r7);
+
+        $r3 = new javax.crypto.spec.PBEParameterSpec;
+
+        specialinvoke $r3.<javax.crypto.spec.PBEParameterSpec: void <init>(byte[],int)>($r7, 1);
+
+        $r9 = interfaceinvoke $r0.<java.security.PrivateKey: java.lang.String getAlgorithm()>();
+
+        $r10 = staticinvoke <java.security.AlgorithmParameters: java.security.AlgorithmParameters getInstance(java.lang.String)>($r9);
+
+        virtualinvoke $r10.<java.security.AlgorithmParameters: void init(java.security.spec.AlgorithmParameterSpec)>($r3);
+
+        $r4 = new javax.crypto.spec.PBEKeySpec;
+
+        $r11 = virtualinvoke $r1.<java.lang.String: char[] toCharArray()>();
+
+        specialinvoke $r4.<javax.crypto.spec.PBEKeySpec: void <init>(char[])>($r11);
+
+        $r9 = interfaceinvoke $r0.<java.security.PrivateKey: java.lang.String getAlgorithm()>();
+
+        $r12 = staticinvoke <javax.crypto.SecretKeyFactory: javax.crypto.SecretKeyFactory getInstance(java.lang.String)>($r9);
+
+        $r9 = interfaceinvoke $r0.<java.security.PrivateKey: java.lang.String getAlgorithm()>();
+
+        $r13 = staticinvoke <javax.crypto.Cipher: javax.crypto.Cipher getInstance(java.lang.String)>($r9);
+
+        $r14 = virtualinvoke $r12.<javax.crypto.SecretKeyFactory: javax.crypto.SecretKey generateSecret(java.security.spec.KeySpec)>($r4);
+
+        virtualinvoke $r13.<javax.crypto.Cipher: void init(int,java.security.Key,java.security.AlgorithmParameters)>(3, $r14, $r10);
+
+        $r2 = virtualinvoke $r13.<javax.crypto.Cipher: byte[] wrap(java.security.Key)>($r0);
+
+        $r5 = new javax.crypto.EncryptedPrivateKeyInfo;
+
+        specialinvoke $r5.<javax.crypto.EncryptedPrivateKeyInfo: void <init>(java.security.AlgorithmParameters,byte[])>($r10, $r2);
+
+        $r2 = virtualinvoke $r5.<javax.crypto.EncryptedPrivateKeyInfo: byte[] getEncoded()>();
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Proc-Type: 4,ENCRYPTED\n");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("DEK-Info: DES-EDE3-CBC,");
+
+        $r9 = staticinvoke <org.connectbot.util.PubkeyUtils: java.lang.String encodeHex(byte[])>($r7);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n\n");
+
+     label1:
+        $i0 = virtualinvoke $r8.<java.lang.StringBuilder: int length()>();
+
+        $r11 = staticinvoke <com.trilead.ssh2.crypto.Base64: char[] encode(byte[])>($r2);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(char[])>($r11);
+
+        $i0 = $i0 + 63;
+
+     label2:
+        $i1 = virtualinvoke $r8.<java.lang.StringBuilder: int length()>();
+
+        if $i0 >= $i1 goto label3;
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder insert(int,java.lang.String)>($i0, "\n");
+
+        $i0 = $i0 + 64;
+
+        goto label2;
+
+     label3:
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-----END PRIVATE KEY-----");
+
+        virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(10);
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r9;
+    }
+
+    public static byte[] extractOpenSSHPublic(java.security.KeyPair)
+    {
+        java.security.KeyPair $r0;
+        java.io.IOException $r1;
+        boolean $z0;
+        java.security.PublicKey $r2;
+        java.security.interfaces.RSAPublicKey $r3;
+        byte[] $r4;
+        java.security.interfaces.DSAPublicKey $r5;
+        java.security.interfaces.ECPublicKey $r6;
+
+        $r0 := @parameter0: java.security.KeyPair;
+
+     label01:
+        $r2 = virtualinvoke $r0.<java.security.KeyPair: java.security.PublicKey getPublic()>();
+
+     label02:
+        $z0 = $r2 instanceof java.security.interfaces.RSAPublicKey;
+
+     label03:
+        if $z0 == 0 goto label05;
+
+        $r2 = virtualinvoke $r0.<java.security.KeyPair: java.security.PublicKey getPublic()>();
+
+        $r3 = (java.security.interfaces.RSAPublicKey) $r2;
+
+        $r4 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: byte[] encodeSSHRSAPublicKey(java.security.interfaces.RSAPublicKey)>($r3);
+
+     label04:
+        return $r4;
+
+     label05:
+        $z0 = $r2 instanceof java.security.interfaces.DSAPublicKey;
+
+     label06:
+        if $z0 == 0 goto label08;
+
+        $r2 = virtualinvoke $r0.<java.security.KeyPair: java.security.PublicKey getPublic()>();
+
+        $r5 = (java.security.interfaces.DSAPublicKey) $r2;
+
+        $r4 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: byte[] encodeSSHDSAPublicKey(java.security.interfaces.DSAPublicKey)>($r5);
+
+     label07:
+        return $r4;
+
+     label08:
+        $z0 = $r2 instanceof java.security.interfaces.ECPublicKey;
+
+     label09:
+        if $z0 == 0 goto label11;
+
+        $r2 = virtualinvoke $r0.<java.security.KeyPair: java.security.PublicKey getPublic()>();
+
+        $r6 = (java.security.interfaces.ECPublicKey) $r2;
+
+        $r4 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: byte[] encodeSSHECDSAPublicKey(java.security.interfaces.ECPublicKey)>($r6);
+
+     label10:
+        return $r4;
+
+     label11:
+        return null;
+
+     label12:
+        $r1 := @caughtexception;
+
+        return null;
+
+        catch java.io.IOException from label01 to label02 with label12;
+        catch java.io.IOException from label03 to label04 with label12;
+        catch java.io.IOException from label06 to label07 with label12;
+        catch java.io.IOException from label09 to label10 with label12;
+    }
+
+    public static java.lang.String formatKey(java.security.Key)
+    {
+        java.security.Key $r0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2, $r3;
+        byte[] $r4;
+        int $i0;
+
+        $r0 := @parameter0: java.security.Key;
+
+        $r2 = interfaceinvoke $r0.<java.security.Key: java.lang.String getAlgorithm()>();
+
+        $r3 = interfaceinvoke $r0.<java.security.Key: java.lang.String getFormat()>();
+
+        $r4 = interfaceinvoke $r0.<java.security.Key: byte[] getEncoded()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Key[algorithm=");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", format=");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", bytes=");
+
+        $i0 = lengthof $r4;
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("]");
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    static java.lang.String getAlgorithmForOid(java.lang.String) throws java.security.NoSuchAlgorithmException
+    {
+        java.lang.String $r0, $r1;
+        java.lang.StringBuilder $r2;
+        boolean $z0;
+        java.security.NoSuchAlgorithmException $r3;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = "1.2.840.10045.2.1";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label1;
+
+        return "EC";
+
+     label1:
+        $r1 = "1.2.840.113549.1.1.1";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label2;
+
+        return "RSA";
+
+     label2:
+        $r1 = "1.2.840.10040.4.1";
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r0);
+
+        if $z0 == 0 goto label3;
+
+        return "DSA";
+
+     label3:
+        $r3 = new java.security.NoSuchAlgorithmException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown algorithm OID ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r0);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.security.NoSuchAlgorithmException: void <init>(java.lang.String)>($r1);
+
+        throw $r3;
+    }
+
+    public static byte[] getEncodedPrivate(java.security.PrivateKey, java.lang.String) throws java.lang.Exception
+    {
+        java.security.PrivateKey $r0;
+        java.lang.String $r1;
+        byte[] $r2;
+        int $i0;
+
+        $r0 := @parameter0: java.security.PrivateKey;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $r2 = interfaceinvoke $r0.<java.security.PrivateKey: byte[] getEncoded()>();
+
+        if $r1 == null goto label2;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label1;
+
+        return $r2;
+
+     label1:
+        $r2 = interfaceinvoke $r0.<java.security.PrivateKey: byte[] getEncoded()>();
+
+        $r2 = staticinvoke <org.connectbot.util.PubkeyUtils: byte[] encrypt(byte[],java.lang.String)>($r2, $r1);
+
+        return $r2;
+
+     label2:
+        return $r2;
+    }
+
+    static java.lang.String getOidFromPkcs8Encoded(byte[]) throws java.security.NoSuchAlgorithmException
+    {
+        byte[] $r0;
+        java.io.IOException $r1;
+        com.trilead.ssh2.crypto.SimpleDERReader $r2;
+        java.security.NoSuchAlgorithmException $r3;
+        java.lang.String $r4;
+
+        $r0 := @parameter0: byte[];
+
+        if $r0 != null goto label1;
+
+        $r3 = new java.security.NoSuchAlgorithmException;
+
+        specialinvoke $r3.<java.security.NoSuchAlgorithmException: void <init>(java.lang.String)>("encoding is null");
+
+        throw $r3;
+
+     label1:
+        $r2 = new com.trilead.ssh2.crypto.SimpleDERReader;
+
+     label2:
+        specialinvoke $r2.<com.trilead.ssh2.crypto.SimpleDERReader: void <init>(byte[])>($r0);
+
+        $r0 = virtualinvoke $r2.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readSequenceAsByteArray()>();
+
+        virtualinvoke $r2.<com.trilead.ssh2.crypto.SimpleDERReader: void resetInput(byte[])>($r0);
+
+        virtualinvoke $r2.<com.trilead.ssh2.crypto.SimpleDERReader: java.math.BigInteger readInt()>();
+
+        $r0 = virtualinvoke $r2.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readSequenceAsByteArray()>();
+
+        virtualinvoke $r2.<com.trilead.ssh2.crypto.SimpleDERReader: void resetInput(byte[])>($r0);
+
+        $r4 = virtualinvoke $r2.<com.trilead.ssh2.crypto.SimpleDERReader: java.lang.String readOid()>();
+
+     label3:
+        return $r4;
+
+     label4:
+        $r1 := @caughtexception;
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.PubkeyUtils", "Could not read OID", $r1);
+
+        $r3 = new java.security.NoSuchAlgorithmException;
+
+        specialinvoke $r3.<java.security.NoSuchAlgorithmException: void <init>(java.lang.String,java.lang.Throwable)>("Could not read key", $r1);
+
+        throw $r3;
+
+        catch java.io.IOException from label2 to label3 with label4;
+    }
+
+    public static java.security.KeyPair recoverKeyPair(byte[]) throws java.security.NoSuchAlgorithmException, java.security.spec.InvalidKeySpecException
+    {
+        byte[] $r0;
+        java.security.spec.PKCS8EncodedKeySpec $r1;
+        java.lang.String $r2;
+        java.security.KeyFactory $r3;
+        java.security.PrivateKey $r4;
+        java.security.KeyPair $r5;
+        java.security.PublicKey $r6;
+
+        $r0 := @parameter0: byte[];
+
+        $r2 = staticinvoke <org.connectbot.util.PubkeyUtils: java.lang.String getOidFromPkcs8Encoded(byte[])>($r0);
+
+        $r2 = staticinvoke <org.connectbot.util.PubkeyUtils: java.lang.String getAlgorithmForOid(java.lang.String)>($r2);
+
+        $r1 = new java.security.spec.PKCS8EncodedKeySpec;
+
+        specialinvoke $r1.<java.security.spec.PKCS8EncodedKeySpec: void <init>(byte[])>($r0);
+
+        $r3 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.security.KeyFactory: java.security.PrivateKey generatePrivate(java.security.spec.KeySpec)>($r1);
+
+        $r5 = new java.security.KeyPair;
+
+        $r6 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PublicKey recoverPublicKey(java.security.KeyFactory,java.security.PrivateKey)>($r3, $r4);
+
+        specialinvoke $r5.<java.security.KeyPair: void <init>(java.security.PublicKey,java.security.PrivateKey)>($r6, $r4);
+
+        return $r5;
+    }
+
+    static java.security.PublicKey recoverPublicKey(java.security.KeyFactory, java.security.PrivateKey) throws java.security.NoSuchAlgorithmException, java.security.spec.InvalidKeySpecException
+    {
+        java.security.KeyFactory $r0;
+        java.security.PrivateKey $r1;
+        java.security.spec.ECPoint $r2;
+        boolean $z0;
+        java.math.BigInteger $r3, $r6, $r10, $r12;
+        java.security.interfaces.RSAPrivateCrtKey $r4;
+        java.security.spec.RSAPublicKeySpec $r5;
+        java.security.PublicKey $r7;
+        java.security.interfaces.DSAPrivateKey $r8;
+        java.security.interfaces.DSAParams $r9;
+        java.security.spec.DSAPublicKeySpec $r11;
+        java.security.interfaces.ECPrivateKey $r13;
+        java.security.spec.ECParameterSpec $r14;
+        java.math.BigInteger[] $r15;
+        java.security.spec.ECPublicKeySpec $r16;
+        java.security.NoSuchAlgorithmException $r17;
+
+        $r0 := @parameter0: java.security.KeyFactory;
+
+        $r1 := @parameter1: java.security.PrivateKey;
+
+        $z0 = $r1 instanceof java.security.interfaces.RSAPrivateCrtKey;
+
+        if $z0 == 0 goto label1;
+
+        $r4 = (java.security.interfaces.RSAPrivateCrtKey) $r1;
+
+        $r5 = new java.security.spec.RSAPublicKeySpec;
+
+        $r3 = interfaceinvoke $r4.<java.security.interfaces.RSAPrivateCrtKey: java.math.BigInteger getModulus()>();
+
+        $r6 = interfaceinvoke $r4.<java.security.interfaces.RSAPrivateCrtKey: java.math.BigInteger getPublicExponent()>();
+
+        specialinvoke $r5.<java.security.spec.RSAPublicKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger)>($r3, $r6);
+
+        $r7 = virtualinvoke $r0.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r5);
+
+        return $r7;
+
+     label1:
+        $z0 = $r1 instanceof java.security.interfaces.DSAPrivateKey;
+
+        if $z0 == 0 goto label2;
+
+        $r8 = (java.security.interfaces.DSAPrivateKey) $r1;
+
+        $r9 = interfaceinvoke $r8.<java.security.interfaces.DSAPrivateKey: java.security.interfaces.DSAParams getParams()>();
+
+        $r6 = interfaceinvoke $r9.<java.security.interfaces.DSAParams: java.math.BigInteger getG()>();
+
+        $r3 = interfaceinvoke $r8.<java.security.interfaces.DSAPrivateKey: java.math.BigInteger getX()>();
+
+        $r10 = interfaceinvoke $r9.<java.security.interfaces.DSAParams: java.math.BigInteger getP()>();
+
+        $r10 = virtualinvoke $r6.<java.math.BigInteger: java.math.BigInteger modPow(java.math.BigInteger,java.math.BigInteger)>($r3, $r10);
+
+        $r11 = new java.security.spec.DSAPublicKeySpec;
+
+        $r6 = interfaceinvoke $r9.<java.security.interfaces.DSAParams: java.math.BigInteger getP()>();
+
+        $r3 = interfaceinvoke $r9.<java.security.interfaces.DSAParams: java.math.BigInteger getQ()>();
+
+        $r12 = interfaceinvoke $r9.<java.security.interfaces.DSAParams: java.math.BigInteger getG()>();
+
+        specialinvoke $r11.<java.security.spec.DSAPublicKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger)>($r10, $r6, $r3, $r12);
+
+        $r7 = virtualinvoke $r0.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r11);
+
+        return $r7;
+
+     label2:
+        $z0 = $r1 instanceof java.security.interfaces.ECPrivateKey;
+
+        if $z0 == 0 goto label3;
+
+        $r13 = (java.security.interfaces.ECPrivateKey) $r1;
+
+        $r14 = interfaceinvoke $r13.<java.security.interfaces.ECPrivateKey: java.security.spec.ECParameterSpec getParams()>();
+
+        $r2 = virtualinvoke $r14.<java.security.spec.ECParameterSpec: java.security.spec.ECPoint getGenerator()>();
+
+        $r15 = newarray (java.math.BigInteger)[2];
+
+        $r12 = virtualinvoke $r2.<java.security.spec.ECPoint: java.math.BigInteger getAffineX()>();
+
+        $r15[0] = $r12;
+
+        $r12 = virtualinvoke $r2.<java.security.spec.ECPoint: java.math.BigInteger getAffineY()>();
+
+        $r15[1] = $r12;
+
+        $r12 = interfaceinvoke $r13.<java.security.interfaces.ECPrivateKey: java.math.BigInteger getS()>();
+
+        $r15 = staticinvoke <org.keyczar.jce.EcCore: java.math.BigInteger[] multiplyPointA(java.math.BigInteger[],java.math.BigInteger,java.security.spec.ECParameterSpec)>($r15, $r12, $r14);
+
+        $r2 = new java.security.spec.ECPoint;
+
+        $r12 = $r15[0];
+
+        $r10 = $r15[1];
+
+        specialinvoke $r2.<java.security.spec.ECPoint: void <init>(java.math.BigInteger,java.math.BigInteger)>($r12, $r10);
+
+        $r16 = new java.security.spec.ECPublicKeySpec;
+
+        specialinvoke $r16.<java.security.spec.ECPublicKeySpec: void <init>(java.security.spec.ECPoint,java.security.spec.ECParameterSpec)>($r2, $r14);
+
+        $r7 = virtualinvoke $r0.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r16);
+
+        return $r7;
+
+     label3:
+        $r17 = new java.security.NoSuchAlgorithmException;
+
+        specialinvoke $r17.<java.security.NoSuchAlgorithmException: void <init>(java.lang.String)>("Key type must be RSA, DSA, or EC");
+
+        throw $r17;
+    }
+
+    public static byte[] sha256(byte[]) throws java.security.NoSuchAlgorithmException
+    {
+        byte[] $r0;
+        java.security.MessageDigest $r1;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 = staticinvoke <java.security.MessageDigest: java.security.MessageDigest getInstance(java.lang.String)>("SHA-256");
+
+        $r0 = virtualinvoke $r1.<java.security.MessageDigest: byte[] digest(byte[])>($r0);
+
+        return $r0;
+    }
+}

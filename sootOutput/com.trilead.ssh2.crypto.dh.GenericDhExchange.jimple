@@ -1,0 +1,191 @@
+public abstract class com.trilead.ssh2.crypto.dh.GenericDhExchange extends java.lang.Object
+{
+    private static final com.trilead.ssh2.log.Logger log;
+    java.math.BigInteger sharedSecret;
+
+    static void <clinit>()
+    {
+        com.trilead.ssh2.log.Logger $r0;
+
+        $r0 = staticinvoke <com.trilead.ssh2.log.Logger: com.trilead.ssh2.log.Logger getLogger(java.lang.Class)>(class "com/trilead/ssh2/crypto/dh/GenericDhExchange");
+
+        <com.trilead.ssh2.crypto.dh.GenericDhExchange: com.trilead.ssh2.log.Logger log> = $r0;
+
+        return;
+    }
+
+    protected void <init>()
+    {
+        com.trilead.ssh2.crypto.dh.GenericDhExchange $r0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.GenericDhExchange;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static com.trilead.ssh2.crypto.dh.GenericDhExchange getInstance(java.lang.String)
+    {
+        java.lang.String $r0;
+        boolean $z0;
+        com.trilead.ssh2.crypto.dh.EcDhExchange r2;
+        com.trilead.ssh2.crypto.dh.DhExchange r3;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $z0 = virtualinvoke $r0.<java.lang.String: boolean startsWith(java.lang.String)>("ecdh-sha2-");
+
+        if $z0 == 0 goto label1;
+
+        r2 = new com.trilead.ssh2.crypto.dh.EcDhExchange;
+
+        specialinvoke r2.<com.trilead.ssh2.crypto.dh.EcDhExchange: void <init>()>();
+
+        return r2;
+
+     label1:
+        r3 = new com.trilead.ssh2.crypto.dh.DhExchange;
+
+        specialinvoke r3.<com.trilead.ssh2.crypto.dh.DhExchange: void <init>()>();
+
+        return r3;
+    }
+
+    public byte[] calculateH(byte[], byte[], byte[], byte[], byte[]) throws java.io.UnsupportedEncodingException
+    {
+        com.trilead.ssh2.crypto.dh.GenericDhExchange $r0;
+        byte[] $r1, $r2, $r3, $r4, $r5;
+        com.trilead.ssh2.crypto.digest.HashForSSH2Types $r6;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r8;
+        com.trilead.ssh2.log.Logger $r9;
+        boolean $z0;
+        java.math.BigInteger $r10;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.GenericDhExchange;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 := @parameter1: byte[];
+
+        $r3 := @parameter2: byte[];
+
+        $r4 := @parameter3: byte[];
+
+        $r5 := @parameter4: byte[];
+
+        $r6 = new com.trilead.ssh2.crypto.digest.HashForSSH2Types;
+
+        $r8 = virtualinvoke $r0.<com.trilead.ssh2.crypto.dh.GenericDhExchange: java.lang.String getHashAlgo()>();
+
+        specialinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void <init>(java.lang.String)>($r8);
+
+        $r9 = <com.trilead.ssh2.crypto.dh.GenericDhExchange: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r9.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label1;
+
+        $r9 = <com.trilead.ssh2.crypto.dh.GenericDhExchange: com.trilead.ssh2.log.Logger log>;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Client: \'");
+
+        $r8 = new java.lang.String;
+
+        specialinvoke $r8.<java.lang.String: void <init>(byte[],java.lang.String)>($r1, "ISO-8859-1");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(90, $r8);
+
+        $r9 = <com.trilead.ssh2.crypto.dh.GenericDhExchange: com.trilead.ssh2.log.Logger log>;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Server: \'");
+
+        $r8 = new java.lang.String;
+
+        specialinvoke $r8.<java.lang.String: void <init>(byte[],java.lang.String)>($r2, "ISO-8859-1");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(90, $r8);
+
+     label1:
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r1);
+
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r2);
+
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r3);
+
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r4);
+
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r5);
+
+        $r5 = virtualinvoke $r0.<com.trilead.ssh2.crypto.dh.GenericDhExchange: byte[] getE()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r5);
+
+        $r5 = virtualinvoke $r0.<com.trilead.ssh2.crypto.dh.GenericDhExchange: byte[] getServerE()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateByteString(byte[])>($r5);
+
+        $r10 = $r0.<com.trilead.ssh2.crypto.dh.GenericDhExchange: java.math.BigInteger sharedSecret>;
+
+        virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: void updateBigInt(java.math.BigInteger)>($r10);
+
+        $r5 = virtualinvoke $r6.<com.trilead.ssh2.crypto.digest.HashForSSH2Types: byte[] getDigest()>();
+
+        return $r5;
+    }
+
+    public abstract byte[] getE();
+
+    public abstract java.lang.String getHashAlgo();
+
+    public java.math.BigInteger getK()
+    {
+        com.trilead.ssh2.crypto.dh.GenericDhExchange $r0;
+        java.math.BigInteger $r1;
+        java.lang.IllegalStateException $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.GenericDhExchange;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.GenericDhExchange: java.math.BigInteger sharedSecret>;
+
+        if $r1 != null goto label1;
+
+        $r2 = new java.lang.IllegalStateException;
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Shared secret not yet known, need f first!");
+
+        throw $r2;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.GenericDhExchange: java.math.BigInteger sharedSecret>;
+
+        return $r1;
+    }
+
+    protected abstract byte[] getServerE();
+
+    public abstract void init(java.lang.String) throws java.io.IOException;
+
+    public abstract void setF(byte[]) throws java.io.IOException;
+}

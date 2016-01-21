@@ -1,0 +1,11 @@
+public interface  de.mud.terminal.VDUDisplay extends java.lang.Object
+{
+
+    public abstract void redraw();
+
+    public abstract void resetColors();
+
+    public abstract void setColor(int, int, int, int);
+
+    public abstract void updateScrollBar();
+}

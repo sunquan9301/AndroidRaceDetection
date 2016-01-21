@@ -1,0 +1,18 @@
+public class com.trilead.ssh2.channel.RemoteForwardingData extends java.lang.Object
+{
+    public java.lang.String bindAddress;
+    public int bindPort;
+    java.lang.String targetAddress;
+    int targetPort;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.channel.RemoteForwardingData $r0;
+
+        $r0 := @this: com.trilead.ssh2.channel.RemoteForwardingData;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

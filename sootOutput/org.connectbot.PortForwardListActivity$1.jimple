@@ -1,0 +1,78 @@
+class org.connectbot.PortForwardListActivity$1 extends java.lang.Object implements android.content.ServiceConnection
+{
+    final org.connectbot.PortForwardListActivity this$0;
+
+    void <init>(org.connectbot.PortForwardListActivity)
+    {
+        org.connectbot.PortForwardListActivity$1 $r0;
+        org.connectbot.PortForwardListActivity $r1;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$1;
+
+        $r1 := @parameter0: org.connectbot.PortForwardListActivity;
+
+        $r0.<org.connectbot.PortForwardListActivity$1: org.connectbot.PortForwardListActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onServiceConnected(android.content.ComponentName, android.os.IBinder)
+    {
+        org.connectbot.PortForwardListActivity$1 $r0;
+        android.content.ComponentName $r1;
+        android.os.IBinder $r2;
+        org.connectbot.PortForwardListActivity $r3, $r4;
+        org.connectbot.service.TerminalManager $r5;
+        org.connectbot.service.TerminalManager$TerminalBinder $r6;
+        org.connectbot.bean.HostBean $r7;
+        org.connectbot.service.TerminalBridge $r8;
+        android.os.Handler $r9;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$1;
+
+        $r1 := @parameter0: android.content.ComponentName;
+
+        $r2 := @parameter1: android.os.IBinder;
+
+        $r6 = (org.connectbot.service.TerminalManager$TerminalBinder) $r2;
+
+        $r5 = virtualinvoke $r6.<org.connectbot.service.TerminalManager$TerminalBinder: org.connectbot.service.TerminalManager getService()>();
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$1: org.connectbot.PortForwardListActivity this$0>;
+
+        $r4 = $r0.<org.connectbot.PortForwardListActivity$1: org.connectbot.PortForwardListActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.PortForwardListActivity: org.connectbot.bean.HostBean access$000(org.connectbot.PortForwardListActivity)>($r4);
+
+        $r8 = virtualinvoke $r5.<org.connectbot.service.TerminalManager: org.connectbot.service.TerminalBridge getConnectedBridge(org.connectbot.bean.HostBean)>($r7);
+
+        $r3.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge> = $r8;
+
+        $r4 = $r0.<org.connectbot.PortForwardListActivity$1: org.connectbot.PortForwardListActivity this$0>;
+
+        $r9 = $r4.<org.connectbot.PortForwardListActivity: android.os.Handler updateHandler>;
+
+        virtualinvoke $r9.<android.os.Handler: boolean sendEmptyMessage(int)>(-1);
+
+        return;
+    }
+
+    public void onServiceDisconnected(android.content.ComponentName)
+    {
+        org.connectbot.PortForwardListActivity$1 $r0;
+        android.content.ComponentName $r1;
+        org.connectbot.PortForwardListActivity $r2;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$1;
+
+        $r1 := @parameter0: android.content.ComponentName;
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity$1: org.connectbot.PortForwardListActivity this$0>;
+
+        $r2.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge> = null;
+
+        return;
+    }
+}

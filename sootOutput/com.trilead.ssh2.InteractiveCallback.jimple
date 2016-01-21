@@ -1,0 +1,5 @@
+public interface  com.trilead.ssh2.InteractiveCallback extends java.lang.Object
+{
+
+    public abstract java.lang.String[] replyToChallenge(java.lang.String, java.lang.String, int, java.lang.String[], boolean[]) throws java.lang.Exception;
+}

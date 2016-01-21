@@ -1,0 +1,49 @@
+public final class org.connectbot.R$drawable extends java.lang.Object
+{
+    public static final int button_keyboard;
+    public static final int connected;
+    public static final int highlight_disabled_pressed;
+    public static final int ic_btn_back;
+    public static final int ic_btn_next;
+    public static final int icon;
+    public static final int notification_icon;
+    public static final int pubkey;
+    public static final int pubkey_locked;
+    public static final int pubkey_unlocked;
+
+    public void <init>()
+    {
+        org.connectbot.R$drawable $r0;
+
+        $r0 := @this: org.connectbot.R$drawable;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$drawable: int pubkey_unlocked> = 2130837513;
+
+        <org.connectbot.R$drawable: int pubkey_locked> = 2130837512;
+
+        <org.connectbot.R$drawable: int pubkey> = 2130837511;
+
+        <org.connectbot.R$drawable: int notification_icon> = 2130837510;
+
+        <org.connectbot.R$drawable: int icon> = 2130837509;
+
+        <org.connectbot.R$drawable: int ic_btn_next> = 2130837508;
+
+        <org.connectbot.R$drawable: int ic_btn_back> = 2130837507;
+
+        <org.connectbot.R$drawable: int highlight_disabled_pressed> = 2130837506;
+
+        <org.connectbot.R$drawable: int connected> = 2130837505;
+
+        <org.connectbot.R$drawable: int button_keyboard> = 2130837504;
+
+        return;
+    }
+}

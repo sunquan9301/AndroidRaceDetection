@@ -1,0 +1,25 @@
+public final class org.connectbot.R$xml extends java.lang.Object
+{
+    public static final int host_prefs;
+    public static final int preferences;
+
+    public void <init>()
+    {
+        org.connectbot.R$xml $r0;
+
+        $r0 := @this: org.connectbot.R$xml;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$xml: int preferences> = 2131034113;
+
+        <org.connectbot.R$xml: int host_prefs> = 2131034112;
+
+        return;
+    }
+}

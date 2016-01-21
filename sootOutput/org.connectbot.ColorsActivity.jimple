@@ -1,0 +1,494 @@
+public class org.connectbot.ColorsActivity extends android.app.Activity implements android.widget.AdapterView$OnItemClickListener, android.widget.AdapterView$OnItemSelectedListener, org.connectbot.util.UberColorPickerDialog$OnColorChangedListener
+{
+    private android.widget.Spinner mBgSpinner;
+    private android.widget.GridView mColorGrid;
+    private java.util.List mColorList;
+    private int mColorScheme;
+    private int mCurrentColor;
+    private int[] mDefaultColors;
+    private android.widget.Spinner mFgSpinner;
+    private org.connectbot.util.HostDatabase mHostDb;
+
+    public void <init>()
+    {
+        org.connectbot.ColorsActivity $r0;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        specialinvoke $r0.<android.app.Activity: void <init>()>();
+
+        $r0.<org.connectbot.ColorsActivity: int mCurrentColor> = 0;
+
+        return;
+    }
+
+    static java.util.List access$000(org.connectbot.ColorsActivity)
+    {
+        org.connectbot.ColorsActivity $r0;
+        java.util.List $r1;
+
+        $r0 := @parameter0: org.connectbot.ColorsActivity;
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: java.util.List mColorList>;
+
+        return $r1;
+    }
+
+    static org.connectbot.util.HostDatabase access$100(org.connectbot.ColorsActivity)
+    {
+        org.connectbot.ColorsActivity $r0;
+        org.connectbot.util.HostDatabase $r1;
+
+        $r0 := @parameter0: org.connectbot.ColorsActivity;
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb>;
+
+        return $r1;
+    }
+
+    static android.widget.GridView access$200(org.connectbot.ColorsActivity)
+    {
+        org.connectbot.ColorsActivity $r0;
+        android.widget.GridView $r1;
+
+        $r0 := @parameter0: org.connectbot.ColorsActivity;
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: android.widget.GridView mColorGrid>;
+
+        return $r1;
+    }
+
+    static android.widget.Spinner access$300(org.connectbot.ColorsActivity)
+    {
+        org.connectbot.ColorsActivity $r0;
+        android.widget.Spinner $r1;
+
+        $r0 := @parameter0: org.connectbot.ColorsActivity;
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mFgSpinner>;
+
+        return $r1;
+    }
+
+    static android.widget.Spinner access$400(org.connectbot.ColorsActivity)
+    {
+        org.connectbot.ColorsActivity $r0;
+        android.widget.Spinner $r1;
+
+        $r0 := @parameter0: org.connectbot.ColorsActivity;
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mBgSpinner>;
+
+        return $r1;
+    }
+
+    private void editColor(int)
+    {
+        org.connectbot.ColorsActivity $r0;
+        int $i0;
+        java.util.List $r1;
+        org.connectbot.util.UberColorPickerDialog $r2;
+        java.lang.Object $r3;
+        java.lang.Integer $r4;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        $i0 := @parameter0: int;
+
+        $r0.<org.connectbot.ColorsActivity: int mCurrentColor> = $i0;
+
+        $r2 = new org.connectbot.util.UberColorPickerDialog;
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: java.util.List mColorList>;
+
+        $r3 = interfaceinvoke $r1.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r4 = (java.lang.Integer) $r3;
+
+        $i0 = virtualinvoke $r4.<java.lang.Integer: int intValue()>();
+
+        specialinvoke $r2.<org.connectbot.util.UberColorPickerDialog: void <init>(android.content.Context,org.connectbot.util.UberColorPickerDialog$OnColorChangedListener,int)>($r0, $r0, $i0);
+
+        virtualinvoke $r2.<org.connectbot.util.UberColorPickerDialog: void show()>();
+
+        return;
+    }
+
+    public void colorChanged(int)
+    {
+        org.connectbot.ColorsActivity $r0;
+        int $i0, $i1;
+        org.connectbot.util.HostDatabase $r1;
+        java.lang.Integer $r2;
+        java.util.List $r3;
+        android.widget.GridView $r4;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb>;
+
+        $i1 = $r0.<org.connectbot.ColorsActivity: int mCurrentColor>;
+
+        virtualinvoke $r1.<org.connectbot.util.HostDatabase: void setGlobalColor(int,int)>($i1, $i0);
+
+        $r3 = $r0.<org.connectbot.ColorsActivity: java.util.List mColorList>;
+
+        $i1 = $r0.<org.connectbot.ColorsActivity: int mCurrentColor>;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        interfaceinvoke $r3.<java.util.List: java.lang.Object set(int,java.lang.Object)>($i1, $r2);
+
+        $r4 = $r0.<org.connectbot.ColorsActivity: android.widget.GridView mColorGrid>;
+
+        virtualinvoke $r4.<android.widget.GridView: void invalidateViews()>();
+
+        return;
+    }
+
+    protected void onCreate(android.os.Bundle)
+    {
+        org.connectbot.ColorsActivity $r0;
+        android.os.Bundle $r1;
+        android.content.res.Resources $r2;
+        java.lang.Object[] $r3;
+        java.lang.CharSequence $r4;
+        java.lang.String $r5;
+        org.connectbot.util.HostDatabase $r6;
+        int $i0;
+        java.lang.Integer[] $r7;
+        java.util.List $r8;
+        int[] $r9;
+        android.view.View $r10;
+        android.widget.GridView $r11;
+        org.connectbot.ColorsActivity$ColorsAdapter $r12;
+        android.widget.Spinner $r13;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.app.Activity: void onCreate(android.os.Bundle)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.ColorsActivity: void setContentView(int)>(2130903040);
+
+        $r3 = newarray (java.lang.Object)[2];
+
+        $r2 = virtualinvoke $r0.<org.connectbot.ColorsActivity: android.content.res.Resources getResources()>();
+
+        $r4 = virtualinvoke $r2.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165411);
+
+        $r3[0] = $r4;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.ColorsActivity: android.content.res.Resources getResources()>();
+
+        $r4 = virtualinvoke $r2.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165217);
+
+        $r3[1] = $r4;
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s: %s", $r3);
+
+        virtualinvoke $r0.<org.connectbot.ColorsActivity: void setTitle(java.lang.CharSequence)>($r5);
+
+        $r0.<org.connectbot.ColorsActivity: int mColorScheme> = 0;
+
+        $r6 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r6.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb> = $r6;
+
+        $r6 = $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb>;
+
+        $i0 = $r0.<org.connectbot.ColorsActivity: int mColorScheme>;
+
+        $r7 = virtualinvoke $r6.<org.connectbot.util.HostDatabase: java.lang.Integer[] getColorsForScheme(int)>($i0);
+
+        $r8 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r7);
+
+        $r0.<org.connectbot.ColorsActivity: java.util.List mColorList> = $r8;
+
+        $r6 = $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb>;
+
+        $i0 = $r0.<org.connectbot.ColorsActivity: int mColorScheme>;
+
+        $r9 = virtualinvoke $r6.<org.connectbot.util.HostDatabase: int[] getDefaultColorsForScheme(int)>($i0);
+
+        $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors> = $r9;
+
+        $r10 = virtualinvoke $r0.<org.connectbot.ColorsActivity: android.view.View findViewById(int)>(2131427331);
+
+        $r11 = (android.widget.GridView) $r10;
+
+        $r0.<org.connectbot.ColorsActivity: android.widget.GridView mColorGrid> = $r11;
+
+        $r11 = $r0.<org.connectbot.ColorsActivity: android.widget.GridView mColorGrid>;
+
+        $r12 = new org.connectbot.ColorsActivity$ColorsAdapter;
+
+        specialinvoke $r12.<org.connectbot.ColorsActivity$ColorsAdapter: void <init>(org.connectbot.ColorsActivity,boolean)>($r0, 1);
+
+        virtualinvoke $r11.<android.widget.GridView: void setAdapter(android.widget.ListAdapter)>($r12);
+
+        $r11 = $r0.<org.connectbot.ColorsActivity: android.widget.GridView mColorGrid>;
+
+        virtualinvoke $r11.<android.widget.GridView: void setOnItemClickListener(android.widget.AdapterView$OnItemClickListener)>($r0);
+
+        $r11 = $r0.<org.connectbot.ColorsActivity: android.widget.GridView mColorGrid>;
+
+        virtualinvoke $r11.<android.widget.GridView: void setSelection(int)>(0);
+
+        $r10 = virtualinvoke $r0.<org.connectbot.ColorsActivity: android.view.View findViewById(int)>(2131427329);
+
+        $r13 = (android.widget.Spinner) $r10;
+
+        $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mFgSpinner> = $r13;
+
+        $r13 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mFgSpinner>;
+
+        $r12 = new org.connectbot.ColorsActivity$ColorsAdapter;
+
+        specialinvoke $r12.<org.connectbot.ColorsActivity$ColorsAdapter: void <init>(org.connectbot.ColorsActivity,boolean,int)>($r0, 0, 2131165393);
+
+        virtualinvoke $r13.<android.widget.Spinner: void setAdapter(android.widget.SpinnerAdapter)>($r12);
+
+        $r13 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mFgSpinner>;
+
+        $r9 = $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors>;
+
+        $i0 = $r9[0];
+
+        virtualinvoke $r13.<android.widget.Spinner: void setSelection(int)>($i0);
+
+        $r13 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mFgSpinner>;
+
+        virtualinvoke $r13.<android.widget.Spinner: void setOnItemSelectedListener(android.widget.AdapterView$OnItemSelectedListener)>($r0);
+
+        $r10 = virtualinvoke $r0.<org.connectbot.ColorsActivity: android.view.View findViewById(int)>(2131427330);
+
+        $r13 = (android.widget.Spinner) $r10;
+
+        $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mBgSpinner> = $r13;
+
+        $r13 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mBgSpinner>;
+
+        $r12 = new org.connectbot.ColorsActivity$ColorsAdapter;
+
+        specialinvoke $r12.<org.connectbot.ColorsActivity$ColorsAdapter: void <init>(org.connectbot.ColorsActivity,boolean,int)>($r0, 0, 2131165392);
+
+        virtualinvoke $r13.<android.widget.Spinner: void setAdapter(android.widget.SpinnerAdapter)>($r12);
+
+        $r13 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mBgSpinner>;
+
+        $r9 = $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors>;
+
+        $i0 = $r9[1];
+
+        virtualinvoke $r13.<android.widget.Spinner: void setSelection(int)>($i0);
+
+        $r13 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mBgSpinner>;
+
+        virtualinvoke $r13.<android.widget.Spinner: void setOnItemSelectedListener(android.widget.AdapterView$OnItemSelectedListener)>($r0);
+
+        return;
+    }
+
+    public boolean onCreateOptionsMenu(android.view.Menu)
+    {
+        org.connectbot.ColorsActivity $r0;
+        android.view.Menu $r1;
+        android.view.MenuItem $r2;
+        org.connectbot.ColorsActivity$1 $r3;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        $r1 := @parameter0: android.view.Menu;
+
+        specialinvoke $r0.<android.app.Activity: boolean onCreateOptionsMenu(android.view.Menu)>($r1);
+
+        $r2 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165235);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setAlphabeticShortcut(char)>(114);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setNumericShortcut(char)>(49);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301580);
+
+        $r3 = new org.connectbot.ColorsActivity$1;
+
+        specialinvoke $r3.<org.connectbot.ColorsActivity$1: void <init>(org.connectbot.ColorsActivity)>($r0);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r3);
+
+        return 1;
+    }
+
+    protected void onDestroy()
+    {
+        org.connectbot.ColorsActivity $r0;
+        org.connectbot.util.HostDatabase $r1;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        specialinvoke $r0.<android.app.Activity: void onDestroy()>();
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb>;
+
+        virtualinvoke $r1.<org.connectbot.util.HostDatabase: void close()>();
+
+        $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb> = null;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void onItemClick(android.widget.AdapterView, android.view.View, int, long)
+    {
+        org.connectbot.ColorsActivity $r0;
+        android.widget.AdapterView $r1;
+        android.view.View $r2;
+        int $i0;
+        long $l1;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        $r1 := @parameter0: android.widget.AdapterView;
+
+        $r2 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $l1 := @parameter3: long;
+
+        specialinvoke $r0.<org.connectbot.ColorsActivity: void editColor(int)>($i0);
+
+        return;
+    }
+
+    public void onItemSelected(android.widget.AdapterView, android.view.View, int, long)
+    {
+        org.connectbot.ColorsActivity $r0;
+        android.widget.AdapterView $r1;
+        android.view.View $r2;
+        int $i0, $i2, $i3;
+        long $l1;
+        boolean $z0;
+        android.widget.Spinner $r3;
+        int[] $r4;
+        org.connectbot.util.HostDatabase $r5;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        $r1 := @parameter0: android.widget.AdapterView;
+
+        $r2 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $l1 := @parameter3: long;
+
+        $z0 = 0;
+
+        $r3 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mFgSpinner>;
+
+        if $r1 != $r3 goto label2;
+
+        $r4 = $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors>;
+
+        $i2 = $r4[0];
+
+        if $i0 == $i2 goto label1;
+
+        $r4 = $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors>;
+
+        $r4[0] = $i0;
+
+        $z0 = 1;
+
+     label1:
+        if $z0 == 0 goto label3;
+
+        $r5 = $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb>;
+
+        $i0 = $r0.<org.connectbot.ColorsActivity: int mColorScheme>;
+
+        $r4 = $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors>;
+
+        $i2 = $r4[0];
+
+        $r4 = $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors>;
+
+        $i3 = $r4[1];
+
+        virtualinvoke $r5.<org.connectbot.util.HostDatabase: void setDefaultColorsForScheme(int,int,int)>($i0, $i2, $i3);
+
+        return;
+
+     label2:
+        $r3 = $r0.<org.connectbot.ColorsActivity: android.widget.Spinner mBgSpinner>;
+
+        if $r1 != $r3 goto label1;
+
+        $r4 = $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors>;
+
+        $i3 = $r4[1];
+
+        if $i0 == $i3 goto label1;
+
+        $r4 = $r0.<org.connectbot.ColorsActivity: int[] mDefaultColors>;
+
+        $r4[1] = $i0;
+
+        $z0 = 1;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+
+    public void onNothingSelected(android.widget.AdapterView)
+    {
+        org.connectbot.ColorsActivity $r0;
+        android.widget.AdapterView $r1;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        $r1 := @parameter0: android.widget.AdapterView;
+
+        return;
+    }
+
+    protected void onResume()
+    {
+        org.connectbot.ColorsActivity $r0;
+        org.connectbot.util.HostDatabase $r1;
+
+        $r0 := @this: org.connectbot.ColorsActivity;
+
+        specialinvoke $r0.<android.app.Activity: void onResume()>();
+
+        $r1 = $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb>;
+
+        if $r1 != null goto label1;
+
+        $r1 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r1.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.ColorsActivity: org.connectbot.util.HostDatabase mHostDb> = $r1;
+
+        return;
+
+     label1:
+        return;
+    }
+}

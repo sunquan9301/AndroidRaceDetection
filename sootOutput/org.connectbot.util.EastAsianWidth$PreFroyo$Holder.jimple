@@ -1,0 +1,37 @@
+class org.connectbot.util.EastAsianWidth$PreFroyo$Holder extends java.lang.Object
+{
+    private static final org.connectbot.util.EastAsianWidth$PreFroyo sInstance;
+
+    static void <clinit>()
+    {
+        org.connectbot.util.EastAsianWidth$PreFroyo $r0;
+
+        $r0 = new org.connectbot.util.EastAsianWidth$PreFroyo;
+
+        specialinvoke $r0.<org.connectbot.util.EastAsianWidth$PreFroyo: void <init>(org.connectbot.util.EastAsianWidth$1)>(null);
+
+        <org.connectbot.util.EastAsianWidth$PreFroyo$Holder: org.connectbot.util.EastAsianWidth$PreFroyo sInstance> = $r0;
+
+        return;
+    }
+
+    private void <init>()
+    {
+        org.connectbot.util.EastAsianWidth$PreFroyo$Holder $r0;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth$PreFroyo$Holder;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    static org.connectbot.util.EastAsianWidth$PreFroyo access$000()
+    {
+        org.connectbot.util.EastAsianWidth$PreFroyo $r0;
+
+        $r0 = <org.connectbot.util.EastAsianWidth$PreFroyo$Holder: org.connectbot.util.EastAsianWidth$PreFroyo sInstance>;
+
+        return $r0;
+    }
+}

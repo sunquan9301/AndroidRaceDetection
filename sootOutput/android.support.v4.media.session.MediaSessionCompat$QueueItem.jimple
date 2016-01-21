@@ -1,0 +1,133 @@
+public final class android.support.v4.media.session.MediaSessionCompat$QueueItem extends java.lang.Object implements android.os.Parcelable
+{
+    public static final android.os.Parcelable$Creator CREATOR;
+    private final android.support.v4.media.MediaDescriptionCompat mDescription;
+    private final long mId;
+
+    static void <clinit>()
+    {
+        android.support.v4.media.session.MediaSessionCompat$QueueItem$1 $r0;
+
+        $r0 = new android.support.v4.media.session.MediaSessionCompat$QueueItem$1;
+
+        specialinvoke $r0.<android.support.v4.media.session.MediaSessionCompat$QueueItem$1: void <init>()>();
+
+        <android.support.v4.media.session.MediaSessionCompat$QueueItem: android.os.Parcelable$Creator CREATOR> = $r0;
+
+        return;
+    }
+
+    private void <init>(android.os.Parcel)
+    {
+        android.support.v4.media.session.MediaSessionCompat$QueueItem $r0;
+        android.os.Parcel $r1;
+        android.os.Parcelable$Creator $r2;
+        java.lang.Object $r3;
+        android.support.v4.media.MediaDescriptionCompat $r4;
+        long $l0;
+
+        $r0 := @this: android.support.v4.media.session.MediaSessionCompat$QueueItem;
+
+        $r1 := @parameter0: android.os.Parcel;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r2 = <android.support.v4.media.MediaDescriptionCompat: android.os.Parcelable$Creator CREATOR>;
+
+        $r3 = interfaceinvoke $r2.<android.os.Parcelable$Creator: java.lang.Object createFromParcel(android.os.Parcel)>($r1);
+
+        $r4 = (android.support.v4.media.MediaDescriptionCompat) $r3;
+
+        $r0.<android.support.v4.media.session.MediaSessionCompat$QueueItem: android.support.v4.media.MediaDescriptionCompat mDescription> = $r4;
+
+        $l0 = virtualinvoke $r1.<android.os.Parcel: long readLong()>();
+
+        $r0.<android.support.v4.media.session.MediaSessionCompat$QueueItem: long mId> = $l0;
+
+        return;
+    }
+
+    void <init>(android.os.Parcel, android.support.v4.media.session.MediaSessionCompat$1)
+    {
+        android.support.v4.media.session.MediaSessionCompat$QueueItem $r0;
+        android.os.Parcel $r1;
+        android.support.v4.media.session.MediaSessionCompat$1 $r2;
+
+        $r0 := @this: android.support.v4.media.session.MediaSessionCompat$QueueItem;
+
+        $r1 := @parameter0: android.os.Parcel;
+
+        $r2 := @parameter1: android.support.v4.media.session.MediaSessionCompat$1;
+
+        specialinvoke $r0.<android.support.v4.media.session.MediaSessionCompat$QueueItem: void <init>(android.os.Parcel)>($r1);
+
+        return;
+    }
+
+    public int describeContents()
+    {
+        android.support.v4.media.session.MediaSessionCompat$QueueItem $r0;
+
+        $r0 := @this: android.support.v4.media.session.MediaSessionCompat$QueueItem;
+
+        return 0;
+    }
+
+    public java.lang.String toString()
+    {
+        android.support.v4.media.session.MediaSessionCompat$QueueItem $r0;
+        java.lang.StringBuilder $r1;
+        long $l0;
+        android.support.v4.media.MediaDescriptionCompat $r2;
+        java.lang.String $r3;
+
+        $r0 := @this: android.support.v4.media.session.MediaSessionCompat$QueueItem;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("MediaSession.QueueItem {Description=");
+
+        $r2 = $r0.<android.support.v4.media.session.MediaSessionCompat$QueueItem: android.support.v4.media.MediaDescriptionCompat mDescription>;
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", Id=");
+
+        $l0 = $r0.<android.support.v4.media.session.MediaSessionCompat$QueueItem: long mId>;
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l0);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" }");
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    public void writeToParcel(android.os.Parcel, int)
+    {
+        android.support.v4.media.session.MediaSessionCompat$QueueItem $r0;
+        android.os.Parcel $r1;
+        int $i0;
+        android.support.v4.media.MediaDescriptionCompat $r2;
+        long $l1;
+
+        $r0 := @this: android.support.v4.media.session.MediaSessionCompat$QueueItem;
+
+        $r1 := @parameter0: android.os.Parcel;
+
+        $i0 := @parameter1: int;
+
+        $r2 = $r0.<android.support.v4.media.session.MediaSessionCompat$QueueItem: android.support.v4.media.MediaDescriptionCompat mDescription>;
+
+        virtualinvoke $r2.<android.support.v4.media.MediaDescriptionCompat: void writeToParcel(android.os.Parcel,int)>($r1, $i0);
+
+        $l1 = $r0.<android.support.v4.media.session.MediaSessionCompat$QueueItem: long mId>;
+
+        virtualinvoke $r1.<android.os.Parcel: void writeLong(long)>($l1);
+
+        return;
+    }
+}

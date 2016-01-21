@@ -1,0 +1,90 @@
+class org.connectbot.ConsoleActivity$19$1 extends java.lang.Object implements android.content.DialogInterface$OnClickListener
+{
+    final org.connectbot.ConsoleActivity$19 this$1;
+    final android.view.View val$resizeView;
+    final org.connectbot.TerminalView val$terminalView;
+
+    void <init>(org.connectbot.ConsoleActivity$19, android.view.View, org.connectbot.TerminalView)
+    {
+        org.connectbot.ConsoleActivity$19$1 $r0;
+        org.connectbot.ConsoleActivity$19 $r1;
+        android.view.View $r2;
+        org.connectbot.TerminalView $r3;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$19$1;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity$19;
+
+        $r2 := @parameter1: android.view.View;
+
+        $r3 := @parameter2: org.connectbot.TerminalView;
+
+        $r0.<org.connectbot.ConsoleActivity$19$1: org.connectbot.ConsoleActivity$19 this$1> = $r1;
+
+        $r0.<org.connectbot.ConsoleActivity$19$1: android.view.View val$resizeView> = $r2;
+
+        $r0.<org.connectbot.ConsoleActivity$19$1: org.connectbot.TerminalView val$terminalView> = $r3;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.content.DialogInterface, int)
+    {
+        org.connectbot.ConsoleActivity$19$1 $r0;
+        android.content.DialogInterface $r1;
+        int $i0, $i1;
+        java.lang.NumberFormatException $r2;
+        android.view.View $r3;
+        android.widget.EditText $r4;
+        android.text.Editable $r5;
+        java.lang.String $r6;
+        org.connectbot.TerminalView $r7;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$19$1;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $i0 := @parameter1: int;
+
+        $r3 = $r0.<org.connectbot.ConsoleActivity$19$1: android.view.View val$resizeView>;
+
+     label1:
+        $r3 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427375);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r5 = virtualinvoke $r4.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r6 = virtualinvoke $r5.<java.lang.Object: java.lang.String toString()>();
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r6);
+
+        $r3 = $r0.<org.connectbot.ConsoleActivity$19$1: android.view.View val$resizeView>;
+
+        $r3 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427376);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r5 = virtualinvoke $r4.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r6 = virtualinvoke $r5.<java.lang.Object: java.lang.String toString()>();
+
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r6);
+
+     label2:
+        $r7 = $r0.<org.connectbot.ConsoleActivity$19$1: org.connectbot.TerminalView val$terminalView>;
+
+        virtualinvoke $r7.<org.connectbot.TerminalView: void forceSize(int,int)>($i0, $i1);
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        return;
+
+        catch java.lang.NumberFormatException from label1 to label2 with label3;
+    }
+}

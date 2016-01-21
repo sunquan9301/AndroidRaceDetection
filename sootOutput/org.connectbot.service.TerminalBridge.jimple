@@ -1,0 +1,3113 @@
+public class org.connectbot.service.TerminalBridge extends java.lang.Object implements de.mud.terminal.VDUDisplay
+{
+    private static java.util.regex.Pattern urlPattern;
+    private boolean awaitingClose;
+    public android.graphics.Bitmap bitmap;
+    public de.mud.terminal.VDUBuffer buffer;
+    private final android.graphics.Canvas canvas;
+    public int charHeight;
+    private int charTop;
+    public int charWidth;
+    private android.text.ClipboardManager clipboard;
+    public java.lang.Integer[] color;
+    private int columns;
+    public int defaultBg;
+    public int defaultFg;
+    final android.graphics.Paint defaultPaint;
+    protected org.connectbot.service.BridgeDisconnectedListener disconnectListener;
+    private boolean disconnected;
+    private final float displayDensity;
+    private final java.lang.String emulation;
+    private final java.util.List fontSizeChangedListeners;
+    private float fontSizeDp;
+    private boolean forcedSize;
+    private boolean fullRedraw;
+    public org.connectbot.bean.HostBean host;
+    final org.connectbot.service.TerminalKeyListener keyListener;
+    private final java.util.List localOutput;
+    protected final org.connectbot.service.TerminalManager manager;
+    private org.connectbot.TerminalView parent;
+    public org.connectbot.service.PromptHelper promptHelper;
+    private org.connectbot.service.Relay relay;
+    private int rows;
+    private final int scrollback;
+    private boolean selectingForCopy;
+    private final org.connectbot.bean.SelectionArea selectionArea;
+    org.connectbot.transport.AbsTransport transport;
+
+    static void <clinit>()
+    {
+        <org.connectbot.service.TerminalBridge: java.util.regex.Pattern urlPattern> = null;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        android.graphics.Canvas $r1;
+        org.connectbot.service.TerminalBridge$1 $r2;
+        android.graphics.Paint $r3;
+        org.connectbot.bean.SelectionArea $r4;
+        java.util.LinkedList $r5;
+        org.connectbot.service.TerminalKeyListener $r6;
+        org.connectbot.service.TerminalManager $r7;
+        de.mud.terminal.VDUBuffer $r8;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: int defaultFg> = 7;
+
+        $r0.<org.connectbot.service.TerminalBridge: int defaultBg> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap> = null;
+
+        $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer> = null;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent> = null;
+
+        $r1 = new android.graphics.Canvas;
+
+        specialinvoke $r1.<android.graphics.Canvas: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas> = $r1;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean disconnected> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean awaitingClose> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean forcedSize> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean selectingForCopy> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charWidth> = -1;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charHeight> = -1;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charTop> = -1;
+
+        $r0.<org.connectbot.service.TerminalBridge: float fontSizeDp> = -1.0F;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean fullRedraw> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.BridgeDisconnectedListener disconnectListener> = null;
+
+        $r2 = new org.connectbot.service.TerminalBridge$1;
+
+        specialinvoke $r2.<org.connectbot.service.TerminalBridge$1: void <init>(org.connectbot.service.TerminalBridge)>($r0);
+
+        $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer> = $r2;
+
+        $r0.<org.connectbot.service.TerminalBridge: java.lang.String emulation> = null;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager> = null;
+
+        $r0.<org.connectbot.service.TerminalBridge: float displayDensity> = 1.0F;
+
+        $r3 = new android.graphics.Paint;
+
+        specialinvoke $r3.<android.graphics.Paint: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint> = $r3;
+
+        $r4 = new org.connectbot.bean.SelectionArea;
+
+        specialinvoke $r4.<org.connectbot.bean.SelectionArea: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.SelectionArea selectionArea> = $r4;
+
+        $r0.<org.connectbot.service.TerminalBridge: int scrollback> = 1;
+
+        $r5 = new java.util.LinkedList;
+
+        specialinvoke $r5.<java.util.LinkedList: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: java.util.List localOutput> = $r5;
+
+        $r5 = new java.util.LinkedList;
+
+        specialinvoke $r5.<java.util.LinkedList: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: java.util.List fontSizeChangedListeners> = $r5;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport> = null;
+
+        $r6 = new org.connectbot.service.TerminalKeyListener;
+
+        $r7 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        specialinvoke $r6.<org.connectbot.service.TerminalKeyListener: void <init>(org.connectbot.service.TerminalManager,org.connectbot.service.TerminalBridge,de.mud.terminal.VDUBuffer,java.lang.String)>($r7, $r0, $r8, null);
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalKeyListener keyListener> = $r6;
+
+        return;
+    }
+
+    public void <init>(org.connectbot.service.TerminalManager, org.connectbot.bean.HostBean) throws java.io.IOException
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.service.TerminalManager $r1;
+        org.connectbot.bean.HostBean $r2;
+        int $i0, $i1;
+        java.lang.String $r3;
+        android.graphics.Canvas $r4;
+        android.content.res.Resources $r5;
+        android.util.DisplayMetrics $r6;
+        float $f0;
+        org.connectbot.service.PromptHelper $r7;
+        android.graphics.Paint $r8;
+        android.graphics.Typeface $r9;
+        java.util.LinkedList $r10;
+        org.connectbot.service.TerminalBridge$2 $r11;
+        boolean $z0;
+        de.mud.terminal.VDUBuffer $r12;
+        org.connectbot.bean.SelectionArea $r13;
+        org.connectbot.service.TerminalKeyListener $r14;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager;
+
+        $r2 := @parameter1: org.connectbot.bean.HostBean;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: int defaultFg> = 7;
+
+        $r0.<org.connectbot.service.TerminalBridge: int defaultBg> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap> = null;
+
+        $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer> = null;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent> = null;
+
+        $r4 = new android.graphics.Canvas;
+
+        specialinvoke $r4.<android.graphics.Canvas: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas> = $r4;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean disconnected> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean awaitingClose> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean forcedSize> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean selectingForCopy> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charWidth> = -1;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charHeight> = -1;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charTop> = -1;
+
+        $r0.<org.connectbot.service.TerminalBridge: float fontSizeDp> = -1.0F;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean fullRedraw> = 0;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.BridgeDisconnectedListener disconnectListener> = null;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager> = $r1;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host> = $r2;
+
+        $r3 = virtualinvoke $r1.<org.connectbot.service.TerminalManager: java.lang.String getEmulation()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: java.lang.String emulation> = $r3;
+
+        $i0 = virtualinvoke $r1.<org.connectbot.service.TerminalManager: int getScrollback()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: int scrollback> = $i0;
+
+        $r5 = virtualinvoke $r1.<org.connectbot.service.TerminalManager: android.content.res.Resources getResources()>();
+
+        $r6 = virtualinvoke $r5.<android.content.res.Resources: android.util.DisplayMetrics getDisplayMetrics()>();
+
+        $f0 = $r6.<android.util.DisplayMetrics: float density>;
+
+        $r0.<org.connectbot.service.TerminalBridge: float displayDensity> = $f0;
+
+        $r7 = new org.connectbot.service.PromptHelper;
+
+        specialinvoke $r7.<org.connectbot.service.PromptHelper: void <init>(java.lang.Object)>($r0);
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.PromptHelper promptHelper> = $r7;
+
+        $r8 = new android.graphics.Paint;
+
+        specialinvoke $r8.<android.graphics.Paint: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint> = $r8;
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r8.<android.graphics.Paint: void setAntiAlias(boolean)>(1);
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        $r9 = <android.graphics.Typeface: android.graphics.Typeface MONOSPACE>;
+
+        virtualinvoke $r8.<android.graphics.Paint: android.graphics.Typeface setTypeface(android.graphics.Typeface)>($r9);
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r8.<android.graphics.Paint: void setFakeBoldText(boolean)>(1);
+
+        $r10 = new java.util.LinkedList;
+
+        specialinvoke $r10.<java.util.LinkedList: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: java.util.List localOutput> = $r10;
+
+        $r10 = new java.util.LinkedList;
+
+        specialinvoke $r10.<java.util.LinkedList: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: java.util.List fontSizeChangedListeners> = $r10;
+
+        $i1 = virtualinvoke $r2.<org.connectbot.bean.HostBean: int getFontSize()>();
+
+        $i0 = $i1;
+
+        if $i1 > 0 goto label1;
+
+        $i0 = 10;
+
+     label1:
+        $f0 = (float) $i0;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void setFontSize(float)>($f0);
+
+        $r11 = new org.connectbot.service.TerminalBridge$2;
+
+        specialinvoke $r11.<org.connectbot.service.TerminalBridge$2: void <init>(org.connectbot.service.TerminalBridge,org.connectbot.service.TerminalManager,org.connectbot.bean.HostBean)>($r0, $r1, $r2);
+
+        $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer> = $r11;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.bean.HostBean: boolean getWantSession()>();
+
+        if $z0 == 0 goto label3;
+
+        $r12 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i1 = $r0.<org.connectbot.service.TerminalBridge: int scrollback>;
+
+        virtualinvoke $r12.<de.mud.terminal.VDUBuffer: void setBufferSize(int)>($i1);
+
+     label2:
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void resetColors()>();
+
+        $r12 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        virtualinvoke $r12.<de.mud.terminal.VDUBuffer: void setDisplay(de.mud.terminal.VDUDisplay)>($r0);
+
+        $r13 = new org.connectbot.bean.SelectionArea;
+
+        specialinvoke $r13.<org.connectbot.bean.SelectionArea: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.SelectionArea selectionArea> = $r13;
+
+        $r14 = new org.connectbot.service.TerminalKeyListener;
+
+        $r12 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getEncoding()>();
+
+        specialinvoke $r14.<org.connectbot.service.TerminalKeyListener: void <init>(org.connectbot.service.TerminalManager,org.connectbot.service.TerminalBridge,de.mud.terminal.VDUBuffer,java.lang.String)>($r1, $r0, $r12, $r3);
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalKeyListener keyListener> = $r14;
+
+        return;
+
+     label3:
+        $r12 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        virtualinvoke $r12.<de.mud.terminal.VDUBuffer: void setBufferSize(int)>(0);
+
+        goto label2;
+    }
+
+    static org.connectbot.TerminalView access$000(org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.TerminalView $r1;
+
+        $r0 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent>;
+
+        return $r1;
+    }
+
+    static boolean access$102(org.connectbot.service.TerminalBridge, boolean)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $z0 := @parameter1: boolean;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean awaitingClose> = $z0;
+
+        return $z0;
+    }
+
+    private void discardBitmap()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        android.graphics.Bitmap $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+        virtualinvoke $r1.<android.graphics.Bitmap: void recycle()>();
+
+     label1:
+        $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap> = null;
+
+        return;
+    }
+
+    private int fontSizeCompare(float, int, int, int, int)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        float $f0, $f1, $f2;
+        int $i0, $i1, $i2, $i3, $i4;
+        float[] $r1;
+        android.graphics.Paint $r2;
+        android.graphics.Paint$FontMetrics $r3;
+        double $d0;
+        java.lang.Object[] $r4;
+        java.lang.Float $r5;
+        java.lang.Integer $r6;
+        java.lang.String $r7;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $f0 := @parameter0: float;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i3 := @parameter4: int;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        $f1 = $r0.<org.connectbot.service.TerminalBridge: float displayDensity>;
+
+        $f1 = $f1 * $f0;
+
+        $f1 = $f1 + 0.5F;
+
+        $i4 = (int) $f1;
+
+        $f1 = (float) $i4;
+
+        virtualinvoke $r2.<android.graphics.Paint: void setTextSize(float)>($f1);
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        $r3 = virtualinvoke $r2.<android.graphics.Paint: android.graphics.Paint$FontMetrics getFontMetrics()>();
+
+        $r1 = newarray (float)[1];
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r2.<android.graphics.Paint: int getTextWidths(java.lang.String,float[])>("X", $r1);
+
+        $f1 = $r1[0];
+
+        $i4 = (int) $f1;
+
+        $i0 = $i4 * $i0;
+
+        $f1 = $r3.<android.graphics.Paint$FontMetrics: float descent>;
+
+        $f2 = $r3.<android.graphics.Paint$FontMetrics: float top>;
+
+        $f2 = $f1 - $f2;
+
+        $d0 = (double) $f2;
+
+        $d0 = staticinvoke <java.lang.Math: double ceil(double)>($d0);
+
+        $i4 = (int) $d0;
+
+        $i1 = $i4 * $i1;
+
+        $r4 = newarray (java.lang.Object)[3];
+
+        $r5 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>($f0);
+
+        $r4[0] = $r5;
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r4[1] = $r6;
+
+        $r6 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        $r4[2] = $r6;
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("font size %fdp resulted in %d x %d", $r4);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("fontsize", $r7);
+
+        if $i0 > $i2 goto label1;
+
+        if $i1 <= $i3 goto label2;
+
+     label1:
+        return 1;
+
+     label2:
+        if $i0 == $i2 goto label3;
+
+        if $i1 != $i3 goto label4;
+
+     label3:
+        return 0;
+
+     label4:
+        return -1;
+    }
+
+    public void addFontSizeChangedListener(org.connectbot.service.FontSizeChangedListener)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.service.FontSizeChangedListener $r1;
+        java.util.List $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: org.connectbot.service.FontSizeChangedListener;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: java.util.List fontSizeChangedListeners>;
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        return;
+    }
+
+    public boolean addPortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+        org.connectbot.transport.AbsTransport $r2;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.transport.AbsTransport: boolean addPortForward(org.connectbot.bean.PortForwardBean)>($r1);
+
+        return $z0;
+    }
+
+    public boolean canFowardPorts()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.transport.AbsTransport $r1;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r1.<org.connectbot.transport.AbsTransport: boolean canForwardPorts()>();
+
+        return $z0;
+    }
+
+    public void decreaseFontSize()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        float $f0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $f0 = $r0.<org.connectbot.service.TerminalBridge: float fontSizeDp>;
+
+        $f0 = $f0 - 2.0F;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void setFontSize(float)>($f0);
+
+        return;
+    }
+
+    public boolean disablePortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+        org.connectbot.transport.AbsTransport $r2;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.transport.AbsTransport: boolean isConnected()>();
+
+        if $z0 != 0 goto label1;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("CB.TerminalBridge", "Attempt to disable port forward while not connected");
+
+        return 0;
+
+     label1:
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.transport.AbsTransport: boolean disablePortForward(org.connectbot.bean.PortForwardBean)>($r1);
+
+        return $z0;
+    }
+
+    public void dispatchDisconnect(boolean)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        boolean $z0, $z1;
+        java.lang.Thread $r1;
+        org.connectbot.service.PromptHelper $r2;
+        org.connectbot.service.TerminalBridge$5 $r3;
+        org.connectbot.bean.HostBean $r4;
+        org.connectbot.service.BridgeDisconnectedListener $r5;
+        java.lang.Throwable $r6;
+        org.connectbot.service.TerminalManager $r7;
+        android.content.res.Resources $r8;
+        java.lang.String $r9;
+        de.mud.terminal.VDUBuffer $r10;
+        de.mud.terminal.vt320 $r11;
+        java.lang.StringBuilder $r12;
+        org.connectbot.service.TerminalBridge$6 $r13;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $z0 := @parameter0: boolean;
+
+        entermonitor $r0;
+
+     label01:
+        $z1 = $r0.<org.connectbot.service.TerminalBridge: boolean disconnected>;
+
+        if $z1 == 0 goto label03;
+
+        if $z0 != 0 goto label03;
+
+        exitmonitor $r0;
+
+     label02:
+        return;
+
+     label03:
+        $r0.<org.connectbot.service.TerminalBridge: boolean disconnected> = 1;
+
+        exitmonitor $r0;
+
+     label04:
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.PromptHelper promptHelper>;
+
+        virtualinvoke $r2.<org.connectbot.service.PromptHelper: void cancelPrompt()>();
+
+        $r1 = new java.lang.Thread;
+
+        $r3 = new org.connectbot.service.TerminalBridge$5;
+
+        specialinvoke $r3.<org.connectbot.service.TerminalBridge$5: void <init>(org.connectbot.service.TerminalBridge)>($r0);
+
+        specialinvoke $r1.<java.lang.Thread: void <init>(java.lang.Runnable)>($r3);
+
+        virtualinvoke $r1.<java.lang.Thread: void setName(java.lang.String)>("Disconnect");
+
+        virtualinvoke $r1.<java.lang.Thread: void start()>();
+
+        if $z0 != 0 goto label05;
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $z1 = virtualinvoke $r4.<org.connectbot.bean.HostBean: boolean getQuickDisconnect()>();
+
+        if $z1 == 0 goto label09;
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $z1 = virtualinvoke $r4.<org.connectbot.bean.HostBean: boolean getStayConnected()>();
+
+        if $z1 != 0 goto label09;
+
+     label05:
+        $r0.<org.connectbot.service.TerminalBridge: boolean awaitingClose> = 1;
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.BridgeDisconnectedListener disconnectListener>;
+
+        if $r5 == null goto label11;
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.BridgeDisconnectedListener disconnectListener>;
+
+        interfaceinvoke $r5.<org.connectbot.service.BridgeDisconnectedListener: void onDisconnected(org.connectbot.service.TerminalBridge)>($r0);
+
+        return;
+
+     label06:
+        $r6 := @caughtexception;
+
+     label07:
+        exitmonitor $r0;
+
+     label08:
+        throw $r6;
+
+     label09:
+        $r7 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $r8 = $r7.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r9 = virtualinvoke $r8.<android.content.res.Resources: java.lang.String getString(int)>(2131165240);
+
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r11 = (de.mud.terminal.vt320) $r10;
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\r\n");
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\r\n");
+
+        $r9 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r11.<de.mud.terminal.vt320: void putString(java.lang.String)>($r9);
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $z1 = virtualinvoke $r4.<org.connectbot.bean.HostBean: boolean getStayConnected()>();
+
+        if $z1 == 0 goto label10;
+
+        $r7 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        virtualinvoke $r7.<org.connectbot.service.TerminalManager: void requestReconnect(org.connectbot.service.TerminalBridge)>($r0);
+
+        return;
+
+     label10:
+        $r1 = new java.lang.Thread;
+
+        $r13 = new org.connectbot.service.TerminalBridge$6;
+
+        specialinvoke $r13.<org.connectbot.service.TerminalBridge$6: void <init>(org.connectbot.service.TerminalBridge)>($r0);
+
+        specialinvoke $r1.<java.lang.Thread: void <init>(java.lang.Runnable)>($r13);
+
+        virtualinvoke $r1.<java.lang.Thread: void setName(java.lang.String)>("DisconnectPrompt");
+
+        virtualinvoke $r1.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r1.<java.lang.Thread: void start()>();
+
+        return;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label06;
+        catch java.lang.Throwable from label03 to label04 with label06;
+        catch java.lang.Throwable from label07 to label08 with label06;
+    }
+
+    public boolean enablePortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+        org.connectbot.transport.AbsTransport $r2;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.transport.AbsTransport: boolean isConnected()>();
+
+        if $z0 != 0 goto label1;
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("CB.TerminalBridge", "Attempt to enable port forward while not connected");
+
+        return 0;
+
+     label1:
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.transport.AbsTransport: boolean enablePortForward(org.connectbot.bean.PortForwardBean)>($r1);
+
+        return $z0;
+    }
+
+    public java.nio.charset.Charset getCharset()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.service.Relay $r1;
+        java.nio.charset.Charset $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.Relay relay>;
+
+        $r2 = virtualinvoke $r1.<org.connectbot.service.Relay: java.nio.charset.Charset getCharset()>();
+
+        return $r2;
+    }
+
+    public org.connectbot.service.TerminalKeyListener getKeyHandler()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.service.TerminalKeyListener $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalKeyListener keyListener>;
+
+        return $r1;
+    }
+
+    public java.util.List getPortForwards()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.transport.AbsTransport $r1;
+        java.util.List $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $r2 = virtualinvoke $r1.<org.connectbot.transport.AbsTransport: java.util.List getPortForwards()>();
+
+        return $r2;
+    }
+
+    public org.connectbot.service.PromptHelper getPromptHelper()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.service.PromptHelper $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.PromptHelper promptHelper>;
+
+        return $r1;
+    }
+
+    public org.connectbot.bean.SelectionArea getSelectionArea()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.bean.SelectionArea $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.SelectionArea selectionArea>;
+
+        return $r1;
+    }
+
+    public void increaseFontSize()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        float $f0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $f0 = $r0.<org.connectbot.service.TerminalBridge: float fontSizeDp>;
+
+        $f0 = $f0 + 2.0F;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void setFontSize(float)>($f0);
+
+        return;
+    }
+
+    public void injectString(java.lang.String)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        java.lang.String $r1;
+        java.lang.Thread $r2;
+        int $i0;
+        org.connectbot.service.TerminalBridge$4 $r3;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: java.lang.String;
+
+        if $r1 == null goto label2;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i0 != 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = new java.lang.Thread;
+
+        $r3 = new org.connectbot.service.TerminalBridge$4;
+
+        specialinvoke $r3.<org.connectbot.service.TerminalBridge$4: void <init>(org.connectbot.service.TerminalBridge,java.lang.String)>($r0, $r1);
+
+        specialinvoke $r2.<java.lang.Thread: void <init>(java.lang.Runnable)>($r3);
+
+        virtualinvoke $r2.<java.lang.Thread: void setName(java.lang.String)>("InjectString");
+
+        virtualinvoke $r2.<java.lang.Thread: void start()>();
+
+        return;
+
+     label2:
+        return;
+    }
+
+    public boolean isAwaitingClose()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $z0 = $r0.<org.connectbot.service.TerminalBridge: boolean awaitingClose>;
+
+        return $z0;
+    }
+
+    public boolean isDisconnected()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $z0 = $r0.<org.connectbot.service.TerminalBridge: boolean disconnected>;
+
+        return $z0;
+    }
+
+    public boolean isSelectingForCopy()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $z0 = $r0.<org.connectbot.service.TerminalBridge: boolean selectingForCopy>;
+
+        return $z0;
+    }
+
+    public boolean isSessionOpen()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.transport.AbsTransport $r1;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r1.<org.connectbot.transport.AbsTransport: boolean isSessionOpen()>();
+
+        return $z0;
+
+     label1:
+        return 0;
+    }
+
+    public boolean isUsingNetwork()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.transport.AbsTransport $r1;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r1.<org.connectbot.transport.AbsTransport: boolean usesNetwork()>();
+
+        return $z0;
+    }
+
+    public void onConnected()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        java.lang.Thread $r1;
+        de.mud.terminal.VDUBuffer $r2;
+        java.lang.String $r3, $r7;
+        org.connectbot.bean.HostBean $r4;
+        de.mud.terminal.vt320 $r5;
+        java.util.List $r6;
+        boolean $z0;
+        org.connectbot.service.Relay $r8;
+        org.connectbot.transport.AbsTransport $r9;
+        float $f0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean disconnected> = 0;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r5 = (de.mud.terminal.vt320) $r2;
+
+        virtualinvoke $r5.<de.mud.terminal.vt320: void reset()>();
+
+        $r6 = $r0.<org.connectbot.service.TerminalBridge: java.util.List localOutput>;
+
+        interfaceinvoke $r6.<java.util.List: void clear()>();
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r5 = (de.mud.terminal.vt320) $r2;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: java.lang.String emulation>;
+
+        virtualinvoke $r5.<de.mud.terminal.vt320: void setAnswerBack(java.lang.String)>($r3);
+
+        $r7 = "backspace";
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r3 = virtualinvoke $r4.<org.connectbot.bean.HostBean: java.lang.String getDelKey()>();
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label2;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r5 = (de.mud.terminal.vt320) $r2;
+
+        virtualinvoke $r5.<de.mud.terminal.vt320: void setBackspace(int)>(1);
+
+     label1:
+        $r8 = new org.connectbot.service.Relay;
+
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r5 = (de.mud.terminal.vt320) $r2;
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r7 = virtualinvoke $r4.<org.connectbot.bean.HostBean: java.lang.String getEncoding()>();
+
+        specialinvoke $r8.<org.connectbot.service.Relay: void <init>(org.connectbot.service.TerminalBridge,org.connectbot.transport.AbsTransport,de.mud.terminal.vt320,java.lang.String)>($r0, $r9, $r5, $r7);
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.Relay relay> = $r8;
+
+        $r1 = new java.lang.Thread;
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.Relay relay>;
+
+        specialinvoke $r1.<java.lang.Thread: void <init>(java.lang.Runnable)>($r8);
+
+        virtualinvoke $r1.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r1.<java.lang.Thread: void setName(java.lang.String)>("Relay");
+
+        virtualinvoke $r1.<java.lang.Thread: void start()>();
+
+        $f0 = $r0.<org.connectbot.service.TerminalBridge: float fontSizeDp>;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void setFontSize(float)>($f0);
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r7 = virtualinvoke $r4.<org.connectbot.bean.HostBean: java.lang.String getPostLogin()>();
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void injectString(java.lang.String)>($r7);
+
+        return;
+
+     label2:
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r5 = (de.mud.terminal.vt320) $r2;
+
+        virtualinvoke $r5.<de.mud.terminal.vt320: void setBackspace(int)>(0);
+
+        goto label1;
+    }
+
+    public void onDraw()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        de.mud.terminal.VDUBuffer $r1, $r2;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9;
+        boolean $z0, $z1;
+        boolean[] $r3;
+        int[][] $r4;
+        int[] $r5;
+        java.lang.Integer[] $r6;
+        java.lang.Integer $r7;
+        android.graphics.Paint $r8;
+        android.graphics.Canvas $r9;
+        char[][] $r10;
+        char[] $r11;
+        float $f0, $f1;
+        java.lang.Throwable $r12;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        entermonitor $r2;
+
+     label01:
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r3 = $r1.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $z1 = $r3[0];
+
+        if $z1 != 0 goto label03;
+
+        $z1 = $r0.<org.connectbot.service.TerminalBridge: boolean fullRedraw>;
+
+     label02:
+        if $z1 == 0 goto label08;
+
+     label03:
+        $z0 = 1;
+
+     label04:
+        $i6 = 0;
+
+     label05:
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i5 = $r1.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i6 >= $i5 goto label60;
+
+        if $z0 != 0 goto label09;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r3 = $r1.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $i5 = $i6 + 1;
+
+        $z1 = $r3[$i5];
+
+        if $z1 != 0 goto label09;
+
+     label06:
+        $i6 = $i6 + 1;
+
+     label07:
+        goto label05;
+
+     label08:
+        $z0 = 0;
+
+        goto label04;
+
+     label09:
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r3 = $r1.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $i5 = $i6 + 1;
+
+        $r3[$i5] = 0;
+
+        $i0 = 0;
+
+     label10:
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i5 = $r1.<de.mud.terminal.VDUBuffer: int width>;
+
+     label11:
+        if $i0 >= $i5 goto label06;
+
+     label12:
+        $i1 = 0;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r4 = $r1.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i5 = $r1.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $i5 = $i5 + $i6;
+
+        $r5 = $r4[$i5];
+
+        $i4 = $r5[$i0];
+
+        $i5 = $r0.<org.connectbot.service.TerminalBridge: int defaultFg>;
+
+     label13:
+        $i3 = $i4 & 16352;
+
+        if $i3 == 0 goto label14;
+
+        $i5 = $i4 & 16352;
+
+        $i5 = $i5 >> 5;
+
+        $i5 = $i5 + -1;
+
+     label14:
+        if $i5 >= 8 goto label44;
+
+     label15:
+        $i3 = $i4 & 1;
+
+     label16:
+        if $i3 == 0 goto label44;
+
+        $r6 = $r0.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color>;
+
+        $i5 = $i5 + 8;
+
+        $r7 = $r6[$i5];
+
+        $i5 = virtualinvoke $r7.<java.lang.Integer: int intValue()>();
+
+     label17:
+        $i3 = 8372224 & $i4;
+
+     label18:
+        if $i3 == 0 goto label46;
+
+        $r6 = $r0.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color>;
+
+     label19:
+        $i3 = 8372224 & $i4;
+
+        $i3 = $i3 >> 14;
+
+     label20:
+        $i3 = $i3 + -1;
+
+        $r7 = $r6[$i3];
+
+        $i3 = virtualinvoke $r7.<java.lang.Integer: int intValue()>();
+
+     label21:
+        $i2 = $i4 & 4;
+
+     label22:
+        if $i2 == 0 goto label25;
+
+     label23:
+        $i2 = $i3;
+
+        $i3 = $i5;
+
+     label24:
+        $i5 = $i2;
+
+     label25:
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+     label26:
+        $i2 = $i4 & 2;
+
+        if $i2 == 0 goto label48;
+
+     label27:
+        $z1 = 1;
+
+     label28:
+        virtualinvoke $r8.<android.graphics.Paint: void setUnderlineText(boolean)>($z1);
+
+     label29:
+        $i2 = 134217728 & $i4;
+
+        if $i2 == 0 goto label50;
+
+        $z1 = 1;
+
+     label30:
+        if $z1 == 0 goto label51;
+
+     label31:
+        $i1 = 0 + 1;
+
+     label32:
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        virtualinvoke $r9.<android.graphics.Canvas: int save(int)>(2);
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r8.<android.graphics.Paint: void setColor(int)>($i3);
+
+        if $z1 == 0 goto label53;
+
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        $i3 = $r0.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $i7 = $i3 * $i0;
+
+        $i3 = $r0.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+     label33:
+        $i8 = $i3 * $i6;
+
+     label34:
+        $i2 = $i0 + 2;
+
+        $i3 = $r0.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+     label35:
+        $i3 = $i2 * $i3;
+
+     label36:
+        $i2 = $i6 + 1;
+
+        $i9 = $r0.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $i9 = $i2 * $i9;
+
+        virtualinvoke $r9.<android.graphics.Canvas: boolean clipRect(int,int,int,int)>($i7, $i8, $i3, $i9);
+
+     label37:
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r9.<android.graphics.Canvas: void drawPaint(android.graphics.Paint)>($r8);
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r8.<android.graphics.Paint: void setColor(int)>($i5);
+
+     label38:
+        $i9 = $i4 & 16;
+
+     label39:
+        if $i9 != 0 goto label40;
+
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r10 = $r1.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i9 = $r1.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $i9 = $i9 + $i6;
+
+        $r11 = $r10[$i9];
+
+        $i9 = $r0.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $i9 = $i9 * $i0;
+
+        $f0 = (float) $i9;
+
+        $i9 = $r0.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $i9 = $i9 * $i6;
+
+        $i8 = $r0.<org.connectbot.service.TerminalBridge: int charTop>;
+
+        $i9 = $i9 - $i8;
+
+        $f1 = (float) $i9;
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r9.<android.graphics.Canvas: void drawText(char[],int,int,float,float,android.graphics.Paint)>($r11, $i0, $i1, $f0, $f1, $r8);
+
+     label40:
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        virtualinvoke $r9.<android.graphics.Canvas: void restore()>();
+
+     label41:
+        $i9 = $i1 + -1;
+
+        $i9 = $i0 + $i9;
+
+        if $z1 == 0 goto label42;
+
+        $i9 = $i9 + 1;
+
+     label42:
+        $i0 = $i9 + 1;
+
+     label43:
+        goto label10;
+
+     label44:
+        $r6 = $r0.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color>;
+
+        $r7 = $r6[$i5];
+
+        $i9 = virtualinvoke $r7.<java.lang.Integer: int intValue()>();
+
+     label45:
+        $i5 = $i9;
+
+        goto label17;
+
+     label46:
+        $r6 = $r0.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color>;
+
+        $i9 = $r0.<org.connectbot.service.TerminalBridge: int defaultBg>;
+
+        $r7 = $r6[$i9];
+
+        $i9 = virtualinvoke $r7.<java.lang.Integer: int intValue()>();
+
+     label47:
+        $i3 = $i9;
+
+        goto label21;
+
+     label48:
+        $z1 = 0;
+
+     label49:
+        goto label28;
+
+     label50:
+        $z1 = 0;
+
+        goto label30;
+
+     label51:
+        $i9 = $i0 + $i1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i8 = $r1.<de.mud.terminal.VDUBuffer: int width>;
+
+        if $i9 >= $i8 goto label32;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r4 = $r1.<de.mud.terminal.VDUBuffer: int[][] charAttributes>;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i9 = $r1.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $i9 = $i9 + $i6;
+
+        $r5 = $r4[$i9];
+
+        $i9 = $i0 + $i1;
+
+        $i9 = $r5[$i9];
+
+        if $i9 != $i4 goto label32;
+
+     label52:
+        $i1 = $i1 + 1;
+
+        goto label51;
+
+     label53:
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        $i9 = $r0.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $i9 = $i9 * $i0;
+
+        $i8 = $r0.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+     label54:
+        $i8 = $i8 * $i6;
+
+     label55:
+        $i7 = $i0 + $i1;
+
+        $i3 = $r0.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+     label56:
+        $i7 = $i7 * $i3;
+
+     label57:
+        $i3 = $i6 + 1;
+
+        $i2 = $r0.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $i3 = $i3 * $i2;
+
+        virtualinvoke $r9.<android.graphics.Canvas: boolean clipRect(int,int,int,int)>($i9, $i8, $i7, $i3);
+
+        goto label37;
+
+     label58:
+        $r12 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label59:
+        throw $r12;
+
+     label60:
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r3 = $r1.<de.mud.terminal.VDUBuffer: boolean[] update>;
+
+        $r3[0] = 0;
+
+        exitmonitor $r2;
+
+     label61:
+        $r0.<org.connectbot.service.TerminalBridge: boolean fullRedraw> = 0;
+
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label58;
+        catch java.lang.Throwable from label04 to label06 with label58;
+        catch java.lang.Throwable from label07 to label08 with label58;
+        catch java.lang.Throwable from label09 to label11 with label58;
+        catch java.lang.Throwable from label12 to label13 with label58;
+        catch java.lang.Throwable from label14 to label15 with label58;
+        catch java.lang.Throwable from label16 to label17 with label58;
+        catch java.lang.Throwable from label18 to label19 with label58;
+        catch java.lang.Throwable from label20 to label21 with label58;
+        catch java.lang.Throwable from label22 to label23 with label58;
+        catch java.lang.Throwable from label24 to label26 with label58;
+        catch java.lang.Throwable from label27 to label29 with label58;
+        catch java.lang.Throwable from label31 to label33 with label58;
+        catch java.lang.Throwable from label34 to label35 with label58;
+        catch java.lang.Throwable from label36 to label38 with label58;
+        catch java.lang.Throwable from label39 to label41 with label58;
+        catch java.lang.Throwable from label43 to label45 with label58;
+        catch java.lang.Throwable from label46 to label47 with label58;
+        catch java.lang.Throwable from label49 to label50 with label58;
+        catch java.lang.Throwable from label51 to label52 with label58;
+        catch java.lang.Throwable from label53 to label54 with label58;
+        catch java.lang.Throwable from label55 to label56 with label58;
+        catch java.lang.Throwable from label57 to label59 with label58;
+        catch java.lang.Throwable from label60 to label61 with label58;
+    }
+
+    public final void outputLine(java.lang.String)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        java.lang.String $r1;
+        org.connectbot.transport.AbsTransport $r2;
+        java.io.IOException $r3;
+        boolean $z0;
+        java.util.List $r4, $r6;
+        java.lang.StringBuilder $r5;
+        de.mud.terminal.VDUBuffer $r7;
+        de.mud.terminal.vt320 $r8;
+        char[] $r9;
+        int $i0;
+        java.lang.Throwable $r10;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.transport.AbsTransport: boolean isSessionOpen()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("outputLine call traceback");
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.TerminalBridge", "Session established, cannot use outputLine!", $r3);
+
+     label1:
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: java.util.List localOutput>;
+
+        entermonitor $r4;
+
+     label2:
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\r\n");
+
+        $r1 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r6 = $r0.<org.connectbot.service.TerminalBridge: java.util.List localOutput>;
+
+        interfaceinvoke $r6.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        $r7 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r8 = (de.mud.terminal.vt320) $r7;
+
+        virtualinvoke $r8.<de.mud.terminal.vt320: void putString(java.lang.String)>($r1);
+
+        $r9 = virtualinvoke $r1.<java.lang.String: char[] toCharArray()>();
+
+        $i0 = lengthof $r9;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void propagateConsoleText(char[],int)>($r9, $i0);
+
+        exitmonitor $r4;
+
+     label3:
+        return;
+
+     label4:
+        $r10 := @caughtexception;
+
+        exitmonitor $r4;
+
+     label5:
+        throw $r10;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public final void parentChanged(org.connectbot.TerminalView)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.TerminalView $r1;
+        org.connectbot.service.TerminalManager $r2;
+        float $f0, $f1, $f2;
+        int $i0, $i1, $i2, $i3, $i4;
+        android.graphics.Paint $r3;
+        java.lang.Exception $r4;
+        boolean $z0;
+        android.content.Context $r5;
+        java.lang.Object $r6;
+        android.text.ClipboardManager $r7;
+        org.connectbot.service.TerminalKeyListener $r8;
+        android.graphics.Bitmap $r9;
+        android.graphics.Bitmap$Config $r10;
+        android.graphics.Canvas $r11;
+        de.mud.terminal.VDUBuffer $r12, $r13;
+        org.connectbot.transport.AbsTransport $r14;
+        java.util.List $r15, $r17;
+        de.mud.terminal.vt320 $r16;
+        java.util.Iterator $r18;
+        java.lang.String $r19;
+        java.lang.Throwable $r20, $r21, $r22;
+        java.lang.Object[] $r23;
+        java.lang.Integer $r24;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: org.connectbot.TerminalView;
+
+        entermonitor $r0;
+
+     label01:
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        if $r2 == null goto label03;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.service.TerminalManager: boolean isResizeAllowed()>();
+
+        if $z0 != 0 goto label03;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.TerminalBridge", "Resize is not allowed now");
+
+     label02:
+        exitmonitor $r0;
+
+        return;
+
+     label03:
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent> = $r1;
+
+        $i3 = virtualinvoke $r1.<org.connectbot.TerminalView: int getWidth()>();
+
+        $i4 = virtualinvoke $r1.<org.connectbot.TerminalView: int getHeight()>();
+
+     label04:
+        if $i3 <= 0 goto label02;
+
+     label05:
+        if $i4 <= 0 goto label02;
+
+        $r5 = virtualinvoke $r1.<org.connectbot.TerminalView: android.content.Context getContext()>();
+
+        $r6 = virtualinvoke $r5.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("clipboard");
+
+        $r7 = (android.text.ClipboardManager) $r6;
+
+        $r0.<org.connectbot.service.TerminalBridge: android.text.ClipboardManager clipboard> = $r7;
+
+        $r8 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalKeyListener keyListener>;
+
+        $r7 = $r0.<org.connectbot.service.TerminalBridge: android.text.ClipboardManager clipboard>;
+
+        virtualinvoke $r8.<org.connectbot.service.TerminalKeyListener: void setClipboardManager(android.text.ClipboardManager)>($r7);
+
+        $z0 = $r0.<org.connectbot.service.TerminalBridge: boolean forcedSize>;
+
+        if $z0 != 0 goto label07;
+
+        $i2 = $r0.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+        $i2 = $i3 / $i2;
+
+        $i1 = $r0.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+        $i1 = $i4 / $i1;
+
+        $i0 = $r0.<org.connectbot.service.TerminalBridge: int columns>;
+
+        if $i2 != $i0 goto label06;
+
+        $i0 = $r0.<org.connectbot.service.TerminalBridge: int rows>;
+
+        if $i1 == $i0 goto label02;
+
+     label06:
+        $r0.<org.connectbot.service.TerminalBridge: int columns> = $i2;
+
+        $r0.<org.connectbot.service.TerminalBridge: int rows> = $i1;
+
+     label07:
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+     label08:
+        if $r9 != null goto label30;
+
+     label09:
+        $z0 = 1;
+
+     label10:
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+        if $r9 == null goto label13;
+
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+        $i2 = virtualinvoke $r9.<android.graphics.Bitmap: int getWidth()>();
+
+        if $i2 != $i3 goto label12;
+
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+        $i2 = virtualinvoke $r9.<android.graphics.Bitmap: int getHeight()>();
+
+     label11:
+        if $i2 == $i4 goto label31;
+
+     label12:
+        $z0 = 1;
+
+     label13:
+        if $z0 == 0 goto label14;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalBridge: void discardBitmap()>();
+
+        $r10 = <android.graphics.Bitmap$Config: android.graphics.Bitmap$Config ARGB_8888>;
+
+        $r9 = staticinvoke <android.graphics.Bitmap: android.graphics.Bitmap createBitmap(int,int,android.graphics.Bitmap$Config)>($i3, $i4, $r10);
+
+        $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap> = $r9;
+
+        $r11 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Bitmap bitmap>;
+
+        virtualinvoke $r11.<android.graphics.Canvas: void setBitmap(android.graphics.Bitmap)>($r9);
+
+     label14:
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r3.<android.graphics.Paint: void setColor(int)>(-16777216);
+
+        $r11 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r11.<android.graphics.Canvas: void drawPaint(android.graphics.Paint)>($r3);
+
+        $z0 = $r0.<org.connectbot.service.TerminalBridge: boolean forcedSize>;
+
+        if $z0 == 0 goto label20;
+
+        $i2 = $r0.<org.connectbot.service.TerminalBridge: int columns>;
+
+        $i1 = $r0.<org.connectbot.service.TerminalBridge: int charWidth>;
+
+     label15:
+        $i2 = $i2 * $i1;
+
+     label16:
+        $i1 = $i2 + 1;
+
+        $i2 = $r0.<org.connectbot.service.TerminalBridge: int rows>;
+
+        $i0 = $r0.<org.connectbot.service.TerminalBridge: int charHeight>;
+
+     label17:
+        $i2 = $i2 * $i0;
+
+     label18:
+        $i2 = $i2 + 1;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r3.<android.graphics.Paint: void setColor(int)>(-7829368);
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r3.<android.graphics.Paint: void setStrokeWidth(float)>(0.0F);
+
+        if $i3 < $i1 goto label19;
+
+        $r11 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        $f1 = (float) $i1;
+
+        $f0 = (float) $i1;
+
+        $i0 = $i2 + 1;
+
+        $f2 = (float) $i0;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r11.<android.graphics.Canvas: void drawLine(float,float,float,float,android.graphics.Paint)>($f1, 0.0F, $f0, $f2, $r3);
+
+     label19:
+        if $i4 < $i2 goto label20;
+
+        $r11 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Canvas canvas>;
+
+        $f2 = (float) $i2;
+
+        $i1 = $i1 + 1;
+
+        $f1 = (float) $i1;
+
+        $f0 = (float) $i2;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r11.<android.graphics.Canvas: void drawLine(float,float,float,float,android.graphics.Paint)>(0.0F, $f2, $f1, $f0, $r3);
+
+     label20:
+        $r12 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+     label21:
+        entermonitor $r12;
+
+     label22:
+        $r13 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i2 = $r0.<org.connectbot.service.TerminalBridge: int columns>;
+
+        $i1 = $r0.<org.connectbot.service.TerminalBridge: int rows>;
+
+        virtualinvoke $r13.<de.mud.terminal.VDUBuffer: void setScreenSize(int,int,boolean)>($i2, $i1, 1);
+
+        exitmonitor $r12;
+
+     label23:
+        $r14 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        if $r14 == null goto label24;
+
+        $r14 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $i2 = $r0.<org.connectbot.service.TerminalBridge: int columns>;
+
+        $i1 = $r0.<org.connectbot.service.TerminalBridge: int rows>;
+
+        virtualinvoke $r14.<org.connectbot.transport.AbsTransport: void setDimensions(int,int,int,int)>($i2, $i1, $i3, $i4);
+
+     label24:
+        $r14 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        if $r14 != null goto label39;
+
+        $r15 = $r0.<org.connectbot.service.TerminalBridge: java.util.List localOutput>;
+
+        entermonitor $r15;
+
+     label25:
+        $r13 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r16 = (de.mud.terminal.vt320) $r13;
+
+        virtualinvoke $r16.<de.mud.terminal.vt320: void reset()>();
+
+        $r17 = $r0.<org.connectbot.service.TerminalBridge: java.util.List localOutput>;
+
+        $r18 = interfaceinvoke $r17.<java.util.List: java.util.Iterator iterator()>();
+
+     label26:
+        $z0 = interfaceinvoke $r18.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label38;
+
+        $r6 = interfaceinvoke $r18.<java.util.Iterator: java.lang.Object next()>();
+
+        $r19 = (java.lang.String) $r6;
+
+        $r13 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r16 = (de.mud.terminal.vt320) $r13;
+
+        virtualinvoke $r16.<de.mud.terminal.vt320: void putString(java.lang.String)>($r19);
+
+        goto label26;
+
+     label27:
+        $r20 := @caughtexception;
+
+        exitmonitor $r15;
+
+     label28:
+        throw $r20;
+
+     label29:
+        $r21 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r21;
+
+     label30:
+        $z0 = 0;
+
+        goto label10;
+
+     label31:
+        $z0 = 0;
+
+        goto label13;
+
+     label32:
+        $r22 := @caughtexception;
+
+     label33:
+        exitmonitor $r12;
+
+     label34:
+        throw $r22;
+
+     label35:
+        $r4 := @caughtexception;
+
+     label36:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.TerminalBridge", "Problem while trying to resize screen or PTY", $r4);
+
+     label37:
+        goto label24;
+
+     label38:
+        exitmonitor $r15;
+
+     label39:
+        $r0.<org.connectbot.service.TerminalBridge: boolean fullRedraw> = 1;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+        $r23 = newarray (java.lang.Object)[2];
+
+        $i4 = $r0.<org.connectbot.service.TerminalBridge: int columns>;
+
+        $r24 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i4);
+
+        $r23[0] = $r24;
+
+        $i4 = $r0.<org.connectbot.service.TerminalBridge: int rows>;
+
+        $r24 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i4);
+
+        $r23[1] = $r24;
+
+        $r19 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%d x %d", $r23);
+
+        virtualinvoke $r1.<org.connectbot.TerminalView: void notifyUser(java.lang.String)>($r19);
+
+        $r23 = newarray (java.lang.Object)[2];
+
+        $i4 = $r0.<org.connectbot.service.TerminalBridge: int columns>;
+
+        $r24 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i4);
+
+        $r23[0] = $r24;
+
+        $i4 = $r0.<org.connectbot.service.TerminalBridge: int rows>;
+
+        $r24 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i4);
+
+        $r23[1] = $r24;
+
+        $r19 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("parentChanged() now width=%d, height=%d", $r23);
+
+        staticinvoke <android.util.Log: int i(java.lang.String,java.lang.String)>("CB.TerminalBridge", $r19);
+
+     label40:
+        goto label02;
+
+        catch java.lang.Throwable from label01 to label02 with label29;
+        catch java.lang.Throwable from label03 to label04 with label29;
+        catch java.lang.Throwable from label05 to label08 with label29;
+        catch java.lang.Throwable from label09 to label11 with label29;
+        catch java.lang.Throwable from label13 to label15 with label29;
+        catch java.lang.Throwable from label16 to label17 with label29;
+        catch java.lang.Throwable from label18 to label20 with label29;
+        catch java.lang.Exception from label20 to label22 with label35;
+        catch java.lang.Throwable from label20 to label21 with label29;
+        catch java.lang.Throwable from label22 to label23 with label32;
+        catch java.lang.Exception from label23 to label24 with label35;
+        catch java.lang.Throwable from label23 to label24 with label29;
+        catch java.lang.Throwable from label24 to label25 with label29;
+        catch java.lang.Throwable from label25 to label28 with label27;
+        catch java.lang.Throwable from label28 to label29 with label29;
+        catch java.lang.Throwable from label33 to label34 with label32;
+        catch java.lang.Exception from label34 to label35 with label35;
+        catch java.lang.Throwable from label34 to label35 with label29;
+        catch java.lang.Throwable from label36 to label37 with label29;
+        catch java.lang.Throwable from label38 to label39 with label27;
+        catch java.lang.Throwable from label39 to label40 with label29;
+    }
+
+    public void propagateConsoleText(char[], int)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        char[] $r1;
+        int $i0;
+        org.connectbot.TerminalView $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: char[];
+
+        $i0 := @parameter1: int;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent>;
+
+        virtualinvoke $r2.<org.connectbot.TerminalView: void propagateConsoleText(char[],int)>($r1, $i0);
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void redraw()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.TerminalView $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent>;
+
+        virtualinvoke $r1.<org.connectbot.TerminalView: void postInvalidate()>();
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public boolean removePortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+        org.connectbot.transport.AbsTransport $r2;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.transport.AbsTransport: boolean removePortForward(org.connectbot.bean.PortForwardBean)>($r1);
+
+        return $z0;
+    }
+
+    public final void resetColors()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.service.TerminalManager $r1;
+        int[] $r2;
+        org.connectbot.util.HostDatabase $r3;
+        int $i0;
+        java.lang.Integer[] $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $r3 = $r1.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        $r2 = virtualinvoke $r3.<org.connectbot.util.HostDatabase: int[] getDefaultColorsForScheme(int)>(0);
+
+        $i0 = $r2[0];
+
+        $r0.<org.connectbot.service.TerminalBridge: int defaultFg> = $i0;
+
+        $i0 = $r2[1];
+
+        $r0.<org.connectbot.service.TerminalBridge: int defaultBg> = $i0;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $r3 = $r1.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        $r4 = virtualinvoke $r3.<org.connectbot.util.HostDatabase: java.lang.Integer[] getColorsForScheme(int)>(0);
+
+        $r0.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color> = $r4;
+
+        return;
+    }
+
+    public void resetScrollPosition()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        de.mud.terminal.VDUBuffer $r1, $r2;
+        int $i0, $i1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i0 = $r1.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i1 = $r1.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        if $i0 == $i1 goto label1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i1 = $r2.<de.mud.terminal.VDUBuffer: int screenBase>;
+
+        virtualinvoke $r1.<de.mud.terminal.VDUBuffer: void setWindowBase(int)>($i1);
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void resizeComputed(int, int, int, int)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        float $f0, $f1;
+        java.lang.Object[] $r1;
+        java.lang.Float $r2;
+        java.lang.String $r3;
+        byte $b5;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        entermonitor $r0;
+
+        $f0 = 8.0F;
+
+     label01:
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalBridge: int fontSizeCompare(float,int,int,int,int)>($f0, $i0, $i1, $i2, $i3);
+
+     label02:
+        if $i4 >= 0 goto label04;
+
+        $f0 = $f0 + 8.0F;
+
+     label03:
+        goto label01;
+
+     label04:
+        if $i4 != 0 goto label06;
+
+        $r1 = newarray (java.lang.Object)[1];
+
+        $r2 = staticinvoke <java.lang.Float: java.lang.Float valueOf(float)>($f0);
+
+        $r1[0] = $r2;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Found match at %f", $r1);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("fontsize", $r3);
+
+     label05:
+        exitmonitor $r0;
+
+        return;
+
+     label06:
+        $f1 = 8.0F / 2.0F;
+
+        $f0 = $f0 - $f1;
+
+     label07:
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalBridge: int fontSizeCompare(float,int,int,int,int)>($f0, $i0, $i1, $i2, $i3);
+
+     label08:
+        if $i4 == 0 goto label12;
+
+        $b5 = $f1 cmpl 0.125F;
+
+        if $b5 < 0 goto label12;
+
+        $f1 = $f1 / 2.0F;
+
+        if $i4 <= 0 goto label10;
+
+        $f0 = $f0 - $f1;
+
+     label09:
+        goto label07;
+
+     label10:
+        $f0 = $f0 + $f1;
+
+     label11:
+        goto label07;
+
+     label12:
+        if $i4 <= 0 goto label13;
+
+        $f0 = $f0 - $f1;
+
+     label13:
+        $r0.<org.connectbot.service.TerminalBridge: int columns> = $i0;
+
+        $r0.<org.connectbot.service.TerminalBridge: int rows> = $i1;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void setFontSize(float)>($f0);
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean forcedSize> = 1;
+
+     label14:
+        goto label05;
+
+     label15:
+        $r4 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r4;
+
+        catch java.lang.Throwable from label01 to label02 with label15;
+        catch java.lang.Throwable from label03 to label05 with label15;
+        catch java.lang.Throwable from label07 to label08 with label15;
+        catch java.lang.Throwable from label09 to label10 with label15;
+        catch java.lang.Throwable from label11 to label14 with label15;
+    }
+
+    public java.util.List scanForURLs()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        int $i0, $i1, $i2;
+        java.util.LinkedList $r1;
+        java.util.regex.Pattern $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4, $r5, $r6, $r7, $r8, $r9;
+        de.mud.terminal.VDUBuffer $r10;
+        char[] $r11, $r13;
+        char[][] $r12;
+        java.util.regex.Matcher $r14;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 = new java.util.LinkedList;
+
+        specialinvoke $r1.<java.util.LinkedList: void <init>()>();
+
+        $r2 = <org.connectbot.service.TerminalBridge: java.util.regex.Pattern urlPattern>;
+
+        if $r2 != null goto label1;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[-._~0-9A-Za-z]");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("%[0-9A-Fa-f]{2}");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[!$&\'()*+,;:=]");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|:)*");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\\.");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\\.");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\\.");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])");
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[0-9A-Fa-f]{1,4}");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[0-9A-Fa-f]{1,4}");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[0-9A-Fa-f]{1,4}");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("){6}");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("v[0-9A-Fa-f]+.(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[-._~0-9A-Za-z]");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[!$&\'()*+,;:=]");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|:)+");
+
+        $r7 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\\[(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")\\]");
+
+        $r7 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[-._~0-9A-Za-z]");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("%[0-9A-Fa-f]{2}");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[!$&\'()*+,;:=]");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")*");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r7 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("@)?");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?::");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[0-9]*");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")?");
+
+        $r7 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[-._~0-9A-Za-z]");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("%[0-9A-Fa-f]{2}");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[!$&\'()*+,;:=]");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|@)");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("*");
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:/");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")*");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("+");
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:/");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")*)?");
+
+        $r9 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:/");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")*");
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?://");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r9 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|/|\\?)*");
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("|/|\\?)*");
+
+        $r7 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("[A-Za-z][-+.0-9A-Za-z]*");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(?:");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")?(?:#");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")?");
+
+        $r9 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>($r9);
+
+        <org.connectbot.service.TerminalBridge: java.util.regex.Pattern urlPattern> = $r2;
+
+     label1:
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i0 = $r10.<de.mud.terminal.VDUBuffer: int height>;
+
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i1 = $r10.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i1 = $i0 * $i1;
+
+        $r11 = newarray (char)[$i1];
+
+        $i0 = 0;
+
+     label2:
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i1 = $r10.<de.mud.terminal.VDUBuffer: int height>;
+
+        if $i0 >= $i1 goto label3;
+
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $r12 = $r10.<de.mud.terminal.VDUBuffer: char[][] charArray>;
+
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i1 = $r10.<de.mud.terminal.VDUBuffer: int windowBase>;
+
+        $i1 = $i1 + $i0;
+
+        $r13 = $r12[$i1];
+
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i1 = $r10.<de.mud.terminal.VDUBuffer: int width>;
+
+        $i1 = $i1 * $i0;
+
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: de.mud.terminal.VDUBuffer buffer>;
+
+        $i2 = $r10.<de.mud.terminal.VDUBuffer: int width>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r13, 0, $r11, $i1, $i2);
+
+        $i0 = $i0 + 1;
+
+        goto label2;
+
+     label3:
+        $r2 = <org.connectbot.service.TerminalBridge: java.util.regex.Pattern urlPattern>;
+
+        $r9 = new java.lang.String;
+
+        specialinvoke $r9.<java.lang.String: void <init>(char[])>($r11);
+
+        $r14 = virtualinvoke $r2.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r9);
+
+     label4:
+        $z0 = virtualinvoke $r14.<java.util.regex.Matcher: boolean find()>();
+
+        if $z0 == 0 goto label5;
+
+        $r9 = virtualinvoke $r14.<java.util.regex.Matcher: java.lang.String group()>();
+
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r9);
+
+        goto label4;
+
+     label5:
+        return $r1;
+    }
+
+    public void setCharset(java.lang.String)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        java.lang.String $r1;
+        org.connectbot.service.Relay $r2;
+        org.connectbot.service.TerminalKeyListener $r3;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.Relay relay>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.Relay relay>;
+
+        virtualinvoke $r2.<org.connectbot.service.Relay: void setCharset(java.lang.String)>($r1);
+
+     label1:
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalKeyListener keyListener>;
+
+        virtualinvoke $r3.<org.connectbot.service.TerminalKeyListener: void setCharset(java.lang.String)>($r1);
+
+        return;
+    }
+
+    public void setColor(int, int, int, int)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        java.lang.Integer[] $r1;
+        java.lang.Integer $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color>;
+
+        $i4 = lengthof $r1;
+
+        if $i0 >= $i4 goto label1;
+
+        if $i0 < 16 goto label2;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: java.lang.Integer[] color>;
+
+        $i1 = $i1 << 16;
+
+        $i4 = -16777216 | $i1;
+
+        $i2 = $i2 << 8;
+
+        $i4 = $i4 | $i2;
+
+        $i4 = $i4 | $i3;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i4);
+
+        $r1[$i0] = $r2;
+
+        return;
+
+     label1:
+        return;
+
+     label2:
+        return;
+    }
+
+    final void setFontSize(float)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        float $f0, $f1, $f2;
+        int $i0;
+        float[] $r1;
+        byte $b1;
+        double $d0;
+        android.graphics.Paint$FontMetrics $r2;
+        android.graphics.Paint $r3;
+        org.connectbot.TerminalView $r4;
+        java.util.List $r5;
+        java.util.Iterator $r6;
+        boolean $z0;
+        java.lang.Object $r7;
+        org.connectbot.service.FontSizeChangedListener $r8;
+        org.connectbot.bean.HostBean $r9;
+        org.connectbot.service.TerminalManager $r10;
+        org.connectbot.util.HostDatabase $r11;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $f0 := @parameter0: float;
+
+        $d0 = (double) $f0;
+
+        $b1 = $d0 cmpg 0.0;
+
+        if $b1 > 0 goto label1;
+
+        return;
+
+     label1:
+        $f1 = $r0.<org.connectbot.service.TerminalBridge: float displayDensity>;
+
+        $f1 = $f1 * $f0;
+
+        $f1 = $f1 + 0.5F;
+
+        $i0 = (int) $f1;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        $f1 = (float) $i0;
+
+        virtualinvoke $r3.<android.graphics.Paint: void setTextSize(float)>($f1);
+
+        $r0.<org.connectbot.service.TerminalBridge: float fontSizeDp> = $f0;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        $r2 = virtualinvoke $r3.<android.graphics.Paint: android.graphics.Paint$FontMetrics getFontMetrics()>();
+
+        $f1 = $r2.<android.graphics.Paint$FontMetrics: float top>;
+
+        $d0 = (double) $f1;
+
+        $d0 = staticinvoke <java.lang.Math: double ceil(double)>($d0);
+
+        $i0 = (int) $d0;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charTop> = $i0;
+
+        $r1 = newarray (float)[1];
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: android.graphics.Paint defaultPaint>;
+
+        virtualinvoke $r3.<android.graphics.Paint: int getTextWidths(java.lang.String,float[])>("X", $r1);
+
+        $f1 = $r1[0];
+
+        $d0 = (double) $f1;
+
+        $d0 = staticinvoke <java.lang.Math: double ceil(double)>($d0);
+
+        $i0 = (int) $d0;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charWidth> = $i0;
+
+        $f1 = $r2.<android.graphics.Paint$FontMetrics: float descent>;
+
+        $f2 = $r2.<android.graphics.Paint$FontMetrics: float top>;
+
+        $f2 = $f1 - $f2;
+
+        $d0 = (double) $f2;
+
+        $d0 = staticinvoke <java.lang.Math: double ceil(double)>($d0);
+
+        $i0 = (int) $d0;
+
+        $r0.<org.connectbot.service.TerminalBridge: int charHeight> = $i0;
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent>;
+
+        if $r4 == null goto label2;
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.TerminalView parent>;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void parentChanged(org.connectbot.TerminalView)>($r4);
+
+     label2:
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: java.util.List fontSizeChangedListeners>;
+
+        $r6 = interfaceinvoke $r5.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r6.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r7 = interfaceinvoke $r6.<java.util.Iterator: java.lang.Object next()>();
+
+        $r8 = (org.connectbot.service.FontSizeChangedListener) $r7;
+
+        interfaceinvoke $r8.<org.connectbot.service.FontSizeChangedListener: void onFontSizeChanged(float)>($f0);
+
+        goto label3;
+
+     label4:
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $i0 = (int) $f0;
+
+        virtualinvoke $r9.<org.connectbot.bean.HostBean: void setFontSize(int)>($i0);
+
+        $r10 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $r11 = $r10.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        $r9 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        virtualinvoke $r11.<org.connectbot.util.HostDatabase: boolean updateFontSize(org.connectbot.bean.HostBean)>($r9);
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean forcedSize> = 0;
+
+        return;
+    }
+
+    public void setOnDisconnectedListener(org.connectbot.service.BridgeDisconnectedListener)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.service.BridgeDisconnectedListener $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r1 := @parameter0: org.connectbot.service.BridgeDisconnectedListener;
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.BridgeDisconnectedListener disconnectListener> = $r1;
+
+        return;
+    }
+
+    public void setSelectingForCopy(boolean)
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.service.TerminalBridge: boolean selectingForCopy> = $z0;
+
+        return;
+    }
+
+    protected void startConnection()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        java.lang.Thread $r1;
+        org.connectbot.bean.HostBean $r2;
+        org.connectbot.service.TerminalManager $r3;
+        java.lang.String $r4;
+        org.connectbot.transport.AbsTransport $r5;
+        boolean $z0;
+        org.connectbot.util.HostDatabase $r6;
+        java.util.List $r7;
+        java.util.Iterator $r8;
+        java.lang.Object $r9;
+        org.connectbot.bean.PortForwardBean $r10;
+        android.content.res.Resources $r11;
+        java.lang.Object[] $r12;
+        int $i0;
+        java.lang.Integer $r13;
+        org.connectbot.service.TerminalBridge$3 $r14;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r4 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getProtocol()>();
+
+        $r5 = staticinvoke <org.connectbot.transport.TransportFactory: org.connectbot.transport.AbsTransport getTransport(java.lang.String)>($r4);
+
+        $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport> = $r5;
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r5.<org.connectbot.transport.AbsTransport: void setBridge(org.connectbot.service.TerminalBridge)>($r0);
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        virtualinvoke $r5.<org.connectbot.transport.AbsTransport: void setManager(org.connectbot.service.TerminalManager)>($r3);
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        virtualinvoke $r5.<org.connectbot.transport.AbsTransport: void setHost(org.connectbot.bean.HostBean)>($r2);
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.bean.HostBean: boolean getCompression()>();
+
+        virtualinvoke $r5.<org.connectbot.transport.AbsTransport: void setCompression(boolean)>($z0);
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r4 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getUseAuthAgent()>();
+
+        virtualinvoke $r5.<org.connectbot.transport.AbsTransport: void setUseAuthAgent(java.lang.String)>($r4);
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge: java.lang.String emulation>;
+
+        virtualinvoke $r5.<org.connectbot.transport.AbsTransport: void setEmulation(java.lang.String)>($r4);
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r5.<org.connectbot.transport.AbsTransport: boolean canForwardPorts()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $r6 = $r3.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r7 = virtualinvoke $r6.<org.connectbot.util.HostDatabase: java.util.List getPortForwardsForHost(org.connectbot.bean.HostBean)>($r2);
+
+        $r8 = interfaceinvoke $r7.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r8.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r9 = interfaceinvoke $r8.<java.util.Iterator: java.lang.Object next()>();
+
+        $r10 = (org.connectbot.bean.PortForwardBean) $r9;
+
+        $r5 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r5.<org.connectbot.transport.AbsTransport: boolean addPortForward(org.connectbot.bean.PortForwardBean)>($r10);
+
+        goto label1;
+
+     label2:
+        $r3 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        $r11 = $r3.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r12 = newarray (java.lang.Object)[3];
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r4 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getHostname()>();
+
+        $r12[0] = $r4;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $i0 = virtualinvoke $r2.<org.connectbot.bean.HostBean: int getPort()>();
+
+        $r13 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r12[1] = $r13;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.bean.HostBean host>;
+
+        $r4 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getProtocol()>();
+
+        $r12[2] = $r4;
+
+        $r4 = virtualinvoke $r11.<android.content.res.Resources: java.lang.String getString(int,java.lang.Object[])>(2131165378, $r12);
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r4);
+
+        $r1 = new java.lang.Thread;
+
+        $r14 = new org.connectbot.service.TerminalBridge$3;
+
+        specialinvoke $r14.<org.connectbot.service.TerminalBridge$3: void <init>(org.connectbot.service.TerminalBridge)>($r0);
+
+        specialinvoke $r1.<java.lang.Thread: void <init>(java.lang.Runnable)>($r14);
+
+        virtualinvoke $r1.<java.lang.Thread: void setName(java.lang.String)>("Connection");
+
+        virtualinvoke $r1.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r1.<java.lang.Thread: void start()>();
+
+        return;
+    }
+
+    public void tryKeyVibrate()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+        org.connectbot.service.TerminalManager $r1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = $r0.<org.connectbot.service.TerminalBridge: org.connectbot.service.TerminalManager manager>;
+
+        virtualinvoke $r1.<org.connectbot.service.TerminalManager: void tryKeyVibrate()>();
+
+     label2:
+        exitmonitor $r0;
+
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+    }
+
+    public void updateScrollBar()
+    {
+        org.connectbot.service.TerminalBridge $r0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge;
+
+        return;
+    }
+}

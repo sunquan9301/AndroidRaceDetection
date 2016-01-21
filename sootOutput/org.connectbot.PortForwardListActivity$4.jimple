@@ -1,0 +1,184 @@
+class org.connectbot.PortForwardListActivity$4 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.PortForwardListActivity this$0;
+    final org.connectbot.bean.PortForwardBean val$pfb;
+
+    void <init>(org.connectbot.PortForwardListActivity, org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.PortForwardListActivity$4 $r0;
+        org.connectbot.PortForwardListActivity $r1;
+        org.connectbot.bean.PortForwardBean $r2;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$4;
+
+        $r1 := @parameter0: org.connectbot.PortForwardListActivity;
+
+        $r2 := @parameter1: org.connectbot.bean.PortForwardBean;
+
+        $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.PortForwardListActivity this$0> = $r1;
+
+        $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.bean.PortForwardBean val$pfb> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.PortForwardListActivity$4 $r0;
+        android.view.MenuItem $r1;
+        org.connectbot.PortForwardListActivity $r2;
+        android.view.View $r3, $r5;
+        android.view.LayoutInflater $r4;
+        android.widget.Spinner $r6;
+        java.lang.String $r7, $r9;
+        org.connectbot.bean.PortForwardBean $r8;
+        boolean $z0;
+        android.widget.EditText $r10, $r11, $r12;
+        int $i0;
+        org.connectbot.PortForwardListActivity$4$1 $r13;
+        android.app.AlertDialog$Builder $r14;
+        org.connectbot.PortForwardListActivity$4$2 $r15;
+        android.app.AlertDialog $r16;
+        java.lang.Object[] $r17;
+        java.lang.Integer $r18;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$4;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.PortForwardListActivity this$0>;
+
+        $r4 = $r2.<org.connectbot.PortForwardListActivity: android.view.LayoutInflater inflater>;
+
+        $r3 = virtualinvoke $r4.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup,boolean)>(2130903052, null, 0);
+
+        $r5 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427372);
+
+        $r6 = (android.widget.Spinner) $r5;
+
+        $r7 = "local";
+
+        $r8 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        $r9 = virtualinvoke $r8.<org.connectbot.bean.PortForwardBean: java.lang.String getType()>();
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r9);
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke $r6.<android.widget.Spinner: void setSelection(int)>(0);
+
+     label1:
+        $r5 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427349);
+
+        $r10 = (android.widget.EditText) $r5;
+
+        $r8 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        $r9 = virtualinvoke $r8.<org.connectbot.bean.PortForwardBean: java.lang.String getNickname()>();
+
+        virtualinvoke $r10.<android.widget.EditText: void setText(java.lang.CharSequence)>($r9);
+
+        $r5 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427373);
+
+        $r11 = (android.widget.EditText) $r5;
+
+        $r8 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        $i0 = virtualinvoke $r8.<org.connectbot.bean.PortForwardBean: int getSourcePort()>();
+
+        $r9 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        virtualinvoke $r11.<android.widget.EditText: void setText(java.lang.CharSequence)>($r9);
+
+        $r5 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427374);
+
+        $r12 = (android.widget.EditText) $r5;
+
+        $r9 = "dynamic5";
+
+        $r8 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        $r7 = virtualinvoke $r8.<org.connectbot.bean.PortForwardBean: java.lang.String getType()>();
+
+        $z0 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label5;
+
+        virtualinvoke $r12.<android.widget.EditText: void setEnabled(boolean)>(0);
+
+     label2:
+        $r13 = new org.connectbot.PortForwardListActivity$4$1;
+
+        specialinvoke $r13.<org.connectbot.PortForwardListActivity$4$1: void <init>(org.connectbot.PortForwardListActivity$4,android.widget.EditText)>($r0, $r12);
+
+        virtualinvoke $r6.<android.widget.Spinner: void setOnItemSelectedListener(android.widget.AdapterView$OnItemSelectedListener)>($r13);
+
+        $r14 = new android.app.AlertDialog$Builder;
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.PortForwardListActivity this$0>;
+
+        specialinvoke $r14.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r2);
+
+        $r14 = virtualinvoke $r14.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setView(android.view.View)>($r3);
+
+        $r15 = new org.connectbot.PortForwardListActivity$4$2;
+
+        specialinvoke $r15.<org.connectbot.PortForwardListActivity$4$2: void <init>(org.connectbot.PortForwardListActivity$4,android.widget.EditText,android.widget.Spinner,android.widget.EditText,android.widget.EditText)>($r0, $r10, $r6, $r11, $r12);
+
+        $r14 = virtualinvoke $r14.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(2131165245, $r15);
+
+        $r14 = virtualinvoke $r14.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(17039360, null);
+
+        $r16 = virtualinvoke $r14.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r16.<android.app.AlertDialog: void show()>();
+
+        return 1;
+
+     label3:
+        $r9 = "remote";
+
+        $r8 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        $r7 = virtualinvoke $r8.<org.connectbot.bean.PortForwardBean: java.lang.String getType()>();
+
+        $z0 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label4;
+
+        virtualinvoke $r6.<android.widget.Spinner: void setSelection(int)>(1);
+
+        goto label1;
+
+     label4:
+        virtualinvoke $r6.<android.widget.Spinner: void setSelection(int)>(2);
+
+        goto label1;
+
+     label5:
+        $r17 = newarray (java.lang.Object)[2];
+
+        $r8 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        $r9 = virtualinvoke $r8.<org.connectbot.bean.PortForwardBean: java.lang.String getDestAddr()>();
+
+        $r17[0] = $r9;
+
+        $r8 = $r0.<org.connectbot.PortForwardListActivity$4: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        $i0 = virtualinvoke $r8.<org.connectbot.bean.PortForwardBean: int getDestPort()>();
+
+        $r18 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r17[1] = $r18;
+
+        $r9 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s:%d", $r17);
+
+        virtualinvoke $r12.<android.widget.EditText: void setText(java.lang.CharSequence)>($r9);
+
+        goto label2;
+    }
+}

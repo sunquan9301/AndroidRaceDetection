@@ -1,0 +1,78 @@
+class org.connectbot.PubkeyListActivity$7 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.PubkeyListActivity this$0;
+    final org.connectbot.bean.PubkeyBean val$pubkey;
+
+    void <init>(org.connectbot.PubkeyListActivity, org.connectbot.bean.PubkeyBean)
+    {
+        org.connectbot.PubkeyListActivity$7 $r0;
+        org.connectbot.PubkeyListActivity $r1;
+        org.connectbot.bean.PubkeyBean $r2;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$7;
+
+        $r1 := @parameter0: org.connectbot.PubkeyListActivity;
+
+        $r2 := @parameter1: org.connectbot.bean.PubkeyBean;
+
+        $r0.<org.connectbot.PubkeyListActivity$7: org.connectbot.PubkeyListActivity this$0> = $r1;
+
+        $r0.<org.connectbot.PubkeyListActivity$7: org.connectbot.bean.PubkeyBean val$pubkey> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.PubkeyListActivity$7 $r0;
+        android.view.MenuItem $r1;
+        java.lang.Exception $r2;
+        org.connectbot.bean.PubkeyBean $r3;
+        byte[] $r4;
+        java.lang.String $r5;
+        java.security.PublicKey $r6;
+        org.connectbot.PubkeyListActivity $r7;
+        android.text.ClipboardManager $r8;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$7;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+     label1:
+        $r3 = $r0.<org.connectbot.PubkeyListActivity$7: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $r4 = virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: byte[] getPublicKey()>();
+
+        $r3 = $r0.<org.connectbot.PubkeyListActivity$7: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $r5 = virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $r6 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PublicKey decodePublic(byte[],java.lang.String)>($r4, $r5);
+
+        $r3 = $r0.<org.connectbot.PubkeyListActivity$7: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $r5 = virtualinvoke $r3.<org.connectbot.bean.PubkeyBean: java.lang.String getNickname()>();
+
+        $r5 = staticinvoke <org.connectbot.util.PubkeyUtils: java.lang.String convertToOpenSSHFormat(java.security.PublicKey,java.lang.String)>($r6, $r5);
+
+        $r7 = $r0.<org.connectbot.PubkeyListActivity$7: org.connectbot.PubkeyListActivity this$0>;
+
+        $r8 = $r7.<org.connectbot.PubkeyListActivity: android.text.ClipboardManager clipboard>;
+
+        virtualinvoke $r8.<android.text.ClipboardManager: void setText(java.lang.CharSequence)>($r5);
+
+     label2:
+        return 1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        virtualinvoke $r2.<java.lang.Exception: void printStackTrace()>();
+
+        goto label2;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+}

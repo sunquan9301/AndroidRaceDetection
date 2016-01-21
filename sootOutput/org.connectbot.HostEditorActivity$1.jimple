@@ -1,0 +1,71 @@
+class org.connectbot.HostEditorActivity$1 extends java.lang.Object implements android.content.ServiceConnection
+{
+    final org.connectbot.HostEditorActivity this$0;
+
+    void <init>(org.connectbot.HostEditorActivity)
+    {
+        org.connectbot.HostEditorActivity$1 $r0;
+        org.connectbot.HostEditorActivity $r1;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$1;
+
+        $r1 := @parameter0: org.connectbot.HostEditorActivity;
+
+        $r0.<org.connectbot.HostEditorActivity$1: org.connectbot.HostEditorActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onServiceConnected(android.content.ComponentName, android.os.IBinder)
+    {
+        org.connectbot.HostEditorActivity$1 $r0;
+        android.content.ComponentName $r1;
+        android.os.IBinder $r2;
+        org.connectbot.HostEditorActivity $r3, $r4;
+        org.connectbot.service.TerminalManager $r5;
+        org.connectbot.service.TerminalManager$TerminalBinder $r6;
+        org.connectbot.bean.HostBean $r7;
+        org.connectbot.service.TerminalBridge $r8;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$1;
+
+        $r1 := @parameter0: android.content.ComponentName;
+
+        $r2 := @parameter1: android.os.IBinder;
+
+        $r6 = (org.connectbot.service.TerminalManager$TerminalBinder) $r2;
+
+        $r5 = virtualinvoke $r6.<org.connectbot.service.TerminalManager$TerminalBinder: org.connectbot.service.TerminalManager getService()>();
+
+        $r3 = $r0.<org.connectbot.HostEditorActivity$1: org.connectbot.HostEditorActivity this$0>;
+
+        $r4 = $r0.<org.connectbot.HostEditorActivity$1: org.connectbot.HostEditorActivity this$0>;
+
+        $r7 = staticinvoke <org.connectbot.HostEditorActivity: org.connectbot.bean.HostBean access$000(org.connectbot.HostEditorActivity)>($r4);
+
+        $r8 = virtualinvoke $r5.<org.connectbot.service.TerminalManager: org.connectbot.service.TerminalBridge getConnectedBridge(org.connectbot.bean.HostBean)>($r7);
+
+        $r3.<org.connectbot.HostEditorActivity: org.connectbot.service.TerminalBridge hostBridge> = $r8;
+
+        return;
+    }
+
+    public void onServiceDisconnected(android.content.ComponentName)
+    {
+        org.connectbot.HostEditorActivity$1 $r0;
+        android.content.ComponentName $r1;
+        org.connectbot.HostEditorActivity $r2;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$1;
+
+        $r1 := @parameter0: android.content.ComponentName;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity$1: org.connectbot.HostEditorActivity this$0>;
+
+        $r2.<org.connectbot.HostEditorActivity: org.connectbot.service.TerminalBridge hostBridge> = null;
+
+        return;
+    }
+}

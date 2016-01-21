@@ -1,0 +1,58 @@
+public class org.connectbot.service.KeyEventUtil extends java.lang.Object
+{
+    static final char[] HEX_DIGITS;
+
+    static void <clinit>()
+    {
+        char[] $r0;
+
+        $r0 = newarray (char)[16];
+
+        $r0[0] = 48;
+
+        $r0[1] = 49;
+
+        $r0[2] = 50;
+
+        $r0[3] = 51;
+
+        $r0[4] = 52;
+
+        $r0[5] = 53;
+
+        $r0[6] = 54;
+
+        $r0[7] = 55;
+
+        $r0[8] = 56;
+
+        $r0[9] = 57;
+
+        $r0[10] = 97;
+
+        $r0[11] = 98;
+
+        $r0[12] = 99;
+
+        $r0[13] = 100;
+
+        $r0[14] = 101;
+
+        $r0[15] = 102;
+
+        <org.connectbot.service.KeyEventUtil: char[] HEX_DIGITS> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.connectbot.service.KeyEventUtil $r0;
+
+        $r0 := @this: org.connectbot.service.KeyEventUtil;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

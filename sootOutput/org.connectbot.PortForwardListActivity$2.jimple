@@ -1,0 +1,105 @@
+class org.connectbot.PortForwardListActivity$2 extends java.lang.Object implements android.widget.AdapterView$OnItemClickListener
+{
+    final org.connectbot.PortForwardListActivity this$0;
+
+    void <init>(org.connectbot.PortForwardListActivity)
+    {
+        org.connectbot.PortForwardListActivity$2 $r0;
+        org.connectbot.PortForwardListActivity $r1;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$2;
+
+        $r1 := @parameter0: org.connectbot.PortForwardListActivity;
+
+        $r0.<org.connectbot.PortForwardListActivity$2: org.connectbot.PortForwardListActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onItemClick(android.widget.AdapterView, android.view.View, int, long)
+    {
+        org.connectbot.PortForwardListActivity$2 $r0;
+        android.widget.AdapterView $r1;
+        android.view.View $r2;
+        int $i0;
+        long $l1;
+        org.connectbot.PortForwardListActivity $r3, $r9;
+        android.widget.ListView $r4;
+        java.lang.Object $r5;
+        org.connectbot.bean.PortForwardBean $r6;
+        org.connectbot.service.TerminalBridge $r7;
+        boolean $z0;
+        android.os.Handler $r8;
+        java.lang.String $r10;
+        android.widget.Toast $r11;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$2;
+
+        $r1 := @parameter0: android.widget.AdapterView;
+
+        $r2 := @parameter1: android.view.View;
+
+        $i0 := @parameter2: int;
+
+        $l1 := @parameter3: long;
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$2: org.connectbot.PortForwardListActivity this$0>;
+
+        $r4 = virtualinvoke $r3.<org.connectbot.PortForwardListActivity: android.widget.ListView getListView()>();
+
+        $r5 = virtualinvoke $r4.<android.widget.ListView: java.lang.Object getItemAtPosition(int)>($i0);
+
+        $r6 = (org.connectbot.bean.PortForwardBean) $r5;
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$2: org.connectbot.PortForwardListActivity this$0>;
+
+        $r7 = $r3.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        if $r7 == null goto label3;
+
+        $z0 = virtualinvoke $r6.<org.connectbot.bean.PortForwardBean: boolean isEnabled()>();
+
+        if $z0 == 0 goto label2;
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$2: org.connectbot.PortForwardListActivity this$0>;
+
+        $r7 = $r3.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        virtualinvoke $r7.<org.connectbot.service.TerminalBridge: boolean disablePortForward(org.connectbot.bean.PortForwardBean)>($r6);
+
+     label1:
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$2: org.connectbot.PortForwardListActivity this$0>;
+
+        $r8 = $r3.<org.connectbot.PortForwardListActivity: android.os.Handler updateHandler>;
+
+        virtualinvoke $r8.<android.os.Handler: boolean sendEmptyMessage(int)>(-1);
+
+        return;
+
+     label2:
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$2: org.connectbot.PortForwardListActivity this$0>;
+
+        $r7 = $r3.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        $z0 = virtualinvoke $r7.<org.connectbot.service.TerminalBridge: boolean enablePortForward(org.connectbot.bean.PortForwardBean)>($r6);
+
+        if $z0 != 0 goto label1;
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$2: org.connectbot.PortForwardListActivity this$0>;
+
+        $r9 = $r0.<org.connectbot.PortForwardListActivity$2: org.connectbot.PortForwardListActivity this$0>;
+
+        $r10 = virtualinvoke $r9.<org.connectbot.PortForwardListActivity: java.lang.String getString(int)>(2131165327);
+
+        $r11 = staticinvoke <android.widget.Toast: android.widget.Toast makeText(android.content.Context,java.lang.CharSequence,int)>($r3, $r10, 1);
+
+        virtualinvoke $r11.<android.widget.Toast: void show()>();
+
+        goto label1;
+
+     label3:
+        return;
+    }
+}

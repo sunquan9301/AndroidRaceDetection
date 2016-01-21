@@ -1,0 +1,37 @@
+class org.connectbot.ConsoleActivity$6 extends android.support.v4.view.ViewPager$SimpleOnPageChangeListener
+{
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$6 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$6;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$6: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<android.support.v4.view.ViewPager$SimpleOnPageChangeListener: void <init>()>();
+
+        return;
+    }
+
+    public void onPageSelected(int)
+    {
+        org.connectbot.ConsoleActivity$6 $r0;
+        int $i0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$6;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$6: org.connectbot.ConsoleActivity this$0>;
+
+        staticinvoke <org.connectbot.ConsoleActivity: void access$900(org.connectbot.ConsoleActivity)>($r1);
+
+        return;
+    }
+}

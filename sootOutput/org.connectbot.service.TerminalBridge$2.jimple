@@ -1,0 +1,194 @@
+class org.connectbot.service.TerminalBridge$2 extends de.mud.terminal.vt320
+{
+    final org.connectbot.service.TerminalBridge this$0;
+    final org.connectbot.bean.HostBean val$host;
+    final org.connectbot.service.TerminalManager val$manager;
+
+    void <init>(org.connectbot.service.TerminalBridge, org.connectbot.service.TerminalManager, org.connectbot.bean.HostBean)
+    {
+        org.connectbot.service.TerminalBridge$2 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+        org.connectbot.service.TerminalManager $r2;
+        org.connectbot.bean.HostBean $r3;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$2;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r2 := @parameter1: org.connectbot.service.TerminalManager;
+
+        $r3 := @parameter2: org.connectbot.bean.HostBean;
+
+        $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalBridge this$0> = $r1;
+
+        $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalManager val$manager> = $r2;
+
+        $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.bean.HostBean val$host> = $r3;
+
+        specialinvoke $r0.<de.mud.terminal.vt320: void <init>()>();
+
+        return;
+    }
+
+    public void beep()
+    {
+        org.connectbot.service.TerminalBridge$2 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+        org.connectbot.bean.HostBean $r2;
+        org.connectbot.TerminalView $r3;
+        boolean $z0;
+        org.connectbot.service.TerminalManager $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$2;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalBridge this$0>;
+
+        $r3 = staticinvoke <org.connectbot.service.TerminalBridge: org.connectbot.TerminalView access$000(org.connectbot.service.TerminalBridge)>($r1);
+
+        $z0 = virtualinvoke $r3.<org.connectbot.TerminalView: boolean isShown()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalManager val$manager>;
+
+        virtualinvoke $r4.<org.connectbot.service.TerminalManager: void playBeep()>();
+
+        return;
+
+     label1:
+        $r4 = $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalManager val$manager>;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.bean.HostBean val$host>;
+
+        virtualinvoke $r4.<org.connectbot.service.TerminalManager: void sendActivityNotification(org.connectbot.bean.HostBean)>($r2);
+
+        return;
+    }
+
+    public void debug(java.lang.String)
+    {
+        org.connectbot.service.TerminalBridge$2 $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$2;
+
+        $r1 := @parameter0: java.lang.String;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.TerminalBridge", $r1);
+
+        return;
+    }
+
+    public void sendTelnetCommand(byte)
+    {
+        org.connectbot.service.TerminalBridge$2 $r0;
+        byte $b0;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$2;
+
+        $b0 := @parameter0: byte;
+
+        return;
+    }
+
+    public void setWindowSize(int, int)
+    {
+        org.connectbot.service.TerminalBridge$2 $r0;
+        int $i0, $i1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$2;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        return;
+    }
+
+    public void write(int)
+    {
+        org.connectbot.service.TerminalBridge$2 $r0;
+        int $i0;
+        java.io.IOException $r1;
+        org.connectbot.service.TerminalBridge $r2;
+        org.connectbot.transport.AbsTransport $r3;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$2;
+
+        $i0 := @parameter0: int;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalBridge this$0>;
+
+        $r3 = $r2.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        if $r3 == null goto label4;
+
+        $r2 = $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalBridge this$0>;
+
+        $r3 = $r2.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+     label1:
+        virtualinvoke $r3.<org.connectbot.transport.AbsTransport: void write(int)>($i0);
+
+     label2:
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.TerminalBridge", "Problem writing outgoing data in vt320() thread", $r1);
+
+        return;
+
+     label4:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public void write(byte[])
+    {
+        org.connectbot.service.TerminalBridge$2 $r0;
+        byte[] $r1;
+        java.io.IOException $r2;
+        org.connectbot.service.TerminalBridge $r3;
+        org.connectbot.transport.AbsTransport $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$2;
+
+        $r1 := @parameter0: byte[];
+
+        if $r1 == null goto label4;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalBridge this$0>;
+
+        $r4 = $r3.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        if $r4 == null goto label5;
+
+        $r3 = $r0.<org.connectbot.service.TerminalBridge$2: org.connectbot.service.TerminalBridge this$0>;
+
+        $r4 = $r3.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+     label1:
+        virtualinvoke $r4.<org.connectbot.transport.AbsTransport: void write(byte[])>($r1);
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.TerminalBridge", "Problem writing outgoing data in vt320() thread", $r2);
+
+        return;
+
+     label4:
+        return;
+
+     label5:
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+}

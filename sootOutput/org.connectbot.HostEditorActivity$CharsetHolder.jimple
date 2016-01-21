@@ -1,0 +1,192 @@
+public class org.connectbot.HostEditorActivity$CharsetHolder extends java.lang.Object
+{
+    private static java.lang.CharSequence[] charsetIds;
+    private static java.lang.CharSequence[] charsetNames;
+    private static boolean initialized;
+
+    static void <clinit>()
+    {
+        <org.connectbot.HostEditorActivity$CharsetHolder: boolean initialized> = 0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.connectbot.HostEditorActivity$CharsetHolder $r0;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CharsetHolder;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.CharSequence[] getCharsetIds()
+    {
+        java.lang.CharSequence[] $r0;
+
+        $r0 = <org.connectbot.HostEditorActivity$CharsetHolder: java.lang.CharSequence[] charsetIds>;
+
+        if $r0 != null goto label1;
+
+        staticinvoke <org.connectbot.HostEditorActivity$CharsetHolder: void initialize()>();
+
+     label1:
+        $r0 = <org.connectbot.HostEditorActivity$CharsetHolder: java.lang.CharSequence[] charsetIds>;
+
+        return $r0;
+    }
+
+    public static java.lang.CharSequence[] getCharsetNames()
+    {
+        java.lang.CharSequence[] $r0;
+
+        $r0 = <org.connectbot.HostEditorActivity$CharsetHolder: java.lang.CharSequence[] charsetNames>;
+
+        if $r0 != null goto label1;
+
+        staticinvoke <org.connectbot.HostEditorActivity$CharsetHolder: void initialize()>();
+
+     label1:
+        $r0 = <org.connectbot.HostEditorActivity$CharsetHolder: java.lang.CharSequence[] charsetNames>;
+
+        return $r0;
+    }
+
+    private static void initialize()
+    {
+        java.util.LinkedList $r0, $r1;
+        boolean $z0;
+        java.util.SortedMap $r2;
+        java.util.Set $r3;
+        java.util.Iterator $r4;
+        java.lang.Object $r5;
+        java.util.Map$Entry $r6;
+        java.nio.charset.Charset $r7;
+        java.lang.String $r8;
+        java.lang.Throwable $r9;
+        int $i0;
+        java.lang.CharSequence[] $r10;
+        java.lang.Object[] $r11;
+
+        entermonitor class "org/connectbot/HostEditorActivity$CharsetHolder";
+
+     label01:
+        $z0 = <org.connectbot.HostEditorActivity$CharsetHolder: boolean initialized>;
+
+     label02:
+        if $z0 == 0 goto label04;
+
+     label03:
+        exitmonitor class "org/connectbot/HostEditorActivity$CharsetHolder";
+
+        return;
+
+     label04:
+        $r0 = new java.util.LinkedList;
+
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+
+        $r1 = new java.util.LinkedList;
+
+        specialinvoke $r1.<java.util.LinkedList: void <init>()>();
+
+        $r2 = staticinvoke <java.nio.charset.Charset: java.util.SortedMap availableCharsets()>();
+
+        $r3 = interfaceinvoke $r2.<java.util.SortedMap: java.util.Set entrySet()>();
+
+        $r4 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label05:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label09;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.util.Map$Entry) $r5;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r7 = (java.nio.charset.Charset) $r5;
+
+        $z0 = virtualinvoke $r7.<java.nio.charset.Charset: boolean canEncode()>();
+
+        if $z0 == 0 goto label05;
+
+        $z0 = virtualinvoke $r7.<java.nio.charset.Charset: boolean isRegistered()>();
+
+        if $z0 == 0 goto label05;
+
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r8 = (java.lang.String) $r5;
+
+        $z0 = virtualinvoke $r8.<java.lang.String: boolean startsWith(java.lang.String)>("cp");
+
+        if $z0 == 0 goto label06;
+
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>("CP437");
+
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>("CP437");
+
+     label06:
+        $r5 = interfaceinvoke $r6.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        interfaceinvoke $r0.<java.util.List: boolean add(java.lang.Object)>($r5);
+
+        $r8 = virtualinvoke $r7.<java.nio.charset.Charset: java.lang.String displayName()>();
+
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r8);
+
+     label07:
+        goto label05;
+
+     label08:
+        $r9 := @caughtexception;
+
+        exitmonitor class "org/connectbot/HostEditorActivity$CharsetHolder";
+
+        throw $r9;
+
+     label09:
+        $i0 = interfaceinvoke $r0.<java.util.List: int size()>();
+
+        $r10 = newarray (java.lang.CharSequence)[$i0];
+
+        $r11 = interfaceinvoke $r0.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r10);
+
+        $r10 = (java.lang.CharSequence[]) $r11;
+
+        <org.connectbot.HostEditorActivity$CharsetHolder: java.lang.CharSequence[] charsetIds> = $r10;
+
+        $i0 = interfaceinvoke $r1.<java.util.List: int size()>();
+
+        $r10 = newarray (java.lang.CharSequence)[$i0];
+
+        $r11 = interfaceinvoke $r1.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r10);
+
+        $r10 = (java.lang.CharSequence[]) $r11;
+
+        <org.connectbot.HostEditorActivity$CharsetHolder: java.lang.CharSequence[] charsetNames> = $r10;
+
+        <org.connectbot.HostEditorActivity$CharsetHolder: boolean initialized> = 1;
+
+     label10:
+        goto label03;
+
+        catch java.lang.Throwable from label01 to label02 with label08;
+        catch java.lang.Throwable from label04 to label07 with label08;
+        catch java.lang.Throwable from label09 to label10 with label08;
+    }
+
+    public static boolean isInitialized()
+    {
+        boolean $z0;
+
+        $z0 = <org.connectbot.HostEditorActivity$CharsetHolder: boolean initialized>;
+
+        return $z0;
+    }
+}

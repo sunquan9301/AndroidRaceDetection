@@ -1,0 +1,23 @@
+class com.trilead.ssh2.transport.TransportManager$HandlerEntry extends java.lang.Object
+{
+    int high;
+    int low;
+    com.trilead.ssh2.transport.MessageHandler mh;
+    final com.trilead.ssh2.transport.TransportManager this$0;
+
+    void <init>(com.trilead.ssh2.transport.TransportManager)
+    {
+        com.trilead.ssh2.transport.TransportManager$HandlerEntry $r0;
+        com.trilead.ssh2.transport.TransportManager $r1;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager$HandlerEntry;
+
+        $r1 := @parameter0: com.trilead.ssh2.transport.TransportManager;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: com.trilead.ssh2.transport.TransportManager this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

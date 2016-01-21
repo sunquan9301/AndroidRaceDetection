@@ -1,0 +1,1051 @@
+public class org.connectbot.util.Colors extends java.lang.Object
+{
+    public static final java.lang.Integer[] defaults;
+
+    static void <clinit>()
+    {
+        java.lang.Integer $r0;
+        java.lang.Integer[] $r1;
+
+        $r1 = newarray (java.lang.Integer)[256];
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16777216);
+
+        $r1[0] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-3407872);
+
+        $r1[1] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16724992);
+
+        $r1[2] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-3355648);
+
+        $r1[3] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16777012);
+
+        $r1[4] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-3407668);
+
+        $r1[5] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16724788);
+
+        $r1[6] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-3355444);
+
+        $r1[7] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-12303292);
+
+        $r1[8] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-48060);
+
+        $r1[9] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-12255420);
+
+        $r1[10] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-188);
+
+        $r1[11] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-12303105);
+
+        $r1[12] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-47873);
+
+        $r1[13] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-12255233);
+
+        $r1[14] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-1);
+
+        $r1[15] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16777216);
+
+        $r1[16] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16777121);
+
+        $r1[17] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16777081);
+
+        $r1[18] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16777041);
+
+        $r1[19] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16777001);
+
+        $r1[20] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16776961);
+
+        $r1[21] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16752896);
+
+        $r1[22] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16752801);
+
+        $r1[23] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16752761);
+
+        $r1[24] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16752721);
+
+        $r1[25] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16752681);
+
+        $r1[26] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16752641);
+
+        $r1[27] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16742656);
+
+        $r1[28] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16742561);
+
+        $r1[29] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16742521);
+
+        $r1[30] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16742481);
+
+        $r1[31] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16742441);
+
+        $r1[32] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16742401);
+
+        $r1[33] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16732416);
+
+        $r1[34] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16732321);
+
+        $r1[35] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16732281);
+
+        $r1[36] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16732241);
+
+        $r1[37] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16732201);
+
+        $r1[38] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16732161);
+
+        $r1[39] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16722176);
+
+        $r1[40] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16722081);
+
+        $r1[41] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16722041);
+
+        $r1[42] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16722001);
+
+        $r1[43] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16721961);
+
+        $r1[44] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16721921);
+
+        $r1[45] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16711936);
+
+        $r1[46] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16711841);
+
+        $r1[47] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16711801);
+
+        $r1[48] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16711761);
+
+        $r1[49] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16711721);
+
+        $r1[50] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16711681);
+
+        $r1[51] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10551296);
+
+        $r1[52] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10551201);
+
+        $r1[53] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10551161);
+
+        $r1[54] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10551121);
+
+        $r1[55] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10551081);
+
+        $r1[56] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10551041);
+
+        $r1[57] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10526976);
+
+        $r1[58] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10526881);
+
+        $r1[59] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10526841);
+
+        $r1[60] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10526801);
+
+        $r1[61] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10526761);
+
+        $r1[62] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10526721);
+
+        $r1[63] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10516736);
+
+        $r1[64] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10516641);
+
+        $r1[65] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10516601);
+
+        $r1[66] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10516561);
+
+        $r1[67] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10516521);
+
+        $r1[68] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10516481);
+
+        $r1[69] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10506496);
+
+        $r1[70] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10506401);
+
+        $r1[71] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10506361);
+
+        $r1[72] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10506321);
+
+        $r1[73] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10506281);
+
+        $r1[74] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10506241);
+
+        $r1[75] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10496256);
+
+        $r1[76] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10496161);
+
+        $r1[77] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10496121);
+
+        $r1[78] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10496081);
+
+        $r1[79] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10496041);
+
+        $r1[80] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10496001);
+
+        $r1[81] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10486016);
+
+        $r1[82] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10485921);
+
+        $r1[83] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10485881);
+
+        $r1[84] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10485841);
+
+        $r1[85] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10485801);
+
+        $r1[86] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10485761);
+
+        $r1[87] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7929856);
+
+        $r1[88] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7929761);
+
+        $r1[89] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7929721);
+
+        $r1[90] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7929681);
+
+        $r1[91] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7929641);
+
+        $r1[92] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7929601);
+
+        $r1[93] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7905536);
+
+        $r1[94] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7905441);
+
+        $r1[95] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7905401);
+
+        $r1[96] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7905361);
+
+        $r1[97] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7905321);
+
+        $r1[98] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7905281);
+
+        $r1[99] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7895296);
+
+        $r1[100] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7895201);
+
+        $r1[101] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7895161);
+
+        $r1[102] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7895121);
+
+        $r1[103] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7895081);
+
+        $r1[104] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7895041);
+
+        $r1[105] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7885056);
+
+        $r1[106] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7884961);
+
+        $r1[107] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7884921);
+
+        $r1[108] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7884881);
+
+        $r1[109] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7884841);
+
+        $r1[110] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7884801);
+
+        $r1[111] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7874816);
+
+        $r1[112] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7874721);
+
+        $r1[113] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7874681);
+
+        $r1[114] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7874641);
+
+        $r1[115] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7874601);
+
+        $r1[116] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7874561);
+
+        $r1[117] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7864576);
+
+        $r1[118] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7864481);
+
+        $r1[119] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7864441);
+
+        $r1[120] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7864401);
+
+        $r1[121] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7864361);
+
+        $r1[122] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7864321);
+
+        $r1[123] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5308416);
+
+        $r1[124] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5308321);
+
+        $r1[125] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5308281);
+
+        $r1[126] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5308241);
+
+        $r1[127] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5308201);
+
+        $r1[128] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5308161);
+
+        $r1[129] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5284096);
+
+        $r1[130] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5284001);
+
+        $r1[131] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5283961);
+
+        $r1[132] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5283921);
+
+        $r1[133] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5283881);
+
+        $r1[134] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5283841);
+
+        $r1[135] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5273856);
+
+        $r1[136] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5273761);
+
+        $r1[137] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5273721);
+
+        $r1[138] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5273681);
+
+        $r1[139] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5273641);
+
+        $r1[140] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5273601);
+
+        $r1[141] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5263616);
+
+        $r1[142] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5263521);
+
+        $r1[143] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5263481);
+
+        $r1[144] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5263441);
+
+        $r1[145] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5263401);
+
+        $r1[146] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5263361);
+
+        $r1[147] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5253376);
+
+        $r1[148] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5253281);
+
+        $r1[149] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5253241);
+
+        $r1[150] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5253201);
+
+        $r1[151] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5253161);
+
+        $r1[152] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5253121);
+
+        $r1[153] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5243136);
+
+        $r1[154] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5243041);
+
+        $r1[155] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5243001);
+
+        $r1[156] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5242961);
+
+        $r1[157] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5242921);
+
+        $r1[158] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5242881);
+
+        $r1[159] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2686976);
+
+        $r1[160] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2686881);
+
+        $r1[161] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2686841);
+
+        $r1[162] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2686801);
+
+        $r1[163] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2686761);
+
+        $r1[164] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2686721);
+
+        $r1[165] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2662656);
+
+        $r1[166] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2662561);
+
+        $r1[167] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2662521);
+
+        $r1[168] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2662481);
+
+        $r1[169] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2662441);
+
+        $r1[170] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2662401);
+
+        $r1[171] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2652416);
+
+        $r1[172] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2652321);
+
+        $r1[173] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2652281);
+
+        $r1[174] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2652241);
+
+        $r1[175] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2652201);
+
+        $r1[176] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2652161);
+
+        $r1[177] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2642176);
+
+        $r1[178] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2642081);
+
+        $r1[179] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2642041);
+
+        $r1[180] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2642001);
+
+        $r1[181] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2641961);
+
+        $r1[182] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2641921);
+
+        $r1[183] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2631936);
+
+        $r1[184] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2631841);
+
+        $r1[185] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2631801);
+
+        $r1[186] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2631761);
+
+        $r1[187] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2631721);
+
+        $r1[188] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2631681);
+
+        $r1[189] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2621696);
+
+        $r1[190] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2621601);
+
+        $r1[191] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2621561);
+
+        $r1[192] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2621521);
+
+        $r1[193] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2621481);
+
+        $r1[194] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2621441);
+
+        $r1[195] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-65536);
+
+        $r1[196] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-65441);
+
+        $r1[197] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-65401);
+
+        $r1[198] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-65361);
+
+        $r1[199] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-65321);
+
+        $r1[200] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-65281);
+
+        $r1[201] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-41216);
+
+        $r1[202] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-41121);
+
+        $r1[203] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-41081);
+
+        $r1[204] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-41041);
+
+        $r1[205] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-41001);
+
+        $r1[206] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-40961);
+
+        $r1[207] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-30976);
+
+        $r1[208] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-30881);
+
+        $r1[209] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-30841);
+
+        $r1[210] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-30801);
+
+        $r1[211] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-30761);
+
+        $r1[212] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-30721);
+
+        $r1[213] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-20736);
+
+        $r1[214] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-20641);
+
+        $r1[215] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-20601);
+
+        $r1[216] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-20561);
+
+        $r1[217] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-20521);
+
+        $r1[218] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-20481);
+
+        $r1[219] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10496);
+
+        $r1[220] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10401);
+
+        $r1[221] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10361);
+
+        $r1[222] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10321);
+
+        $r1[223] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10281);
+
+        $r1[224] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10241);
+
+        $r1[225] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-256);
+
+        $r1[226] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-161);
+
+        $r1[227] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-121);
+
+        $r1[228] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-81);
+
+        $r1[229] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-41);
+
+        $r1[230] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-1);
+
+        $r1[231] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-16250872);
+
+        $r1[232] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-15592942);
+
+        $r1[233] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-14935012);
+
+        $r1[234] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-14277082);
+
+        $r1[235] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-13619152);
+
+        $r1[236] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-12961222);
+
+        $r1[237] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-12303292);
+
+        $r1[238] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-11645362);
+
+        $r1[239] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10987432);
+
+        $r1[240] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-10329502);
+
+        $r1[241] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-9671572);
+
+        $r1[242] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-9013642);
+
+        $r1[243] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-8355712);
+
+        $r1[244] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7697782);
+
+        $r1[245] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-7039852);
+
+        $r1[246] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-6381922);
+
+        $r1[247] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5723992);
+
+        $r1[248] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-5066062);
+
+        $r1[249] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-4408132);
+
+        $r1[250] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-3750202);
+
+        $r1[251] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-3092272);
+
+        $r1[252] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-2434342);
+
+        $r1[253] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-1776412);
+
+        $r1[254] = $r0;
+
+        $r0 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(-1118482);
+
+        $r1[255] = $r0;
+
+        <org.connectbot.util.Colors: java.lang.Integer[] defaults> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.connectbot.util.Colors $r0;
+
+        $r0 := @this: org.connectbot.util.Colors;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

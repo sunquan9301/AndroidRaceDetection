@@ -1,0 +1,2216 @@
+final class com.jcraft.jzlib.InfBlocks extends java.lang.Object
+{
+    static final int[] border;
+    private static final int[] inflate_mask;
+    int[] bb;
+    int[] bd;
+    int bitb;
+    int bitk;
+    int[] bl;
+    int[] blens;
+    private boolean check;
+    private final com.jcraft.jzlib.InfCodes codes;
+    int end;
+    int[] hufts;
+    int index;
+    private final com.jcraft.jzlib.InfTree inftree;
+    int last;
+    int left;
+    int mode;
+    int read;
+    int table;
+    int[] tb;
+    int[][] td;
+    int[] tdi;
+    int[][] tl;
+    int[] tli;
+    byte[] window;
+    int write;
+    private final com.jcraft.jzlib.ZStream z;
+
+    static void <clinit>()
+    {
+        int[] $r0;
+
+        $r0 = newarray (int)[17];
+
+        $r0[0] = 0;
+
+        $r0[1] = 1;
+
+        $r0[2] = 3;
+
+        $r0[3] = 7;
+
+        $r0[4] = 15;
+
+        $r0[5] = 31;
+
+        $r0[6] = 63;
+
+        $r0[7] = 127;
+
+        $r0[8] = 255;
+
+        $r0[9] = 511;
+
+        $r0[10] = 1023;
+
+        $r0[11] = 2047;
+
+        $r0[12] = 4095;
+
+        $r0[13] = 8191;
+
+        $r0[14] = 16383;
+
+        $r0[15] = 32767;
+
+        $r0[16] = 65535;
+
+        <com.jcraft.jzlib.InfBlocks: int[] inflate_mask> = $r0;
+
+        $r0 = newarray (int)[19];
+
+        $r0[0] = 16;
+
+        $r0[1] = 17;
+
+        $r0[2] = 18;
+
+        $r0[3] = 0;
+
+        $r0[4] = 8;
+
+        $r0[5] = 7;
+
+        $r0[6] = 9;
+
+        $r0[7] = 6;
+
+        $r0[8] = 10;
+
+        $r0[9] = 5;
+
+        $r0[10] = 11;
+
+        $r0[11] = 4;
+
+        $r0[12] = 12;
+
+        $r0[13] = 3;
+
+        $r0[14] = 13;
+
+        $r0[15] = 2;
+
+        $r0[16] = 14;
+
+        $r0[17] = 1;
+
+        $r0[18] = 15;
+
+        <com.jcraft.jzlib.InfBlocks: int[] border> = $r0;
+
+        return;
+    }
+
+    void <init>(com.jcraft.jzlib.ZStream, int)
+    {
+        com.jcraft.jzlib.InfBlocks $r0;
+        com.jcraft.jzlib.ZStream $r1, $r3;
+        int $i0;
+        boolean $z0;
+        int[] $r2;
+        int[][] $r4;
+        com.jcraft.jzlib.InfTree $r5;
+        com.jcraft.jzlib.InfCodes $r6;
+        byte[] $r7;
+        com.jcraft.jzlib.Inflate $r8;
+
+        $r0 := @this: com.jcraft.jzlib.InfBlocks;
+
+        $r1 := @parameter0: com.jcraft.jzlib.ZStream;
+
+        $i0 := @parameter1: int;
+
+        $z0 = 1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r2 = newarray (int)[1];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] bb> = $r2;
+
+        $r2 = newarray (int)[1];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] tb> = $r2;
+
+        $r2 = newarray (int)[1];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] bl> = $r2;
+
+        $r2 = newarray (int)[1];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] bd> = $r2;
+
+        $r4 = newarray (int[])[1];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[][] tl> = $r4;
+
+        $r4 = newarray (int[])[1];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[][] td> = $r4;
+
+        $r2 = newarray (int)[1];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] tli> = $r2;
+
+        $r2 = newarray (int)[1];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] tdi> = $r2;
+
+        $r5 = new com.jcraft.jzlib.InfTree;
+
+        specialinvoke $r5.<com.jcraft.jzlib.InfTree: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfTree inftree> = $r5;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z> = $r1;
+
+        $r6 = new com.jcraft.jzlib.InfCodes;
+
+        $r3 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        specialinvoke $r6.<com.jcraft.jzlib.InfCodes: void <init>(com.jcraft.jzlib.ZStream,com.jcraft.jzlib.InfBlocks)>($r3, $r0);
+
+        $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfCodes codes> = $r6;
+
+        $r2 = newarray (int)[4320];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] hufts> = $r2;
+
+        $r7 = newarray (byte)[$i0];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: byte[] window> = $r7;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int end> = $i0;
+
+        $r8 = $r1.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Inflate istate>;
+
+        $i0 = $r8.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        if $i0 != 0 goto label1;
+
+        $z0 = 0;
+
+     label1:
+        $r0.<com.jcraft.jzlib.InfBlocks: boolean check> = $z0;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 0;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: void reset()>();
+
+        return;
+    }
+
+    void free()
+    {
+        com.jcraft.jzlib.InfBlocks $r0;
+
+        $r0 := @this: com.jcraft.jzlib.InfBlocks;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: void reset()>();
+
+        $r0.<com.jcraft.jzlib.InfBlocks: byte[] window> = null;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] hufts> = null;
+
+        return;
+    }
+
+    int inflate_flush(int)
+    {
+        com.jcraft.jzlib.InfBlocks $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        com.jcraft.jzlib.ZStream $r1;
+        long $l5, $l6;
+        boolean $z0;
+        com.jcraft.jzlib.Checksum $r2;
+        byte[] $r3, $r4;
+
+        $r0 := @this: com.jcraft.jzlib.InfBlocks;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i2 = $r1.<com.jcraft.jzlib.ZStream: int next_out_index>;
+
+        $i3 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+        if $i3 > $i4 goto label10;
+
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+     label01:
+        $i1 = $i4 - $i3;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i4 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i1 <= $i4 goto label02;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i1 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+     label02:
+        if $i1 == 0 goto label03;
+
+        if $i0 != -5 goto label03;
+
+        $i0 = 0;
+
+     label03:
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i4 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        $i4 = $i4 - $i1;
+
+        $r1.<com.jcraft.jzlib.ZStream: int avail_out> = $i4;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l6 = $r1.<com.jcraft.jzlib.ZStream: long total_out>;
+
+        $l5 = (long) $i1;
+
+        $l6 = $l6 + $l5;
+
+        $r1.<com.jcraft.jzlib.ZStream: long total_out> = $l6;
+
+        $z0 = $r0.<com.jcraft.jzlib.InfBlocks: boolean check>;
+
+        if $z0 == 0 goto label04;
+
+        if $i1 <= 0 goto label04;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r2 = $r1.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $r3 = $r0.<com.jcraft.jzlib.InfBlocks: byte[] window>;
+
+        interfaceinvoke $r2.<com.jcraft.jzlib.Checksum: void update(byte[],int,int)>($r3, $i3, $i1);
+
+     label04:
+        $r3 = $r0.<com.jcraft.jzlib.InfBlocks: byte[] window>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = $r1.<com.jcraft.jzlib.ZStream: byte[] next_out>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i3, $r4, $i2, $i1);
+
+        $i4 = $i2 + $i1;
+
+        $i3 = $i3 + $i1;
+
+        $i2 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        if $i3 != $i2 goto label09;
+
+        $i3 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+        $i2 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        if $i3 != $i2 goto label05;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = 0;
+
+     label05:
+        $i3 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+        $i3 = $i3 - 0;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i2 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        if $i3 <= $i2 goto label06;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+     label06:
+        if $i3 == 0 goto label07;
+
+        if $i0 != -5 goto label07;
+
+        $i0 = 0;
+
+     label07:
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i2 = $r1.<com.jcraft.jzlib.ZStream: int avail_out>;
+
+        $i2 = $i2 - $i3;
+
+        $r1.<com.jcraft.jzlib.ZStream: int avail_out> = $i2;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l6 = $r1.<com.jcraft.jzlib.ZStream: long total_out>;
+
+        $l5 = (long) $i3;
+
+        $l6 = $l6 + $l5;
+
+        $r1.<com.jcraft.jzlib.ZStream: long total_out> = $l6;
+
+        $z0 = $r0.<com.jcraft.jzlib.InfBlocks: boolean check>;
+
+        if $z0 == 0 goto label08;
+
+        if $i3 <= 0 goto label08;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r2 = $r1.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: byte[] window>;
+
+        interfaceinvoke $r2.<com.jcraft.jzlib.Checksum: void update(byte[],int,int)>($r4, 0, $i3);
+
+     label08:
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: byte[] window>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r1.<com.jcraft.jzlib.ZStream: byte[] next_out>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r4, 0, $r3, $i4, $i3);
+
+        $i4 = $i4 + $i3;
+
+        $i3 = 0 + $i3;
+
+     label09:
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r1.<com.jcraft.jzlib.ZStream: int next_out_index> = $i4;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int read> = $i3;
+
+        return $i0;
+
+     label10:
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        goto label01;
+    }
+
+    int proc(int)
+    {
+        com.jcraft.jzlib.InfBlocks $r0;
+        int $i0, $i3, $i4, $i6, $i7, $i8, $i9, $i10, $i12, $i13, $i15, $i16, $i17;
+        com.jcraft.jzlib.ZStream $r1, $r5;
+        long $l1, $l2;
+        int[][] $r2, $r7;
+        int[] $r3, $r4, $r11, $r12, $r13, $r14;
+        byte $b5, $b14;
+        byte[] $r6, $r9;
+        short $s11;
+        com.jcraft.jzlib.InfCodes $r8;
+        com.jcraft.jzlib.InfTree $r10;
+
+        $r0 := @this: com.jcraft.jzlib.InfBlocks;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i8 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i7 = $r1.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i3 = $r0.<com.jcraft.jzlib.InfBlocks: int bitb>;
+
+        $i6 = $r0.<com.jcraft.jzlib.InfBlocks: int bitk>;
+
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+        $i9 = $i10;
+
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        if $i10 >= $i4 goto label03;
+
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        $i10 = $i4 - $i10;
+
+        $i4 = $i10 + -1;
+
+     label01:
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int mode>;
+
+        lookupswitch($i10)
+        {
+            case 0: goto label82;
+            case 1: goto label81;
+            case 2: goto label19;
+            case 3: goto label80;
+            case 4: goto label39;
+            case 5: goto label49;
+            case 6: goto label68;
+            case 7: goto label73;
+            case 8: goto label77;
+            case 9: goto label78;
+            default: goto label02;
+        };
+
+     label02:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r1.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l1 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i10 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i10 = $i8 - $i10;
+
+        $l2 = (long) $i10;
+
+        $l2 = $l1 + $l2;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i10 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>(-2);
+
+        return $i10;
+
+     label03:
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        $i4 = $i4 - $i10;
+
+        goto label01;
+
+     label04:
+        if $i6 >= 3 goto label06;
+
+        if $i7 == 0 goto label05;
+
+        $i0 = 0;
+
+        $i7 = $i7 + -1;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r6 = $r5.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $i10 = $i8 + 1;
+
+        $b5 = $r6[$i8];
+
+        $s11 = $b5 & 255;
+
+        $i8 = $s11 << $i6;
+
+        $i3 = $i3 | $i8;
+
+        $i6 = $i6 + 8;
+
+        $i8 = $i10;
+
+        goto label04;
+
+     label05:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i10 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i10 = $i8 - $i10;
+
+        $l1 = (long) $i10;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i10 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        return $i10;
+
+     label06:
+        $i10 = $i3 & 7;
+
+        $i12 = $i10 & 1;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int last> = $i12;
+
+        $i12 = $i10 >>> 1;
+
+        lookupswitch($i12)
+        {
+            case 0: goto label08;
+            case 1: goto label09;
+            case 2: goto label10;
+            case 3: goto label11;
+            default: goto label07;
+        };
+
+     label07:
+        goto label01;
+
+     label08:
+        $i12 = $i3 >>> 3;
+
+        $i10 = $i6 + -3;
+
+        $i6 = $i10 & 7;
+
+        $i3 = $i12 >>> $i6;
+
+        $i6 = $i10 - $i6;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 1;
+
+        goto label07;
+
+     label09:
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bl>;
+
+        $r3 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bd>;
+
+        $r7 = $r0.<com.jcraft.jzlib.InfBlocks: int[][] tl>;
+
+        $r2 = $r0.<com.jcraft.jzlib.InfBlocks: int[][] td>;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        staticinvoke <com.jcraft.jzlib.InfTree: int inflate_trees_fixed(int[],int[],int[][],int[][],com.jcraft.jzlib.ZStream)>($r4, $r3, $r7, $r2, $r5);
+
+        $r8 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfCodes codes>;
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bl>;
+
+        $i12 = $r4[0];
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bd>;
+
+        $i10 = $r4[0];
+
+        $r7 = $r0.<com.jcraft.jzlib.InfBlocks: int[][] tl>;
+
+        $r4 = $r7[0];
+
+        $r2 = $r0.<com.jcraft.jzlib.InfBlocks: int[][] td>;
+
+        $r3 = $r2[0];
+
+        virtualinvoke $r8.<com.jcraft.jzlib.InfCodes: void init(int,int,int[],int,int[],int)>($i12, $i10, $r4, 0, $r3, 0);
+
+        $i3 = $i3 >>> 3;
+
+        $i6 = $i6 + -3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 6;
+
+        goto label07;
+
+     label10:
+        $i3 = $i3 >>> 3;
+
+        $i6 = $i6 + -3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 3;
+
+        goto label07;
+
+     label11:
+        $i12 = $i3 >>> 3;
+
+        $i10 = $i6 + -3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 9;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "invalid block type";
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i12;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i10;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i12 = $i8 - $i12;
+
+        $l1 = (long) $i12;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>(-3);
+
+        return $i12;
+
+     label12:
+        if $i6 >= 32 goto label14;
+
+        if $i7 == 0 goto label13;
+
+        $i0 = 0;
+
+        $i7 = $i7 + -1;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r6 = $r5.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $i12 = $i10 + 1;
+
+        $b5 = $r6[$i10];
+
+        $s11 = $b5 & 255;
+
+        $i10 = $s11 << $i6;
+
+        $i3 = $i3 | $i10;
+
+        $i6 = $i6 + 8;
+
+        $i10 = $i12;
+
+        goto label12;
+
+     label13:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i12 = $i10 - $i12;
+
+        $l1 = (long) $i12;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i10;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        return $i12;
+
+     label14:
+        $i12 = $i3 ^ -1;
+
+        $i12 = $i12 >>> 16;
+
+        $i12 = $i12 & 65535;
+
+        $i8 = 65535 & $i3;
+
+        if $i12 == $i8 goto label15;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 9;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "invalid stored block lengths";
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i12 = $i10 - $i12;
+
+        $l1 = (long) $i12;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i10;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>(-3);
+
+        return $i12;
+
+     label15:
+        $i12 = 65535 & $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int left> = $i12;
+
+        $i6 = 0;
+
+        $i3 = 0;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int left>;
+
+        if $i12 == 0 goto label17;
+
+        $b5 = 2;
+
+     label16:
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = $b5;
+
+        $i8 = $i10;
+
+        goto label01;
+
+     label17:
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int last>;
+
+        if $i12 == 0 goto label18;
+
+        $b5 = 7;
+
+        goto label16;
+
+     label18:
+        $b5 = 0;
+
+        goto label16;
+
+     label19:
+        if $i7 != 0 goto label20;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i12 = $i8 - $i12;
+
+        $l1 = (long) $i12;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        return $i12;
+
+     label20:
+        if $i4 != 0 goto label27;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        if $i9 != $i12 goto label21;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        if $i12 == 0 goto label21;
+
+        $i9 = 0;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        if 0 >= $i12 goto label24;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        $i12 = $i12 - 0;
+
+        $i4 = $i12 + -1;
+
+     label21:
+        if $i4 != 0 goto label27;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+        $i9 = $i10;
+
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        if $i10 >= $i4 goto label25;
+
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        $i4 = $i4 - $i10;
+
+        $i4 = $i4 + -1;
+
+     label22:
+        $i0 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        if $i10 != $i0 goto label23;
+
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        if $i10 == 0 goto label23;
+
+        $i9 = 0;
+
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        if 0 >= $i10 goto label26;
+
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        $i10 = $i10 - 0;
+
+        $i4 = $i10 + -1;
+
+     label23:
+        if $i4 != 0 goto label27;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i10 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i10 = $i8 - $i10;
+
+        $l1 = (long) $i10;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i12);
+
+        return $i12;
+
+     label24:
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        $i4 = $i12 - 0;
+
+        goto label21;
+
+     label25:
+        $i4 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        $i4 = $i4 - $i10;
+
+        goto label22;
+
+     label26:
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        $i4 = $i10 - 0;
+
+        goto label23;
+
+     label27:
+        $i0 = 0;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int left>;
+
+        $i10 = $i12;
+
+        if $i12 <= $i7 goto label28;
+
+        $i10 = $i7;
+
+     label28:
+        if $i10 <= $i4 goto label29;
+
+        $i10 = $i4;
+
+     label29:
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r6 = $r5.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r9 = $r0.<com.jcraft.jzlib.InfBlocks: byte[] window>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r6, $i8, $r9, $i9, $i10);
+
+        $i8 = $i8 + $i10;
+
+        $i7 = $i7 - $i10;
+
+        $i9 = $i9 + $i10;
+
+        $i4 = $i4 - $i10;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int left>;
+
+        $i12 = $i12 - $i10;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int left> = $i12;
+
+        if $i12 != 0 goto label01;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int last>;
+
+        if $i12 == 0 goto label31;
+
+        $b5 = 7;
+
+     label30:
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = $b5;
+
+        goto label01;
+
+     label31:
+        $b5 = 0;
+
+        goto label30;
+
+     label32:
+        if $i6 >= 14 goto label34;
+
+        if $i7 == 0 goto label33;
+
+        $i0 = 0;
+
+        $i7 = $i7 + -1;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r9 = $r5.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $i12 = $i10 + 1;
+
+        $b5 = $r9[$i10];
+
+        $s11 = $b5 & 255;
+
+        $i10 = $s11 << $i6;
+
+        $i3 = $i3 | $i10;
+
+        $i6 = $i6 + 8;
+
+        $i10 = $i12;
+
+        goto label32;
+
+     label33:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i12 = $i10 - $i12;
+
+        $l1 = (long) $i12;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i10;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        return $i12;
+
+     label34:
+        $i12 = $i3 & 16383;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int table> = $i12;
+
+        $i8 = $i12 & 31;
+
+        if $i8 > 29 goto label35;
+
+        $i8 = $i12 >> 5;
+
+        $i8 = $i8 & 31;
+
+        if $i8 <= 29 goto label36;
+
+     label35:
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 9;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "too many length or distance symbols";
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i12 = $i10 - $i12;
+
+        $l1 = (long) $i12;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i10;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>(-3);
+
+        return $i12;
+
+     label36:
+        $i8 = $i12 & 31;
+
+        $i8 = $i8 + 258;
+
+        $i12 = $i12 >> 5;
+
+        $i12 = $i12 & 31;
+
+        $i12 = $i8 + $i12;
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        if $r4 == null goto label37;
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $i8 = lengthof $r4;
+
+        if $i8 >= $i12 goto label41;
+
+     label37:
+        $r4 = newarray (int)[$i12];
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] blens> = $r4;
+
+     label38:
+        $i3 = $i3 >>> 14;
+
+        $i6 = $i6 + -14;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int index> = 0;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 4;
+
+        $i8 = $i10;
+
+     label39:
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int index>;
+
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int table>;
+
+        $i10 = $i10 >>> 10;
+
+        $i10 = $i10 + 4;
+
+        if $i12 >= $i10 goto label45;
+
+        $i12 = $i8;
+
+     label40:
+        if $i6 >= 3 goto label44;
+
+        if $i7 == 0 goto label43;
+
+        $i0 = 0;
+
+        $i7 = $i7 + -1;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r9 = $r5.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $i10 = $i12 + 1;
+
+        $b5 = $r9[$i12];
+
+        $s11 = $b5 & 255;
+
+        $i12 = $s11 << $i6;
+
+        $i3 = $i3 | $i12;
+
+        $i6 = $i6 + 8;
+
+        $i12 = $i10;
+
+        goto label40;
+
+     label41:
+        $i4 = 0;
+
+     label42:
+        if $i4 >= $i12 goto label38;
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $r4[$i4] = 0;
+
+        $i4 = $i4 + 1;
+
+        goto label42;
+
+     label43:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i10 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i10 = $i12 - $i10;
+
+        $l1 = (long) $i10;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i12;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        return $i12;
+
+     label44:
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $r3 = <com.jcraft.jzlib.InfBlocks: int[] border>;
+
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int index>;
+
+        $i8 = $i10 + 1;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int index> = $i8;
+
+        $i10 = $r3[$i10];
+
+        $i8 = $i3 & 7;
+
+        $r4[$i10] = $i8;
+
+        $i3 = $i3 >>> 3;
+
+        $i6 = $i6 + -3;
+
+        $i8 = $i12;
+
+        goto label39;
+
+     label45:
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int index>;
+
+        if $i12 >= 19 goto label46;
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $r3 = <com.jcraft.jzlib.InfBlocks: int[] border>;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int index>;
+
+        $i10 = $i12 + 1;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int index> = $i10;
+
+        $i12 = $r3[$i12];
+
+        $r4[$i12] = 0;
+
+        goto label45;
+
+     label46:
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bb>;
+
+        $r4[0] = 7;
+
+        $r10 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfTree inftree>;
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $r3 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bb>;
+
+        $r11 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tb>;
+
+        $r12 = $r0.<com.jcraft.jzlib.InfBlocks: int[] hufts>;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = virtualinvoke $r10.<com.jcraft.jzlib.InfTree: int inflate_trees_bits(int[],int[],int[],int[],com.jcraft.jzlib.ZStream)>($r4, $r3, $r11, $r12, $r5);
+
+        if $i12 == 0 goto label48;
+
+        if $i12 != -3 goto label47;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] blens> = null;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 9;
+
+     label47:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i10 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i10 = $i8 - $i10;
+
+        $l1 = (long) $i10;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i12);
+
+        return $i12;
+
+     label48:
+        $r0.<com.jcraft.jzlib.InfBlocks: int index> = 0;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 5;
+
+     label49:
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int table>;
+
+        $i10 = $r0.<com.jcraft.jzlib.InfBlocks: int index>;
+
+        $i4 = $i12 & 31;
+
+        $i4 = $i4 + 258;
+
+        $i12 = $i12 >> 5;
+
+        $i12 = $i12 & 31;
+
+        $i12 = $i4 + $i12;
+
+        if $i10 < $i12 goto label51;
+
+        $r12 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tb>;
+
+        $r12[0] = -1;
+
+        $r12 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bl>;
+
+        $r12[0] = 9;
+
+        $r12 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bd>;
+
+        $r12[0] = 6;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int table>;
+
+        $r10 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfTree inftree>;
+
+        $i10 = $i12 & 31;
+
+        $i10 = $i10 + 257;
+
+        $i12 = $i12 >> 5;
+
+        $i12 = $i12 & 31;
+
+        $i12 = $i12 + 1;
+
+        $r12 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $r11 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bl>;
+
+        $r13 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bd>;
+
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tli>;
+
+        $r3 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tdi>;
+
+        $r4 = $r0.<com.jcraft.jzlib.InfBlocks: int[] hufts>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = virtualinvoke $r10.<com.jcraft.jzlib.InfTree: int inflate_trees_dynamic(int,int,int[],int[],int[],int[],int[],int[],com.jcraft.jzlib.ZStream)>($i10, $i12, $r12, $r11, $r13, $r14, $r3, $r4, $r1);
+
+        if $i12 == 0 goto label67;
+
+        if $i12 != -3 goto label50;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] blens> = null;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 9;
+
+     label50:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i10 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i10 = $i8 - $i10;
+
+        $l1 = (long) $i10;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i12);
+
+        return $i12;
+
+     label51:
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bb>;
+
+        $i12 = $r14[0];
+
+        $i10 = $i8;
+
+     label52:
+        if $i6 >= $i12 goto label54;
+
+        if $i7 == 0 goto label53;
+
+        $i0 = 0;
+
+        $i7 = $i7 + -1;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r9 = $r5.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $i8 = $i10 + 1;
+
+        $b5 = $r9[$i10];
+
+        $s11 = $b5 & 255;
+
+        $i10 = $s11 << $i6;
+
+        $i3 = $i3 | $i10;
+
+        $i6 = $i6 + 8;
+
+        $i10 = $i8;
+
+        goto label52;
+
+     label53:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i12 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i12 = $i10 - $i12;
+
+        $l1 = (long) $i12;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i10;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i12 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        return $i12;
+
+     label54:
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tb>;
+
+        $i8 = $r14[0];
+
+        if $i8 != -1 goto label55;
+
+     label55:
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] hufts>;
+
+        $r13 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tb>;
+
+        $i8 = $r13[0];
+
+        $r13 = <com.jcraft.jzlib.InfBlocks: int[] inflate_mask>;
+
+        $i12 = $r13[$i12];
+
+        $i12 = $i12 & $i3;
+
+        $i12 = $i8 + $i12;
+
+        $i12 = $i12 * 3;
+
+        $i12 = $i12 + 1;
+
+        $i12 = $r14[$i12];
+
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] hufts>;
+
+        $r13 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tb>;
+
+        $i8 = $r13[0];
+
+        $r13 = <com.jcraft.jzlib.InfBlocks: int[] inflate_mask>;
+
+        $i4 = $r13[$i12];
+
+        $i4 = $i4 & $i3;
+
+        $i8 = $i8 + $i4;
+
+        $i8 = $i8 * 3;
+
+        $i8 = $i8 + 2;
+
+        $i4 = $r14[$i8];
+
+        if $i4 >= 16 goto label56;
+
+        $i3 = $i3 >>> $i12;
+
+        $i6 = $i6 - $i12;
+
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $i12 = $r0.<com.jcraft.jzlib.InfBlocks: int index>;
+
+        $i8 = $i12 + 1;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int index> = $i8;
+
+        $r14[$i12] = $i4;
+
+        $i8 = $i10;
+
+        goto label49;
+
+     label56:
+        if $i4 != 18 goto label59;
+
+        $i8 = 7;
+
+     label57:
+        if $i4 != 18 goto label60;
+
+        $b5 = 11;
+
+     label58:
+        $i13 = $i12 + $i8;
+
+        if $i6 >= $i13 goto label62;
+
+        if $i7 == 0 goto label61;
+
+        $i0 = 0;
+
+        $i7 = $i7 + -1;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r9 = $r5.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $i13 = $i10 + 1;
+
+        $b14 = $r9[$i10];
+
+        $s11 = $b14 & 255;
+
+        $i10 = $s11 << $i6;
+
+        $i3 = $i3 | $i10;
+
+        $i6 = $i6 + 8;
+
+        $i10 = $i13;
+
+        goto label58;
+
+     label59:
+        $i8 = $i4 + -14;
+
+        goto label57;
+
+     label60:
+        $b5 = 3;
+
+        goto label58;
+
+     label61:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i13 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i13 = $i10 - $i13;
+
+        $l1 = (long) $i13;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i10;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i13 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        return $i13;
+
+     label62:
+        $i13 = $i3 >>> $i12;
+
+        $i12 = $i6 - $i12;
+
+        $r14 = <com.jcraft.jzlib.InfBlocks: int[] inflate_mask>;
+
+        $i6 = $r14[$i8];
+
+        $i6 = $i6 & $i13;
+
+        $i15 = $b5 + $i6;
+
+        $i3 = $i13 >>> $i8;
+
+        $i6 = $i12 - $i8;
+
+        $i13 = $r0.<com.jcraft.jzlib.InfBlocks: int index>;
+
+        $i12 = $i13;
+
+        $i8 = $r0.<com.jcraft.jzlib.InfBlocks: int table>;
+
+        $i16 = $i13 + $i15;
+
+        $i17 = $i8 & 31;
+
+        $i17 = $i17 + 258;
+
+        $i8 = $i8 >> 5;
+
+        $i8 = $i8 & 31;
+
+        $i17 = $i17 + $i8;
+
+        if $i16 > $i17 goto label63;
+
+        if $i4 != 16 goto label64;
+
+        if $i13 >= 1 goto label64;
+
+     label63:
+        $r0.<com.jcraft.jzlib.InfBlocks: int[] blens> = null;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 9;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "invalid bit length repeat";
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i17 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i17 = $i10 - $i17;
+
+        $l1 = (long) $i17;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i10;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i17 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>(-3);
+
+        return $i17;
+
+     label64:
+        if $i4 != 16 goto label66;
+
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $i17 = $i13 + -1;
+
+        $i17 = $r14[$i17];
+
+     label65:
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] blens>;
+
+        $i4 = $i12 + 1;
+
+        $r14[$i12] = $i17;
+
+        $i15 = $i15 + -1;
+
+        if $i15 != 0 goto label79;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int index> = $i4;
+
+        $i8 = $i10;
+
+        goto label49;
+
+     label66:
+        $i17 = 0;
+
+        goto label65;
+
+     label67:
+        $r8 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfCodes codes>;
+
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bl>;
+
+        $i17 = $r14[0];
+
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] bd>;
+
+        $i16 = $r14[0];
+
+        $r14 = $r0.<com.jcraft.jzlib.InfBlocks: int[] hufts>;
+
+        $r13 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tli>;
+
+        $i15 = $r13[0];
+
+        $r13 = $r0.<com.jcraft.jzlib.InfBlocks: int[] hufts>;
+
+        $r12 = $r0.<com.jcraft.jzlib.InfBlocks: int[] tdi>;
+
+        $i13 = $r12[0];
+
+        virtualinvoke $r8.<com.jcraft.jzlib.InfCodes: void init(int,int,int[],int,int[],int)>($i17, $i16, $r14, $i15, $r13, $i13);
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 6;
+
+     label68:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i17 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i17 = $i8 - $i17;
+
+        $l1 = (long) $i17;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $r8 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfCodes codes>;
+
+        $i17 = virtualinvoke $r8.<com.jcraft.jzlib.InfCodes: int proc(int)>($i0);
+
+        if $i17 == 1 goto label69;
+
+        $i17 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i17);
+
+        return $i17;
+
+     label69:
+        $i0 = 0;
+
+        $r8 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfCodes codes>;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        virtualinvoke $r8.<com.jcraft.jzlib.InfCodes: void free(com.jcraft.jzlib.ZStream)>($r5);
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i8 = $r5.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i7 = $r5.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i3 = $r0.<com.jcraft.jzlib.InfBlocks: int bitb>;
+
+        $i6 = $r0.<com.jcraft.jzlib.InfBlocks: int bitk>;
+
+        $i17 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+        $i9 = $i17;
+
+        $i16 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        if $i17 >= $i16 goto label71;
+
+        $i16 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        $i17 = $i16 - $i17;
+
+        $i4 = $i17 + -1;
+
+     label70:
+        $i17 = $r0.<com.jcraft.jzlib.InfBlocks: int last>;
+
+        if $i17 != 0 goto label72;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 0;
+
+        goto label01;
+
+     label71:
+        $i16 = $r0.<com.jcraft.jzlib.InfBlocks: int end>;
+
+        $i4 = $i16 - $i17;
+
+        goto label70;
+
+     label72:
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 7;
+
+     label73:
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i17 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i0);
+
+        $i16 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+        $i9 = $i16;
+
+        $i15 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        if $i16 >= $i15 goto label75;
+
+     label74:
+        $i15 = $r0.<com.jcraft.jzlib.InfBlocks: int read>;
+
+        $i13 = $r0.<com.jcraft.jzlib.InfBlocks: int write>;
+
+        if $i15 == $i13 goto label76;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i15 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i15 = $i8 - $i15;
+
+        $l1 = (long) $i15;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i16;
+
+        $i17 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>($i17);
+
+        return $i17;
+
+     label75:
+        goto label74;
+
+     label76:
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 8;
+
+     label77:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i17 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i17 = $i8 - $i17;
+
+        $l1 = (long) $i17;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i17 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>(1);
+
+        return $i17;
+
+     label78:
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = $i3;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int avail_in> = $i7;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $l2 = $r5.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $i17 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i17 = $i8 - $i17;
+
+        $l1 = (long) $i17;
+
+        $l2 = $l2 + $l1;
+
+        $r5.<com.jcraft.jzlib.ZStream: long total_in> = $l2;
+
+        $r5 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r5.<com.jcraft.jzlib.ZStream: int next_in_index> = $i8;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = $i9;
+
+        $i17 = virtualinvoke $r0.<com.jcraft.jzlib.InfBlocks: int inflate_flush(int)>(-3);
+
+        return $i17;
+
+     label79:
+        $i12 = $i4;
+
+        goto label65;
+
+     label80:
+        $i10 = $i8;
+
+        goto label32;
+
+     label81:
+        $i10 = $i8;
+
+        goto label12;
+
+     label82:
+        goto label04;
+    }
+
+    void reset()
+    {
+        com.jcraft.jzlib.InfBlocks $r0;
+        int $i0;
+        com.jcraft.jzlib.InfCodes $r1;
+        com.jcraft.jzlib.ZStream $r2;
+        boolean $z0;
+        com.jcraft.jzlib.Checksum $r3;
+
+        $r0 := @this: com.jcraft.jzlib.InfBlocks;
+
+        $i0 = $r0.<com.jcraft.jzlib.InfBlocks: int mode>;
+
+        if $i0 == 4 goto label1;
+
+        $i0 = $r0.<com.jcraft.jzlib.InfBlocks: int mode>;
+
+        if $i0 != 5 goto label1;
+
+     label1:
+        $i0 = $r0.<com.jcraft.jzlib.InfBlocks: int mode>;
+
+        if $i0 != 6 goto label2;
+
+        $r1 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.InfCodes codes>;
+
+        $r2 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.InfCodes: void free(com.jcraft.jzlib.ZStream)>($r2);
+
+     label2:
+        $r0.<com.jcraft.jzlib.InfBlocks: int mode> = 0;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitk> = 0;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int bitb> = 0;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int write> = 0;
+
+        $r0.<com.jcraft.jzlib.InfBlocks: int read> = 0;
+
+        $z0 = $r0.<com.jcraft.jzlib.InfBlocks: boolean check>;
+
+        if $z0 == 0 goto label3;
+
+        $r2 = $r0.<com.jcraft.jzlib.InfBlocks: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        interfaceinvoke $r3.<com.jcraft.jzlib.Checksum: void reset()>();
+
+        return;
+
+     label3:
+        return;
+    }
+}

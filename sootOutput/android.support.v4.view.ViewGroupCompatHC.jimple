@@ -1,0 +1,17 @@
+class android.support.v4.view.ViewGroupCompatHC extends java.lang.Object
+{
+
+    public static void setMotionEventSplittingEnabled(android.view.ViewGroup, boolean)
+    {
+        android.view.ViewGroup $r0;
+        boolean $z0;
+
+        $r0 := @parameter0: android.view.ViewGroup;
+
+        $z0 := @parameter1: boolean;
+
+        virtualinvoke $r0.<android.view.ViewGroup: void setMotionEventSplittingEnabled(boolean)>($z0);
+
+        return;
+    }
+}

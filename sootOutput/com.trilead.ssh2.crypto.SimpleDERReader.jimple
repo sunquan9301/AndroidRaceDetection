@@ -1,0 +1,697 @@
+public class com.trilead.ssh2.crypto.SimpleDERReader extends java.lang.Object
+{
+    byte[] buffer;
+    int count;
+    int pos;
+
+    public void <init>(byte[])
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        byte[] $r1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $r1 := @parameter0: byte[];
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: void resetInput(byte[])>($r1);
+
+        return;
+    }
+
+    public void <init>(byte[], int, int)
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        byte[] $r1;
+        int $i0, $i1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: void resetInput(byte[],int,int)>($r1, $i0, $i1);
+
+        return;
+    }
+
+    private byte readByte() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        int $i0, $i1;
+        java.io.IOException $r1;
+        byte[] $r2;
+        byte $b2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count>;
+
+        if $i0 > 0 goto label1;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("DER byte array: out of data");
+
+        throw $r1;
+
+     label1:
+        $i0 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count>;
+
+        $i0 = $i0 + -1;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count> = $i0;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] buffer>;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos>;
+
+        $i0 = $i1 + 1;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos> = $i0;
+
+        $b2 = $r2[$i1];
+
+        return $b2;
+    }
+
+    private byte[] readBytes(int) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        int $i0, $i1;
+        byte[] $r1, $r3;
+        java.io.IOException $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count>;
+
+        if $i0 <= $i1 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("DER byte array: out of data");
+
+        throw $r2;
+
+     label1:
+        $r1 = newarray (byte)[$i0];
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] buffer>;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i1, $r1, 0, $i0);
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos>;
+
+        $i1 = $i1 + $i0;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos> = $i1;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count>;
+
+        $i1 = $i1 - $i0;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count> = $i1;
+
+        return $r1;
+    }
+
+    private int readLength() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        short $s0, $s3;
+        int $i1, $i4;
+        byte $b2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $b2 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte readByte()>();
+
+        $s0 = $b2 & 255;
+
+        $s3 = $s0 & 128;
+
+        if $s3 != 0 goto label1;
+
+        return $s0;
+
+     label1:
+        $i1 = $s0 & 127;
+
+        if $i1 != 0 goto label2;
+
+        return -1;
+
+     label2:
+        $i4 = 0;
+
+     label3:
+        if $i1 <= 0 goto label4;
+
+        $i4 = $i4 << 8;
+
+        $b2 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte readByte()>();
+
+        $s3 = $b2 & 255;
+
+        $i4 = $i4 | $s3;
+
+        $i1 = $i1 + -1;
+
+        goto label3;
+
+     label4:
+        return $i4;
+    }
+
+    public int available()
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count>;
+
+        return $i0;
+    }
+
+    public com.trilead.ssh2.crypto.SimpleDERReader readConstructed() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0, $r1;
+        java.lang.StringBuilder $r2;
+        int $i0, $i1;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        byte[] $r5;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $i0 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int readLength()>();
+
+        if $i0 < 0 goto label1;
+
+        $i1 = virtualinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i0 <= $i1 goto label2;
+
+     label1:
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal len in DER object (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label2:
+        $r1 = new com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] buffer>;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos>;
+
+        specialinvoke $r1.<com.trilead.ssh2.crypto.SimpleDERReader: void <init>(byte[],int,int)>($r5, $i1, $i0);
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos>;
+
+        $i1 = $i1 + $i0;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos> = $i1;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count>;
+
+        $i1 = $i1 - $i0;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count> = $i1;
+
+        return $r1;
+    }
+
+    public int readConstructedType() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        short $s0, $s2;
+        byte $b1;
+        java.io.IOException $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $b1 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte readByte()>();
+
+        $s0 = $b1 & 255;
+
+        $s2 = $s0 & 32;
+
+        if $s2 == 32 goto label1;
+
+        $r1 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected constructed type, but was ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s0);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r1;
+
+     label1:
+        $s2 = $s0 & 31;
+
+        return $s2;
+    }
+
+    public java.math.BigInteger readInt() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        java.math.BigInteger $r1;
+        short $s0;
+        java.lang.StringBuilder $r2;
+        byte $b1;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        int $i2, $i3;
+        byte[] $r5;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $b1 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte readByte()>();
+
+        $s0 = $b1 & 255;
+
+        if $s0 == 2 goto label1;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected DER Integer, but found type ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label1:
+        $i2 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int readLength()>();
+
+        if $i2 < 0 goto label2;
+
+        $i3 = virtualinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i2 <= $i3 goto label3;
+
+     label2:
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal len in DER object (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label3:
+        $r5 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readBytes(int)>($i2);
+
+        $r1 = new java.math.BigInteger;
+
+        specialinvoke $r1.<java.math.BigInteger: void <init>(byte[])>($r5);
+
+        return $r1;
+    }
+
+    public byte[] readOctetString() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        short $s0;
+        java.lang.StringBuilder $r1;
+        byte $b1;
+        java.io.IOException $r2;
+        java.lang.String $r3;
+        int $i2, $i3;
+        byte[] $r4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $b1 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte readByte()>();
+
+        $s0 = $b1 & 255;
+
+        if $s0 == 4 goto label1;
+
+        if $s0 == 3 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected DER Octetstring, but found type ");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s0);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r2;
+
+     label1:
+        $i2 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int readLength()>();
+
+        if $i2 < 0 goto label2;
+
+        $i3 = virtualinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i2 <= $i3 goto label3;
+
+     label2:
+        $r2 = new java.io.IOException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal len in DER object (");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r2;
+
+     label3:
+        $r4 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readBytes(int)>($i2);
+
+        return $r4;
+    }
+
+    public java.lang.String readOid() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        int $i0, $i4;
+        java.lang.StringBuilder $r1;
+        short $s1;
+        long $l2, $l5;
+        byte $b3;
+        java.io.IOException $r2;
+        java.lang.String $r3;
+        byte[] $r4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $b3 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte readByte()>();
+
+        $s1 = $b3 & 255;
+
+        if $s1 == 6 goto label01;
+
+        $r2 = new java.io.IOException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected DER OID, but found type ");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s1);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r2;
+
+     label01:
+        $i4 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int readLength()>();
+
+        if $i4 < 1 goto label02;
+
+        $i0 = virtualinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i4 <= $i0 goto label03;
+
+     label02:
+        $r2 = new java.io.IOException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal len in DER object (");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i4);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r2;
+
+     label03:
+        $r4 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readBytes(int)>($i4);
+
+        $l2 = 0L;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>(int)>(64);
+
+        $b3 = $r4[0];
+
+        $i0 = $b3 / 40;
+
+        lookupswitch($i0)
+        {
+            case 0: goto label08;
+            case 1: goto label09;
+            default: goto label04;
+        };
+
+     label04:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(50);
+
+        $b3 = $r4[0];
+
+        $i0 = $b3 + -80;
+
+        $b3 = (byte) $i0;
+
+        $r4[0] = $b3;
+
+     label05:
+        $i0 = 0;
+
+     label06:
+        if $i0 >= $i4 goto label10;
+
+        $l5 = $l2 << 7;
+
+        $b3 = $r4[$i0];
+
+        $b3 = $b3 & 127;
+
+        $l2 = (long) $b3;
+
+        $l2 = $l5 + $l2;
+
+        $b3 = $r4[$i0];
+
+        $s1 = $b3 & 128;
+
+        if $s1 != 0 goto label07;
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(46);
+
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($l2);
+
+        $l2 = 0L;
+
+     label07:
+        $i0 = $i0 + 1;
+
+        goto label06;
+
+     label08:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(48);
+
+        goto label05;
+
+     label09:
+        virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(49);
+
+        $b3 = $r4[0];
+
+        $i0 = $b3 + -40;
+
+        $b3 = (byte) $i0;
+
+        $r4[0] = $b3;
+
+        goto label05;
+
+     label10:
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    public byte[] readSequenceAsByteArray() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        short $s0;
+        java.lang.StringBuilder $r1;
+        byte $b1;
+        java.io.IOException $r2;
+        java.lang.String $r3;
+        int $i2, $i3;
+        byte[] $r4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $b1 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte readByte()>();
+
+        $s0 = $b1 & 255;
+
+        if $s0 == 48 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected DER Sequence, but found type ");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s0);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r2;
+
+     label1:
+        $i2 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int readLength()>();
+
+        if $i2 < 0 goto label2;
+
+        $i3 = virtualinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int available()>();
+
+        if $i2 <= $i3 goto label3;
+
+     label2:
+        $r2 = new java.io.IOException;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal len in DER object (");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r2;
+
+     label3:
+        $r4 = specialinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] readBytes(int)>($i2);
+
+        return $r4;
+    }
+
+    public void resetInput(byte[])
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        byte[] $r1;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 = lengthof $r1;
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.SimpleDERReader: void resetInput(byte[],int,int)>($r1, 0, $i0);
+
+        return;
+    }
+
+    public void resetInput(byte[], int, int)
+    {
+        com.trilead.ssh2.crypto.SimpleDERReader $r0;
+        byte[] $r1;
+        int $i0, $i1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.SimpleDERReader;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: byte[] buffer> = $r1;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int pos> = $i0;
+
+        $r0.<com.trilead.ssh2.crypto.SimpleDERReader: int count> = $i1;
+
+        return;
+    }
+}

@@ -1,0 +1,53 @@
+public class com.trilead.ssh2.DynamicPortForwarder extends java.lang.Object
+{
+    com.trilead.ssh2.channel.ChannelManager cm;
+    com.trilead.ssh2.channel.DynamicAcceptThread dat;
+
+    void <init>(com.trilead.ssh2.channel.ChannelManager, java.net.InetSocketAddress) throws java.io.IOException
+    {
+        com.trilead.ssh2.DynamicPortForwarder $r0;
+        com.trilead.ssh2.channel.ChannelManager $r1;
+        java.net.InetSocketAddress $r2;
+        com.trilead.ssh2.channel.DynamicAcceptThread $r3;
+
+        $r0 := @this: com.trilead.ssh2.DynamicPortForwarder;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.ChannelManager;
+
+        $r2 := @parameter1: java.net.InetSocketAddress;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.DynamicPortForwarder: com.trilead.ssh2.channel.ChannelManager cm> = $r1;
+
+        $r3 = new com.trilead.ssh2.channel.DynamicAcceptThread;
+
+        specialinvoke $r3.<com.trilead.ssh2.channel.DynamicAcceptThread: void <init>(com.trilead.ssh2.channel.ChannelManager,java.net.InetSocketAddress)>($r1, $r2);
+
+        $r0.<com.trilead.ssh2.DynamicPortForwarder: com.trilead.ssh2.channel.DynamicAcceptThread dat> = $r3;
+
+        $r3 = $r0.<com.trilead.ssh2.DynamicPortForwarder: com.trilead.ssh2.channel.DynamicAcceptThread dat>;
+
+        virtualinvoke $r3.<com.trilead.ssh2.channel.DynamicAcceptThread: void setDaemon(boolean)>(1);
+
+        $r3 = $r0.<com.trilead.ssh2.DynamicPortForwarder: com.trilead.ssh2.channel.DynamicAcceptThread dat>;
+
+        virtualinvoke $r3.<com.trilead.ssh2.channel.DynamicAcceptThread: void start()>();
+
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        com.trilead.ssh2.DynamicPortForwarder $r0;
+        com.trilead.ssh2.channel.DynamicAcceptThread $r1;
+
+        $r0 := @this: com.trilead.ssh2.DynamicPortForwarder;
+
+        $r1 = $r0.<com.trilead.ssh2.DynamicPortForwarder: com.trilead.ssh2.channel.DynamicAcceptThread dat>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.channel.DynamicAcceptThread: void stopWorking()>();
+
+        return;
+    }
+}

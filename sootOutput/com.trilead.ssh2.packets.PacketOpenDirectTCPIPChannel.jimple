@@ -1,0 +1,112 @@
+public class com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel extends java.lang.Object
+{
+    int channelID;
+    java.lang.String host_to_connect;
+    int initialWindowSize;
+    int maxPacketSize;
+    java.lang.String originator_IP_address;
+    int originator_port;
+    byte[] payload;
+    int port_to_connect;
+
+    public void <init>(int, int, int, java.lang.String, int, java.lang.String, int)
+    {
+        com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+        java.lang.String $r1, $r2;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $r1 := @parameter3: java.lang.String;
+
+        $i3 := @parameter4: int;
+
+        $r2 := @parameter5: java.lang.String;
+
+        $i4 := @parameter6: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int channelID> = $i0;
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int initialWindowSize> = $i1;
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int maxPacketSize> = $i2;
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: java.lang.String host_to_connect> = $r1;
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int port_to_connect> = $i3;
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: java.lang.String originator_IP_address> = $r2;
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int originator_port> = $i4;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2;
+        int $i0;
+        java.lang.String $r3;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(90);
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>("direct-tcpip");
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int channelID>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int initialWindowSize>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int maxPacketSize>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: java.lang.String host_to_connect>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>($r3);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int port_to_connect>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: java.lang.String originator_IP_address>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>($r3);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: int originator_port>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: byte[] payload> = $r2;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: byte[] payload>;
+
+        return $r2;
+    }
+}

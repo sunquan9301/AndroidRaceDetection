@@ -1,0 +1,166 @@
+class org.connectbot.service.ConnectionNotifier$PreEclair extends org.connectbot.service.ConnectionNotifier
+{
+    private static final java.lang.Class[] setForegroundSignature;
+    private java.lang.reflect.Method setForeground;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r0;
+        java.lang.Class[] $r1;
+
+        $r1 = newarray (java.lang.Class)[1];
+
+        $r0 = <java.lang.Boolean: java.lang.Class TYPE>;
+
+        $r1[0] = $r0;
+
+        <org.connectbot.service.ConnectionNotifier$PreEclair: java.lang.Class[] setForegroundSignature> = $r1;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.connectbot.service.ConnectionNotifier$PreEclair $r0;
+        java.lang.Class[] $r1;
+        java.lang.reflect.Method $r2;
+        java.lang.Class $r3;
+        java.lang.Exception $r4;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier$PreEclair;
+
+        specialinvoke $r0.<org.connectbot.service.ConnectionNotifier: void <init>()>();
+
+        $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: java.lang.reflect.Method setForeground> = null;
+
+        $r3 = class "android/app/Service";
+
+        $r1 = <org.connectbot.service.ConnectionNotifier$PreEclair: java.lang.Class[] setForegroundSignature>;
+
+     label1:
+        $r2 = virtualinvoke $r3.<java.lang.Class: java.lang.reflect.Method getMethod(java.lang.String,java.lang.Class[])>("setForeground", $r1);
+
+        $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: java.lang.reflect.Method setForeground> = $r2;
+
+     label2:
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public void hideRunningNotification(android.app.Service)
+    {
+        org.connectbot.service.ConnectionNotifier$PreEclair $r0;
+        android.app.Service $r1;
+        java.lang.Object[] $r2;
+        java.lang.reflect.Method $r3;
+        java.lang.Boolean $r4;
+        android.app.NotificationManager $r5;
+        java.lang.IllegalAccessException $r6;
+        java.lang.reflect.InvocationTargetException $r7;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier$PreEclair;
+
+        $r1 := @parameter0: android.app.Service;
+
+        $r3 = $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: java.lang.reflect.Method setForeground>;
+
+        if $r3 == null goto label5;
+
+        $r2 = newarray (java.lang.Object)[1];
+
+        $r4 = <java.lang.Boolean: java.lang.Boolean FALSE>;
+
+        $r2[0] = $r4;
+
+        $r3 = $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: java.lang.reflect.Method setForeground>;
+
+     label1:
+        virtualinvoke $r3.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r1, $r2);
+
+     label2:
+        $r5 = virtualinvoke $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: android.app.NotificationManager getNotificationManager(android.content.Context)>($r1);
+
+        virtualinvoke $r5.<android.app.NotificationManager: void cancel(int)>(1);
+
+        return;
+
+     label3:
+        $r6 := @caughtexception;
+
+        goto label2;
+
+     label4:
+        $r7 := @caughtexception;
+
+        goto label2;
+
+     label5:
+        return;
+
+        catch java.lang.reflect.InvocationTargetException from label1 to label2 with label4;
+        catch java.lang.IllegalAccessException from label1 to label2 with label3;
+    }
+
+    public void showRunningNotification(android.app.Service)
+    {
+        org.connectbot.service.ConnectionNotifier$PreEclair $r0;
+        android.app.Service $r1;
+        java.lang.Object[] $r2;
+        java.lang.reflect.Method $r3;
+        java.lang.Boolean $r4;
+        android.app.NotificationManager $r5;
+        android.app.Notification $r6;
+        java.lang.IllegalAccessException $r7;
+        java.lang.reflect.InvocationTargetException $r8;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier$PreEclair;
+
+        $r1 := @parameter0: android.app.Service;
+
+        $r3 = $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: java.lang.reflect.Method setForeground>;
+
+        if $r3 == null goto label5;
+
+        $r2 = newarray (java.lang.Object)[1];
+
+        $r4 = <java.lang.Boolean: java.lang.Boolean TRUE>;
+
+        $r2[0] = $r4;
+
+        $r3 = $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: java.lang.reflect.Method setForeground>;
+
+     label1:
+        virtualinvoke $r3.<java.lang.reflect.Method: java.lang.Object invoke(java.lang.Object,java.lang.Object[])>($r1, $r2);
+
+     label2:
+        $r5 = virtualinvoke $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: android.app.NotificationManager getNotificationManager(android.content.Context)>($r1);
+
+        $r6 = virtualinvoke $r0.<org.connectbot.service.ConnectionNotifier$PreEclair: android.app.Notification newRunningNotification(android.content.Context)>($r1);
+
+        virtualinvoke $r5.<android.app.NotificationManager: void notify(int,android.app.Notification)>(1, $r6);
+
+        return;
+
+     label3:
+        $r7 := @caughtexception;
+
+        goto label2;
+
+     label4:
+        $r8 := @caughtexception;
+
+        goto label2;
+
+     label5:
+        return;
+
+        catch java.lang.reflect.InvocationTargetException from label1 to label2 with label4;
+        catch java.lang.IllegalAccessException from label1 to label2 with label3;
+    }
+}

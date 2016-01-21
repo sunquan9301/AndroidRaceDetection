@@ -1,0 +1,188 @@
+public abstract class net.sourceforge.jsocks.ProxyMessage extends java.lang.Object
+{
+    public int command;
+    public java.lang.String host;
+    public java.net.InetAddress ip;
+    public int port;
+    public java.lang.String user;
+    public int version;
+
+    void <init>()
+    {
+        net.sourceforge.jsocks.ProxyMessage $r0;
+
+        $r0 := @this: net.sourceforge.jsocks.ProxyMessage;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: java.net.InetAddress ip> = null;
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: java.lang.String host> = null;
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: java.lang.String user> = null;
+
+        return;
+    }
+
+    void <init>(int, java.net.InetAddress, int)
+    {
+        net.sourceforge.jsocks.ProxyMessage $r0;
+        int $i0, $i1;
+        java.net.InetAddress $r1;
+
+        $r0 := @this: net.sourceforge.jsocks.ProxyMessage;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.net.InetAddress;
+
+        $i1 := @parameter2: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: java.net.InetAddress ip> = null;
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: java.lang.String host> = null;
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: java.lang.String user> = null;
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: int command> = $i0;
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: java.net.InetAddress ip> = $r1;
+
+        $r0.<net.sourceforge.jsocks.ProxyMessage: int port> = $i1;
+
+        return;
+    }
+
+    static final java.lang.String bytes2IPV4(byte[], int)
+    {
+        byte[] $r0;
+        int $i0, $i1, $i4;
+        java.lang.String $r1;
+        java.lang.StringBuilder $r2;
+        byte $b2;
+        short $s3;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("");
+
+        $b2 = $r0[$i0];
+
+        $s3 = $b2 & 255;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s3);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i1 = $i0 + 1;
+
+     label1:
+        $i4 = $i0 + 4;
+
+        if $i1 >= $i4 goto label2;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".");
+
+        $b2 = $r0[$i1];
+
+        $s3 = $b2 & 255;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s3);
+
+        $r1 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label2:
+        return $r1;
+    }
+
+    static final java.lang.String bytes2IPV6(byte[], int)
+    {
+        byte[] $r0;
+        int $i0;
+
+        $r0 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        return null;
+    }
+
+    public java.lang.String toString()
+    {
+        net.sourceforge.jsocks.ProxyMessage $r0;
+        java.lang.StringBuilder $r1;
+        int $i0;
+        java.net.InetAddress $r2;
+        java.lang.String $r3;
+
+        $r0 := @this: net.sourceforge.jsocks.ProxyMessage;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Proxy Message:\nVersion:");
+
+        $i0 = $r0.<net.sourceforge.jsocks.ProxyMessage: int version>;
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Command:");
+
+        $i0 = $r0.<net.sourceforge.jsocks.ProxyMessage: int command>;
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IP:     ");
+
+        $r2 = $r0.<net.sourceforge.jsocks.ProxyMessage: java.net.InetAddress ip>;
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Port:   ");
+
+        $i0 = $r0.<net.sourceforge.jsocks.ProxyMessage: int port>;
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("User:   ");
+
+        $r3 = $r0.<net.sourceforge.jsocks.ProxyMessage: java.lang.String user>;
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r3;
+    }
+
+    public abstract void write(java.io.OutputStream) throws net.sourceforge.jsocks.SocksException, java.io.IOException;
+}

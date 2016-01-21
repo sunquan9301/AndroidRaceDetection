@@ -1,0 +1,3 @@
+interface  android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventVersionImpl extends java.lang.Object
+{
+}

@@ -1,0 +1,1871 @@
+public class org.connectbot.util.HostDatabase extends org.connectbot.util.RobustSQLiteOpenHelper
+{
+    public static final java.lang.String ENCODING_DEFAULT;
+    public static final java.lang.Object[] dbLock;
+    private final float displayDensity;
+
+    static void <clinit>()
+    {
+        java.nio.charset.Charset $r0;
+        java.lang.String $r1;
+        java.lang.Object[] $r2;
+
+        $r0 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset defaultCharset()>();
+
+        $r1 = virtualinvoke $r0.<java.nio.charset.Charset: java.lang.String name()>();
+
+        <org.connectbot.util.HostDatabase: java.lang.String ENCODING_DEFAULT> = $r1;
+
+        staticinvoke <org.connectbot.util.HostDatabase: void addTableName(java.lang.String)>("hosts");
+
+        staticinvoke <org.connectbot.util.HostDatabase: void addTableName(java.lang.String)>("portforwards");
+
+        staticinvoke <org.connectbot.util.HostDatabase: void addIndexName(java.lang.String)>("portforwardshostidindex");
+
+        staticinvoke <org.connectbot.util.HostDatabase: void addTableName(java.lang.String)>("colors");
+
+        staticinvoke <org.connectbot.util.HostDatabase: void addIndexName(java.lang.String)>("colorsschemeindex");
+
+        staticinvoke <org.connectbot.util.HostDatabase: void addTableName(java.lang.String)>("colorDefaults");
+
+        staticinvoke <org.connectbot.util.HostDatabase: void addIndexName(java.lang.String)>("colorDefaultsschemeindex");
+
+        $r2 = newarray (java.lang.Object)[0];
+
+        <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock> = $r2;
+
+        return;
+    }
+
+    public void <init>(android.content.Context)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        android.content.Context $r1;
+        android.content.res.Resources $r2;
+        android.util.DisplayMetrics $r3;
+        float $f0;
+        android.database.sqlite.SQLiteDatabase $r4;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: android.content.Context;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void <init>(android.content.Context,java.lang.String,android.database.sqlite.SQLiteDatabase$CursorFactory,int)>($r1, "hosts", null, 24);
+
+        $r2 = virtualinvoke $r1.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r3 = virtualinvoke $r2.<android.content.res.Resources: android.util.DisplayMetrics getDisplayMetrics()>();
+
+        $f0 = $r3.<android.util.DisplayMetrics: float density>;
+
+        $r0.<org.connectbot.util.HostDatabase: float displayDensity> = $f0;
+
+        $r4 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        virtualinvoke $r4.<android.database.sqlite.SQLiteDatabase: void close()>();
+
+        return;
+    }
+
+    private java.util.List createHostBeans(android.database.Cursor)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        android.database.Cursor $r1;
+        org.connectbot.bean.HostBean $r2;
+        java.util.LinkedList $r3;
+        int $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12, $i13, $i14, $i15, $i16, $i17, $i18, $i20;
+        boolean $z0;
+        long $l19;
+        java.lang.String $r4;
+        java.lang.Boolean $r5;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: android.database.Cursor;
+
+        $r3 = new java.util.LinkedList;
+
+        specialinvoke $r3.<java.util.LinkedList: void <init>()>();
+
+        $i0 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("_id");
+
+        $i1 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("nickname");
+
+        $i2 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("protocol");
+
+        $i3 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("username");
+
+        $i4 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("hostname");
+
+        $i5 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("port");
+
+        $i6 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("lastconnect");
+
+        $i7 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("color");
+
+        $i8 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("usekeys");
+
+        $i9 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("useauthagent");
+
+        $i10 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("postlogin");
+
+        $i11 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("pubkeyid");
+
+        $i12 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("wantsession");
+
+        $i13 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("delkey");
+
+        $i14 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("fontsize");
+
+        $i15 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("compression");
+
+        $i16 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("encoding");
+
+        $i17 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("stayconnected");
+
+        $i18 = interfaceinvoke $r1.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("quickdisconnect");
+
+     label1:
+        $z0 = interfaceinvoke $r1.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r2 = new org.connectbot.bean.HostBean;
+
+        specialinvoke $r2.<org.connectbot.bean.HostBean: void <init>()>();
+
+        $l19 = interfaceinvoke $r1.<android.database.Cursor: long getLong(int)>($i0);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setId(long)>($l19);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i1);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setNickname(java.lang.String)>($r4);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i2);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setProtocol(java.lang.String)>($r4);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i3);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setUsername(java.lang.String)>($r4);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i4);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setHostname(java.lang.String)>($r4);
+
+        $i20 = interfaceinvoke $r1.<android.database.Cursor: int getInt(int)>($i5);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setPort(int)>($i20);
+
+        $l19 = interfaceinvoke $r1.<android.database.Cursor: long getLong(int)>($i6);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setLastConnect(long)>($l19);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i7);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setColor(java.lang.String)>($r4);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i8);
+
+        $r5 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(java.lang.String)>($r4);
+
+        $z0 = virtualinvoke $r5.<java.lang.Boolean: boolean booleanValue()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setUseKeys(boolean)>($z0);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i9);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setUseAuthAgent(java.lang.String)>($r4);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i10);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setPostLogin(java.lang.String)>($r4);
+
+        $l19 = interfaceinvoke $r1.<android.database.Cursor: long getLong(int)>($i11);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setPubkeyId(long)>($l19);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i12);
+
+        $r5 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(java.lang.String)>($r4);
+
+        $z0 = virtualinvoke $r5.<java.lang.Boolean: boolean booleanValue()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setWantSession(boolean)>($z0);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i13);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setDelKey(java.lang.String)>($r4);
+
+        $i20 = interfaceinvoke $r1.<android.database.Cursor: int getInt(int)>($i14);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setFontSize(int)>($i20);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i15);
+
+        $r5 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(java.lang.String)>($r4);
+
+        $z0 = virtualinvoke $r5.<java.lang.Boolean: boolean booleanValue()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setCompression(boolean)>($z0);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i16);
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setEncoding(java.lang.String)>($r4);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i17);
+
+        $r5 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(java.lang.String)>($r4);
+
+        $z0 = virtualinvoke $r5.<java.lang.Boolean: boolean booleanValue()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setStayConnected(boolean)>($z0);
+
+        $r4 = interfaceinvoke $r1.<android.database.Cursor: java.lang.String getString(int)>($i18);
+
+        $r5 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(java.lang.String)>($r4);
+
+        $z0 = virtualinvoke $r5.<java.lang.Boolean: boolean booleanValue()>();
+
+        virtualinvoke $r2.<org.connectbot.bean.HostBean: void setQuickDisconnect(boolean)>($z0);
+
+        interfaceinvoke $r3.<java.util.List: boolean add(java.lang.Object)>($r2);
+
+        goto label1;
+
+     label2:
+        return $r3;
+    }
+
+    private org.connectbot.bean.HostBean getFirstHostBean(android.database.Cursor)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        android.database.Cursor $r1;
+        org.connectbot.bean.HostBean $r2;
+        java.util.List $r3;
+        int $i0;
+        java.lang.Object $r4;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: android.database.Cursor;
+
+        $r2 = null;
+
+        $r3 = specialinvoke $r0.<org.connectbot.util.HostDatabase: java.util.List createHostBeans(android.database.Cursor)>($r1);
+
+        $i0 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        if $i0 <= 0 goto label1;
+
+        $r4 = interfaceinvoke $r3.<java.util.List: java.lang.Object get(int)>(0);
+
+        $r2 = (org.connectbot.bean.HostBean) $r4;
+
+     label1:
+        interfaceinvoke $r1.<android.database.Cursor: void close()>();
+
+        return $r2;
+    }
+
+    public void deleteHost(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        org.connectbot.bean.HostBean $r1;
+        byte $b0;
+        long $l1;
+        java.lang.Object[] $r2;
+        android.database.sqlite.SQLiteDatabase $r3;
+        java.lang.String[] $r4;
+        java.lang.String $r5;
+        java.lang.Throwable $r6;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $l1 = virtualinvoke $r1.<org.connectbot.bean.HostBean: long getId()>();
+
+        $b0 = $l1 cmp 0L;
+
+        if $b0 >= 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r2;
+
+     label2:
+        $r3 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $r4 = newarray (java.lang.String)[1];
+
+        $l1 = virtualinvoke $r1.<org.connectbot.bean.HostBean: long getId()>();
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l1);
+
+        $r4[0] = $r5;
+
+        virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: int delete(java.lang.String,java.lang.String,java.lang.String[])>("hosts", "_id = ?", $r4);
+
+        exitmonitor $r2;
+
+     label3:
+        return;
+
+     label4:
+        $r6 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label5:
+        throw $r6;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void deletePortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+        byte $b0;
+        long $l1;
+        java.lang.Object[] $r2;
+        android.database.sqlite.SQLiteDatabase $r3;
+        java.lang.String[] $r4;
+        java.lang.String $r5;
+        java.lang.Throwable $r6;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        $l1 = virtualinvoke $r1.<org.connectbot.bean.PortForwardBean: long getId()>();
+
+        $b0 = $l1 cmp 0L;
+
+        if $b0 >= 0 goto label1;
+
+        return;
+
+     label1:
+        $r2 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r2;
+
+     label2:
+        $r3 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $r4 = newarray (java.lang.String)[1];
+
+        $l1 = virtualinvoke $r1.<org.connectbot.bean.PortForwardBean: long getId()>();
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l1);
+
+        $r4[0] = $r5;
+
+        virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: int delete(java.lang.String,java.lang.String,java.lang.String[])>("portforwards", "_id = ?", $r4);
+
+        exitmonitor $r2;
+
+     label3:
+        return;
+
+     label4:
+        $r6 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label5:
+        throw $r6;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public org.connectbot.bean.HostBean findHost(java.util.Map)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        java.util.Map $r1;
+        java.lang.String[] $r2;
+        int $i0, $i1;
+        java.lang.StringBuilder $r3, $r11;
+        java.util.LinkedList $r4;
+        java.lang.Object[] $r5;
+        java.util.Set $r6;
+        java.util.Iterator $r7;
+        boolean $z0;
+        java.lang.Object $r8;
+        java.util.Map$Entry $r9;
+        java.lang.String $r10;
+        android.database.sqlite.SQLiteDatabase $r12;
+        android.database.Cursor $r13;
+        org.connectbot.bean.HostBean $r14;
+        java.lang.Throwable $r15;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: java.util.Map;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = interfaceinvoke $r1.<java.util.Map: java.util.Set entrySet()>();
+
+        $r7 = interfaceinvoke $r6.<java.util.Set: java.util.Iterator iterator()>();
+
+        $r4 = new java.util.LinkedList;
+
+        specialinvoke $r4.<java.util.LinkedList: void <init>()>();
+
+        $i0 = 0;
+
+     label1:
+        $z0 = interfaceinvoke $r7.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r8 = interfaceinvoke $r7.<java.util.Iterator: java.lang.Object next()>();
+
+        $r9 = (java.util.Map$Entry) $r8;
+
+        $r8 = interfaceinvoke $r9.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        if $r8 == null goto label1;
+
+        $i1 = $i0 + 1;
+
+        if $i0 <= 0 goto label2;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" AND ");
+
+     label2:
+        $r8 = interfaceinvoke $r9.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r10 = (java.lang.String) $r8;
+
+        $r11 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" = ?");
+
+        $r8 = interfaceinvoke $r9.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        interfaceinvoke $r4.<java.util.List: boolean add(java.lang.Object)>($r8);
+
+        $i0 = $i1;
+
+        goto label1;
+
+     label3:
+        $i1 = interfaceinvoke $r4.<java.util.List: int size()>();
+
+        $r2 = newarray (java.lang.String)[$i1];
+
+        interfaceinvoke $r4.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r2);
+
+        $r5 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r5;
+
+     label4:
+        $r12 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r10 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r13 = virtualinvoke $r12.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("hosts", null, $r10, $r2, null, null, null);
+
+        $r14 = specialinvoke $r0.<org.connectbot.util.HostDatabase: org.connectbot.bean.HostBean getFirstHostBean(android.database.Cursor)>($r13);
+
+        exitmonitor $r5;
+
+     label5:
+        return $r14;
+
+     label6:
+        $r15 := @caughtexception;
+
+        exitmonitor $r5;
+
+     label7:
+        throw $r15;
+
+        catch java.lang.Throwable from label4 to label5 with label6;
+        catch java.lang.Throwable from label6 to label7 with label6;
+    }
+
+    public org.connectbot.bean.HostBean findHostById(long)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        long $l0;
+        java.lang.Object[] $r1;
+        android.database.sqlite.SQLiteDatabase $r2;
+        java.lang.String[] $r3;
+        java.lang.String $r4;
+        android.database.Cursor $r5;
+        org.connectbot.bean.HostBean $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $l0 := @parameter0: long;
+
+        $r1 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r2 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r3 = newarray (java.lang.String)[1];
+
+        $r4 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r3[0] = $r4;
+
+        $r5 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("hosts", null, "_id = ?", $r3, null, null, null);
+
+        $r6 = specialinvoke $r0.<org.connectbot.util.HostDatabase: org.connectbot.bean.HostBean getFirstHostBean(android.database.Cursor)>($r5);
+
+        exitmonitor $r1;
+
+     label2:
+        return $r6;
+
+     label3:
+        $r7 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public java.lang.Integer[] getColorsForScheme(int)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        int $i0, $i1;
+        java.lang.Integer[] $r1;
+        java.lang.Object[] $r2;
+        java.lang.Object $r3;
+        android.database.sqlite.SQLiteDatabase $r4;
+        java.lang.String[] $r5, $r6;
+        java.lang.String $r7;
+        android.database.Cursor $r8;
+        boolean $z0;
+        java.lang.Integer $r9;
+        java.lang.Throwable $r10;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $i0 := @parameter0: int;
+
+        $r1 = <org.connectbot.util.Colors: java.lang.Integer[] defaults>;
+
+        $r3 = virtualinvoke $r1.<java.lang.Object: java.lang.Object clone()>();
+
+        $r1 = (java.lang.Integer[]) $r3;
+
+        $r2 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r2;
+
+     label1:
+        $r4 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r5 = newarray (java.lang.String)[2];
+
+        $r5[0] = "number";
+
+        $r5[1] = "value";
+
+        $r6 = newarray (java.lang.String)[1];
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        $r6[0] = $r7;
+
+        $r8 = virtualinvoke $r4.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("colors", $r5, "scheme = ?", $r6, null, null, null);
+
+     label2:
+        $z0 = interfaceinvoke $r8.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label5;
+
+        $i0 = interfaceinvoke $r8.<android.database.Cursor: int getInt(int)>(0);
+
+        $r9 = new java.lang.Integer;
+
+        $i1 = interfaceinvoke $r8.<android.database.Cursor: int getInt(int)>(1);
+
+        specialinvoke $r9.<java.lang.Integer: void <init>(int)>($i1);
+
+        $r1[$i0] = $r9;
+
+        goto label2;
+
+     label3:
+        $r10 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label4:
+        throw $r10;
+
+     label5:
+        interfaceinvoke $r8.<android.database.Cursor: void close()>();
+
+        exitmonitor $r2;
+
+     label6:
+        return $r1;
+
+        catch java.lang.Throwable from label1 to label4 with label3;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public int[] getDefaultColorsForScheme(int)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        int $i0;
+        int[] $r1;
+        java.lang.Object[] $r2;
+        android.database.sqlite.SQLiteDatabase $r3;
+        java.lang.String[] $r4, $r5;
+        java.lang.String $r6;
+        android.database.Cursor $r7;
+        boolean $z0;
+        java.lang.Throwable $r8;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $i0 := @parameter0: int;
+
+        $r1 = newarray (int)[2];
+
+        $r1[0] = 7;
+
+        $r1[1] = 0;
+
+        $r2 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r2;
+
+     label1:
+        $r3 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r4 = newarray (java.lang.String)[2];
+
+        $r4[0] = "fg";
+
+        $r4[1] = "bg";
+
+        $r5 = newarray (java.lang.String)[1];
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        $r5[0] = $r6;
+
+        $r7 = virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("colorDefaults", $r4, "scheme = ?", $r5, null, null, null);
+
+        $z0 = interfaceinvoke $r7.<android.database.Cursor: boolean moveToFirst()>();
+
+        if $z0 == 0 goto label2;
+
+        $i0 = interfaceinvoke $r7.<android.database.Cursor: int getInt(int)>(0);
+
+        $r1[0] = $i0;
+
+        $i0 = interfaceinvoke $r7.<android.database.Cursor: int getInt(int)>(1);
+
+        $r1[1] = $i0;
+
+     label2:
+        interfaceinvoke $r7.<android.database.Cursor: void close()>();
+
+        exitmonitor $r2;
+
+     label3:
+        return $r1;
+
+     label4:
+        $r8 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label5:
+        throw $r8;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public java.util.List getHosts(boolean)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        boolean $z0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+        java.lang.Object[] $r3;
+        android.database.sqlite.SQLiteDatabase $r4;
+        android.database.Cursor $r5;
+        java.util.List $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $z0 := @parameter0: boolean;
+
+        if $z0 == 0 goto label4;
+
+        $r2 = "color";
+
+     label1:
+        $r3 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r3;
+
+     label2:
+        $r4 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r1 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ASC");
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r4.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("hosts", null, null, null, null, null, $r2);
+
+        $r6 = specialinvoke $r0.<org.connectbot.util.HostDatabase: java.util.List createHostBeans(android.database.Cursor)>($r5);
+
+        interfaceinvoke $r5.<android.database.Cursor: void close()>();
+
+        exitmonitor $r3;
+
+     label3:
+        return $r6;
+
+     label4:
+        $r2 = "nickname";
+
+        goto label1;
+
+     label5:
+        $r7 := @caughtexception;
+
+     label6:
+        exitmonitor $r3;
+
+     label7:
+        throw $r7;
+
+        catch java.lang.Throwable from label2 to label3 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public com.trilead.ssh2.KnownHosts getKnownHosts()
+    {
+        org.connectbot.util.HostDatabase $r0;
+        java.lang.Exception $r1;
+        com.trilead.ssh2.KnownHosts $r2;
+        java.lang.Object[] $r3, $r10;
+        android.database.sqlite.SQLiteDatabase $r4;
+        java.lang.String[] $r5;
+        android.database.Cursor $r6;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        boolean $z0;
+        java.lang.String $r7, $r8;
+        byte[] $r9;
+        java.lang.Integer $r11;
+        java.lang.Throwable $r12;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r2 = new com.trilead.ssh2.KnownHosts;
+
+        specialinvoke $r2.<com.trilead.ssh2.KnownHosts: void <init>()>();
+
+        $r3 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r3;
+
+     label01:
+        $r4 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r5 = newarray (java.lang.String)[4];
+
+        $r5[0] = "hostname";
+
+        $r5[1] = "port";
+
+        $r5[2] = "hostkeyalgo";
+
+        $r5[3] = "hostkey";
+
+        $r6 = virtualinvoke $r4.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("hosts", $r5, null, null, null, null, null);
+
+        if $r6 == null goto label11;
+
+        $i0 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("hostname");
+
+        $i1 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("port");
+
+        $i2 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("hostkeyalgo");
+
+        $i3 = interfaceinvoke $r6.<android.database.Cursor: int getColumnIndexOrThrow(java.lang.String)>("hostkey");
+
+     label02:
+        $z0 = interfaceinvoke $r6.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label10;
+
+        $r7 = interfaceinvoke $r6.<android.database.Cursor: java.lang.String getString(int)>($i0);
+
+        $r8 = interfaceinvoke $r6.<android.database.Cursor: java.lang.String getString(int)>($i2);
+
+        $i4 = interfaceinvoke $r6.<android.database.Cursor: int getInt(int)>($i1);
+
+        $r9 = interfaceinvoke $r6.<android.database.Cursor: byte[] getBlob(int)>($i3);
+
+        if $r8 == null goto label02;
+
+        $i5 = virtualinvoke $r8.<java.lang.String: int length()>();
+
+        if $i5 == 0 goto label02;
+
+        if $r9 == null goto label02;
+
+        $i5 = lengthof $r9;
+
+     label03:
+        if $i5 == 0 goto label02;
+
+     label04:
+        $r5 = newarray (java.lang.String)[1];
+
+        $r10 = newarray (java.lang.Object)[2];
+
+        $r10[0] = $r7;
+
+        $r11 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i4);
+
+        $r10[1] = $r11;
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s:%d", $r10);
+
+        $r5[0] = $r7;
+
+        virtualinvoke $r2.<com.trilead.ssh2.KnownHosts: void addHostkey(java.lang.String[],java.lang.String,byte[])>($r5, $r8, $r9);
+
+     label05:
+        goto label02;
+
+     label06:
+        $r1 := @caughtexception;
+
+     label07:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.HostDatabase", "Problem while adding a known host from database", $r1);
+
+        goto label02;
+
+     label08:
+        $r12 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label09:
+        throw $r12;
+
+     label10:
+        interfaceinvoke $r6.<android.database.Cursor: void close()>();
+
+     label11:
+        exitmonitor $r3;
+
+     label12:
+        return $r2;
+
+        catch java.lang.Throwable from label01 to label03 with label08;
+        catch java.lang.Exception from label04 to label05 with label06;
+        catch java.lang.Throwable from label04 to label05 with label08;
+        catch java.lang.Throwable from label07 to label09 with label08;
+        catch java.lang.Throwable from label10 to label12 with label08;
+    }
+
+    public java.util.List getPortForwardsForHost(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        org.connectbot.bean.HostBean $r1;
+        java.util.LinkedList $r2;
+        java.lang.Object[] $r3;
+        android.database.sqlite.SQLiteDatabase $r4;
+        java.lang.String[] $r5, $r6;
+        long $l0, $l2;
+        java.lang.String $r7, $r10, $r11;
+        android.database.Cursor $r8;
+        boolean $z0;
+        org.connectbot.bean.PortForwardBean $r9;
+        int $i1, $i3;
+        java.lang.Throwable $r12;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $r2 = new java.util.LinkedList;
+
+        specialinvoke $r2.<java.util.LinkedList: void <init>()>();
+
+        if $r1 != null goto label1;
+
+        return $r2;
+
+     label1:
+        $r3 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r3;
+
+     label2:
+        $r4 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r5 = newarray (java.lang.String)[6];
+
+        $r5[0] = "_id";
+
+        $r5[1] = "nickname";
+
+        $r5[2] = "type";
+
+        $r5[3] = "sourceport";
+
+        $r5[4] = "destaddr";
+
+        $r5[5] = "destport";
+
+        $r6 = newarray (java.lang.String)[1];
+
+        $l0 = virtualinvoke $r1.<org.connectbot.bean.HostBean: long getId()>();
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r6[0] = $r7;
+
+        $r8 = virtualinvoke $r4.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>("portforwards", $r5, "hostid = ?", $r6, null, null, null);
+
+     label3:
+        $z0 = interfaceinvoke $r8.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label6;
+
+        $r9 = new org.connectbot.bean.PortForwardBean;
+
+        $i1 = interfaceinvoke $r8.<android.database.Cursor: int getInt(int)>(0);
+
+        $l0 = (long) $i1;
+
+        $l2 = virtualinvoke $r1.<org.connectbot.bean.HostBean: long getId()>();
+
+        $r7 = interfaceinvoke $r8.<android.database.Cursor: java.lang.String getString(int)>(1);
+
+        $r10 = interfaceinvoke $r8.<android.database.Cursor: java.lang.String getString(int)>(2);
+
+        $i1 = interfaceinvoke $r8.<android.database.Cursor: int getInt(int)>(3);
+
+        $r11 = interfaceinvoke $r8.<android.database.Cursor: java.lang.String getString(int)>(4);
+
+        $i3 = interfaceinvoke $r8.<android.database.Cursor: int getInt(int)>(5);
+
+        specialinvoke $r9.<org.connectbot.bean.PortForwardBean: void <init>(long,long,java.lang.String,java.lang.String,int,java.lang.String,int)>($l0, $l2, $r7, $r10, $i1, $r11, $i3);
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r9);
+
+        goto label3;
+
+     label4:
+        $r12 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label5:
+        throw $r12;
+
+     label6:
+        interfaceinvoke $r8.<android.database.Cursor: void close()>();
+
+        exitmonitor $r3;
+
+     label7:
+        return $r2;
+
+        catch java.lang.Throwable from label2 to label5 with label4;
+        catch java.lang.Throwable from label6 to label7 with label4;
+    }
+
+    public void onCreate(android.database.sqlite.SQLiteDatabase)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void onCreate(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CREATE TABLE hosts (_id INTEGER PRIMARY KEY, nickname TEXT, protocol TEXT DEFAULT \'ssh\', username TEXT, hostname TEXT, port INTEGER, hostkeyalgo TEXT, hostkey BLOB, lastconnect INTEGER, color TEXT, usekeys TEXT, useauthagent TEXT, postlogin TEXT, pubkeyid INTEGER DEFAULT -1, delkey TEXT DEFAULT \'del\', fontsize INTEGER, wantsession TEXT DEFAULT \'");
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("compression");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" TEXT DEFAULT \'");
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("encoding");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" TEXT DEFAULT \'");
+
+        $r3 = <org.connectbot.util.HostDatabase: java.lang.String ENCODING_DEFAULT>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("stayconnected");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" TEXT, ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("quickdisconnect");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" TEXT DEFAULT \'");
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\')");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r3);
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE TABLE portforwards (_id INTEGER PRIMARY KEY, hostid INTEGER, nickname TEXT, type TEXT NOT NULL DEFAULT local, sourceport INTEGER NOT NULL DEFAULT 8080, destaddr TEXT, destport TEXT)");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE INDEX portforwardshostidindex ON portforwards (hostid);");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE TABLE colors (_id INTEGER PRIMARY KEY, number INTEGER, value INTEGER, scheme INTEGER)");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE INDEX colorsschemeindex ON colors (scheme);");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE TABLE colorDefaults (scheme INTEGER NOT NULL, fg INTEGER NOT NULL DEFAULT 7, bg INTEGER NOT NULL DEFAULT 0)");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE INDEX colorDefaultsschemeindex ON colorDefaults (scheme);");
+
+        return;
+    }
+
+    public void onRobustUpgrade(android.database.sqlite.SQLiteDatabase, int, int) throws android.database.sqlite.SQLiteException
+    {
+        org.connectbot.util.HostDatabase $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+        int $i0, $i1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        float $f0;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        if $i0 > 9 goto label01;
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("DROP TABLE IF EXISTS hosts");
+
+        virtualinvoke $r0.<org.connectbot.util.HostDatabase: void onCreate(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        return;
+
+     label01:
+        lookupswitch($i0)
+        {
+            case 10: goto label03;
+            case 11: goto label04;
+            case 12: goto label05;
+            case 13: goto label06;
+            case 14: goto label07;
+            case 15: goto label08;
+            case 16: goto label09;
+            case 17: goto label10;
+            case 18: goto label11;
+            case 19: goto label12;
+            case 20: goto label13;
+            case 21: goto label14;
+            case 22: goto label15;
+            case 23: goto label16;
+            default: goto label02;
+        };
+
+     label02:
+        return;
+
+     label03:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("ALTER TABLE hosts ADD COLUMN pubkeyid INTEGER DEFAULT -1");
+
+     label04:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE TABLE portforwards (_id INTEGER PRIMARY KEY, hostid INTEGER, nickname TEXT, type TEXT NOT NULL DEFAULT local, sourceport INTEGER NOT NULL DEFAULT 8080, destaddr TEXT, destport INTEGER)");
+
+     label05:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ALTER TABLE hosts ADD COLUMN wantsession TEXT DEFAULT \'");
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r3);
+
+     label06:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ALTER TABLE hosts ADD COLUMN compression TEXT DEFAULT \'");
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r3);
+
+     label07:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ALTER TABLE hosts ADD COLUMN encoding TEXT DEFAULT \'");
+
+        $r3 = <org.connectbot.util.HostDatabase: java.lang.String ENCODING_DEFAULT>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r3);
+
+     label08:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("ALTER TABLE hosts ADD COLUMN protocol TEXT DEFAULT \'ssh\'");
+
+     label09:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("ALTER TABLE hosts ADD COLUMN delkey TEXT DEFAULT \'del\'");
+
+     label10:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE INDEX portforwardshostidindex ON portforwards (hostid);");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE TABLE colors (_id INTEGER PRIMARY KEY, number INTEGER, value INTEGER, scheme INTEGER)");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE INDEX colorsschemeindex ON colors (scheme);");
+
+     label11:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("ALTER TABLE hosts ADD COLUMN useauthagent TEXT DEFAULT \'no\'");
+
+     label12:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("ALTER TABLE hosts ADD COLUMN stayconnected TEXT");
+
+     label13:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("ALTER TABLE hosts ADD COLUMN fontsize INTEGER");
+
+     label14:
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("DROP TABLE colorDefaults");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE TABLE colorDefaults (scheme INTEGER NOT NULL, fg INTEGER NOT NULL DEFAULT 7, bg INTEGER NOT NULL DEFAULT 0)");
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>("CREATE INDEX colorDefaultsschemeindex ON colorDefaults (scheme);");
+
+     label15:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ALTER TABLE hosts ADD COLUMN quickdisconnect TEXT DEFAULT \'");
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>(0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r3);
+
+     label16:
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UPDATE hosts SET fontsize = fontsize / ");
+
+        $f0 = $r0.<org.connectbot.util.HostDatabase: float displayDensity>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(float)>($f0);
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r3);
+
+        return;
+    }
+
+    public org.connectbot.bean.HostBean saveHost(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        org.connectbot.bean.HostBean $r1;
+        java.lang.Object[] $r2;
+        android.database.sqlite.SQLiteDatabase $r3;
+        android.content.ContentValues $r4;
+        long $l0;
+        java.lang.Throwable $r5;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $r2 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r2;
+
+     label1:
+        $r3 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $r4 = virtualinvoke $r1.<org.connectbot.bean.HostBean: android.content.ContentValues getValues()>();
+
+        $l0 = virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("hosts", null, $r4);
+
+        exitmonitor $r2;
+
+     label2:
+        virtualinvoke $r1.<org.connectbot.bean.HostBean: void setId(long)>($l0);
+
+        return $r1;
+
+     label3:
+        $r5 := @caughtexception;
+
+     label4:
+        exitmonitor $r2;
+
+     label5:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public void saveKnownHost(java.lang.String, int, java.lang.String, byte[])
+    {
+        org.connectbot.util.HostDatabase $r0;
+        java.lang.String $r1, $r2;
+        int $i0;
+        byte[] $r3;
+        android.content.ContentValues $r4;
+        java.lang.Object[] $r5, $r8;
+        android.database.sqlite.SQLiteDatabase $r6;
+        java.lang.String[] $r7;
+        java.lang.Throwable $r9;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 := @parameter3: byte[];
+
+        $r4 = new android.content.ContentValues;
+
+        specialinvoke $r4.<android.content.ContentValues: void <init>()>();
+
+        virtualinvoke $r4.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("hostkeyalgo", $r2);
+
+        virtualinvoke $r4.<android.content.ContentValues: void put(java.lang.String,byte[])>("hostkey", $r3);
+
+        $r5 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r5;
+
+     label1:
+        $r6 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r7 = newarray (java.lang.String)[2];
+
+        $r7[0] = $r1;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        $r7[1] = $r2;
+
+        virtualinvoke $r6.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("hosts", $r4, "hostname = ? AND port = ?", $r7);
+
+        $r8 = newarray (java.lang.Object)[1];
+
+        $r8[0] = $r1;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Finished saving hostkey information for \'%s\'", $r8);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.HostDatabase", $r2);
+
+        exitmonitor $r5;
+
+     label2:
+        return;
+
+     label3:
+        $r9 := @caughtexception;
+
+        exitmonitor $r5;
+
+     label4:
+        throw $r9;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean savePortForward(org.connectbot.bean.PortForwardBean)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        org.connectbot.bean.PortForwardBean $r1;
+        boolean $z0;
+        byte $b0;
+        java.lang.Object[] $r2;
+        android.database.sqlite.SQLiteDatabase $r3;
+        long $l1;
+        android.content.ContentValues $r4;
+        java.lang.String[] $r5;
+        java.lang.String $r6;
+        int $i2;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.PortForwardBean;
+
+        $z0 = 0;
+
+        $r2 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r2;
+
+     label01:
+        $r3 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $l1 = virtualinvoke $r1.<org.connectbot.bean.PortForwardBean: long getId()>();
+
+     label02:
+        $b0 = $l1 cmp 0L;
+
+     label03:
+        if $b0 >= 0 goto label06;
+
+        $r4 = virtualinvoke $r1.<org.connectbot.bean.PortForwardBean: android.content.ContentValues getValues()>();
+
+        $l1 = virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("portforwards", null, $r4);
+
+        virtualinvoke $r1.<org.connectbot.bean.PortForwardBean: void setId(long)>($l1);
+
+        $z0 = 1;
+
+     label04:
+        exitmonitor $r2;
+
+     label05:
+        return $z0;
+
+     label06:
+        $r4 = virtualinvoke $r1.<org.connectbot.bean.PortForwardBean: android.content.ContentValues getValues()>();
+
+        $r5 = newarray (java.lang.String)[1];
+
+        $l1 = virtualinvoke $r1.<org.connectbot.bean.PortForwardBean: long getId()>();
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l1);
+
+        $r5[0] = $r6;
+
+        $i2 = virtualinvoke $r3.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("portforwards", $r4, "_id = ?", $r5);
+
+        if $i2 <= 0 goto label04;
+
+     label07:
+        $z0 = 1;
+
+     label08:
+        goto label04;
+
+     label09:
+        $r7 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label10:
+        throw $r7;
+
+        catch java.lang.Throwable from label01 to label02 with label09;
+        catch java.lang.Throwable from label03 to label05 with label09;
+        catch java.lang.Throwable from label06 to label07 with label09;
+        catch java.lang.Throwable from label08 to label10 with label09;
+    }
+
+    public void setColorForScheme(int, int, int)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        int $i0, $i1, $i2, $i3;
+        android.content.ContentValues $r1;
+        java.lang.String[] $r2;
+        java.lang.String $r3;
+        java.lang.Integer[] $r4;
+        java.lang.Integer $r5;
+        java.lang.Object[] $r6;
+        android.database.sqlite.SQLiteDatabase $r7;
+        java.lang.Throwable $r8, $r9;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $r2 = newarray (java.lang.String)[2];
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        $r2[0] = $r3;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+
+        $r2[1] = $r3;
+
+        $r4 = <org.connectbot.util.Colors: java.lang.Integer[] defaults>;
+
+        $r5 = $r4[$i1];
+
+        $i3 = virtualinvoke $r5.<java.lang.Integer: int intValue()>();
+
+        if $i2 != $i3 goto label05;
+
+        $r6 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r6;
+
+     label01:
+        $r7 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        virtualinvoke $r7.<android.database.sqlite.SQLiteDatabase: int delete(java.lang.String,java.lang.String,java.lang.String[])>("colors", "scheme = ? AND number = ?", $r2);
+
+        exitmonitor $r6;
+
+     label02:
+        return;
+
+     label03:
+        $r8 := @caughtexception;
+
+        exitmonitor $r6;
+
+     label04:
+        throw $r8;
+
+     label05:
+        $r1 = new android.content.ContentValues;
+
+        specialinvoke $r1.<android.content.ContentValues: void <init>()>();
+
+        $r5 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i2);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("value", $r5);
+
+        $r6 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r6;
+
+     label06:
+        $r7 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $i3 = virtualinvoke $r7.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("colors", $r1, "scheme = ? AND number = ?", $r2);
+
+        if $i3 != 0 goto label07;
+
+        $r5 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("scheme", $r5);
+
+        $r5 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("number", $r5);
+
+        virtualinvoke $r7.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("colors", null, $r1);
+
+     label07:
+        exitmonitor $r6;
+
+     label08:
+        return;
+
+     label09:
+        $r9 := @caughtexception;
+
+        exitmonitor $r6;
+
+     label10:
+        throw $r9;
+
+        catch java.lang.Throwable from label01 to label02 with label03;
+        catch java.lang.Throwable from label03 to label04 with label03;
+        catch java.lang.Throwable from label06 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    public void setDefaultColorsForScheme(int, int, int)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        int $i0, $i1, $i2;
+        android.content.ContentValues $r1;
+        java.lang.String[] $r2;
+        java.lang.String $r3;
+        java.lang.Integer $r4;
+        java.lang.Object[] $r5;
+        android.database.sqlite.SQLiteDatabase $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $r2 = newarray (java.lang.String)[1];
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i0);
+
+        $r2[0] = $r3;
+
+        $r1 = new android.content.ContentValues;
+
+        specialinvoke $r1.<android.content.ContentValues: void <init>()>();
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("fg", $r4);
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i2);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("bg", $r4);
+
+        $r5 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r5;
+
+     label1:
+        $r6 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $i2 = virtualinvoke $r6.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("colorDefaults", $r1, "scheme = ?", $r2);
+
+        if $i2 != 0 goto label2;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("scheme", $r4);
+
+        virtualinvoke $r6.<android.database.sqlite.SQLiteDatabase: long insert(java.lang.String,java.lang.String,android.content.ContentValues)>("colorDefaults", null, $r1);
+
+     label2:
+        exitmonitor $r5;
+
+     label3:
+        return;
+
+     label4:
+        $r7 := @caughtexception;
+
+        exitmonitor $r5;
+
+     label5:
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+
+    public void setGlobalColor(int, int)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        int $i0, $i1;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        virtualinvoke $r0.<org.connectbot.util.HostDatabase: void setColorForScheme(int,int,int)>(0, $i0, $i1);
+
+        return;
+    }
+
+    public void stopUsingPubkey(long)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        long $l0;
+        android.content.ContentValues $r1;
+        java.lang.Long $r2;
+        byte $b1;
+        java.lang.Object[] $r3;
+        android.database.sqlite.SQLiteDatabase $r4;
+        java.lang.String[] $r5;
+        java.lang.String $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $l0 := @parameter0: long;
+
+        $b1 = $l0 cmp 0L;
+
+        if $b1 >= 0 goto label1;
+
+        return;
+
+     label1:
+        $r1 = new android.content.ContentValues;
+
+        specialinvoke $r1.<android.content.ContentValues: void <init>()>();
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(-1L);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("pubkeyid", $r2);
+
+        $r3 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r3;
+
+     label2:
+        $r4 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $r5 = newarray (java.lang.String)[1];
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r5[0] = $r6;
+
+        virtualinvoke $r4.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("hosts", $r1, "pubkeyid = ?", $r5);
+
+        exitmonitor $r3;
+
+     label3:
+        $r3 = newarray (java.lang.Object)[1];
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        $r3[0] = $r2;
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Set all hosts using pubkey id %d to -1", $r3);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.HostDatabase", $r6);
+
+        return;
+
+     label4:
+        $r7 := @caughtexception;
+
+     label5:
+        exitmonitor $r3;
+
+     label6:
+        throw $r7;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void touchHost(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        org.connectbot.bean.HostBean $r1;
+        android.content.ContentValues $r2;
+        long $l0;
+        java.lang.Long $r3;
+        java.lang.Object[] $r4;
+        android.database.sqlite.SQLiteDatabase $r5;
+        java.lang.String[] $r6;
+        java.lang.String $r7;
+        java.lang.Throwable $r8;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $l0 = $l0 / 1000L;
+
+        $r2 = new android.content.ContentValues;
+
+        specialinvoke $r2.<android.content.ContentValues: void <init>()>();
+
+        $r3 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l0);
+
+        virtualinvoke $r2.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("lastconnect", $r3);
+
+        $r4 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r4;
+
+     label1:
+        $r5 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $r6 = newarray (java.lang.String)[1];
+
+        $l0 = virtualinvoke $r1.<org.connectbot.bean.HostBean: long getId()>();
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r6[0] = $r7;
+
+        virtualinvoke $r5.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("hosts", $r2, "_id = ?", $r6);
+
+        exitmonitor $r4;
+
+     label2:
+        return;
+
+     label3:
+        $r8 := @caughtexception;
+
+        exitmonitor $r4;
+
+     label4:
+        throw $r8;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean updateFontSize(org.connectbot.bean.HostBean)
+    {
+        org.connectbot.util.HostDatabase $r0;
+        org.connectbot.bean.HostBean $r1;
+        android.content.ContentValues $r2;
+        long $l0;
+        byte $b1;
+        int $i2;
+        java.lang.Integer $r3;
+        java.lang.Object[] $r4;
+        android.database.sqlite.SQLiteDatabase $r5;
+        java.lang.String[] $r6;
+        java.lang.String $r7;
+        java.lang.Throwable $r8;
+
+        $r0 := @this: org.connectbot.util.HostDatabase;
+
+        $r1 := @parameter0: org.connectbot.bean.HostBean;
+
+        $l0 = virtualinvoke $r1.<org.connectbot.bean.HostBean: long getId()>();
+
+        $b1 = $l0 cmp 0L;
+
+        if $b1 >= 0 goto label1;
+
+        return 0;
+
+     label1:
+        $r2 = new android.content.ContentValues;
+
+        specialinvoke $r2.<android.content.ContentValues: void <init>()>();
+
+        $i2 = virtualinvoke $r1.<org.connectbot.bean.HostBean: int getFontSize()>();
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i2);
+
+        virtualinvoke $r2.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("fontsize", $r3);
+
+        $r4 = <org.connectbot.util.HostDatabase: java.lang.Object[] dbLock>;
+
+        entermonitor $r4;
+
+     label2:
+        $r5 = virtualinvoke $r0.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getWritableDatabase()>();
+
+        $r6 = newarray (java.lang.String)[1];
+
+        $r7 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r6[0] = $r7;
+
+        virtualinvoke $r5.<android.database.sqlite.SQLiteDatabase: int update(java.lang.String,android.content.ContentValues,java.lang.String,java.lang.String[])>("hosts", $r2, "_id = ?", $r6);
+
+        exitmonitor $r4;
+
+     label3:
+        return 1;
+
+     label4:
+        $r8 := @caughtexception;
+
+        exitmonitor $r4;
+
+     label5:
+        throw $r8;
+
+        catch java.lang.Throwable from label2 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+}

@@ -1,0 +1,55 @@
+public class com.trilead.ssh2.crypto.CryptoWishList extends java.lang.Object
+{
+    public java.lang.String[] c2s_comp_algos;
+    public java.lang.String[] c2s_enc_algos;
+    public java.lang.String[] c2s_mac_algos;
+    public java.lang.String[] kexAlgorithms;
+    public java.lang.String[] s2c_comp_algos;
+    public java.lang.String[] s2c_enc_algos;
+    public java.lang.String[] s2c_mac_algos;
+    public java.lang.String[] serverHostKeyAlgorithms;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.crypto.CryptoWishList $r0;
+        java.lang.String[] $r1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.CryptoWishList;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r1 = staticinvoke <com.trilead.ssh2.transport.KexManager: java.lang.String[] getDefaultKexAlgorithmList()>();
+
+        $r0.<com.trilead.ssh2.crypto.CryptoWishList: java.lang.String[] kexAlgorithms> = $r1;
+
+        $r1 = staticinvoke <com.trilead.ssh2.transport.KexManager: java.lang.String[] getDefaultServerHostkeyAlgorithmList()>();
+
+        $r0.<com.trilead.ssh2.crypto.CryptoWishList: java.lang.String[] serverHostKeyAlgorithms> = $r1;
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.cipher.BlockCipherFactory: java.lang.String[] getDefaultCipherList()>();
+
+        $r0.<com.trilead.ssh2.crypto.CryptoWishList: java.lang.String[] c2s_enc_algos> = $r1;
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.cipher.BlockCipherFactory: java.lang.String[] getDefaultCipherList()>();
+
+        $r0.<com.trilead.ssh2.crypto.CryptoWishList: java.lang.String[] s2c_enc_algos> = $r1;
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.digest.MAC: java.lang.String[] getMacList()>();
+
+        $r0.<com.trilead.ssh2.crypto.CryptoWishList: java.lang.String[] c2s_mac_algos> = $r1;
+
+        $r1 = staticinvoke <com.trilead.ssh2.crypto.digest.MAC: java.lang.String[] getMacList()>();
+
+        $r0.<com.trilead.ssh2.crypto.CryptoWishList: java.lang.String[] s2c_mac_algos> = $r1;
+
+        $r1 = staticinvoke <com.trilead.ssh2.compression.CompressionFactory: java.lang.String[] getDefaultCompressorList()>();
+
+        $r0.<com.trilead.ssh2.crypto.CryptoWishList: java.lang.String[] c2s_comp_algos> = $r1;
+
+        $r1 = staticinvoke <com.trilead.ssh2.compression.CompressionFactory: java.lang.String[] getDefaultCompressorList()>();
+
+        $r0.<com.trilead.ssh2.crypto.CryptoWishList: java.lang.String[] s2c_comp_algos> = $r1;
+
+        return;
+    }
+}

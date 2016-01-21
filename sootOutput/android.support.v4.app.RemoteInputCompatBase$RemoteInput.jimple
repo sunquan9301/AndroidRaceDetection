@@ -1,0 +1,13 @@
+public abstract class android.support.v4.app.RemoteInputCompatBase$RemoteInput extends java.lang.Object
+{
+
+    protected abstract boolean getAllowFreeFormInput();
+
+    protected abstract java.lang.CharSequence[] getChoices();
+
+    protected abstract android.os.Bundle getExtras();
+
+    protected abstract java.lang.CharSequence getLabel();
+
+    protected abstract java.lang.String getResultKey();
+}

@@ -1,0 +1,74 @@
+public class com.trilead.ssh2.packets.PacketOpenSessionChannel extends java.lang.Object
+{
+    int channelID;
+    int initialWindowSize;
+    int maxPacketSize;
+    byte[] payload;
+
+    public void <init>(int, int, int)
+    {
+        com.trilead.ssh2.packets.PacketOpenSessionChannel $r0;
+        int $i0, $i1, $i2;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketOpenSessionChannel;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: int channelID> = $i0;
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: int initialWindowSize> = $i1;
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: int maxPacketSize> = $i2;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketOpenSessionChannel $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketOpenSessionChannel;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(90);
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>("session");
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: int channelID>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: int initialWindowSize>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: int maxPacketSize>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: byte[] payload> = $r2;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketOpenSessionChannel: byte[] payload>;
+
+        return $r2;
+    }
+}

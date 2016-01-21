@@ -1,0 +1,36 @@
+class com.trilead.ssh2.crypto.cipher.BlockCipherFactory$CipherEntry extends java.lang.Object
+{
+    int blocksize;
+    java.lang.String cipherClass;
+    int keysize;
+    java.lang.String type;
+
+    public void <init>(java.lang.String, int, int, java.lang.String)
+    {
+        com.trilead.ssh2.crypto.cipher.BlockCipherFactory$CipherEntry $r0;
+        java.lang.String $r1, $r2;
+        int $i0, $i1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.BlockCipherFactory$CipherEntry;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 := @parameter3: java.lang.String;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.crypto.cipher.BlockCipherFactory$CipherEntry: java.lang.String type> = $r1;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.BlockCipherFactory$CipherEntry: int blocksize> = $i0;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.BlockCipherFactory$CipherEntry: int keysize> = $i1;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.BlockCipherFactory$CipherEntry: java.lang.String cipherClass> = $r2;
+
+        return;
+    }
+}

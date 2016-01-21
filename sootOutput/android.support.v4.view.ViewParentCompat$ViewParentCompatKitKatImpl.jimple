@@ -1,0 +1,14 @@
+class android.support.v4.view.ViewParentCompat$ViewParentCompatKitKatImpl extends android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl
+{
+
+    void <init>()
+    {
+        android.support.v4.view.ViewParentCompat$ViewParentCompatKitKatImpl $r0;
+
+        $r0 := @this: android.support.v4.view.ViewParentCompat$ViewParentCompatKitKatImpl;
+
+        specialinvoke $r0.<android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl: void <init>()>();
+
+        return;
+    }
+}

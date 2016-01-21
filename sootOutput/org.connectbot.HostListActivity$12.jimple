@@ -1,0 +1,49 @@
+class org.connectbot.HostListActivity$12 extends java.lang.Object implements android.content.DialogInterface$OnClickListener
+{
+    final org.connectbot.HostListActivity this$0;
+
+    void <init>(org.connectbot.HostListActivity)
+    {
+        org.connectbot.HostListActivity$12 $r0;
+        org.connectbot.HostListActivity $r1;
+
+        $r0 := @this: org.connectbot.HostListActivity$12;
+
+        $r1 := @parameter0: org.connectbot.HostListActivity;
+
+        $r0.<org.connectbot.HostListActivity$12: org.connectbot.HostListActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.content.DialogInterface, int)
+    {
+        org.connectbot.HostListActivity$12 $r0;
+        android.content.DialogInterface $r1;
+        int $i0;
+        org.connectbot.HostListActivity $r2;
+        android.content.Intent $r3;
+
+        $r0 := @this: org.connectbot.HostListActivity$12;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $i0 := @parameter1: int;
+
+        $r2 = $r0.<org.connectbot.HostListActivity$12: org.connectbot.HostListActivity this$0>;
+
+        staticinvoke <org.connectbot.HostListActivity: boolean access$002(org.connectbot.HostListActivity,boolean)>($r2, 0);
+
+        $r2 = $r0.<org.connectbot.HostListActivity$12: org.connectbot.HostListActivity this$0>;
+
+        $r3 = new android.content.Intent;
+
+        specialinvoke $r3.<android.content.Intent: void <init>()>();
+
+        virtualinvoke $r2.<org.connectbot.HostListActivity: void setIntent(android.content.Intent)>($r3);
+
+        return;
+    }
+}

@@ -1,0 +1,317 @@
+public class com.trilead.ssh2.crypto.cipher.CipherOutputStream extends java.lang.Object
+{
+    final int BUFF_SIZE;
+    int blockSize;
+    java.io.OutputStream bo;
+    byte[] buffer;
+    com.trilead.ssh2.crypto.cipher.BlockCipher currentCipher;
+    byte[] enc;
+    byte[] out_buffer;
+    int out_buffer_pos;
+    int pos;
+
+    public void <init>(com.trilead.ssh2.crypto.cipher.BlockCipher, java.io.OutputStream)
+    {
+        com.trilead.ssh2.crypto.cipher.CipherOutputStream $r0;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r1;
+        java.io.OutputStream $r2;
+        byte[] $r3;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherOutputStream;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.cipher.BlockCipher;
+
+        $r2 := @parameter1: java.io.OutputStream;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int BUFF_SIZE> = 2048;
+
+        $r3 = newarray (byte)[2048];
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] out_buffer> = $r3;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos> = 0;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: java.io.OutputStream bo> = $r2;
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: void changeCipher(com.trilead.ssh2.crypto.cipher.BlockCipher)>($r1);
+
+        return;
+    }
+
+    private void internal_write(byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherOutputStream $r0;
+        byte[] $r1, $r2;
+        int $i0, $i1, $i2, $i3;
+        java.io.OutputStream $r3;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherOutputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+     label1:
+        if $i1 <= 0 goto label4;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos>;
+
+        $i2 = 2048 - $i2;
+
+        if $i1 <= $i2 goto label3;
+
+     label2:
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] out_buffer>;
+
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, $i0, $r2, $i3, $i2);
+
+        $i0 = $i0 + $i2;
+
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos>;
+
+        $i3 = $i3 + $i2;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos> = $i3;
+
+        $i1 = $i1 - $i2;
+
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos>;
+
+        if $i3 < 2048 goto label1;
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: java.io.OutputStream bo>;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] out_buffer>;
+
+        virtualinvoke $r3.<java.io.OutputStream: void write(byte[],int,int)>($r2, 0, 2048);
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos> = 0;
+
+        goto label1;
+
+     label3:
+        $i2 = $i1;
+
+        goto label2;
+
+     label4:
+        return;
+    }
+
+    private void writeBlock() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherOutputStream $r0;
+        java.lang.Exception $r1;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r2;
+        byte[] $r3, $r4;
+        java.lang.Throwable $r5;
+        int $i0;
+        java.io.IOException $r6;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherOutputStream;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: com.trilead.ssh2.crypto.cipher.BlockCipher currentCipher>;
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] buffer>;
+
+        $r4 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] enc>;
+
+        interfaceinvoke $r2.<com.trilead.ssh2.crypto.cipher.BlockCipher: void transformBlock(byte[],int,byte[],int)>($r3, 0, $r4, 0);
+
+     label2:
+        $r4 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] enc>;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int blockSize>;
+
+        specialinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: void internal_write(byte[],int,int)>($r4, 0, $i0);
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos> = 0;
+
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        $r6 = new java.io.IOException;
+
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>("Error while decrypting block.");
+
+        $r5 = virtualinvoke $r6.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r1);
+
+        $r6 = (java.io.IOException) $r5;
+
+        throw $r6;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public void changeCipher(com.trilead.ssh2.crypto.cipher.BlockCipher)
+    {
+        com.trilead.ssh2.crypto.cipher.CipherOutputStream $r0;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r1;
+        int $i0;
+        byte[] $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherOutputStream;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.cipher.BlockCipher;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: com.trilead.ssh2.crypto.cipher.BlockCipher currentCipher> = $r1;
+
+        $i0 = interfaceinvoke $r1.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int blockSize> = $i0;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int blockSize>;
+
+        $r2 = newarray (byte)[$i0];
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] buffer> = $r2;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int blockSize>;
+
+        $r2 = newarray (byte)[$i0];
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] enc> = $r2;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos> = 0;
+
+        return;
+    }
+
+    public void flush() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherOutputStream $r0;
+        int $i0;
+        java.io.IOException $r1;
+        java.io.OutputStream $r2;
+        byte[] $r3;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherOutputStream;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos>;
+
+        if $i0 == 0 goto label1;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("FATAL: cannot flush since crypto buffer is not aligned.");
+
+        throw $r1;
+
+     label1:
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos>;
+
+        if $i0 <= 0 goto label2;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: java.io.OutputStream bo>;
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] out_buffer>;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos>;
+
+        virtualinvoke $r2.<java.io.OutputStream: void write(byte[],int,int)>($r3, 0, $i0);
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int out_buffer_pos> = 0;
+
+     label2:
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: java.io.OutputStream bo>;
+
+        virtualinvoke $r2.<java.io.OutputStream: void flush()>();
+
+        return;
+    }
+
+    public void write(byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherOutputStream $r0;
+        byte[] $r1, $r2;
+        int $i0, $i1, $i2, $i3;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherOutputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+     label1:
+        if $i1 <= 0 goto label2;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int blockSize>;
+
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos>;
+
+        $i2 = $i2 - $i3;
+
+        $i3 = staticinvoke <java.lang.Math: int min(int,int)>($i2, $i1);
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: byte[] buffer>;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, $i0, $r2, $i2, $i3);
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos>;
+
+        $i2 = $i2 + $i3;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos> = $i2;
+
+        $i0 = $i0 + $i3;
+
+        $i1 = $i1 - $i3;
+
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos>;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int blockSize>;
+
+        if $i3 < $i2 goto label1;
+
+        specialinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: void writeBlock()>();
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public void writePlain(byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherOutputStream $r0;
+        byte[] $r1;
+        int $i0, $i1, $i2;
+        java.io.IOException $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherOutputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: int pos>;
+
+        if $i2 == 0 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Cannot write plain since crypto buffer is not aligned.");
+
+        throw $r2;
+
+     label1:
+        specialinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherOutputStream: void internal_write(byte[],int,int)>($r1, $i0, $i1);
+
+        return;
+    }
+}

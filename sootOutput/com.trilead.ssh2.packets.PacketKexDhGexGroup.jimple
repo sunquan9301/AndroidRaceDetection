@@ -1,0 +1,109 @@
+public class com.trilead.ssh2.packets.PacketKexDhGexGroup extends java.lang.Object
+{
+    java.math.BigInteger g;
+    java.math.BigInteger p;
+    byte[] payload;
+
+    public void <init>(byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.PacketKexDhGexGroup $r0;
+        byte[] $r1, $r3;
+        int $i0, $i1;
+        com.trilead.ssh2.packets.TypesReader $r2;
+        java.lang.IllegalArgumentException $r4;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r6;
+        java.math.BigInteger $r7;
+        java.io.IOException $r8;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketKexDhGexGroup;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r3 = newarray (byte)[$i1];
+
+        $r0.<com.trilead.ssh2.packets.PacketKexDhGexGroup: byte[] payload> = $r3;
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketKexDhGexGroup: byte[] payload>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, $i0, $r3, 0, $i1);
+
+        $r2 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r1, $i0, $i1);
+
+        $i1 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+        if $i1 == 31 goto label1;
+
+        $r4 = new java.lang.IllegalArgumentException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("This is not a SSH_MSG_KEX_DH_GEX_GROUP! (");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r6);
+
+        throw $r4;
+
+     label1:
+        $r7 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketKexDhGexGroup: java.math.BigInteger p> = $r7;
+
+        $r7 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketKexDhGexGroup: java.math.BigInteger g> = $r7;
+
+        $i1 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int remain()>();
+
+        if $i1 == 0 goto label2;
+
+        $r8 = new java.io.IOException;
+
+        specialinvoke $r8.<java.io.IOException: void <init>(java.lang.String)>("PADDING IN SSH_MSG_KEX_DH_GEX_GROUP!");
+
+        throw $r8;
+
+     label2:
+        return;
+    }
+
+    public java.math.BigInteger getG()
+    {
+        com.trilead.ssh2.packets.PacketKexDhGexGroup $r0;
+        java.math.BigInteger $r1;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketKexDhGexGroup;
+
+        $r1 = $r0.<com.trilead.ssh2.packets.PacketKexDhGexGroup: java.math.BigInteger g>;
+
+        return $r1;
+    }
+
+    public java.math.BigInteger getP()
+    {
+        com.trilead.ssh2.packets.PacketKexDhGexGroup $r0;
+        java.math.BigInteger $r1;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketKexDhGexGroup;
+
+        $r1 = $r0.<com.trilead.ssh2.packets.PacketKexDhGexGroup: java.math.BigInteger p>;
+
+        return $r1;
+    }
+}

@@ -1,0 +1,518 @@
+public class com.trilead.ssh2.packets.TypesReader extends java.lang.Object
+{
+    byte[] arr;
+    int max;
+    int pos;
+
+    public void <init>(byte[])
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        byte[] $r1;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $r1 := @parameter0: byte[];
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = 0;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int max> = 0;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr> = $r1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = 0;
+
+        $i0 = lengthof $r1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int max> = $i0;
+
+        return;
+    }
+
+    public void <init>(byte[], int, int)
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        byte[] $r1;
+        int $i0, $i1;
+        java.lang.IllegalArgumentException $r2;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = 0;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int max> = 0;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr> = $r1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i0;
+
+        $i1 = $i0 + $i1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int max> = $i1;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        if $i1 < 0 goto label1;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i1 = lengthof $r1;
+
+        if $i0 <= $i1 goto label2;
+
+     label1:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Illegal offset.");
+
+        throw $r2;
+
+     label2:
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        if $i1 < 0 goto label3;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        $i0 = lengthof $r1;
+
+        if $i1 <= $i0 goto label4;
+
+     label3:
+        $r2 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r2.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("Illegal length.");
+
+        throw $r2;
+
+     label4:
+        return;
+    }
+
+    public boolean readBoolean() throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        int $i0, $i1;
+        java.io.IOException $r1;
+        byte[] $r2;
+        byte $b2;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        if $i0 < $i1 goto label1;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("Packet too short.");
+
+        throw $r1;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i1 = $i0 + 1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i1;
+
+        $b2 = $r2[$i0];
+
+        if $b2 == 0 goto label2;
+
+        return 1;
+
+     label2:
+        return 0;
+    }
+
+    public int readByte() throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        int $i0, $i1;
+        java.io.IOException $r1;
+        byte[] $r2;
+        byte $b2;
+        short $s3;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        if $i0 < $i1 goto label1;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("Packet too short.");
+
+        throw $r1;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i1 = $i0 + 1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i1;
+
+        $b2 = $r2[$i0];
+
+        $s3 = $b2 & 255;
+
+        return $s3;
+    }
+
+    public byte[] readByteString() throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        byte[] $r1, $r3;
+        int $i0, $i1, $i2;
+        java.io.IOException $r2;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $i1 = virtualinvoke $r0.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i2 = $i0 + $i1;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        if $i2 <= $i0 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Malformed SSH byte string.");
+
+        throw $r2;
+
+     label1:
+        $r1 = newarray (byte)[$i1];
+
+        $r3 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i2, $r1, 0, $i1);
+
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i2 = $i2 + $i1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i2;
+
+        return $r1;
+    }
+
+    public byte[] readBytes(int) throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        int $i0, $i1, $i2;
+        byte[] $r1, $r3;
+        java.io.IOException $r2;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $i0 := @parameter0: int;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i2 = $i1 + $i0;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        if $i2 <= $i1 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Packet too short.");
+
+        throw $r2;
+
+     label1:
+        $r1 = newarray (byte)[$i0];
+
+        $r3 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i2, $r1, 0, $i0);
+
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i2 = $i2 + $i0;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i2;
+
+        return $r1;
+    }
+
+    public java.math.BigInteger readMPINT() throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        java.math.BigInteger $r1;
+        int $i0;
+        byte[] $r2;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $r2 = virtualinvoke $r0.<com.trilead.ssh2.packets.TypesReader: byte[] readByteString()>();
+
+        $i0 = lengthof $r2;
+
+        if $i0 != 0 goto label1;
+
+        $r1 = <java.math.BigInteger: java.math.BigInteger ZERO>;
+
+        return $r1;
+
+     label1:
+        $r1 = new java.math.BigInteger;
+
+        specialinvoke $r1.<java.math.BigInteger: void <init>(byte[])>($r2);
+
+        return $r1;
+    }
+
+    public java.lang.String[] readNameList() throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        java.lang.String $r1;
+        java.lang.String[] $r2;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $r1 = virtualinvoke $r0.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $r2 = staticinvoke <com.trilead.ssh2.util.Tokenizer: java.lang.String[] parseTokens(java.lang.String,char)>($r1, 44);
+
+        return $r2;
+    }
+
+    public java.lang.String readString() throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        java.lang.String $r1;
+        int $i0, $i1, $i2;
+        java.io.IOException $r2;
+        byte[] $r3;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $i1 = virtualinvoke $r0.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i2 = $i0 + $i1;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        if $i2 <= $i0 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Malformed SSH string.");
+
+        throw $r2;
+
+     label1:
+        $r1 = new java.lang.String;
+
+        $r3 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        specialinvoke $r1.<java.lang.String: void <init>(byte[],int,int,java.lang.String)>($r3, $i2, $i1, "ISO-8859-1");
+
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i2 = $i2 + $i1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i2;
+
+        return $r1;
+    }
+
+    public java.lang.String readString(java.lang.String) throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        java.lang.String $r1, $r2;
+        int $i0, $i1, $i2;
+        java.io.IOException $r3;
+        byte[] $r4;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i1 = virtualinvoke $r0.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i2 = $i0 + $i1;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        if $i2 <= $i0 goto label1;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Malformed SSH string.");
+
+        throw $r3;
+
+     label1:
+        if $r1 != null goto label3;
+
+        $r2 = new java.lang.String;
+
+        $r4 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        specialinvoke $r2.<java.lang.String: void <init>(byte[],int,int)>($r4, $i2, $i1);
+
+     label2:
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i2 = $i2 + $i1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i2;
+
+        return $r2;
+
+     label3:
+        $r2 = new java.lang.String;
+
+        $r4 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i2 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        specialinvoke $r2.<java.lang.String: void <init>(byte[],int,int,java.lang.String)>($r4, $i2, $i1, $r1);
+
+        goto label2;
+    }
+
+    public int readUINT32() throws java.io.IOException
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        int $i0, $i1, $i4;
+        java.io.IOException $r1;
+        byte[] $r2;
+        byte $b2;
+        short $s3;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i1 = $i0 + 4;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        if $i1 <= $i0 goto label1;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("Packet too short.");
+
+        throw $r1;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i0 = $i1 + 1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i0;
+
+        $b2 = $r2[$i1];
+
+        $s3 = $b2 & 255;
+
+        $i1 = $s3 << 24;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i4 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i0 = $i4 + 1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i0;
+
+        $b2 = $r2[$i4];
+
+        $s3 = $b2 & 255;
+
+        $i4 = $s3 << 16;
+
+        $i4 = $i1 | $i4;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i0 = $i1 + 1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i0;
+
+        $b2 = $r2[$i1];
+
+        $s3 = $b2 & 255;
+
+        $i1 = $s3 << 8;
+
+        $i4 = $i4 | $i1;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.TypesReader: byte[] arr>;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i0 = $i1 + 1;
+
+        $r0.<com.trilead.ssh2.packets.TypesReader: int pos> = $i0;
+
+        $b2 = $r2[$i1];
+
+        $s3 = $b2 & 255;
+
+        $i4 = $i4 | $s3;
+
+        return $i4;
+    }
+
+    public int remain()
+    {
+        com.trilead.ssh2.packets.TypesReader $r0;
+        int $i0, $i1;
+
+        $r0 := @this: com.trilead.ssh2.packets.TypesReader;
+
+        $i0 = $r0.<com.trilead.ssh2.packets.TypesReader: int max>;
+
+        $i1 = $r0.<com.trilead.ssh2.packets.TypesReader: int pos>;
+
+        $i1 = $i0 - $i1;
+
+        return $i1;
+    }
+}

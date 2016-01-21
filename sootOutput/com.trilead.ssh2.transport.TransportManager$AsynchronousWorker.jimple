@@ -1,0 +1,125 @@
+class com.trilead.ssh2.transport.TransportManager$AsynchronousWorker extends java.lang.Thread
+{
+    final com.trilead.ssh2.transport.TransportManager this$0;
+
+    void <init>(com.trilead.ssh2.transport.TransportManager)
+    {
+        com.trilead.ssh2.transport.TransportManager$AsynchronousWorker $r0;
+        com.trilead.ssh2.transport.TransportManager $r1;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager$AsynchronousWorker;
+
+        $r1 := @parameter0: com.trilead.ssh2.transport.TransportManager;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: com.trilead.ssh2.transport.TransportManager this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Thread: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.trilead.ssh2.transport.TransportManager$AsynchronousWorker $r0;
+        java.io.IOException $r1;
+        com.trilead.ssh2.transport.TransportManager $r2;
+        java.util.Vector $r3, $r4;
+        int $i0;
+        java.lang.Object $r5;
+        byte[] $r6;
+        java.lang.Throwable $r7;
+        java.lang.InterruptedException $r8;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager$AsynchronousWorker;
+
+     label01:
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: com.trilead.ssh2.transport.TransportManager this$0>;
+
+        $r3 = staticinvoke <com.trilead.ssh2.transport.TransportManager: java.util.Vector access$000(com.trilead.ssh2.transport.TransportManager)>($r2);
+
+        entermonitor $r3;
+
+     label02:
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: com.trilead.ssh2.transport.TransportManager this$0>;
+
+        $r4 = staticinvoke <com.trilead.ssh2.transport.TransportManager: java.util.Vector access$000(com.trilead.ssh2.transport.TransportManager)>($r2);
+
+        $i0 = virtualinvoke $r4.<java.util.Vector: int size()>();
+
+     label03:
+        if $i0 != 0 goto label08;
+
+     label04:
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: com.trilead.ssh2.transport.TransportManager this$0>;
+
+     label05:
+        $r4 = staticinvoke <com.trilead.ssh2.transport.TransportManager: java.util.Vector access$000(com.trilead.ssh2.transport.TransportManager)>($r2);
+
+        virtualinvoke $r4.<java.lang.Object: void wait(long)>(2000L);
+
+     label06:
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: com.trilead.ssh2.transport.TransportManager this$0>;
+
+        $r4 = staticinvoke <com.trilead.ssh2.transport.TransportManager: java.util.Vector access$000(com.trilead.ssh2.transport.TransportManager)>($r2);
+
+        $i0 = virtualinvoke $r4.<java.util.Vector: int size()>();
+
+        if $i0 != 0 goto label08;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: com.trilead.ssh2.transport.TransportManager this$0>;
+
+        staticinvoke <com.trilead.ssh2.transport.TransportManager: java.lang.Thread access$102(com.trilead.ssh2.transport.TransportManager,java.lang.Thread)>($r2, null);
+
+        exitmonitor $r3;
+
+     label07:
+        return;
+
+     label08:
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: com.trilead.ssh2.transport.TransportManager this$0>;
+
+        $r4 = staticinvoke <com.trilead.ssh2.transport.TransportManager: java.util.Vector access$000(com.trilead.ssh2.transport.TransportManager)>($r2);
+
+        $r5 = virtualinvoke $r4.<java.util.Vector: java.lang.Object remove(int)>(0);
+
+        $r6 = (byte[]) $r5;
+
+        exitmonitor $r3;
+
+     label09:
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: com.trilead.ssh2.transport.TransportManager this$0>;
+
+     label10:
+        virtualinvoke $r2.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r6);
+
+     label11:
+        goto label01;
+
+     label12:
+        $r1 := @caughtexception;
+
+        return;
+
+     label13:
+        $r7 := @caughtexception;
+
+     label14:
+        exitmonitor $r3;
+
+     label15:
+        throw $r7;
+
+     label16:
+        $r8 := @caughtexception;
+
+        goto label06;
+
+        catch java.lang.Throwable from label02 to label03 with label13;
+        catch java.lang.InterruptedException from label05 to label06 with label16;
+        catch java.lang.Throwable from label04 to label06 with label13;
+        catch java.lang.Throwable from label06 to label07 with label13;
+        catch java.lang.Throwable from label08 to label09 with label13;
+        catch java.io.IOException from label10 to label11 with label12;
+        catch java.lang.Throwable from label14 to label15 with label13;
+    }
+}

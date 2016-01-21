@@ -1,0 +1,71 @@
+class org.connectbot.TerminalView$1 extends android.view.inputmethod.BaseInputConnection
+{
+    final org.connectbot.TerminalView this$0;
+
+    void <init>(org.connectbot.TerminalView, android.view.View, boolean)
+    {
+        org.connectbot.TerminalView$1 $r0;
+        org.connectbot.TerminalView $r1;
+        android.view.View $r2;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.TerminalView$1;
+
+        $r1 := @parameter0: org.connectbot.TerminalView;
+
+        $r2 := @parameter1: android.view.View;
+
+        $z0 := @parameter2: boolean;
+
+        $r0.<org.connectbot.TerminalView$1: org.connectbot.TerminalView this$0> = $r1;
+
+        specialinvoke $r0.<android.view.inputmethod.BaseInputConnection: void <init>(android.view.View,boolean)>($r2, $z0);
+
+        return;
+    }
+
+    public boolean deleteSurroundingText(int, int)
+    {
+        org.connectbot.TerminalView$1 $r0;
+        int $i0, $i1;
+        android.view.KeyEvent $r1;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.TerminalView$1;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        if $i1 != 0 goto label1;
+
+        if $i0 != 0 goto label1;
+
+        $r1 = new android.view.KeyEvent;
+
+        specialinvoke $r1.<android.view.KeyEvent: void <init>(int,int)>(0, 67);
+
+        $z0 = virtualinvoke $r0.<org.connectbot.TerminalView$1: boolean sendKeyEvent(android.view.KeyEvent)>($r1);
+
+        return $z0;
+
+     label1:
+        $i1 = 0;
+
+     label2:
+        if $i1 >= $i0 goto label3;
+
+        $r1 = new android.view.KeyEvent;
+
+        specialinvoke $r1.<android.view.KeyEvent: void <init>(int,int)>(0, 67);
+
+        virtualinvoke $r0.<org.connectbot.TerminalView$1: boolean sendKeyEvent(android.view.KeyEvent)>($r1);
+
+        $i1 = $i1 + 1;
+
+        goto label2;
+
+     label3:
+        return 1;
+    }
+}

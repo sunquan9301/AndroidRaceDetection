@@ -1,0 +1,499 @@
+public class com.trilead.ssh2.signature.RSASHA1Verify extends java.lang.Object
+{
+    private static final com.trilead.ssh2.log.Logger log;
+
+    static void <clinit>()
+    {
+        com.trilead.ssh2.log.Logger $r0;
+
+        $r0 = staticinvoke <com.trilead.ssh2.log.Logger: com.trilead.ssh2.log.Logger getLogger(java.lang.Class)>(class "com/trilead/ssh2/signature/RSASHA1Verify");
+
+        <com.trilead.ssh2.signature.RSASHA1Verify: com.trilead.ssh2.log.Logger log> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.trilead.ssh2.signature.RSASHA1Verify $r0;
+
+        $r0 := @this: com.trilead.ssh2.signature.RSASHA1Verify;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.security.interfaces.RSAPublicKey decodeSSHRSAPublicKey(byte[]) throws java.io.IOException
+    {
+        byte[] $r0;
+        java.security.spec.InvalidKeySpecException $r1;
+        java.io.IOException $r2;
+        java.security.spec.RSAPublicKeySpec $r3;
+        java.security.NoSuchAlgorithmException $r4;
+        com.trilead.ssh2.packets.TypesReader $r5;
+        java.lang.String $r6;
+        boolean $z0;
+        java.lang.IllegalArgumentException $r7;
+        java.math.BigInteger $r8, $r9;
+        int $i0;
+        java.security.KeyFactory $r10;
+        java.security.PublicKey $r11;
+        java.security.interfaces.RSAPublicKey $r12;
+
+        $r0 := @parameter0: byte[];
+
+        $r5 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r5.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[])>($r0);
+
+        $r6 = virtualinvoke $r5.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("ssh-rsa");
+
+        if $z0 != 0 goto label1;
+
+        $r7 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r7.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("This is not a ssh-rsa public key");
+
+        throw $r7;
+
+     label1:
+        $r8 = virtualinvoke $r5.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r9 = virtualinvoke $r5.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $i0 = virtualinvoke $r5.<com.trilead.ssh2.packets.TypesReader: int remain()>();
+
+        if $i0 == 0 goto label2;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Padding in RSA public key!");
+
+        throw $r2;
+
+     label2:
+        $r3 = new java.security.spec.RSAPublicKeySpec;
+
+        specialinvoke $r3.<java.security.spec.RSAPublicKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger)>($r9, $r8);
+
+     label3:
+        $r10 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>("RSA");
+
+        $r11 = virtualinvoke $r10.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r3);
+
+     label4:
+        $r12 = (java.security.interfaces.RSAPublicKey) $r11;
+
+        return $r12;
+
+     label5:
+        $r4 := @caughtexception;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("No RSA KeyFactory available");
+
+        virtualinvoke $r2.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r4);
+
+        throw $r2;
+
+     label6:
+        $r1 := @caughtexception;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("No RSA KeyFactory available");
+
+        virtualinvoke $r2.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r1);
+
+        throw $r2;
+
+        catch java.security.NoSuchAlgorithmException from label3 to label4 with label5;
+        catch java.security.spec.InvalidKeySpecException from label3 to label4 with label6;
+    }
+
+    public static byte[] decodeSSHRSASignature(byte[]) throws java.io.IOException
+    {
+        byte[] $r0, $r5;
+        int $i0, $i2, $i3;
+        com.trilead.ssh2.packets.TypesReader $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3;
+        boolean $z0;
+        java.io.IOException $r4;
+        com.trilead.ssh2.log.Logger $r6;
+        byte $b1;
+        short $s4;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[])>($r0);
+
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("ssh-rsa");
+
+        if $z0 != 0 goto label1;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("Peer sent wrong signature format");
+
+        throw $r4;
+
+     label1:
+        $r5 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: byte[] readByteString()>();
+
+        $i0 = lengthof $r5;
+
+        if $i0 != 0 goto label2;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("Error in RSA signature, S is empty.");
+
+        throw $r4;
+
+     label2:
+        $r6 = <com.trilead.ssh2.signature.RSASHA1Verify: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label3;
+
+        $r6 = <com.trilead.ssh2.signature.RSASHA1Verify: com.trilead.ssh2.log.Logger log>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Decoding ssh-rsa signature string (length: ");
+
+        $i0 = lengthof $r5;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, $r3);
+
+     label3:
+        $i0 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: int remain()>();
+
+        if $i0 == 0 goto label4;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("Padding in RSA signature!");
+
+        throw $r4;
+
+     label4:
+        $b1 = $r5[0];
+
+        if $b1 != 0 goto label5;
+
+        $b1 = $r5[1];
+
+        if $b1 != 0 goto label6;
+
+        $b1 = $r5[2];
+
+        if $b1 != 0 goto label7;
+
+        $i0 = 0 + 1;
+
+        $b1 = $r5[0];
+
+        $i2 = $b1 << 24;
+
+        $i2 = $i2 & -16777216;
+
+        $i3 = $i0 + 1;
+
+        $b1 = $r5[$i0];
+
+        $i0 = $b1 << 16;
+
+        $i0 = $i0 & 16711680;
+
+        $i2 = $i2 | $i0;
+
+        $i0 = $i3 + 1;
+
+        $b1 = $r5[$i3];
+
+        $i3 = $b1 << 8;
+
+        $i3 = $i3 & 65280;
+
+        $i3 = $i2 | $i3;
+
+        $b1 = $r5[$i0];
+
+        $s4 = $b1 & 255;
+
+        $i0 = $i3 | $s4;
+
+        $i3 = $i0 + 4;
+
+        $i2 = $i3 + 1;
+
+        $b1 = $r5[$i3];
+
+        $i3 = $b1 << 24;
+
+        $i3 = $i3 & -16777216;
+
+        $i0 = $i2 + 1;
+
+        $b1 = $r5[$i2];
+
+        $i2 = $b1 << 16;
+
+        $i2 = $i2 & 16711680;
+
+        $i3 = $i3 | $i2;
+
+        $i2 = $i0 + 1;
+
+        $b1 = $r5[$i0];
+
+        $i0 = $b1 << 8;
+
+        $i0 = $i0 & 65280;
+
+        $i3 = $i3 | $i0;
+
+        $i0 = $i2 + 1;
+
+        $b1 = $r5[$i2];
+
+        $s4 = $b1 & 255;
+
+        $i3 = $i3 | $s4;
+
+        $r0 = newarray (byte)[$i3];
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r5, $i0, $r0, 0, $i3);
+
+        return $r5;
+
+     label5:
+        return $r5;
+
+     label6:
+        return $r5;
+
+     label7:
+        return $r5;
+    }
+
+    public static byte[] encodeSSHRSAPublicKey(java.security.interfaces.RSAPublicKey) throws java.io.IOException
+    {
+        java.security.interfaces.RSAPublicKey $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        java.math.BigInteger $r2;
+        byte[] $r3;
+
+        $r0 := @parameter0: java.security.interfaces.RSAPublicKey;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>("ssh-rsa");
+
+        $r2 = interfaceinvoke $r0.<java.security.interfaces.RSAPublicKey: java.math.BigInteger getPublicExponent()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeMPInt(java.math.BigInteger)>($r2);
+
+        $r2 = interfaceinvoke $r0.<java.security.interfaces.RSAPublicKey: java.math.BigInteger getModulus()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeMPInt(java.math.BigInteger)>($r2);
+
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        return $r3;
+    }
+
+    public static byte[] encodeSSHRSASignature(byte[]) throws java.io.IOException
+    {
+        byte[] $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        int $i0;
+        byte $b1;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>("ssh-rsa");
+
+        $i0 = lengthof $r0;
+
+        if $i0 <= 1 goto label2;
+
+        $b1 = $r0[0];
+
+        if $b1 != 0 goto label2;
+
+        $i0 = lengthof $r0;
+
+        $i0 = $i0 + -1;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(byte[],int,int)>($r0, 1, $i0);
+
+     label1:
+        $r0 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        return $r0;
+
+     label2:
+        $i0 = lengthof $r0;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(byte[],int,int)>($r0, 0, $i0);
+
+        goto label1;
+    }
+
+    public static byte[] generateSignature(byte[], java.security.interfaces.RSAPrivateKey) throws java.io.IOException
+    {
+        byte[] $r0;
+        java.security.interfaces.RSAPrivateKey $r1;
+        java.security.NoSuchAlgorithmException $r2;
+        java.io.IOException $r3;
+        java.security.Signature $r4;
+        java.security.InvalidKeyException $r5;
+        java.security.SignatureException $r6;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: java.security.interfaces.RSAPrivateKey;
+
+     label1:
+        $r4 = staticinvoke <java.security.Signature: java.security.Signature getInstance(java.lang.String)>("SHA1withRSA");
+
+        virtualinvoke $r4.<java.security.Signature: void initSign(java.security.PrivateKey)>($r1);
+
+        virtualinvoke $r4.<java.security.Signature: void update(byte[])>($r0);
+
+        $r0 = virtualinvoke $r4.<java.security.Signature: byte[] sign()>();
+
+     label2:
+        return $r0;
+
+     label3:
+        $r2 := @caughtexception;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>()>();
+
+        virtualinvoke $r3.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r2);
+
+        throw $r3;
+
+     label4:
+        $r5 := @caughtexception;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>()>();
+
+        virtualinvoke $r3.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r5);
+
+        throw $r3;
+
+     label5:
+        $r6 := @caughtexception;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>()>();
+
+        virtualinvoke $r3.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r6);
+
+        throw $r3;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label3;
+        catch java.security.InvalidKeyException from label1 to label2 with label4;
+        catch java.security.SignatureException from label1 to label2 with label5;
+    }
+
+    public static boolean verifySignature(byte[], byte[], java.security.interfaces.RSAPublicKey) throws java.io.IOException
+    {
+        byte[] $r0, $r1;
+        java.security.interfaces.RSAPublicKey $r2;
+        java.security.NoSuchAlgorithmException $r3;
+        java.io.IOException $r4;
+        java.security.Signature $r5;
+        boolean $z0;
+        java.security.InvalidKeyException $r6;
+        java.security.SignatureException $r7;
+
+        $r0 := @parameter0: byte[];
+
+        $r1 := @parameter1: byte[];
+
+        $r2 := @parameter2: java.security.interfaces.RSAPublicKey;
+
+     label1:
+        $r5 = staticinvoke <java.security.Signature: java.security.Signature getInstance(java.lang.String)>("SHA1withRSA");
+
+        virtualinvoke $r5.<java.security.Signature: void initVerify(java.security.PublicKey)>($r2);
+
+        virtualinvoke $r5.<java.security.Signature: void update(byte[])>($r0);
+
+        $z0 = virtualinvoke $r5.<java.security.Signature: boolean verify(byte[])>($r1);
+
+     label2:
+        return $z0;
+
+     label3:
+        $r3 := @caughtexception;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>()>();
+
+        virtualinvoke $r4.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r3);
+
+        throw $r4;
+
+     label4:
+        $r6 := @caughtexception;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>()>();
+
+        virtualinvoke $r4.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r6);
+
+        throw $r4;
+
+     label5:
+        $r7 := @caughtexception;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>()>();
+
+        virtualinvoke $r4.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r7);
+
+        throw $r4;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label3;
+        catch java.security.InvalidKeyException from label1 to label2 with label4;
+        catch java.security.SignatureException from label1 to label2 with label5;
+    }
+}

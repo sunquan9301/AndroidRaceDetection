@@ -1,0 +1,25 @@
+public class com.trilead.ssh2.transport.NegotiatedParameters extends java.lang.Object
+{
+    public java.lang.String comp_algo_client_to_server;
+    public java.lang.String comp_algo_server_to_client;
+    public java.lang.String enc_algo_client_to_server;
+    public java.lang.String enc_algo_server_to_client;
+    public boolean guessOK;
+    public java.lang.String kex_algo;
+    public java.lang.String lang_client_to_server;
+    public java.lang.String lang_server_to_client;
+    public java.lang.String mac_algo_client_to_server;
+    public java.lang.String mac_algo_server_to_client;
+    public java.lang.String server_host_key_algo;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.transport.NegotiatedParameters $r0;
+
+        $r0 := @this: com.trilead.ssh2.transport.NegotiatedParameters;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

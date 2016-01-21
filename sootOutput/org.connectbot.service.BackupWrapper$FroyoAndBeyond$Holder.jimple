@@ -1,0 +1,28 @@
+class org.connectbot.service.BackupWrapper$FroyoAndBeyond$Holder extends java.lang.Object
+{
+    private static final org.connectbot.service.BackupWrapper$FroyoAndBeyond sInstance;
+
+    static void <clinit>()
+    {
+        org.connectbot.service.BackupWrapper$FroyoAndBeyond $r0;
+
+        $r0 = new org.connectbot.service.BackupWrapper$FroyoAndBeyond;
+
+        specialinvoke $r0.<org.connectbot.service.BackupWrapper$FroyoAndBeyond: void <init>(org.connectbot.service.BackupWrapper$1)>(null);
+
+        <org.connectbot.service.BackupWrapper$FroyoAndBeyond$Holder: org.connectbot.service.BackupWrapper$FroyoAndBeyond sInstance> = $r0;
+
+        return;
+    }
+
+    private void <init>()
+    {
+        org.connectbot.service.BackupWrapper$FroyoAndBeyond$Holder $r0;
+
+        $r0 := @this: org.connectbot.service.BackupWrapper$FroyoAndBeyond$Holder;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

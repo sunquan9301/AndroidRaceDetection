@@ -1,0 +1,2033 @@
+public class org.connectbot.service.TerminalKeyListener extends java.lang.Object implements android.content.SharedPreferences$OnSharedPreferenceChangeListener, android.view.View$OnKeyListener
+{
+    private final org.connectbot.service.TerminalBridge bridge;
+    private final de.mud.terminal.VDUBuffer buffer;
+    private android.text.ClipboardManager clipboard;
+    private boolean controlNumbersAreFKeysOnSoftKeyboard;
+    private final boolean deviceHasHardKeyboard;
+    private java.lang.String encoding;
+    private java.lang.String keymode;
+    private int mDeadKey;
+    private final org.connectbot.service.TerminalManager manager;
+    private int ourMetaState;
+    private final android.content.SharedPreferences prefs;
+    private boolean selectingForCopy;
+    private final org.connectbot.bean.SelectionArea selectionArea;
+    private boolean shiftedNumbersAreFKeysOnHardKeyboard;
+    private int stickyMetas;
+    private boolean volumeKeysChangeFontSize;
+
+    public void <init>(org.connectbot.service.TerminalManager, org.connectbot.service.TerminalBridge, de.mud.terminal.VDUBuffer, java.lang.String)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        org.connectbot.service.TerminalManager $r1;
+        org.connectbot.service.TerminalBridge $r2;
+        de.mud.terminal.VDUBuffer $r3;
+        java.lang.String $r4;
+        boolean $z0;
+        android.content.SharedPreferences $r5;
+        org.connectbot.bean.SelectionArea $r6;
+        android.content.res.Resources $r7;
+        android.content.res.Configuration $r8;
+        int $i0;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager;
+
+        $r2 := @parameter1: org.connectbot.service.TerminalBridge;
+
+        $r3 := @parameter2: de.mud.terminal.VDUBuffer;
+
+        $r4 := @parameter3: java.lang.String;
+
+        $z0 = 0;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalKeyListener: java.lang.String keymode> = null;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = 0;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int mDeadKey> = 0;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: android.text.ClipboardManager clipboard> = null;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: boolean selectingForCopy> = 0;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalManager manager> = $r1;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge> = $r2;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer> = $r3;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: java.lang.String encoding> = $r4;
+
+        $r6 = new org.connectbot.bean.SelectionArea;
+
+        specialinvoke $r6.<org.connectbot.bean.SelectionArea: void <init>()>();
+
+        $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea> = $r6;
+
+        $r5 = staticinvoke <android.preference.PreferenceManager: android.content.SharedPreferences getDefaultSharedPreferences(android.content.Context)>($r1);
+
+        $r0.<org.connectbot.service.TerminalKeyListener: android.content.SharedPreferences prefs> = $r5;
+
+        $r5 = $r0.<org.connectbot.service.TerminalKeyListener: android.content.SharedPreferences prefs>;
+
+        interfaceinvoke $r5.<android.content.SharedPreferences: void registerOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener)>($r0);
+
+        $r7 = $r1.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r8 = virtualinvoke $r7.<android.content.res.Resources: android.content.res.Configuration getConfiguration()>();
+
+        $i0 = $r8.<android.content.res.Configuration: int keyboard>;
+
+        if $i0 != 2 goto label1;
+
+        $z0 = 1;
+
+     label1:
+        $r0.<org.connectbot.service.TerminalKeyListener: boolean deviceHasHardKeyboard> = $z0;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: void updatePrefs()>();
+
+        return;
+    }
+
+    private int getStateForBuffer()
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        byte $b0;
+        int $i1;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $b0 = 0;
+
+        $i1 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i1 = $i1 & 3;
+
+        if $i1 == 0 goto label1;
+
+        $b0 = 0 | 28;
+
+     label1:
+        $i1 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i1 = $i1 & 48;
+
+        if $i1 == 0 goto label2;
+
+        $b0 = $b0 | 27;
+
+     label2:
+        $i1 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i1 = $i1 & 12;
+
+        if $i1 == 0 goto label3;
+
+        $b0 = $b0 | 29;
+
+        return $b0;
+
+     label3:
+        return $b0;
+    }
+
+    private boolean sendFunctionKey(int)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        int $i0;
+        de.mud.terminal.VDUBuffer $r1;
+        de.mud.terminal.vt320 $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $i0 := @parameter0: int;
+
+        lookupswitch($i0)
+        {
+            case 7: goto label11;
+            case 8: goto label02;
+            case 9: goto label03;
+            case 10: goto label04;
+            case 11: goto label05;
+            case 12: goto label06;
+            case 13: goto label07;
+            case 14: goto label08;
+            case 15: goto label09;
+            case 16: goto label10;
+            default: goto label01;
+        };
+
+     label01:
+        return 0;
+
+     label02:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(2, 32, 0);
+
+        return 1;
+
+     label03:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(3, 32, 0);
+
+        return 1;
+
+     label04:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(4, 32, 0);
+
+        return 1;
+
+     label05:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(5, 32, 0);
+
+        return 1;
+
+     label06:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(6, 32, 0);
+
+        return 1;
+
+     label07:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(7, 32, 0);
+
+        return 1;
+
+     label08:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(8, 32, 0);
+
+        return 1;
+
+     label09:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(9, 32, 0);
+
+        return 1;
+
+     label10:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(10, 32, 0);
+
+        return 1;
+
+     label11:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(11, 32, 0);
+
+        return 1;
+    }
+
+    private void updatePrefs()
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        android.content.SharedPreferences $r1;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: android.content.SharedPreferences prefs>;
+
+        $r2 = interfaceinvoke $r1.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("keymode", "none");
+
+        $r0.<org.connectbot.service.TerminalKeyListener: java.lang.String keymode> = $r2;
+
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("shiftfkeys", 0);
+
+        $r0.<org.connectbot.service.TerminalKeyListener: boolean shiftedNumbersAreFKeysOnHardKeyboard> = $z0;
+
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("ctrlfkeys", 0);
+
+        $r0.<org.connectbot.service.TerminalKeyListener: boolean controlNumbersAreFKeysOnSoftKeyboard> = $z0;
+
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: android.content.SharedPreferences prefs>;
+
+        $z0 = interfaceinvoke $r1.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("volumefont", 1);
+
+        $r0.<org.connectbot.service.TerminalKeyListener: boolean volumeKeysChangeFontSize> = $z0;
+
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: android.content.SharedPreferences prefs>;
+
+        $r2 = interfaceinvoke $r1.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("stickymodifiers", "no");
+
+        $r3 = "alt";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label1;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int stickyMetas> = 4;
+
+        return;
+
+     label1:
+        $r3 = "yes";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label2;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int stickyMetas> = 21;
+
+        return;
+
+     label2:
+        $r0.<org.connectbot.service.TerminalKeyListener: int stickyMetas> = 0;
+
+        return;
+    }
+
+    public int getDeadKey()
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $i0 = $r0.<org.connectbot.service.TerminalKeyListener: int mDeadKey>;
+
+        return $i0;
+    }
+
+    public int getMetaState()
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $i0 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        return $i0;
+    }
+
+    public int keyAsControl(int)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $i0 := @parameter0: int;
+
+        if $i0 < 97 goto label1;
+
+        if $i0 > 122 goto label1;
+
+        $i0 = $i0 + -96;
+
+        return $i0;
+
+     label1:
+        if $i0 < 65 goto label2;
+
+        if $i0 > 95 goto label2;
+
+        $i0 = $i0 + -64;
+
+        return $i0;
+
+     label2:
+        if $i0 != 32 goto label3;
+
+        return 0;
+
+     label3:
+        if $i0 != 63 goto label4;
+
+        return 127;
+
+     label4:
+        return $i0;
+    }
+
+    public void metaPress(int)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $i0 := @parameter0: int;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int,boolean)>($i0, 0);
+
+        return;
+    }
+
+    public void metaPress(int, boolean)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        int $i0, $i1, $i2;
+        boolean $z0;
+        org.connectbot.service.TerminalBridge $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $i0 := @parameter0: int;
+
+        $z0 := @parameter1: boolean;
+
+        $i1 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i0 << 1;
+
+        $i2 = $i1 & $i2;
+
+        if $i2 == 0 goto label2;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i1 = $i0 << 1;
+
+        $i1 = $i1 ^ -1;
+
+        $i2 = $i2 & $i1;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+     label1:
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r1.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+        return;
+
+     label2:
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 & $i0;
+
+        if $i2 == 0 goto label3;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i1 = $i0 ^ -1;
+
+        $i2 = $i2 & $i1;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i1 = $i0 << 1;
+
+        $i2 = $i2 | $i1;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+        goto label1;
+
+     label3:
+        if $z0 != 0 goto label4;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int stickyMetas>;
+
+        $i2 = $i2 & $i0;
+
+        if $i2 == 0 goto label5;
+
+     label4:
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 | $i0;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+        goto label1;
+
+     label5:
+        return;
+    }
+
+    public boolean onKey(android.view.View, int, android.view.KeyEvent)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        android.view.View $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+        android.view.KeyEvent $r2;
+        boolean $z0, $z1, $z2, $z3, $z4;
+        java.io.IOException $r3, $r4;
+        java.lang.NullPointerException $r5;
+        org.connectbot.service.TerminalBridge $r6;
+        org.connectbot.transport.AbsTransport $r7;
+        org.connectbot.service.TerminalManager $r8;
+        java.lang.String $r9, $r10;
+        byte[] $r11;
+        org.connectbot.bean.SelectionArea $r12;
+        android.text.ClipboardManager $r13;
+        de.mud.terminal.VDUBuffer $r14;
+        java.lang.CharSequence $r15;
+        char[] $r16;
+        android.content.SharedPreferences $r17;
+        de.mud.terminal.vt320 $r18;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $r1 := @parameter0: android.view.View;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: android.view.KeyEvent;
+
+     label001:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label002:
+        $z3 = virtualinvoke $r6.<org.connectbot.service.TerminalBridge: boolean isDisconnected()>();
+
+     label003:
+        if $z3 != 0 goto label004;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        if $r7 != null goto label005;
+
+     label004:
+        return 0;
+
+     label005:
+        $z3 = $r0.<org.connectbot.service.TerminalKeyListener: boolean deviceHasHardKeyboard>;
+
+        if $z3 == 0 goto label030;
+
+        $r8 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalManager manager>;
+
+        $z3 = $r8.<org.connectbot.service.TerminalManager: boolean hardKeyboardHidden>;
+
+     label006:
+        if $z3 != 0 goto label030;
+
+        $z0 = 1;
+
+     label007:
+        if $z0 == 0 goto label031;
+
+     label008:
+        $r9 = "Use right-side keys";
+
+     label009:
+        $r10 = $r0.<org.connectbot.service.TerminalKeyListener: java.lang.String keymode>;
+
+        $z3 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>($r10);
+
+     label010:
+        if $z3 == 0 goto label031;
+
+        $z2 = 1;
+
+     label011:
+        if $z0 == 0 goto label032;
+
+     label012:
+        $r10 = "Use left-side keys";
+
+     label013:
+        $r9 = $r0.<org.connectbot.service.TerminalKeyListener: java.lang.String keymode>;
+
+        $z3 = virtualinvoke $r10.<java.lang.String: boolean equals(java.lang.Object)>($r9);
+
+     label014:
+        if $z3 == 0 goto label032;
+
+     label015:
+        $z1 = 1;
+
+     label016:
+        $z3 = $r0.<org.connectbot.service.TerminalKeyListener: boolean shiftedNumbersAreFKeysOnHardKeyboard>;
+
+     label017:
+        if $z3 == 0 goto label034;
+
+        if $z0 == 0 goto label034;
+
+     label018:
+        $z3 = 1;
+
+     label019:
+        $z4 = $r0.<org.connectbot.service.TerminalKeyListener: boolean controlNumbersAreFKeysOnSoftKeyboard>;
+
+     label020:
+        if $z4 == 0 goto label036;
+
+        if $z0 != 0 goto label036;
+
+     label021:
+        $z0 = 1;
+
+     label022:
+        $i2 = virtualinvoke $r2.<android.view.KeyEvent: int getAction()>();
+
+     label023:
+        if $i2 != 1 goto label055;
+
+     label024:
+        if $z2 == 0 goto label043;
+
+     label025:
+        if $i0 != 58 goto label038;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label026:
+        $i2 = $i2 & 64;
+
+     label027:
+        if $i2 == 0 goto label038;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 & -214;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label028:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(47);
+
+     label029:
+        return 1;
+
+     label030:
+        $z0 = 0;
+
+        goto label007;
+
+     label031:
+        $z2 = 0;
+
+        goto label011;
+
+     label032:
+        $z1 = 0;
+
+     label033:
+        goto label016;
+
+     label034:
+        $z3 = 0;
+
+     label035:
+        goto label019;
+
+     label036:
+        $z0 = 0;
+
+     label037:
+        goto label022;
+
+     label038:
+        if $i0 != 60 goto label054;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label039:
+        $i2 = $i2 & 128;
+
+     label040:
+        if $i2 == 0 goto label054;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 & -214;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label041:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(9);
+
+     label042:
+        return 1;
+
+     label043:
+        if $z1 == 0 goto label054;
+
+     label044:
+        if $i0 != 57 goto label049;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label045:
+        $i2 = $i2 & 64;
+
+     label046:
+        if $i2 == 0 goto label049;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 & -214;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label047:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(47);
+
+     label048:
+        return 1;
+
+     label049:
+        if $i0 != 59 goto label054;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label050:
+        $i2 = $i2 & 128;
+
+     label051:
+        if $i2 == 0 goto label054;
+
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 & -214;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label052:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(9);
+
+     label053:
+        return 1;
+
+     label054:
+        return 0;
+
+     label055:
+        $z4 = $r0.<org.connectbot.service.TerminalKeyListener: boolean volumeKeysChangeFontSize>;
+
+        if $z4 == 0 goto label061;
+
+        if $i0 != 24 goto label058;
+
+     label056:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void increaseFontSize()>();
+
+     label057:
+        return 1;
+
+     label058:
+        if $i0 != 25 goto label061;
+
+     label059:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void decreaseFontSize()>();
+
+     label060:
+        return 1;
+
+     label061:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void resetScrollPosition()>();
+
+        if $i0 != 0 goto label065;
+
+        $i2 = virtualinvoke $r2.<android.view.KeyEvent: int getAction()>();
+
+        if $i2 != 2 goto label065;
+
+        $r10 = virtualinvoke $r2.<android.view.KeyEvent: java.lang.String getCharacters()>();
+
+        $r9 = $r0.<org.connectbot.service.TerminalKeyListener: java.lang.String encoding>;
+
+        $r11 = virtualinvoke $r10.<java.lang.String: byte[] getBytes(java.lang.String)>($r9);
+
+     label062:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label063:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(byte[])>($r11);
+
+     label064:
+        return 1;
+
+     label065:
+        $i2 = virtualinvoke $r2.<android.view.KeyEvent: int getRepeatCount()>();
+
+     label066:
+        if $i2 != 0 goto label096;
+
+        if $z2 == 0 goto label079;
+
+     label067:
+        lookupswitch($i0)
+        {
+            case 57: goto label077;
+            case 58: goto label071;
+            case 59: goto label075;
+            case 60: goto label073;
+            default: goto label068;
+        };
+
+     label068:
+        if $i0 == 113 goto label069;
+
+        if $i0 != 114 goto label096;
+
+     label069:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int)>(1);
+
+     label070:
+        return 1;
+
+     label071:
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 | 64;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+     label072:
+        return 1;
+
+     label073:
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 | 128;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+     label074:
+        return 1;
+
+     label075:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int)>(16);
+
+     label076:
+        return 1;
+
+     label077:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int)>(4);
+
+     label078:
+        return 1;
+
+     label079:
+        if $z1 == 0 goto label090;
+
+     label080:
+        lookupswitch($i0)
+        {
+            case 57: goto label082;
+            case 58: goto label088;
+            case 59: goto label084;
+            case 60: goto label086;
+            default: goto label081;
+        };
+
+     label081:
+        goto label068;
+
+     label082:
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 | 64;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+     label083:
+        return 1;
+
+     label084:
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 | 128;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+     label085:
+        return 1;
+
+     label086:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int)>(16);
+
+     label087:
+        return 1;
+
+     label088:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int)>(4);
+
+     label089:
+        return 1;
+
+     label090:
+        lookupswitch($i0)
+        {
+            case 57: goto label092;
+            case 58: goto label092;
+            case 59: goto label094;
+            case 60: goto label094;
+            default: goto label091;
+        };
+
+     label091:
+        goto label068;
+
+     label092:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int)>(4);
+
+     label093:
+        return 1;
+
+     label094:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int)>(16);
+
+     label095:
+        return 1;
+
+     label096:
+        if $i0 != 23 goto label120;
+
+     label097:
+        $z4 = $r0.<org.connectbot.service.TerminalKeyListener: boolean selectingForCopy>;
+
+        if $z4 == 0 goto label111;
+
+     label098:
+        $r12 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea>;
+
+        $z4 = virtualinvoke $r12.<org.connectbot.bean.SelectionArea: boolean isSelectingOrigin()>();
+
+     label099:
+        if $z4 == 0 goto label103;
+
+     label100:
+        $r12 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea>;
+
+        virtualinvoke $r12.<org.connectbot.bean.SelectionArea: void finishSelectingOrigin()>();
+
+     label101:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+     label102:
+        return 1;
+
+     label103:
+        $r13 = $r0.<org.connectbot.service.TerminalKeyListener: android.text.ClipboardManager clipboard>;
+
+        if $r13 == null goto label101;
+
+        $r12 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea>;
+
+     label104:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r10 = virtualinvoke $r12.<org.connectbot.bean.SelectionArea: java.lang.String copyFrom(de.mud.terminal.VDUBuffer)>($r14);
+
+        $r13 = $r0.<org.connectbot.service.TerminalKeyListener: android.text.ClipboardManager clipboard>;
+
+        virtualinvoke $r13.<android.text.ClipboardManager: void setText(java.lang.CharSequence)>($r10);
+
+     label105:
+        $r0.<org.connectbot.service.TerminalKeyListener: boolean selectingForCopy> = 0;
+
+     label106:
+        $r12 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea>;
+
+        virtualinvoke $r12.<org.connectbot.bean.SelectionArea: void reset()>();
+
+     label107:
+        goto label101;
+
+     label108:
+        $r3 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.OnKeyListener", "Problem while trying to handle an onKey() event", $r3);
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+     label109:
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void flush()>();
+
+     label110:
+        return 0;
+
+     label111:
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label112:
+        $i2 = $i2 & 1;
+
+     label113:
+        if $i2 == 0 goto label118;
+
+     label114:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void sendEscape()>();
+
+     label115:
+        $i2 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i2 = $i2 & -2;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i2;
+
+     label116:
+        goto label101;
+
+     label117:
+        $r5 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.OnKeyListener", "Input before connection established ignored.");
+
+        return 1;
+
+     label118:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void metaPress(int,boolean)>(1, 1);
+
+     label119:
+        goto label101;
+
+     label120:
+        $i2 = virtualinvoke $r2.<android.view.KeyEvent: int getMetaState()>();
+
+     label121:
+        $i1 = $i2;
+
+        $i3 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label122:
+        $i3 = $i3 & 48;
+
+     label123:
+        if $i3 == 0 goto label124;
+
+        $i1 = $i2 | 1;
+
+     label124:
+        $i3 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label125:
+        $i3 = $i3 & 12;
+
+     label126:
+        if $i3 == 0 goto label127;
+
+        $i1 = $i1 | 2;
+
+     label127:
+        $i3 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label128:
+        $i3 = $i3 & 3;
+
+     label129:
+        if $i3 == 0 goto label130;
+
+        $i1 = $i1 | 4096;
+
+     label130:
+        $i3 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+     label131:
+        $i3 = $i3 & 213;
+
+     label132:
+        if $i3 == 0 goto label134;
+
+        $i3 = $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState>;
+
+        $i3 = $i3 & -214;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int ourMetaState> = $i3;
+
+     label133:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+     label134:
+        if $z3 == 0 goto label137;
+
+        $i3 = $i1 & 1;
+
+     label135:
+        if $i3 == 0 goto label137;
+
+        $z4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: boolean sendFunctionKey(int)>($i0);
+
+     label136:
+        if $z4 == 0 goto label137;
+
+        return 1;
+
+     label137:
+        if $z0 == 0 goto label140;
+
+        $i3 = $i1 & 4096;
+
+     label138:
+        if $i3 == 0 goto label140;
+
+        $z4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: boolean sendFunctionKey(int)>($i0);
+
+     label139:
+        if $z4 == 0 goto label140;
+
+        return 1;
+
+     label140:
+        if $i0 != 50 goto label146;
+
+        $i3 = $i1 & 4096;
+
+        if $i3 == 0 goto label146;
+
+        $i3 = $i1 & 1;
+
+     label141:
+        if $i3 == 0 goto label146;
+
+     label142:
+        $r13 = $r0.<org.connectbot.service.TerminalKeyListener: android.text.ClipboardManager clipboard>;
+
+        $z4 = virtualinvoke $r13.<android.text.ClipboardManager: boolean hasText()>();
+
+     label143:
+        if $z4 == 0 goto label146;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label144:
+        $r13 = $r0.<org.connectbot.service.TerminalKeyListener: android.text.ClipboardManager clipboard>;
+
+        $r15 = virtualinvoke $r13.<android.text.ClipboardManager: java.lang.CharSequence getText()>();
+
+        $r10 = interfaceinvoke $r15.<java.lang.CharSequence: java.lang.String toString()>();
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void injectString(java.lang.String)>($r10);
+
+     label145:
+        return 1;
+
+     label146:
+        if $i0 != 70 goto label148;
+
+        $i3 = $i1 & 4096;
+
+        if $i3 == 0 goto label148;
+
+        $i3 = $i1 & 1;
+
+     label147:
+        if $i3 != 0 goto label150;
+
+     label148:
+        if $i0 != 81 goto label152;
+
+        $i3 = $i1 & 4096;
+
+     label149:
+        if $i3 == 0 goto label152;
+
+     label150:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void increaseFontSize()>();
+
+     label151:
+        return 1;
+
+     label152:
+        if $i0 != 69 goto label156;
+
+        $i3 = $i1 & 4096;
+
+     label153:
+        if $i3 == 0 goto label156;
+
+     label154:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void decreaseFontSize()>();
+
+     label155:
+        return 1;
+
+     label156:
+        $i3 = $i1 & -28673;
+
+        $i3 = virtualinvoke $r2.<android.view.KeyEvent: int getUnicodeChar(int)>($i3);
+
+     label157:
+        $i2 = $i3;
+
+     label158:
+        $i4 = $i1 & -28723;
+
+        $i4 = virtualinvoke $r2.<android.view.KeyEvent: int getUnicodeChar(int)>($i4);
+
+     label159:
+        if $i3 != 0 goto label163;
+
+        $i2 = $i4;
+
+     label160:
+        $i4 = $i1 & -2;
+
+        $i3 = -2147483648 & $i2;
+
+     label161:
+        if $i3 == 0 goto label164;
+
+        $i4 = 2147483647 & $i2;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int mDeadKey> = $i4;
+
+     label162:
+        return 1;
+
+     label163:
+        if $i3 == $i4 goto label160;
+
+        $i1 = $i1 & -51;
+
+        goto label160;
+
+     label164:
+        $i3 = $r0.<org.connectbot.service.TerminalKeyListener: int mDeadKey>;
+
+        if $i3 == 0 goto label167;
+
+     label165:
+        $i3 = $r0.<org.connectbot.service.TerminalKeyListener: int mDeadKey>;
+
+        $i3 = staticinvoke <android.view.KeyCharacterMap: int getDeadChar(int,int)>($i3, $i0);
+
+     label166:
+        $i2 = $i3;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: int mDeadKey> = 0;
+
+     label167:
+        if $i2 < 32 goto label178;
+
+        $i3 = $i4 & 4096;
+
+     label168:
+        if $i3 == 0 goto label170;
+
+        $i3 = virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: int keyAsControl(int)>($i2);
+
+     label169:
+        $i2 = $i3;
+
+     label170:
+        $i4 = $i4 & 2;
+
+     label171:
+        if $i4 == 0 goto label172;
+
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void sendEscape()>();
+
+     label172:
+        if $i2 >= 128 goto label175;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label173:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>($i2);
+
+     label174:
+        return 1;
+
+     label175:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+     label176:
+        $r10 = new java.lang.String;
+
+        $r16 = staticinvoke <java.lang.Character: char[] toChars(int)>($i2);
+
+        specialinvoke $r10.<java.lang.String: void <init>(char[])>($r16);
+
+        $r9 = $r0.<org.connectbot.service.TerminalKeyListener: java.lang.String encoding>;
+
+        $r11 = virtualinvoke $r10.<java.lang.String: byte[] getBytes(java.lang.String)>($r9);
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(byte[])>($r11);
+
+     label177:
+        goto label174;
+
+     label178:
+        lookupswitch($i0)
+        {
+            case 19: goto label180;
+            case 20: goto label224;
+            case 21: goto label215;
+            case 22: goto label230;
+            case 27: goto label188;
+            case 61: goto label185;
+            case 66: goto label212;
+            case 67: goto label209;
+            case 92: goto label248;
+            case 93: goto label251;
+            case 111: goto label183;
+            case 112: goto label239;
+            case 122: goto label242;
+            case 123: goto label245;
+            case 124: goto label236;
+            default: goto label179;
+        };
+
+     label179:
+        goto label110;
+
+     label180:
+        $z4 = $r0.<org.connectbot.service.TerminalKeyListener: boolean selectingForCopy>;
+
+        if $z4 == 0 goto label221;
+
+     label181:
+        $r12 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea>;
+
+        virtualinvoke $r12.<org.connectbot.bean.SelectionArea: void decrementRow()>();
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+     label182:
+        return 1;
+
+     label183:
+        virtualinvoke $r0.<org.connectbot.service.TerminalKeyListener: void sendEscape()>();
+
+     label184:
+        return 1;
+
+     label185:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label186:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(9);
+
+     label187:
+        return 1;
+
+     label188:
+        $r8 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalManager manager>;
+
+     label189:
+        $r17 = $r8.<org.connectbot.service.TerminalManager: android.content.SharedPreferences prefs>;
+
+        $r10 = interfaceinvoke $r17.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("camera", "Ctrl+A then Space");
+
+        $r9 = "Ctrl+A then Space";
+
+        $z4 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>($r10);
+
+     label190:
+        if $z4 == 0 goto label195;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label191:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(1);
+
+     label192:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label193:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(32);
+
+     label194:
+        goto label110;
+
+     label195:
+        $r9 = "Ctrl+A";
+
+        $z4 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>($r10);
+
+     label196:
+        if $z4 == 0 goto label199;
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label197:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(1);
+
+     label198:
+        goto label110;
+
+     label199:
+        $r9 = "Esc";
+
+        $z4 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>($r10);
+
+     label200:
+        if $z4 == 0 goto label203;
+
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label201:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyTyped(int,char,int)>(43, 32, 0);
+
+     label202:
+        goto label110;
+
+     label203:
+        $r9 = "Esc+A";
+
+        $z4 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>($r10);
+
+     label204:
+        if $z4 == 0 goto label110;
+
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label205:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyTyped(int,char,int)>(43, 32, 0);
+
+     label206:
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+     label207:
+        $r7 = $r6.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r7.<org.connectbot.transport.AbsTransport: void write(int)>(97);
+
+     label208:
+        goto label110;
+
+     label209:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label210:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(22, 32, $i4);
+
+     label211:
+        return 1;
+
+     label212:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label213:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyTyped(int,char,int)>(30, 32, 0);
+
+     label214:
+        return 1;
+
+     label215:
+        $z4 = $r0.<org.connectbot.service.TerminalKeyListener: boolean selectingForCopy>;
+
+        if $z4 == 0 goto label218;
+
+     label216:
+        $r12 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea>;
+
+        virtualinvoke $r12.<org.connectbot.bean.SelectionArea: void decrementColumn()>();
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+     label217:
+        return 1;
+
+     label218:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label219:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(16, 32, $i4);
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void tryKeyVibrate()>();
+
+     label220:
+        goto label217;
+
+     label221:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label222:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(14, 32, $i4);
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void tryKeyVibrate()>();
+
+     label223:
+        goto label182;
+
+     label224:
+        $z4 = $r0.<org.connectbot.service.TerminalKeyListener: boolean selectingForCopy>;
+
+        if $z4 == 0 goto label227;
+
+     label225:
+        $r12 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea>;
+
+        virtualinvoke $r12.<org.connectbot.bean.SelectionArea: void incrementRow()>();
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+     label226:
+        return 1;
+
+     label227:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label228:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(15, 32, $i4);
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void tryKeyVibrate()>();
+
+     label229:
+        goto label226;
+
+     label230:
+        $z4 = $r0.<org.connectbot.service.TerminalKeyListener: boolean selectingForCopy>;
+
+        if $z4 == 0 goto label233;
+
+     label231:
+        $r12 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.bean.SelectionArea selectionArea>;
+
+        virtualinvoke $r12.<org.connectbot.bean.SelectionArea: void incrementColumn()>();
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void redraw()>();
+
+     label232:
+        return 1;
+
+     label233:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label234:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(17, 32, $i4);
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void tryKeyVibrate()>();
+
+     label235:
+        goto label232;
+
+     label236:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label237:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(20, 32, $i4);
+
+     label238:
+        return 1;
+
+     label239:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label240:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(21, 32, $i4);
+
+     label241:
+        return 1;
+
+     label242:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label243:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(23, 32, $i4);
+
+     label244:
+        return 1;
+
+     label245:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label246:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(24, 32, $i4);
+
+     label247:
+        return 1;
+
+     label248:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label249:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(19, 32, $i4);
+
+     label250:
+        return 1;
+
+     label251:
+        $r14 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+     label252:
+        $r18 = (de.mud.terminal.vt320) $r14;
+
+        $i4 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r18.<de.mud.terminal.vt320: void keyPressed(int,char,int)>(18, 32, $i4);
+
+     label253:
+        return 1;
+
+     label254:
+        $r4 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.OnKeyListener", "Our transport was closed, dispatching disconnect event");
+
+        $r6 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r6.<org.connectbot.service.TerminalBridge: void dispatchDisconnect(boolean)>(0);
+
+        goto label110;
+
+        catch java.io.IOException from label002 to label003 with label108;
+        catch java.io.IOException from label009 to label010 with label108;
+        catch java.io.IOException from label013 to label014 with label108;
+        catch java.io.IOException from label021 to label023 with label108;
+        catch java.io.IOException from label028 to label029 with label108;
+        catch java.io.IOException from label037 to label038 with label108;
+        catch java.io.IOException from label041 to label042 with label108;
+        catch java.io.IOException from label047 to label048 with label108;
+        catch java.io.IOException from label052 to label053 with label108;
+        catch java.io.IOException from label056 to label057 with label108;
+        catch java.io.IOException from label059 to label060 with label108;
+        catch java.io.IOException from label061 to label062 with label108;
+        catch java.io.IOException from label063 to label064 with label108;
+        catch java.io.IOException from label065 to label066 with label108;
+        catch java.io.IOException from label067 to label070 with label108;
+        catch java.io.IOException from label075 to label076 with label108;
+        catch java.io.IOException from label077 to label078 with label108;
+        catch java.io.IOException from label080 to label081 with label108;
+        catch java.io.IOException from label086 to label087 with label108;
+        catch java.io.IOException from label088 to label089 with label108;
+        catch java.io.IOException from label090 to label091 with label108;
+        catch java.io.IOException from label092 to label093 with label108;
+        catch java.io.IOException from label094 to label095 with label108;
+        catch java.io.IOException from label096 to label097 with label108;
+        catch java.io.IOException from label098 to label099 with label108;
+        catch java.io.IOException from label100 to label102 with label108;
+        catch java.io.IOException from label104 to label105 with label108;
+        catch java.io.IOException from label106 to label107 with label108;
+        catch java.lang.NullPointerException from label001 to label004 with label117;
+        catch java.lang.NullPointerException from label005 to label006 with label117;
+        catch java.lang.NullPointerException from label008 to label010 with label117;
+        catch java.lang.NullPointerException from label012 to label014 with label117;
+        catch java.lang.NullPointerException from label015 to label017 with label117;
+        catch java.lang.NullPointerException from label018 to label020 with label117;
+        catch java.lang.NullPointerException from label021 to label024 with label117;
+        catch java.lang.NullPointerException from label025 to label026 with label117;
+        catch java.lang.NullPointerException from label027 to label029 with label117;
+        catch java.lang.NullPointerException from label033 to label034 with label117;
+        catch java.lang.NullPointerException from label035 to label036 with label117;
+        catch java.lang.NullPointerException from label037 to label039 with label117;
+        catch java.lang.NullPointerException from label040 to label042 with label117;
+        catch java.lang.NullPointerException from label044 to label045 with label117;
+        catch java.lang.NullPointerException from label046 to label048 with label117;
+        catch java.lang.NullPointerException from label049 to label050 with label117;
+        catch java.lang.NullPointerException from label051 to label053 with label117;
+        catch java.lang.NullPointerException from label055 to label057 with label117;
+        catch java.lang.NullPointerException from label058 to label060 with label117;
+        catch java.lang.NullPointerException from label061 to label064 with label117;
+        catch java.lang.NullPointerException from label065 to label066 with label117;
+        catch java.lang.NullPointerException from label067 to label070 with label117;
+        catch java.lang.NullPointerException from label071 to label072 with label117;
+        catch java.lang.NullPointerException from label073 to label074 with label117;
+        catch java.lang.NullPointerException from label075 to label076 with label117;
+        catch java.lang.NullPointerException from label077 to label078 with label117;
+        catch java.lang.NullPointerException from label080 to label081 with label117;
+        catch java.lang.NullPointerException from label082 to label083 with label117;
+        catch java.lang.NullPointerException from label084 to label085 with label117;
+        catch java.lang.NullPointerException from label086 to label087 with label117;
+        catch java.lang.NullPointerException from label088 to label089 with label117;
+        catch java.lang.NullPointerException from label090 to label091 with label117;
+        catch java.lang.NullPointerException from label092 to label093 with label117;
+        catch java.lang.NullPointerException from label094 to label095 with label117;
+        catch java.lang.NullPointerException from label096 to label102 with label117;
+        catch java.lang.NullPointerException from label103 to label107 with label117;
+        catch java.io.IOException from label109 to label110 with label254;
+        catch java.io.IOException from label114 to label115 with label108;
+        catch java.lang.NullPointerException from label111 to label112 with label117;
+        catch java.lang.NullPointerException from label113 to label116 with label117;
+        catch java.io.IOException from label118 to label119 with label108;
+        catch java.io.IOException from label120 to label121 with label108;
+        catch java.io.IOException from label133 to label134 with label108;
+        catch java.io.IOException from label135 to label136 with label108;
+        catch java.io.IOException from label138 to label139 with label108;
+        catch java.io.IOException from label142 to label143 with label108;
+        catch java.io.IOException from label144 to label145 with label108;
+        catch java.io.IOException from label150 to label151 with label108;
+        catch java.io.IOException from label154 to label155 with label108;
+        catch java.io.IOException from label156 to label157 with label108;
+        catch java.io.IOException from label158 to label159 with label108;
+        catch java.io.IOException from label165 to label166 with label108;
+        catch java.io.IOException from label168 to label169 with label108;
+        catch java.io.IOException from label171 to label172 with label108;
+        catch java.io.IOException from label173 to label174 with label108;
+        catch java.io.IOException from label176 to label177 with label108;
+        catch java.io.IOException from label178 to label179 with label108;
+        catch java.io.IOException from label181 to label182 with label108;
+        catch java.io.IOException from label183 to label184 with label108;
+        catch java.io.IOException from label186 to label187 with label108;
+        catch java.io.IOException from label189 to label190 with label108;
+        catch java.io.IOException from label191 to label192 with label108;
+        catch java.io.IOException from label193 to label194 with label108;
+        catch java.io.IOException from label195 to label196 with label108;
+        catch java.io.IOException from label197 to label198 with label108;
+        catch java.io.IOException from label199 to label200 with label108;
+        catch java.io.IOException from label201 to label202 with label108;
+        catch java.io.IOException from label203 to label204 with label108;
+        catch java.io.IOException from label205 to label206 with label108;
+        catch java.io.IOException from label207 to label208 with label108;
+        catch java.io.IOException from label210 to label211 with label108;
+        catch java.io.IOException from label213 to label214 with label108;
+        catch java.io.IOException from label216 to label217 with label108;
+        catch java.io.IOException from label219 to label220 with label108;
+        catch java.io.IOException from label222 to label223 with label108;
+        catch java.io.IOException from label225 to label226 with label108;
+        catch java.io.IOException from label228 to label229 with label108;
+        catch java.io.IOException from label231 to label232 with label108;
+        catch java.io.IOException from label234 to label235 with label108;
+        catch java.io.IOException from label237 to label238 with label108;
+        catch java.io.IOException from label240 to label241 with label108;
+        catch java.io.IOException from label243 to label244 with label108;
+        catch java.io.IOException from label246 to label247 with label108;
+        catch java.io.IOException from label249 to label250 with label108;
+        catch java.io.IOException from label252 to label253 with label108;
+        catch java.lang.NullPointerException from label118 to label122 with label117;
+        catch java.lang.NullPointerException from label123 to label125 with label117;
+        catch java.lang.NullPointerException from label126 to label128 with label117;
+        catch java.lang.NullPointerException from label129 to label131 with label117;
+        catch java.lang.NullPointerException from label132 to label134 with label117;
+        catch java.lang.NullPointerException from label135 to label136 with label117;
+        catch java.lang.NullPointerException from label138 to label139 with label117;
+        catch java.lang.NullPointerException from label141 to label145 with label117;
+        catch java.lang.NullPointerException from label147 to label148 with label117;
+        catch java.lang.NullPointerException from label149 to label151 with label117;
+        catch java.lang.NullPointerException from label153 to label155 with label117;
+        catch java.lang.NullPointerException from label156 to label157 with label117;
+        catch java.lang.NullPointerException from label158 to label159 with label117;
+        catch java.lang.NullPointerException from label161 to label162 with label117;
+        catch java.lang.NullPointerException from label164 to label167 with label117;
+        catch java.lang.NullPointerException from label168 to label169 with label117;
+        catch java.lang.NullPointerException from label171 to label174 with label117;
+        catch java.lang.NullPointerException from label175 to label177 with label117;
+        catch java.lang.NullPointerException from label178 to label179 with label117;
+        catch java.lang.NullPointerException from label180 to label182 with label117;
+        catch java.lang.NullPointerException from label183 to label184 with label117;
+        catch java.lang.NullPointerException from label185 to label187 with label117;
+        catch java.lang.NullPointerException from label188 to label194 with label117;
+        catch java.lang.NullPointerException from label195 to label198 with label117;
+        catch java.lang.NullPointerException from label199 to label202 with label117;
+        catch java.lang.NullPointerException from label203 to label208 with label117;
+        catch java.lang.NullPointerException from label209 to label211 with label117;
+        catch java.lang.NullPointerException from label212 to label214 with label117;
+        catch java.lang.NullPointerException from label215 to label217 with label117;
+        catch java.lang.NullPointerException from label218 to label220 with label117;
+        catch java.lang.NullPointerException from label221 to label223 with label117;
+        catch java.lang.NullPointerException from label224 to label226 with label117;
+        catch java.lang.NullPointerException from label227 to label229 with label117;
+        catch java.lang.NullPointerException from label230 to label232 with label117;
+        catch java.lang.NullPointerException from label233 to label235 with label117;
+        catch java.lang.NullPointerException from label236 to label238 with label117;
+        catch java.lang.NullPointerException from label239 to label241 with label117;
+        catch java.lang.NullPointerException from label242 to label244 with label117;
+        catch java.lang.NullPointerException from label245 to label247 with label117;
+        catch java.lang.NullPointerException from label248 to label250 with label117;
+        catch java.lang.NullPointerException from label251 to label253 with label117;
+    }
+
+    public void onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        android.content.SharedPreferences $r1;
+        java.lang.String $r2, $r3;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $r1 := @parameter0: android.content.SharedPreferences;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = "keymode";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 != 0 goto label1;
+
+        $r3 = "shiftfkeys";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 != 0 goto label1;
+
+        $r3 = "ctrlfkeys";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 != 0 goto label1;
+
+        $r3 = "volumefont";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 != 0 goto label1;
+
+        $r3 = "stickymodifiers";
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: void updatePrefs()>();
+
+        return;
+
+     label2:
+        return;
+    }
+
+    public void sendEscape()
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        de.mud.terminal.VDUBuffer $r1;
+        de.mud.terminal.vt320 $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyTyped(int,char,int)>(43, 32, 0);
+
+        return;
+    }
+
+    public void sendPressedKey(int)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        int $i0, $i1;
+        de.mud.terminal.VDUBuffer $r1;
+        de.mud.terminal.vt320 $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<org.connectbot.service.TerminalKeyListener: de.mud.terminal.VDUBuffer buffer>;
+
+        $r2 = (de.mud.terminal.vt320) $r1;
+
+        $i1 = specialinvoke $r0.<org.connectbot.service.TerminalKeyListener: int getStateForBuffer()>();
+
+        virtualinvoke $r2.<de.mud.terminal.vt320: void keyPressed(int,char,int)>($i0, 32, $i1);
+
+        return;
+    }
+
+    public void sendTab()
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        java.io.IOException $r1, $r2;
+        org.connectbot.service.TerminalBridge $r3;
+        org.connectbot.transport.AbsTransport $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $r3 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        $r4 = $r3.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+     label1:
+        virtualinvoke $r4.<org.connectbot.transport.AbsTransport: void write(int)>(9);
+
+     label2:
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.OnKeyListener", "Problem while trying to send TAB press.", $r1);
+
+        $r3 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        $r4 = $r3.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+     label4:
+        virtualinvoke $r4.<org.connectbot.transport.AbsTransport: void flush()>();
+
+     label5:
+        return;
+
+     label6:
+        $r2 := @caughtexception;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.OnKeyListener", "Our transport was closed, dispatching disconnect event");
+
+        $r3 = $r0.<org.connectbot.service.TerminalKeyListener: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r3.<org.connectbot.service.TerminalBridge: void dispatchDisconnect(boolean)>(0);
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+        catch java.io.IOException from label4 to label5 with label6;
+    }
+
+    public void setCharset(java.lang.String)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: java.lang.String encoding> = $r1;
+
+        return;
+    }
+
+    public void setClipboardManager(android.text.ClipboardManager)
+    {
+        org.connectbot.service.TerminalKeyListener $r0;
+        android.text.ClipboardManager $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalKeyListener;
+
+        $r1 := @parameter0: android.text.ClipboardManager;
+
+        $r0.<org.connectbot.service.TerminalKeyListener: android.text.ClipboardManager clipboard> = $r1;
+
+        return;
+    }
+}

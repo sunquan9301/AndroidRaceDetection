@@ -1,0 +1,37 @@
+public class org.connectbot.util.XmlBuilder extends java.lang.Object
+{
+    private java.lang.StringBuilder sb;
+
+    public void <init>()
+    {
+        org.connectbot.util.XmlBuilder $r0;
+        java.lang.StringBuilder $r1;
+
+        $r0 := @this: org.connectbot.util.XmlBuilder;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r0.<org.connectbot.util.XmlBuilder: java.lang.StringBuilder sb> = $r1;
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        org.connectbot.util.XmlBuilder $r0;
+        java.lang.StringBuilder $r1;
+        java.lang.String $r2;
+
+        $r0 := @this: org.connectbot.util.XmlBuilder;
+
+        $r1 = $r0.<org.connectbot.util.XmlBuilder: java.lang.StringBuilder sb>;
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+    }
+}

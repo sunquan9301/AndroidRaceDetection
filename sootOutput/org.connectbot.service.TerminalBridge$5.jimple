@@ -1,0 +1,58 @@
+class org.connectbot.service.TerminalBridge$5 extends java.lang.Object implements java.lang.Runnable
+{
+    final org.connectbot.service.TerminalBridge this$0;
+
+    void <init>(org.connectbot.service.TerminalBridge)
+    {
+        org.connectbot.service.TerminalBridge$5 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$5;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalBridge;
+
+        $r0.<org.connectbot.service.TerminalBridge$5: org.connectbot.service.TerminalBridge this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.service.TerminalBridge$5 $r0;
+        org.connectbot.service.TerminalBridge $r1;
+        boolean $z0;
+        org.connectbot.transport.AbsTransport $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalBridge$5;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$5: org.connectbot.service.TerminalBridge this$0>;
+
+        $r2 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        if $r2 == null goto label1;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$5: org.connectbot.service.TerminalBridge this$0>;
+
+        $r2 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        $z0 = virtualinvoke $r2.<org.connectbot.transport.AbsTransport: boolean isConnected()>();
+
+        if $z0 == 0 goto label2;
+
+        $r1 = $r0.<org.connectbot.service.TerminalBridge$5: org.connectbot.service.TerminalBridge this$0>;
+
+        $r2 = $r1.<org.connectbot.service.TerminalBridge: org.connectbot.transport.AbsTransport transport>;
+
+        virtualinvoke $r2.<org.connectbot.transport.AbsTransport: void close()>();
+
+        return;
+
+     label1:
+        return;
+
+     label2:
+        return;
+    }
+}

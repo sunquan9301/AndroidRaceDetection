@@ -1,0 +1,72 @@
+class org.connectbot.ConsoleActivity$19 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$19 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$19;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$19: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.ConsoleActivity$19 $r0;
+        android.view.MenuItem $r1;
+        org.connectbot.ConsoleActivity $r2;
+        org.connectbot.TerminalView $r3;
+        org.connectbot.ConsoleActivity$TerminalPagerAdapter $r4;
+        android.view.LayoutInflater $r5;
+        android.view.View $r6;
+        android.app.AlertDialog$Builder $r7;
+        org.connectbot.ConsoleActivity$19$1 $r8;
+        android.app.AlertDialog $r9;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$19;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+        $r2 = $r0.<org.connectbot.ConsoleActivity$19: org.connectbot.ConsoleActivity this$0>;
+
+        $r4 = $r2.<org.connectbot.ConsoleActivity: org.connectbot.ConsoleActivity$TerminalPagerAdapter adapter>;
+
+        $r3 = virtualinvoke $r4.<org.connectbot.ConsoleActivity$TerminalPagerAdapter: org.connectbot.TerminalView getCurrentTerminalView()>();
+
+        $r2 = $r0.<org.connectbot.ConsoleActivity$19: org.connectbot.ConsoleActivity this$0>;
+
+        $r5 = $r2.<org.connectbot.ConsoleActivity: android.view.LayoutInflater inflater>;
+
+        $r6 = virtualinvoke $r5.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup,boolean)>(2130903053, null, 0);
+
+        $r7 = new android.app.AlertDialog$Builder;
+
+        $r2 = $r0.<org.connectbot.ConsoleActivity$19: org.connectbot.ConsoleActivity this$0>;
+
+        specialinvoke $r7.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r2);
+
+        $r7 = virtualinvoke $r7.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setView(android.view.View)>($r6);
+
+        $r8 = new org.connectbot.ConsoleActivity$19$1;
+
+        specialinvoke $r8.<org.connectbot.ConsoleActivity$19$1: void <init>(org.connectbot.ConsoleActivity$19,android.view.View,org.connectbot.TerminalView)>($r0, $r6, $r3);
+
+        $r7 = virtualinvoke $r7.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(2131165247, $r8);
+
+        $r7 = virtualinvoke $r7.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(17039360, null);
+
+        $r9 = virtualinvoke $r7.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r9.<android.app.AlertDialog: void show()>();
+
+        return 1;
+    }
+}

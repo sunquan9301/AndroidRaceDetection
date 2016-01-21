@@ -1,0 +1,14 @@
+public class com.trilead.ssh2.transport.NegotiateException extends java.lang.Exception
+{
+
+    public void <init>()
+    {
+        com.trilead.ssh2.transport.NegotiateException $r0;
+
+        $r0 := @this: com.trilead.ssh2.transport.NegotiateException;
+
+        specialinvoke $r0.<java.lang.Exception: void <init>()>();
+
+        return;
+    }
+}

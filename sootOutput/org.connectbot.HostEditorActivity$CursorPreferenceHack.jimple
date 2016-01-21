@@ -1,0 +1,361 @@
+public class org.connectbot.HostEditorActivity$CursorPreferenceHack extends java.lang.Object implements android.content.SharedPreferences
+{
+    protected final long id;
+    protected java.util.List listeners;
+    protected final java.lang.String table;
+    final org.connectbot.HostEditorActivity this$0;
+    protected java.util.Map values;
+
+    public void <init>(org.connectbot.HostEditorActivity, java.lang.String, long)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        org.connectbot.HostEditorActivity $r1;
+        java.lang.String $r2;
+        long $l0;
+        java.util.HashMap $r3;
+        java.util.LinkedList $r4;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: org.connectbot.HostEditorActivity;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $l0 := @parameter2: long;
+
+        $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: org.connectbot.HostEditorActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r3 = new java.util.HashMap;
+
+        specialinvoke $r3.<java.util.HashMap: void <init>()>();
+
+        $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.Map values> = $r3;
+
+        $r4 = new java.util.LinkedList;
+
+        specialinvoke $r4.<java.util.LinkedList: void <init>()>();
+
+        $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.List listeners> = $r4;
+
+        $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.lang.String table> = $r2;
+
+        $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: long id> = $l0;
+
+        virtualinvoke $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: void cacheValues()>();
+
+        return;
+    }
+
+    protected final void cacheValues()
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        org.connectbot.HostEditorActivity $r1;
+        long $l0;
+        int $i1, $i2;
+        android.database.sqlite.SQLiteDatabase $r2;
+        org.connectbot.util.HostDatabase $r3;
+        java.lang.String $r4, $r6;
+        java.lang.String[] $r5;
+        android.database.Cursor $r7;
+        boolean $z0;
+        java.util.Map $r8;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: org.connectbot.HostEditorActivity this$0>;
+
+        $r3 = $r1.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        $r2 = virtualinvoke $r3.<org.connectbot.util.HostDatabase: android.database.sqlite.SQLiteDatabase getReadableDatabase()>();
+
+        $r4 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.lang.String table>;
+
+        $r5 = newarray (java.lang.String)[1];
+
+        $l0 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: long id>;
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String valueOf(long)>($l0);
+
+        $r5[0] = $r6;
+
+        $r7 = virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: android.database.Cursor query(java.lang.String,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String,java.lang.String,java.lang.String)>($r4, null, "_id = ?", $r5, null, null, null);
+
+        $z0 = interfaceinvoke $r7.<android.database.Cursor: boolean moveToFirst()>();
+
+        if $z0 == 0 goto label4;
+
+        $i1 = 0;
+
+     label1:
+        $i2 = interfaceinvoke $r7.<android.database.Cursor: int getColumnCount()>();
+
+        if $i1 >= $i2 goto label4;
+
+        $r6 = interfaceinvoke $r7.<android.database.Cursor: java.lang.String getColumnName(int)>($i1);
+
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("hostkey");
+
+        if $z0 == 0 goto label3;
+
+     label2:
+        $i1 = $i1 + 1;
+
+        goto label1;
+
+     label3:
+        $r4 = interfaceinvoke $r7.<android.database.Cursor: java.lang.String getString(int)>($i1);
+
+        $r8 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.Map values>;
+
+        interfaceinvoke $r8.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($r6, $r4);
+
+        goto label2;
+
+     label4:
+        interfaceinvoke $r7.<android.database.Cursor: void close()>();
+
+        virtualinvoke $r2.<android.database.sqlite.SQLiteDatabase: void close()>();
+
+        return;
+    }
+
+    public boolean contains(java.lang.String)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        java.lang.String $r1;
+        java.util.Map $r2;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.Map values>;
+
+        $z0 = interfaceinvoke $r2.<java.util.Map: boolean containsKey(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public volatile android.content.SharedPreferences$Editor edit()
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        org.connectbot.HostEditorActivity$CursorPreferenceHack$Editor $r1;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 = virtualinvoke $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: org.connectbot.HostEditorActivity$CursorPreferenceHack$Editor edit()>();
+
+        return $r1;
+    }
+
+    public org.connectbot.HostEditorActivity$CursorPreferenceHack$Editor edit()
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        org.connectbot.HostEditorActivity$CursorPreferenceHack$Editor $r1;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 = new org.connectbot.HostEditorActivity$CursorPreferenceHack$Editor;
+
+        specialinvoke $r1.<org.connectbot.HostEditorActivity$CursorPreferenceHack$Editor: void <init>(org.connectbot.HostEditorActivity$CursorPreferenceHack)>($r0);
+
+        return $r1;
+    }
+
+    public java.util.Map getAll()
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        java.util.Map $r1;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.Map values>;
+
+        return $r1;
+    }
+
+    public boolean getBoolean(java.lang.String, boolean)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        java.lang.String $r1, $r2;
+        boolean $z0;
+        java.lang.Boolean $r3;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        $r2 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>($z0);
+
+        $r2 = virtualinvoke $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.lang.String getString(java.lang.String,java.lang.String)>($r1, $r2);
+
+        $r3 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(java.lang.String)>($r2);
+
+        $z0 = virtualinvoke $r3.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+    }
+
+    public float getFloat(java.lang.String, float)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        java.lang.String $r1, $r2;
+        float $f0;
+        java.lang.Float $r3;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $f0 := @parameter1: float;
+
+        $r2 = staticinvoke <java.lang.Float: java.lang.String toString(float)>($f0);
+
+        $r2 = virtualinvoke $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.lang.String getString(java.lang.String,java.lang.String)>($r1, $r2);
+
+        $r3 = staticinvoke <java.lang.Float: java.lang.Float valueOf(java.lang.String)>($r2);
+
+        $f0 = virtualinvoke $r3.<java.lang.Float: float floatValue()>();
+
+        return $f0;
+    }
+
+    public int getInt(java.lang.String, int)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        java.lang.String $r1, $r2;
+        int $i0;
+        java.lang.Integer $r3;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 = staticinvoke <java.lang.Integer: java.lang.String toString(int)>($i0);
+
+        $r2 = virtualinvoke $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.lang.String getString(java.lang.String,java.lang.String)>($r1, $r2);
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(java.lang.String)>($r2);
+
+        $i0 = virtualinvoke $r3.<java.lang.Integer: int intValue()>();
+
+        return $i0;
+    }
+
+    public long getLong(java.lang.String, long)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        java.lang.String $r1, $r2;
+        long $l0;
+        java.lang.Long $r3;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $l0 := @parameter1: long;
+
+        $r2 = staticinvoke <java.lang.Long: java.lang.String toString(long)>($l0);
+
+        $r2 = virtualinvoke $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.lang.String getString(java.lang.String,java.lang.String)>($r1, $r2);
+
+        $r3 = staticinvoke <java.lang.Long: java.lang.Long valueOf(java.lang.String)>($r2);
+
+        $l0 = virtualinvoke $r3.<java.lang.Long: long longValue()>();
+
+        return $l0;
+    }
+
+    public java.lang.String getString(java.lang.String, java.lang.String)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        java.lang.String $r1, $r2;
+        java.util.Map $r3;
+        boolean $z0;
+        java.lang.Object $r4;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.Map values>;
+
+        $z0 = interfaceinvoke $r3.<java.util.Map: boolean containsKey(java.lang.Object)>($r1);
+
+        if $z0 != 0 goto label1;
+
+        return $r2;
+
+     label1:
+        $r3 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.Map values>;
+
+        $r4 = interfaceinvoke $r3.<java.util.Map: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r2 = (java.lang.String) $r4;
+
+        return $r2;
+    }
+
+    public java.util.Set getStringSet(java.lang.String, java.util.Set)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        java.lang.String $r1;
+        java.util.Set $r2;
+        java.lang.ClassCastException $r3;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.util.Set;
+
+        $r3 = new java.lang.ClassCastException;
+
+        specialinvoke $r3.<java.lang.ClassCastException: void <init>(java.lang.String)>("HostEditor Prefs do not support Set<String>");
+
+        throw $r3;
+    }
+
+    public void registerOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        android.content.SharedPreferences$OnSharedPreferenceChangeListener $r1;
+        java.util.List $r2;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: android.content.SharedPreferences$OnSharedPreferenceChangeListener;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.List listeners>;
+
+        interfaceinvoke $r2.<java.util.List: boolean add(java.lang.Object)>($r1);
+
+        return;
+    }
+
+    public void unregisterOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener)
+    {
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r0;
+        android.content.SharedPreferences$OnSharedPreferenceChangeListener $r1;
+        java.util.List $r2;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        $r1 := @parameter0: android.content.SharedPreferences$OnSharedPreferenceChangeListener;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.List listeners>;
+
+        interfaceinvoke $r2.<java.util.List: boolean remove(java.lang.Object)>($r1);
+
+        return;
+    }
+}

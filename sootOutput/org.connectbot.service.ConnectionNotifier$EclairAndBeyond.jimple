@@ -1,0 +1,59 @@
+class org.connectbot.service.ConnectionNotifier$EclairAndBeyond extends org.connectbot.service.ConnectionNotifier
+{
+
+    private void <init>()
+    {
+        org.connectbot.service.ConnectionNotifier$EclairAndBeyond $r0;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier$EclairAndBeyond;
+
+        specialinvoke $r0.<org.connectbot.service.ConnectionNotifier: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.service.ConnectionNotifier$1)
+    {
+        org.connectbot.service.ConnectionNotifier$EclairAndBeyond $r0;
+        org.connectbot.service.ConnectionNotifier$1 $r1;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier$EclairAndBeyond;
+
+        $r1 := @parameter0: org.connectbot.service.ConnectionNotifier$1;
+
+        specialinvoke $r0.<org.connectbot.service.ConnectionNotifier$EclairAndBeyond: void <init>()>();
+
+        return;
+    }
+
+    public void hideRunningNotification(android.app.Service)
+    {
+        org.connectbot.service.ConnectionNotifier$EclairAndBeyond $r0;
+        android.app.Service $r1;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier$EclairAndBeyond;
+
+        $r1 := @parameter0: android.app.Service;
+
+        virtualinvoke $r1.<android.app.Service: void stopForeground(boolean)>(1);
+
+        return;
+    }
+
+    public void showRunningNotification(android.app.Service)
+    {
+        org.connectbot.service.ConnectionNotifier$EclairAndBeyond $r0;
+        android.app.Service $r1;
+        android.app.Notification $r2;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier$EclairAndBeyond;
+
+        $r1 := @parameter0: android.app.Service;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.service.ConnectionNotifier$EclairAndBeyond: android.app.Notification newRunningNotification(android.content.Context)>($r1);
+
+        virtualinvoke $r1.<android.app.Service: void startForeground(int,android.app.Notification)>(1, $r2);
+
+        return;
+    }
+}

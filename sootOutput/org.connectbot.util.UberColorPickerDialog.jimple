@@ -1,0 +1,115 @@
+public class org.connectbot.util.UberColorPickerDialog extends android.app.Dialog
+{
+    private final int mInitialColor;
+    private final org.connectbot.util.UberColorPickerDialog$OnColorChangedListener mListener;
+
+    public void <init>(android.content.Context, org.connectbot.util.UberColorPickerDialog$OnColorChangedListener, int)
+    {
+        org.connectbot.util.UberColorPickerDialog $r0;
+        android.content.Context $r1;
+        org.connectbot.util.UberColorPickerDialog$OnColorChangedListener $r2;
+        int $i0;
+
+        $r0 := @this: org.connectbot.util.UberColorPickerDialog;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: org.connectbot.util.UberColorPickerDialog$OnColorChangedListener;
+
+        $i0 := @parameter2: int;
+
+        specialinvoke $r0.<android.app.Dialog: void <init>(android.content.Context)>($r1);
+
+        $r0.<org.connectbot.util.UberColorPickerDialog: org.connectbot.util.UberColorPickerDialog$OnColorChangedListener mListener> = $r2;
+
+        $r0.<org.connectbot.util.UberColorPickerDialog: int mInitialColor> = $i0;
+
+        return;
+    }
+
+    static org.connectbot.util.UberColorPickerDialog$OnColorChangedListener access$000(org.connectbot.util.UberColorPickerDialog)
+    {
+        org.connectbot.util.UberColorPickerDialog $r0;
+        org.connectbot.util.UberColorPickerDialog$OnColorChangedListener $r1;
+
+        $r0 := @parameter0: org.connectbot.util.UberColorPickerDialog;
+
+        $r1 = $r0.<org.connectbot.util.UberColorPickerDialog: org.connectbot.util.UberColorPickerDialog$OnColorChangedListener mListener>;
+
+        return $r1;
+    }
+
+    protected void onCreate(android.os.Bundle)
+    {
+        org.connectbot.util.UberColorPickerDialog $r0;
+        android.os.Bundle $r1;
+        org.connectbot.util.UberColorPickerDialog$1 $r2;
+        int $i0, $i1, $i2;
+        android.util.DisplayMetrics $r3;
+        java.lang.Exception $r4;
+        android.view.Window $r5;
+        android.view.WindowManager $r6;
+        android.view.Display $r7;
+        android.content.Context $r8;
+        android.content.res.Resources $r9;
+        java.lang.String $r10;
+        org.connectbot.util.UberColorPickerDialog$ColorPickerView $r11;
+
+        $r0 := @this: org.connectbot.util.UberColorPickerDialog;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.app.Dialog: void onCreate(android.os.Bundle)>($r1);
+
+        $r2 = new org.connectbot.util.UberColorPickerDialog$1;
+
+        specialinvoke $r2.<org.connectbot.util.UberColorPickerDialog$1: void <init>(org.connectbot.util.UberColorPickerDialog)>($r0);
+
+        $r3 = new android.util.DisplayMetrics;
+
+        specialinvoke $r3.<android.util.DisplayMetrics: void <init>()>();
+
+        $r5 = virtualinvoke $r0.<org.connectbot.util.UberColorPickerDialog: android.view.Window getWindow()>();
+
+        $r6 = virtualinvoke $r5.<android.view.Window: android.view.WindowManager getWindowManager()>();
+
+        $r7 = interfaceinvoke $r6.<android.view.WindowManager: android.view.Display getDefaultDisplay()>();
+
+        virtualinvoke $r7.<android.view.Display: void getMetrics(android.util.DisplayMetrics)>($r3);
+
+        $i0 = $r3.<android.util.DisplayMetrics: int widthPixels>;
+
+        $i1 = $r3.<android.util.DisplayMetrics: int heightPixels>;
+
+        $r8 = virtualinvoke $r0.<org.connectbot.util.UberColorPickerDialog: android.content.Context getContext()>();
+
+        $r9 = virtualinvoke $r8.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r10 = virtualinvoke $r9.<android.content.res.Resources: java.lang.String getString(int)>(2131165387);
+
+        virtualinvoke $r0.<org.connectbot.util.UberColorPickerDialog: void setTitle(java.lang.CharSequence)>($r10);
+
+        $r11 = new org.connectbot.util.UberColorPickerDialog$ColorPickerView;
+
+     label1:
+        $r8 = virtualinvoke $r0.<org.connectbot.util.UberColorPickerDialog: android.content.Context getContext()>();
+
+        $i2 = $r0.<org.connectbot.util.UberColorPickerDialog: int mInitialColor>;
+
+        specialinvoke $r11.<org.connectbot.util.UberColorPickerDialog$ColorPickerView: void <init>(android.content.Context,org.connectbot.util.UberColorPickerDialog$OnColorChangedListener,int,int,int)>($r8, $r2, $i0, $i1, $i2);
+
+        virtualinvoke $r0.<org.connectbot.util.UberColorPickerDialog: void setContentView(android.view.View)>($r11);
+
+     label2:
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+        virtualinvoke $r0.<org.connectbot.util.UberColorPickerDialog: void dismiss()>();
+
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+}

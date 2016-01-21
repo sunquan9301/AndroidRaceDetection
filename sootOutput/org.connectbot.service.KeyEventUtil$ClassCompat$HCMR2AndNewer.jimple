@@ -1,0 +1,28 @@
+class org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer extends org.connectbot.service.KeyEventUtil$ClassCompat$HCMR1AndNewer
+{
+
+    private void <init>()
+    {
+        org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer $r0;
+
+        $r0 := @this: org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer;
+
+        specialinvoke $r0.<org.connectbot.service.KeyEventUtil$ClassCompat$HCMR1AndNewer: void <init>(org.connectbot.service.KeyEventUtil$1)>(null);
+
+        return;
+    }
+
+    void <init>(org.connectbot.service.KeyEventUtil$1)
+    {
+        org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer $r0;
+        org.connectbot.service.KeyEventUtil$1 $r1;
+
+        $r0 := @this: org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer;
+
+        $r1 := @parameter0: org.connectbot.service.KeyEventUtil$1;
+
+        specialinvoke $r0.<org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer: void <init>()>();
+
+        return;
+    }
+}

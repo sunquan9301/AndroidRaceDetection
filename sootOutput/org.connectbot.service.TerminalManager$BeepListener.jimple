@@ -1,0 +1,42 @@
+class org.connectbot.service.TerminalManager$BeepListener extends java.lang.Object implements android.media.MediaPlayer$OnCompletionListener
+{
+
+    private void <init>()
+    {
+        org.connectbot.service.TerminalManager$BeepListener $r0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$BeepListener;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.service.TerminalManager$1)
+    {
+        org.connectbot.service.TerminalManager$BeepListener $r0;
+        org.connectbot.service.TerminalManager$1 $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$BeepListener;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager$1;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager$BeepListener: void <init>()>();
+
+        return;
+    }
+
+    public void onCompletion(android.media.MediaPlayer)
+    {
+        org.connectbot.service.TerminalManager$BeepListener $r0;
+        android.media.MediaPlayer $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$BeepListener;
+
+        $r1 := @parameter0: android.media.MediaPlayer;
+
+        virtualinvoke $r1.<android.media.MediaPlayer: void seekTo(int)>(0);
+
+        return;
+    }
+}

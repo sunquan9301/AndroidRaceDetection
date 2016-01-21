@@ -1,0 +1,19 @@
+public interface  com.trilead.ssh2.AuthAgentCallback extends java.lang.Object
+{
+
+    public abstract boolean addIdentity(java.security.KeyPair, java.lang.String, boolean, int);
+
+    public abstract java.security.KeyPair getKeyPair(byte[]);
+
+    public abstract boolean isAgentLocked();
+
+    public abstract boolean removeAllIdentities();
+
+    public abstract boolean removeIdentity(byte[]);
+
+    public abstract boolean requestAgentUnlock(java.lang.String);
+
+    public abstract java.util.Map retrieveIdentities();
+
+    public abstract boolean setAgentLock(java.lang.String);
+}

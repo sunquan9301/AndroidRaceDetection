@@ -1,0 +1,18 @@
+class android.support.v4.widget.ScrollerCompatIcs extends java.lang.Object
+{
+
+    public static float getCurrVelocity(java.lang.Object)
+    {
+        java.lang.Object $r0;
+        float $f0;
+        android.widget.OverScroller $r1;
+
+        $r0 := @parameter0: java.lang.Object;
+
+        $r1 = (android.widget.OverScroller) $r0;
+
+        $f0 = virtualinvoke $r1.<android.widget.OverScroller: float getCurrVelocity()>();
+
+        return $f0;
+    }
+}

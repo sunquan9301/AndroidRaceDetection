@@ -1,0 +1,88 @@
+class org.connectbot.ConsoleActivity$5 extends java.lang.Object implements java.lang.Runnable
+{
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$5 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$5;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.ConsoleActivity$5 $r0;
+        org.connectbot.ConsoleActivity $r1;
+        android.widget.LinearLayout $r2;
+        int $i0;
+        boolean $z0;
+        android.view.animation.Animation $r3;
+        org.connectbot.ActionBarWrapper $r4;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$5;
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.ConsoleActivity: android.widget.LinearLayout access$300(org.connectbot.ConsoleActivity)>($r1);
+
+        $i0 = virtualinvoke $r2.<android.widget.LinearLayout: int getVisibility()>();
+
+        if $i0 == 8 goto label3;
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0>;
+
+        $z0 = staticinvoke <org.connectbot.ConsoleActivity: boolean access$400(org.connectbot.ConsoleActivity)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        return;
+
+     label1:
+        $r1 = $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.ConsoleActivity: android.widget.LinearLayout access$300(org.connectbot.ConsoleActivity)>($r1);
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0>;
+
+        $r3 = staticinvoke <org.connectbot.ConsoleActivity: android.view.animation.Animation access$500(org.connectbot.ConsoleActivity)>($r1);
+
+        virtualinvoke $r2.<android.widget.LinearLayout: void startAnimation(android.view.animation.Animation)>($r3);
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.ConsoleActivity: android.widget.LinearLayout access$300(org.connectbot.ConsoleActivity)>($r1);
+
+        virtualinvoke $r2.<android.widget.LinearLayout: void setVisibility(int)>(8);
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0>;
+
+        $z0 = staticinvoke <org.connectbot.ConsoleActivity: boolean access$600(org.connectbot.ConsoleActivity)>($r1);
+
+        if $z0 == 0 goto label2;
+
+        $r1 = $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.ConsoleActivity: org.connectbot.ActionBarWrapper access$700(org.connectbot.ConsoleActivity)>($r1);
+
+        virtualinvoke $r4.<org.connectbot.ActionBarWrapper: void hide()>();
+
+     label2:
+        $r1 = $r0.<org.connectbot.ConsoleActivity$5: org.connectbot.ConsoleActivity this$0>;
+
+        staticinvoke <org.connectbot.ConsoleActivity: java.lang.Runnable access$802(org.connectbot.ConsoleActivity,java.lang.Runnable)>($r1, null);
+
+        return;
+
+     label3:
+        return;
+    }
+}

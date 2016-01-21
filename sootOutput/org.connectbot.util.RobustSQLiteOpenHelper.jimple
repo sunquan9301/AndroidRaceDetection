@@ -1,0 +1,417 @@
+public abstract class org.connectbot.util.RobustSQLiteOpenHelper extends android.database.sqlite.SQLiteOpenHelper
+{
+    private static java.util.List mIndexNames;
+    private static java.util.List mTableNames;
+
+    static void <clinit>()
+    {
+        java.util.LinkedList $r0;
+
+        $r0 = new java.util.LinkedList;
+
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+
+        <org.connectbot.util.RobustSQLiteOpenHelper: java.util.List mTableNames> = $r0;
+
+        $r0 = new java.util.LinkedList;
+
+        specialinvoke $r0.<java.util.LinkedList: void <init>()>();
+
+        <org.connectbot.util.RobustSQLiteOpenHelper: java.util.List mIndexNames> = $r0;
+
+        return;
+    }
+
+    public void <init>(android.content.Context, java.lang.String, android.database.sqlite.SQLiteDatabase$CursorFactory, int)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.content.Context $r1;
+        java.lang.String $r2;
+        android.database.sqlite.SQLiteDatabase$CursorFactory $r3;
+        int $i0;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: android.database.sqlite.SQLiteDatabase$CursorFactory;
+
+        $i0 := @parameter3: int;
+
+        specialinvoke $r0.<android.database.sqlite.SQLiteOpenHelper: void <init>(android.content.Context,java.lang.String,android.database.sqlite.SQLiteDatabase$CursorFactory,int)>($r1, $r2, $r3, $i0);
+
+        return;
+    }
+
+    protected static void addIndexName(java.lang.String)
+    {
+        java.lang.String $r0;
+        java.util.List $r1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = <org.connectbot.util.RobustSQLiteOpenHelper: java.util.List mIndexNames>;
+
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r0);
+
+        return;
+    }
+
+    protected static void addTableName(java.lang.String)
+    {
+        java.lang.String $r0;
+        java.util.List $r1;
+
+        $r0 := @parameter0: java.lang.String;
+
+        $r1 = <org.connectbot.util.RobustSQLiteOpenHelper: java.util.List mTableNames>;
+
+        interfaceinvoke $r1.<java.util.List: boolean add(java.lang.Object)>($r0);
+
+        return;
+    }
+
+    private void dropAllTables(android.database.sqlite.SQLiteDatabase)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void dropAllTablesWithPrefix(android.database.sqlite.SQLiteDatabase,java.lang.String)>($r1, "");
+
+        return;
+    }
+
+    private void dropAllTablesWithPrefix(android.database.sqlite.SQLiteDatabase, java.lang.String)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+        java.lang.String $r2, $r6;
+        java.util.List $r3;
+        java.util.Iterator $r4;
+        boolean $z0;
+        java.lang.Object $r5;
+        java.lang.StringBuilder $r7;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = <org.connectbot.util.RobustSQLiteOpenHelper: java.util.List mIndexNames>;
+
+        $r4 = interfaceinvoke $r3.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.lang.String) $r5;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("DROP INDEX IF EXISTS ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r6);
+
+        goto label1;
+
+     label2:
+        $r3 = <org.connectbot.util.RobustSQLiteOpenHelper: java.util.List mTableNames>;
+
+        $r4 = interfaceinvoke $r3.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r4.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r5 = interfaceinvoke $r4.<java.util.Iterator: java.lang.Object next()>();
+
+        $r6 = (java.lang.String) $r5;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("DROP TABLE IF EXISTS ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r6 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r6);
+
+        goto label3;
+
+     label4:
+        return;
+    }
+
+    private void dropAndCreateTables(android.database.sqlite.SQLiteDatabase)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void dropAllTables(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        virtualinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void onCreate(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        return;
+    }
+
+    private java.lang.String getTableColumnNames(android.database.sqlite.SQLiteDatabase, java.lang.String)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+        java.lang.String $r2;
+        java.lang.StringBuilder $r3, $r4;
+        android.database.Cursor $r5;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("PRAGMA table_info(");
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: android.database.Cursor rawQuery(java.lang.String,java.lang.String[])>($r2, null);
+
+     label1:
+        $z0 = interfaceinvoke $r5.<android.database.Cursor: boolean moveToNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $z0 = interfaceinvoke $r5.<android.database.Cursor: boolean isFirst()>();
+
+        if $z0 != 0 goto label2;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+     label2:
+        $r2 = interfaceinvoke $r5.<android.database.Cursor: java.lang.String getString(int)>(1);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        goto label1;
+
+     label3:
+        interfaceinvoke $r5.<android.database.Cursor: void close()>();
+
+        $r2 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $r2;
+    }
+
+    private void regenerateTables(android.database.sqlite.SQLiteDatabase)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+        java.util.Iterator $r2;
+        java.util.List $r3;
+        boolean $z0;
+        java.lang.Object $r4;
+        java.lang.String $r5;
+        java.lang.StringBuilder $r6;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void dropAllTablesWithPrefix(android.database.sqlite.SQLiteDatabase,java.lang.String)>($r1, "OLD_");
+
+        $r3 = <org.connectbot.util.RobustSQLiteOpenHelper: java.util.List mTableNames>;
+
+        $r2 = interfaceinvoke $r3.<java.util.List: java.util.Iterator iterator()>();
+
+     label1:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label2;
+
+        $r4 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.lang.String) $r4;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("ALTER TABLE ");
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" RENAME TO OLD_");
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r5);
+
+        goto label1;
+
+     label2:
+        virtualinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void onCreate(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        $r3 = <org.connectbot.util.RobustSQLiteOpenHelper: java.util.List mTableNames>;
+
+        $r2 = interfaceinvoke $r3.<java.util.List: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r2.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r4 = interfaceinvoke $r2.<java.util.Iterator: java.lang.Object next()>();
+
+        $r5 = (java.lang.String) $r4;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void repopulateTable(android.database.sqlite.SQLiteDatabase,java.lang.String)>($r1, $r5);
+
+        goto label3;
+
+     label4:
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void dropAllTablesWithPrefix(android.database.sqlite.SQLiteDatabase,java.lang.String)>($r1, "OLD_");
+
+        return;
+    }
+
+    private void repopulateTable(android.database.sqlite.SQLiteDatabase, java.lang.String)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+        java.lang.String $r2, $r4;
+        java.lang.StringBuilder $r3, $r5;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r4 = specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: java.lang.String getTableColumnNames(android.database.sqlite.SQLiteDatabase,java.lang.String)>($r1, $r2);
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("INSERT INTO ");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") SELECT ");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" FROM OLD_");
+
+        virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r1.<android.database.sqlite.SQLiteDatabase: void execSQL(java.lang.String)>($r4);
+
+        return;
+    }
+
+    public void onCreate(android.database.sqlite.SQLiteDatabase)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void dropAllTables(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        return;
+    }
+
+    public abstract void onRobustUpgrade(android.database.sqlite.SQLiteDatabase, int, int) throws android.database.sqlite.SQLiteException;
+
+    public final void onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
+    {
+        org.connectbot.util.RobustSQLiteOpenHelper $r0;
+        android.database.sqlite.SQLiteDatabase $r1;
+        int $i0, $i1;
+        android.database.sqlite.SQLiteException $r2, $r3;
+
+        $r0 := @this: org.connectbot.util.RobustSQLiteOpenHelper;
+
+        $r1 := @parameter0: android.database.sqlite.SQLiteDatabase;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+     label1:
+        virtualinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void onRobustUpgrade(android.database.sqlite.SQLiteDatabase,int,int)>($r1, $i0, $i1);
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+     label4:
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void regenerateTables(android.database.sqlite.SQLiteDatabase)>($r1);
+
+     label5:
+        return;
+
+     label6:
+        $r3 := @caughtexception;
+
+        specialinvoke $r0.<org.connectbot.util.RobustSQLiteOpenHelper: void dropAndCreateTables(android.database.sqlite.SQLiteDatabase)>($r1);
+
+        return;
+
+        catch android.database.sqlite.SQLiteException from label1 to label2 with label3;
+        catch android.database.sqlite.SQLiteException from label4 to label5 with label6;
+    }
+}

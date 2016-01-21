@@ -1,0 +1,339 @@
+public class com.trilead.ssh2.crypto.dh.EcDhExchange extends com.trilead.ssh2.crypto.dh.GenericDhExchange
+{
+    private java.security.interfaces.ECPrivateKey clientPrivate;
+    private java.security.interfaces.ECPublicKey clientPublic;
+    private java.security.interfaces.ECPublicKey serverPublic;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.crypto.dh.EcDhExchange $r0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.EcDhExchange;
+
+        specialinvoke $r0.<com.trilead.ssh2.crypto.dh.GenericDhExchange: void <init>()>();
+
+        return;
+    }
+
+    public byte[] getE()
+    {
+        com.trilead.ssh2.crypto.dh.EcDhExchange $r0;
+        java.security.interfaces.ECPublicKey $r1;
+        java.security.spec.ECPoint $r2;
+        java.security.spec.ECParameterSpec $r3;
+        java.security.spec.EllipticCurve $r4;
+        byte[] $r5;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.EcDhExchange;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey clientPublic>;
+
+        $r2 = interfaceinvoke $r1.<java.security.interfaces.ECPublicKey: java.security.spec.ECPoint getW()>();
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey clientPublic>;
+
+        $r3 = interfaceinvoke $r1.<java.security.interfaces.ECPublicKey: java.security.spec.ECParameterSpec getParams()>();
+
+        $r4 = virtualinvoke $r3.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: byte[] encodeECPoint(java.security.spec.ECPoint,java.security.spec.EllipticCurve)>($r2, $r4);
+
+        return $r5;
+    }
+
+    public java.lang.String getHashAlgo()
+    {
+        com.trilead.ssh2.crypto.dh.EcDhExchange $r0;
+        java.security.interfaces.ECPublicKey $r1;
+        java.security.spec.ECParameterSpec $r2;
+        java.lang.String $r3;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.EcDhExchange;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey clientPublic>;
+
+        $r2 = interfaceinvoke $r1.<java.security.interfaces.ECPublicKey: java.security.spec.ECParameterSpec getParams()>();
+
+        $r3 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.lang.String getDigestAlgorithmForParams(java.security.spec.ECParameterSpec)>($r2);
+
+        return $r3;
+    }
+
+    protected byte[] getServerE()
+    {
+        com.trilead.ssh2.crypto.dh.EcDhExchange $r0;
+        java.security.interfaces.ECPublicKey $r1;
+        java.security.spec.ECPoint $r2;
+        java.security.spec.ECParameterSpec $r3;
+        java.security.spec.EllipticCurve $r4;
+        byte[] $r5;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.EcDhExchange;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey serverPublic>;
+
+        $r2 = interfaceinvoke $r1.<java.security.interfaces.ECPublicKey: java.security.spec.ECPoint getW()>();
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey serverPublic>;
+
+        $r3 = interfaceinvoke $r1.<java.security.interfaces.ECPublicKey: java.security.spec.ECParameterSpec getParams()>();
+
+        $r4 = virtualinvoke $r3.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: byte[] encodeECPoint(java.security.spec.ECPoint,java.security.spec.EllipticCurve)>($r2, $r4);
+
+        return $r5;
+    }
+
+    public void init(java.lang.String) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.dh.EcDhExchange $r0;
+        java.lang.String $r1, $r4;
+        java.security.NoSuchAlgorithmException $r2;
+        java.security.spec.ECParameterSpec $r3;
+        java.lang.StringBuilder $r5;
+        boolean $z0;
+        java.security.KeyPairGenerator $r6;
+        java.security.KeyPair $r7;
+        java.security.PrivateKey $r8;
+        java.security.interfaces.ECPrivateKey $r9;
+        java.security.PublicKey $r10;
+        java.security.interfaces.ECPublicKey $r11;
+        java.lang.IllegalArgumentException $r12;
+        java.io.IOException $r13;
+        java.lang.Throwable $r14;
+        java.security.InvalidAlgorithmParameterException $r15;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.EcDhExchange;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r4 = "ecdh-sha2-nistp256";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label5;
+
+        $r3 = <com.trilead.ssh2.signature.ECDSASHA2Verify$EllipticCurves: java.security.spec.ECParameterSpec nistp256>;
+
+     label1:
+        $r6 = staticinvoke <java.security.KeyPairGenerator: java.security.KeyPairGenerator getInstance(java.lang.String)>("EC");
+
+        virtualinvoke $r6.<java.security.KeyPairGenerator: void initialize(java.security.spec.AlgorithmParameterSpec)>($r3);
+
+        $r7 = virtualinvoke $r6.<java.security.KeyPairGenerator: java.security.KeyPair generateKeyPair()>();
+
+        $r8 = virtualinvoke $r7.<java.security.KeyPair: java.security.PrivateKey getPrivate()>();
+
+     label2:
+        $r9 = (java.security.interfaces.ECPrivateKey) $r8;
+
+     label3:
+        $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPrivateKey clientPrivate> = $r9;
+
+        $r10 = virtualinvoke $r7.<java.security.KeyPair: java.security.PublicKey getPublic()>();
+
+     label4:
+        $r11 = (java.security.interfaces.ECPublicKey) $r10;
+
+        $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey clientPublic> = $r11;
+
+        return;
+
+     label5:
+        $r4 = "ecdh-sha2-nistp384";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label6;
+
+        $r3 = <com.trilead.ssh2.signature.ECDSASHA2Verify$EllipticCurves: java.security.spec.ECParameterSpec nistp384>;
+
+        goto label1;
+
+     label6:
+        $r4 = "ecdh-sha2-nistp521";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label7;
+
+        $r3 = <com.trilead.ssh2.signature.ECDSASHA2Verify$EllipticCurves: java.security.spec.ECParameterSpec nistp521>;
+
+        goto label1;
+
+     label7:
+        $r12 = new java.lang.IllegalArgumentException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown EC curve ");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r12.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r4);
+
+        throw $r12;
+
+     label8:
+        $r2 := @caughtexception;
+
+        $r13 = new java.io.IOException;
+
+        specialinvoke $r13.<java.io.IOException: void <init>(java.lang.String)>("No DH keypair generator");
+
+        $r14 = virtualinvoke $r13.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r2);
+
+        $r13 = (java.io.IOException) $r14;
+
+        throw $r13;
+
+     label9:
+        $r15 := @caughtexception;
+
+        $r13 = new java.io.IOException;
+
+        specialinvoke $r13.<java.io.IOException: void <init>(java.lang.String)>("Invalid DH parameters");
+
+        $r14 = virtualinvoke $r13.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r15);
+
+        $r13 = (java.io.IOException) $r14;
+
+        throw $r13;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label8;
+        catch java.security.NoSuchAlgorithmException from label3 to label4 with label8;
+        catch java.security.InvalidAlgorithmParameterException from label1 to label2 with label9;
+        catch java.security.InvalidAlgorithmParameterException from label3 to label4 with label9;
+    }
+
+    public void setF(byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.dh.EcDhExchange $r0;
+        byte[] $r1;
+        java.security.NoSuchAlgorithmException $r2;
+        java.security.interfaces.ECPublicKey $r3;
+        java.security.KeyFactory $r4;
+        java.lang.IllegalStateException $r5;
+        java.security.spec.ECParameterSpec $r6;
+        java.security.spec.EllipticCurve $r7;
+        java.security.spec.ECPoint $r8;
+        java.security.spec.ECPublicKeySpec $r9;
+        java.security.PublicKey $r10;
+        javax.crypto.KeyAgreement $r11;
+        java.security.interfaces.ECPrivateKey $r12;
+        java.math.BigInteger $r13;
+        java.io.IOException $r14;
+        java.lang.Throwable $r15;
+        java.security.InvalidKeyException $r16;
+        java.security.spec.InvalidKeySpecException $r17;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.EcDhExchange;
+
+        $r1 := @parameter0: byte[];
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey clientPublic>;
+
+        if $r3 != null goto label1;
+
+        $r5 = new java.lang.IllegalStateException;
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>("DhDsaExchange not initialized!");
+
+        throw $r5;
+
+     label1:
+        $r4 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>("EC");
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey clientPublic>;
+
+        $r6 = interfaceinvoke $r3.<java.security.interfaces.ECPublicKey: java.security.spec.ECParameterSpec getParams()>();
+
+        $r7 = virtualinvoke $r6.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r8 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.security.spec.ECPoint decodeECPoint(byte[],java.security.spec.EllipticCurve)>($r1, $r7);
+
+        $r9 = new java.security.spec.ECPublicKeySpec;
+
+        specialinvoke $r9.<java.security.spec.ECPublicKeySpec: void <init>(java.security.spec.ECPoint,java.security.spec.ECParameterSpec)>($r8, $r6);
+
+        $r10 = virtualinvoke $r4.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r9);
+
+     label2:
+        $r3 = (java.security.interfaces.ECPublicKey) $r10;
+
+     label3:
+        $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey serverPublic> = $r3;
+
+        $r11 = staticinvoke <javax.crypto.KeyAgreement: javax.crypto.KeyAgreement getInstance(java.lang.String)>("ECDH");
+
+        $r12 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPrivateKey clientPrivate>;
+
+        virtualinvoke $r11.<javax.crypto.KeyAgreement: void init(java.security.Key)>($r12);
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.security.interfaces.ECPublicKey serverPublic>;
+
+        virtualinvoke $r11.<javax.crypto.KeyAgreement: java.security.Key doPhase(java.security.Key,boolean)>($r3, 1);
+
+     label4:
+        $r13 = new java.math.BigInteger;
+
+        $r1 = virtualinvoke $r11.<javax.crypto.KeyAgreement: byte[] generateSecret()>();
+
+        specialinvoke $r13.<java.math.BigInteger: void <init>(int,byte[])>(1, $r1);
+
+        $r0.<com.trilead.ssh2.crypto.dh.EcDhExchange: java.math.BigInteger sharedSecret> = $r13;
+
+        return;
+
+     label5:
+        $r2 := @caughtexception;
+
+        $r14 = new java.io.IOException;
+
+        specialinvoke $r14.<java.io.IOException: void <init>(java.lang.String)>("No ECDH key agreement method");
+
+        $r15 = virtualinvoke $r14.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r2);
+
+        $r14 = (java.io.IOException) $r15;
+
+        throw $r14;
+
+     label6:
+        $r16 := @caughtexception;
+
+        $r14 = new java.io.IOException;
+
+        specialinvoke $r14.<java.io.IOException: void <init>(java.lang.String)>("Invalid ECDH key");
+
+        $r15 = virtualinvoke $r14.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r16);
+
+        $r14 = (java.io.IOException) $r15;
+
+        throw $r14;
+
+     label7:
+        $r17 := @caughtexception;
+
+        $r14 = new java.io.IOException;
+
+        specialinvoke $r14.<java.io.IOException: void <init>(java.lang.String)>("Invalid ECDH key");
+
+        $r15 = virtualinvoke $r14.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r17);
+
+        $r14 = (java.io.IOException) $r15;
+
+        throw $r14;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label5;
+        catch java.security.NoSuchAlgorithmException from label3 to label4 with label5;
+        catch java.security.InvalidKeyException from label1 to label2 with label6;
+        catch java.security.InvalidKeyException from label3 to label4 with label6;
+        catch java.security.spec.InvalidKeySpecException from label1 to label2 with label7;
+        catch java.security.spec.InvalidKeySpecException from label3 to label4 with label7;
+    }
+}

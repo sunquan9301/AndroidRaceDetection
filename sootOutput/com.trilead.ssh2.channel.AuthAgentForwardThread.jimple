@@ -1,0 +1,1453 @@
+public class com.trilead.ssh2.channel.AuthAgentForwardThread extends java.lang.Thread implements com.trilead.ssh2.channel.IChannelWorkerThread
+{
+    private static final byte[] SSH_AGENT_FAILURE;
+    private static final byte[] SSH_AGENT_SUCCESS;
+    private static final com.trilead.ssh2.log.Logger log;
+    com.trilead.ssh2.AuthAgentCallback authAgent;
+    byte[] buffer;
+    com.trilead.ssh2.channel.Channel c;
+    java.io.InputStream is;
+    java.io.OutputStream os;
+
+    static void <clinit>()
+    {
+        byte[] $r0;
+        com.trilead.ssh2.log.Logger $r1;
+
+        $r0 = newarray (byte)[5];
+
+        $r0[0] = 0;
+
+        $r0[1] = 0;
+
+        $r0[2] = 0;
+
+        $r0[3] = 1;
+
+        $r0[4] = 5;
+
+        <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE> = $r0;
+
+        $r0 = newarray (byte)[5];
+
+        $r0[0] = 0;
+
+        $r0[1] = 0;
+
+        $r0[2] = 0;
+
+        $r0[3] = 1;
+
+        $r0[4] = 6;
+
+        <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_SUCCESS> = $r0;
+
+        $r1 = staticinvoke <com.trilead.ssh2.log.Logger: com.trilead.ssh2.log.Logger getLogger(java.lang.Class)>(class "com/trilead/ssh2/channel/RemoteAcceptThread");
+
+        <com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.log.Logger log> = $r1;
+
+        return;
+    }
+
+    public void <init>(com.trilead.ssh2.channel.Channel, com.trilead.ssh2.AuthAgentCallback)
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        com.trilead.ssh2.AuthAgentCallback $r2;
+        boolean $z0;
+        byte[] $r3;
+        com.trilead.ssh2.log.Logger $r4;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $r2 := @parameter1: com.trilead.ssh2.AuthAgentCallback;
+
+        specialinvoke $r0.<java.lang.Thread: void <init>()>();
+
+        $r3 = newarray (byte)[30000];
+
+        $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] buffer> = $r3;
+
+        $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c> = $r1;
+
+        $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent> = $r2;
+
+        $r4 = <com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r4.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label1;
+
+        $r4 = <com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r4.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, "AuthAgentForwardThread started");
+
+        return;
+
+     label1:
+        return;
+    }
+
+    private void addIdentity(com.trilead.ssh2.packets.TypesReader, boolean)
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        com.trilead.ssh2.packets.TypesReader $r1;
+        boolean $z0, $z1;
+        java.security.spec.KeySpec $r2, $r8;
+        java.lang.String $r3, $r5, $r21, $r23;
+        java.security.NoSuchAlgorithmException $r4;
+        int $i0, $i1;
+        java.security.spec.ECParameterSpec $r6;
+        java.security.KeyPair $r7, r34;
+        java.lang.StringBuilder $r9, r37;
+        java.math.BigInteger $r10, $r11, $r12, $r13, $r14, $r15, $r16, $r17;
+        java.security.KeyFactory $r18;
+        java.security.PublicKey $r19;
+        java.security.PrivateKey $r20;
+        byte[] $r22;
+        com.trilead.ssh2.log.Logger $r24;
+        java.io.OutputStream $r25;
+        java.io.IOException $r26, $r27;
+        java.security.spec.EllipticCurve $r28;
+        java.security.spec.ECPoint $r29;
+        java.security.spec.InvalidKeySpecException $r30;
+        com.trilead.ssh2.AuthAgentCallback $r31;
+        java.security.spec.RSAPublicKeySpec r32;
+        java.security.spec.RSAPrivateCrtKeySpec r33;
+        java.security.spec.DSAPublicKeySpec r35;
+        java.security.spec.DSAPrivateKeySpec r36;
+        java.security.spec.ECPublicKeySpec r38;
+        java.security.spec.ECPrivateKeySpec r39;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.packets.TypesReader;
+
+        $z0 := @parameter1: boolean;
+
+     label01:
+        $z1 = specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: boolean failWhenLocked()>();
+
+        if $z1 == 0 goto label03;
+
+     label02:
+        return;
+
+     label03:
+        $r5 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $z1 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>("ssh-rsa");
+
+        if $z1 == 0 goto label17;
+
+        $r5 = "RSA";
+
+        $r10 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r11 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r12 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r13 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r14 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r15 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+     label04:
+        $r16 = <java.math.BigInteger: java.math.BigInteger ONE>;
+
+        $r16 = virtualinvoke $r14.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r16);
+
+        $r16 = virtualinvoke $r12.<java.math.BigInteger: java.math.BigInteger mod(java.math.BigInteger)>($r16);
+
+        $r17 = <java.math.BigInteger: java.math.BigInteger ONE>;
+
+        $r17 = virtualinvoke $r15.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r17);
+
+        $r17 = virtualinvoke $r12.<java.math.BigInteger: java.math.BigInteger mod(java.math.BigInteger)>($r17);
+
+     label05:
+        r32 = new java.security.spec.RSAPublicKeySpec;
+
+     label06:
+        $r8 = r32;
+
+        specialinvoke r32.<java.security.spec.RSAPublicKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger)>($r10, $r11);
+
+     label07:
+        r33 = new java.security.spec.RSAPrivateCrtKeySpec;
+
+     label08:
+        $r2 = r33;
+
+        specialinvoke r33.<java.security.spec.RSAPrivateCrtKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger)>($r10, $r11, $r12, $r14, $r15, $r16, $r17, $r13);
+
+     label09:
+        $r18 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>($r5);
+
+        $r19 = virtualinvoke $r18.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r8);
+
+        $r20 = virtualinvoke $r18.<java.security.KeyFactory: java.security.PrivateKey generatePrivate(java.security.spec.KeySpec)>($r2);
+
+     label10:
+        r34 = new java.security.KeyPair;
+
+        $r7 = r34;
+
+     label11:
+        specialinvoke r34.<java.security.KeyPair: void <init>(java.security.PublicKey,java.security.PrivateKey)>($r19, $r20);
+
+     label12:
+        $z1 = 0;
+
+        $i0 = 0;
+
+     label13:
+        if $z0 == 0 goto label61;
+
+     label14:
+        $i1 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: int remain()>();
+
+        if $i1 <= 0 goto label61;
+
+        $i1 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+     label15:
+        if $i1 != 2 goto label55;
+
+        $z1 = 1;
+
+     label16:
+        goto label14;
+
+     label17:
+        $z1 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>("ssh-dss");
+
+        if $z1 == 0 goto label22;
+
+        $r5 = "DSA";
+
+        $r17 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r16 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r15 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r14 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r13 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+     label18:
+        r35 = new java.security.spec.DSAPublicKeySpec;
+
+     label19:
+        $r8 = r35;
+
+        specialinvoke r35.<java.security.spec.DSAPublicKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger)>($r14, $r17, $r16, $r15);
+
+     label20:
+        r36 = new java.security.spec.DSAPrivateKeySpec;
+
+     label21:
+        $r2 = r36;
+
+        specialinvoke r36.<java.security.spec.DSAPrivateKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger,java.math.BigInteger,java.math.BigInteger)>($r13, $r17, $r16, $r15);
+
+        goto label09;
+
+     label22:
+        $z1 = virtualinvoke $r5.<java.lang.String: boolean equals(java.lang.Object)>("ecdsa-sha2-nistp256");
+
+     label23:
+        if $z1 == 0 goto label44;
+
+     label24:
+        $r5 = "EC";
+
+        $r21 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $r22 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: byte[] readByteString()>();
+
+        $r17 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.math.BigInteger readMPINT()>();
+
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+     label25:
+        $r23 = "nistp256";
+
+        $z1 = virtualinvoke $r23.<java.lang.String: boolean equals(java.lang.Object)>($r21);
+
+     label26:
+        if $z1 != 0 goto label35;
+
+        $r24 = <com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.log.Logger log>;
+
+        r37 = new java.lang.StringBuilder;
+
+     label27:
+        specialinvoke r37.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke r37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid curve name for ecdsa-sha2-nistp256: ");
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r21);
+
+        $r23 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r24.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(2, $r23);
+
+     label28:
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label29:
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label30:
+        return;
+
+     label31:
+        $r26 := @caughtexception;
+
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+     label32:
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label33:
+        return;
+
+     label34:
+        $r27 := @caughtexception;
+
+        return;
+
+     label35:
+        $r6 = <com.trilead.ssh2.signature.ECDSASHA2Verify$EllipticCurves: java.security.spec.ECParameterSpec nistp256>;
+
+     label36:
+        $r28 = virtualinvoke $r6.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r29 = staticinvoke <com.trilead.ssh2.signature.ECDSASHA2Verify: java.security.spec.ECPoint decodeECPoint(byte[],java.security.spec.EllipticCurve)>($r22, $r28);
+
+     label37:
+        if $r29 != null goto label40;
+
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label38:
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label39:
+        return;
+
+     label40:
+        r38 = new java.security.spec.ECPublicKeySpec;
+
+     label41:
+        $r8 = r38;
+
+        specialinvoke r38.<java.security.spec.ECPublicKeySpec: void <init>(java.security.spec.ECPoint,java.security.spec.ECParameterSpec)>($r29, $r6);
+
+     label42:
+        r39 = new java.security.spec.ECPrivateKeySpec;
+
+     label43:
+        $r2 = r39;
+
+        specialinvoke r39.<java.security.spec.ECPrivateKeySpec: void <init>(java.math.BigInteger,java.security.spec.ECParameterSpec)>($r17, $r6);
+
+        goto label09;
+
+     label44:
+        $r24 = <com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.log.Logger log>;
+
+        r37 = new java.lang.StringBuilder;
+
+     label45:
+        specialinvoke r37.<java.lang.StringBuilder: void <init>()>();
+
+        $r9 = virtualinvoke r37.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown key type: ");
+
+        $r9 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r23 = virtualinvoke $r9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r24.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(2, $r23);
+
+     label46:
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label47:
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label48:
+        return;
+
+     label49:
+        $r4 := @caughtexception;
+
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label50:
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label51:
+        return;
+
+     label52:
+        $r30 := @caughtexception;
+
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label53:
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label54:
+        return;
+
+     label55:
+        if $i1 != 1 goto label58;
+
+        $i1 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+     label56:
+        $i0 = $i1;
+
+     label57:
+        goto label14;
+
+     label58:
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label59:
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label60:
+        return;
+
+     label61:
+        $r31 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        $z1 = interfaceinvoke $r31.<com.trilead.ssh2.AuthAgentCallback: boolean addIdentity(java.security.KeyPair,java.lang.String,boolean,int)>($r7, $r3, $z1, $i0);
+
+     label62:
+        if $z1 == 0 goto label65;
+
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label63:
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_SUCCESS>;
+
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label64:
+        return;
+
+     label65:
+        $r25 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label66:
+        $r22 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r25.<java.io.OutputStream: void write(byte[])>($r22);
+
+     label67:
+        return;
+
+        catch java.io.IOException from label01 to label02 with label31;
+        catch java.io.IOException from label03 to label04 with label31;
+        catch java.io.IOException from label04 to label05 with label31;
+        catch java.io.IOException from label06 to label07 with label31;
+        catch java.io.IOException from label08 to label09 with label31;
+        catch java.security.NoSuchAlgorithmException from label09 to label10 with label49;
+        catch java.security.spec.InvalidKeySpecException from label09 to label10 with label52;
+        catch java.io.IOException from label09 to label10 with label31;
+        catch java.io.IOException from label11 to label12 with label31;
+        catch java.io.IOException from label13 to label15 with label31;
+        catch java.io.IOException from label16 to label18 with label31;
+        catch java.io.IOException from label19 to label20 with label31;
+        catch java.io.IOException from label21 to label23 with label31;
+        catch java.io.IOException from label24 to label25 with label31;
+        catch java.io.IOException from label25 to label26 with label31;
+        catch java.io.IOException from label27 to label28 with label31;
+        catch java.io.IOException from label29 to label30 with label31;
+        catch java.io.IOException from label32 to label33 with label34;
+        catch java.io.IOException from label36 to label37 with label31;
+        catch java.io.IOException from label38 to label39 with label31;
+        catch java.io.IOException from label41 to label42 with label31;
+        catch java.io.IOException from label43 to label44 with label31;
+        catch java.io.IOException from label45 to label46 with label31;
+        catch java.io.IOException from label47 to label48 with label31;
+        catch java.io.IOException from label50 to label51 with label31;
+        catch java.io.IOException from label53 to label54 with label31;
+        catch java.io.IOException from label55 to label56 with label31;
+        catch java.io.IOException from label57 to label58 with label31;
+        catch java.io.IOException from label59 to label60 with label31;
+        catch java.io.IOException from label61 to label62 with label31;
+        catch java.io.IOException from label63 to label64 with label31;
+        catch java.io.IOException from label66 to label67 with label31;
+    }
+
+    private boolean failWhenLocked() throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        com.trilead.ssh2.AuthAgentCallback $r1;
+        byte[] $r2;
+        boolean $z0;
+        java.io.OutputStream $r3;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        $z0 = interfaceinvoke $r1.<com.trilead.ssh2.AuthAgentCallback: boolean isAgentLocked()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r2 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r3.<java.io.OutputStream: void write(byte[])>($r2);
+
+        return 1;
+
+     label1:
+        return 0;
+    }
+
+    private void processLockRequest(com.trilead.ssh2.packets.TypesReader)
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        com.trilead.ssh2.packets.TypesReader $r1;
+        java.io.IOException $r2, $r7;
+        byte[] $r3;
+        boolean $z0;
+        java.lang.String $r4;
+        com.trilead.ssh2.AuthAgentCallback $r5;
+        java.io.OutputStream $r6;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.packets.TypesReader;
+
+     label01:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: boolean failWhenLocked()>();
+
+        if $z0 == 0 goto label03;
+
+     label02:
+        return;
+
+     label03:
+        $r4 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $r5 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        $z0 = interfaceinvoke $r5.<com.trilead.ssh2.AuthAgentCallback: boolean setAgentLock(java.lang.String)>($r4);
+
+     label04:
+        if $z0 != 0 goto label11;
+
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label05:
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label06:
+        return;
+
+     label07:
+        $r2 := @caughtexception;
+
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+     label08:
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label09:
+        return;
+
+     label10:
+        $r7 := @caughtexception;
+
+        return;
+
+     label11:
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_SUCCESS>;
+
+     label12:
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label13:
+        return;
+
+        catch java.io.IOException from label01 to label02 with label07;
+        catch java.io.IOException from label03 to label04 with label07;
+        catch java.io.IOException from label05 to label06 with label07;
+        catch java.io.IOException from label08 to label09 with label10;
+        catch java.io.IOException from label12 to label13 with label07;
+    }
+
+    private void processSignRequest(com.trilead.ssh2.packets.TypesReader)
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        com.trilead.ssh2.packets.TypesReader $r1;
+        java.io.IOException $r2, $r7;
+        byte[] $r3, $r5;
+        com.trilead.ssh2.packets.TypesWriter $r4;
+        boolean $z0;
+        int $i0;
+        java.io.OutputStream $r6;
+        com.trilead.ssh2.AuthAgentCallback $r8;
+        java.security.KeyPair $r9;
+        java.security.PrivateKey $r10;
+        java.security.interfaces.RSAPrivateKey $r11;
+        java.security.interfaces.DSAPrivateKey $r12;
+        java.security.SecureRandom $r13;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.packets.TypesReader;
+
+     label01:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: boolean failWhenLocked()>();
+
+        if $z0 == 0 goto label03;
+
+     label02:
+        return;
+
+     label03:
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: byte[] readByteString()>();
+
+        $r5 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: byte[] readByteString()>();
+
+        $i0 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+     label04:
+        if $i0 == 0 goto label11;
+
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label05:
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label06:
+        return;
+
+     label07:
+        $r2 := @caughtexception;
+
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r5 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+     label08:
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r5);
+
+     label09:
+        return;
+
+     label10:
+        $r7 := @caughtexception;
+
+        return;
+
+     label11:
+        $r8 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+     label12:
+        $r9 = interfaceinvoke $r8.<com.trilead.ssh2.AuthAgentCallback: java.security.KeyPair getKeyPair(byte[])>($r3);
+
+        if $r9 != null goto label16;
+
+     label13:
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label14:
+        $r5 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r5);
+
+     label15:
+        return;
+
+     label16:
+        $r10 = virtualinvoke $r9.<java.security.KeyPair: java.security.PrivateKey getPrivate()>();
+
+     label17:
+        $z0 = $r10 instanceof java.security.interfaces.RSAPrivateKey;
+
+        if $z0 == 0 goto label22;
+
+     label18:
+        $r11 = (java.security.interfaces.RSAPrivateKey) $r10;
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: byte[] generateSignature(byte[],java.security.interfaces.RSAPrivateKey)>($r5, $r11);
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.RSASHA1Verify: byte[] encodeSSHRSASignature(byte[])>($r5);
+
+     label19:
+        $r3 = $r5;
+
+     label20:
+        $r4 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r4.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r4.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(14);
+
+        $i0 = lengthof $r3;
+
+        virtualinvoke $r4.<com.trilead.ssh2.packets.TypesWriter: void writeString(byte[],int,int)>($r3, 0, $i0);
+
+        $r5 = virtualinvoke $r4.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void sendPacket(byte[])>($r5);
+
+     label21:
+        return;
+
+     label22:
+        $z0 = $r10 instanceof java.security.interfaces.DSAPrivateKey;
+
+        if $z0 == 0 goto label25;
+
+        $r12 = (java.security.interfaces.DSAPrivateKey) $r10;
+
+     label23:
+        $r13 = new java.security.SecureRandom;
+
+        specialinvoke $r13.<java.security.SecureRandom: void <init>()>();
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: byte[] generateSignature(byte[],java.security.interfaces.DSAPrivateKey,java.security.SecureRandom)>($r5, $r12, $r13);
+
+        $r5 = staticinvoke <com.trilead.ssh2.signature.DSASHA1Verify: byte[] encodeSSHDSASignature(byte[])>($r5);
+
+     label24:
+        $r3 = $r5;
+
+        goto label20;
+
+     label25:
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label26:
+        $r5 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r5);
+
+     label27:
+        return;
+
+        catch java.io.IOException from label01 to label02 with label07;
+        catch java.io.IOException from label03 to label04 with label07;
+        catch java.io.IOException from label05 to label06 with label07;
+        catch java.io.IOException from label08 to label09 with label10;
+        catch java.io.IOException from label12 to label13 with label07;
+        catch java.io.IOException from label14 to label15 with label07;
+        catch java.io.IOException from label16 to label17 with label07;
+        catch java.io.IOException from label18 to label19 with label07;
+        catch java.io.IOException from label20 to label21 with label07;
+        catch java.io.IOException from label23 to label24 with label07;
+        catch java.io.IOException from label26 to label27 with label07;
+    }
+
+    private void processUnlockRequest(com.trilead.ssh2.packets.TypesReader)
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        com.trilead.ssh2.packets.TypesReader $r1;
+        java.io.IOException $r2, $r7;
+        com.trilead.ssh2.AuthAgentCallback $r3;
+        byte[] $r4;
+        java.lang.String $r5;
+        boolean $z0;
+        java.io.OutputStream $r6;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.packets.TypesReader;
+
+     label01:
+        $r5 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        $z0 = interfaceinvoke $r3.<com.trilead.ssh2.AuthAgentCallback: boolean requestAgentUnlock(java.lang.String)>($r5);
+
+     label02:
+        if $z0 == 0 goto label05;
+
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label03:
+        $r4 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_SUCCESS>;
+
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r4);
+
+     label04:
+        return;
+
+     label05:
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label06:
+        $r4 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r4);
+
+     label07:
+        return;
+
+     label08:
+        $r2 := @caughtexception;
+
+        $r6 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r4 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+     label09:
+        virtualinvoke $r6.<java.io.OutputStream: void write(byte[])>($r4);
+
+     label10:
+        return;
+
+     label11:
+        $r7 := @caughtexception;
+
+        return;
+
+        catch java.io.IOException from label01 to label02 with label08;
+        catch java.io.IOException from label03 to label04 with label08;
+        catch java.io.IOException from label06 to label07 with label08;
+        catch java.io.IOException from label09 to label10 with label11;
+    }
+
+    private void removeAllIdentities(com.trilead.ssh2.packets.TypesReader)
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        com.trilead.ssh2.packets.TypesReader $r1;
+        java.io.IOException $r2, $r6;
+        byte[] $r3;
+        boolean $z0;
+        com.trilead.ssh2.AuthAgentCallback $r4;
+        java.io.OutputStream $r5;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.packets.TypesReader;
+
+     label01:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: boolean failWhenLocked()>();
+
+     label02:
+        if $z0 == 0 goto label03;
+
+        return;
+
+     label03:
+        $r4 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        $z0 = interfaceinvoke $r4.<com.trilead.ssh2.AuthAgentCallback: boolean removeAllIdentities()>();
+
+     label04:
+        if $z0 == 0 goto label11;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label05:
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_SUCCESS>;
+
+        virtualinvoke $r5.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label06:
+        return;
+
+     label07:
+        $r2 := @caughtexception;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+     label08:
+        virtualinvoke $r5.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label09:
+        return;
+
+     label10:
+        $r6 := @caughtexception;
+
+        return;
+
+     label11:
+        $r5 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+     label12:
+        virtualinvoke $r5.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label13:
+        return;
+
+        catch java.io.IOException from label01 to label02 with label07;
+        catch java.io.IOException from label03 to label04 with label07;
+        catch java.io.IOException from label05 to label06 with label07;
+        catch java.io.IOException from label08 to label09 with label10;
+        catch java.io.IOException from label12 to label13 with label07;
+    }
+
+    private void removeIdentity(com.trilead.ssh2.packets.TypesReader)
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        com.trilead.ssh2.packets.TypesReader $r1;
+        java.io.IOException $r2, $r6;
+        byte[] $r3;
+        boolean $z0;
+        com.trilead.ssh2.AuthAgentCallback $r4;
+        java.io.OutputStream $r5;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 := @parameter0: com.trilead.ssh2.packets.TypesReader;
+
+     label01:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: boolean failWhenLocked()>();
+
+        if $z0 == 0 goto label03;
+
+     label02:
+        return;
+
+     label03:
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesReader: byte[] readByteString()>();
+
+        $r4 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        $z0 = interfaceinvoke $r4.<com.trilead.ssh2.AuthAgentCallback: boolean removeIdentity(byte[])>($r3);
+
+     label04:
+        if $z0 == 0 goto label11;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label05:
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_SUCCESS>;
+
+        virtualinvoke $r5.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label06:
+        return;
+
+     label07:
+        $r2 := @caughtexception;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+     label08:
+        virtualinvoke $r5.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label09:
+        return;
+
+     label10:
+        $r6 := @caughtexception;
+
+        return;
+
+     label11:
+        $r5 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r3 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+     label12:
+        virtualinvoke $r5.<java.io.OutputStream: void write(byte[])>($r3);
+
+     label13:
+        return;
+
+        catch java.io.IOException from label01 to label02 with label07;
+        catch java.io.IOException from label03 to label04 with label07;
+        catch java.io.IOException from label05 to label06 with label07;
+        catch java.io.IOException from label08 to label09 with label10;
+        catch java.io.IOException from label12 to label13 with label07;
+    }
+
+    private void sendIdentities() throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        java.util.Map $r1;
+        int $i0;
+        com.trilead.ssh2.packets.TypesWriter $r2;
+        boolean $z0;
+        com.trilead.ssh2.AuthAgentCallback $r3;
+        java.util.Set $r4;
+        java.util.Iterator $r5;
+        java.lang.Object $r6;
+        java.util.Map$Entry $r7;
+        byte[] $r8;
+        java.lang.String $r9;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 = null;
+
+        $r2 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(12);
+
+        $i0 = 0;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        $z0 = interfaceinvoke $r3.<com.trilead.ssh2.AuthAgentCallback: boolean isAgentLocked()>();
+
+        if $z0 != 0 goto label1;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        $r1 = interfaceinvoke $r3.<com.trilead.ssh2.AuthAgentCallback: java.util.Map retrieveIdentities()>();
+
+     label1:
+        if $r1 == null goto label2;
+
+        $i0 = interfaceinvoke $r1.<java.util.Map: int size()>();
+
+     label2:
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        if $r1 == null goto label4;
+
+        $r4 = interfaceinvoke $r1.<java.util.Map: java.util.Set entrySet()>();
+
+        $r5 = interfaceinvoke $r4.<java.util.Set: java.util.Iterator iterator()>();
+
+     label3:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label4;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.util.Map$Entry) $r6;
+
+        $r6 = interfaceinvoke $r7.<java.util.Map$Entry: java.lang.Object getValue()>();
+
+        $r8 = (byte[]) $r6;
+
+        $i0 = lengthof $r8;
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: void writeString(byte[],int,int)>($r8, 0, $i0);
+
+        $r6 = interfaceinvoke $r7.<java.util.Map$Entry: java.lang.Object getKey()>();
+
+        $r9 = (java.lang.String) $r6;
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>($r9);
+
+        goto label3;
+
+     label4:
+        $r8 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void sendPacket(byte[])>($r8);
+
+        return;
+    }
+
+    private void sendPacket(byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        byte[] $r1;
+        com.trilead.ssh2.packets.TypesWriter $r2;
+        int $i0;
+        java.io.OutputStream $r3;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 := @parameter0: byte[];
+
+        $r2 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        $i0 = lengthof $r1;
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: void writeBytes(byte[])>($r1);
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+        $r1 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        virtualinvoke $r3.<java.io.OutputStream: void write(byte[])>($r1);
+
+        return;
+    }
+
+    public void run()
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        java.io.IOException $r1, $r10, $r11, $r16, $r17, $r18;
+        int $i0, $i1, $i2;
+        com.trilead.ssh2.packets.TypesReader $r2;
+        com.trilead.ssh2.channel.Channel $r3;
+        byte[] $r4, $r9;
+        com.trilead.ssh2.channel.ChannelInputStream $r5;
+        com.trilead.ssh2.channel.ChannelManager $r6;
+        com.trilead.ssh2.channel.ChannelOutputStream $r7;
+        java.io.InputStream $r8;
+        com.trilead.ssh2.log.Logger $r12;
+        java.lang.StringBuilder $r13;
+        java.lang.String $r14;
+        java.io.OutputStream $r15;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+        $r6 = $r3.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+     label01:
+        virtualinvoke $r6.<com.trilead.ssh2.channel.ChannelManager: void registerThread(com.trilead.ssh2.channel.IChannelWorkerThread)>($r0);
+
+     label02:
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+        $r6 = $r3.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+     label03:
+        virtualinvoke $r6.<com.trilead.ssh2.channel.ChannelManager: void sendOpenConfirmation(com.trilead.ssh2.channel.Channel)>($r3);
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+        $r5 = virtualinvoke $r3.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelInputStream getStdoutStream()>();
+
+     label04:
+        $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.InputStream is> = $r5;
+
+     label05:
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+        $r7 = virtualinvoke $r3.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelOutputStream getStdinStream()>();
+
+     label06:
+        $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os> = $r7;
+
+        $i1 = 4;
+
+        $i0 = 0;
+
+     label07:
+        $r8 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.InputStream is>;
+
+        $r9 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] buffer>;
+
+        $r4 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] buffer>;
+
+        $i2 = lengthof $r4;
+
+        $i2 = $i2 - $i0;
+
+     label08:
+        $i2 = virtualinvoke $r8.<java.io.InputStream: int read(byte[],int,int)>($r9, $i0, $i2);
+
+     label09:
+        if $i2 > 0 goto label24;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+        $r6 = $r3.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+     label10:
+        virtualinvoke $r6.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r3, "EOF on both streams reached.", 1);
+
+     label11:
+        return;
+
+     label12:
+        $r1 := @caughtexception;
+
+        virtualinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void stopWorking()>();
+
+        return;
+
+     label13:
+        $r10 := @caughtexception;
+
+     label14:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void stopWorking()>();
+
+     label15:
+        return;
+
+     label16:
+        $r11 := @caughtexception;
+
+        $r12 = <com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.log.Logger log>;
+
+        $r13 = new java.lang.StringBuilder;
+
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IOException in agent forwarder: ");
+
+        $r14 = virtualinvoke $r11.<java.io.IOException: java.lang.String getMessage()>();
+
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r12.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r14);
+
+        $r8 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.InputStream is>;
+
+     label17:
+        virtualinvoke $r8.<java.io.InputStream: void close()>();
+
+     label18:
+        $r15 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label19:
+        virtualinvoke $r15.<java.io.OutputStream: void close()>();
+
+     label20:
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+        $r6 = $r3.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: com.trilead.ssh2.channel.Channel c>;
+
+        $r13 = new java.lang.StringBuilder;
+
+     label21:
+        specialinvoke $r13.<java.lang.StringBuilder: void <init>()>();
+
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("IOException in agent forwarder (");
+
+        $r14 = virtualinvoke $r11.<java.io.IOException: java.lang.String getMessage()>();
+
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+
+        $r13 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r14 = virtualinvoke $r13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r3, $r14, 1);
+
+     label22:
+        return;
+
+     label23:
+        $r16 := @caughtexception;
+
+        return;
+
+     label24:
+        $i0 = $i0 + $i2;
+
+        if $i0 < 4 goto label27;
+
+        $r2 = new com.trilead.ssh2.packets.TypesReader;
+
+        $r9 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] buffer>;
+
+     label25:
+        specialinvoke $r2.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r9, 0, 4);
+
+        $i2 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+     label26:
+        $i1 = $i2 + 4;
+
+     label27:
+        if $i1 != $i0 goto label07;
+
+        $r2 = new com.trilead.ssh2.packets.TypesReader;
+
+        $r9 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] buffer>;
+
+     label28:
+        $i2 = $i0 + -4;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r9, 4, $i2);
+
+        $i2 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+        lookupswitch($i2)
+        {
+            case 11: goto label32;
+            case 12: goto label29;
+            case 13: goto label42;
+            case 14: goto label29;
+            case 15: goto label29;
+            case 16: goto label29;
+            case 17: goto label34;
+            case 18: goto label38;
+            case 19: goto label40;
+            case 20: goto label29;
+            case 21: goto label29;
+            case 22: goto label44;
+            case 23: goto label46;
+            case 24: goto label29;
+            case 25: goto label36;
+            default: goto label29;
+        };
+
+     label29:
+        $r15 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.OutputStream os>;
+
+     label30:
+        $r9 = <com.trilead.ssh2.channel.AuthAgentForwardThread: byte[] SSH_AGENT_FAILURE>;
+
+        virtualinvoke $r15.<java.io.OutputStream: void write(byte[])>($r9);
+
+     label31:
+        $i0 = 0;
+
+        goto label07;
+
+     label32:
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void sendIdentities()>();
+
+     label33:
+        goto label31;
+
+     label34:
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void addIdentity(com.trilead.ssh2.packets.TypesReader,boolean)>($r2, 0);
+
+     label35:
+        goto label31;
+
+     label36:
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void addIdentity(com.trilead.ssh2.packets.TypesReader,boolean)>($r2, 1);
+
+     label37:
+        goto label31;
+
+     label38:
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void removeIdentity(com.trilead.ssh2.packets.TypesReader)>($r2);
+
+     label39:
+        goto label31;
+
+     label40:
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void removeAllIdentities(com.trilead.ssh2.packets.TypesReader)>($r2);
+
+     label41:
+        goto label31;
+
+     label42:
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void processSignRequest(com.trilead.ssh2.packets.TypesReader)>($r2);
+
+     label43:
+        goto label31;
+
+     label44:
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void processLockRequest(com.trilead.ssh2.packets.TypesReader)>($r2);
+
+     label45:
+        goto label31;
+
+     label46:
+        specialinvoke $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: void processUnlockRequest(com.trilead.ssh2.packets.TypesReader)>($r2);
+
+     label47:
+        goto label31;
+
+     label48:
+        $r17 := @caughtexception;
+
+        goto label20;
+
+     label49:
+        $r18 := @caughtexception;
+
+        goto label18;
+
+        catch java.io.IOException from label01 to label02 with label12;
+        catch java.io.IOException from label03 to label04 with label16;
+        catch java.io.IOException from label05 to label06 with label16;
+        catch java.io.IOException from label08 to label09 with label13;
+        catch java.io.IOException from label10 to label11 with label16;
+        catch java.io.IOException from label14 to label15 with label16;
+        catch java.io.IOException from label17 to label18 with label49;
+        catch java.io.IOException from label19 to label20 with label48;
+        catch java.io.IOException from label21 to label22 with label23;
+        catch java.io.IOException from label25 to label26 with label16;
+        catch java.io.IOException from label28 to label29 with label16;
+        catch java.io.IOException from label30 to label31 with label16;
+        catch java.io.IOException from label32 to label33 with label16;
+        catch java.io.IOException from label34 to label35 with label16;
+        catch java.io.IOException from label36 to label37 with label16;
+        catch java.io.IOException from label38 to label39 with label16;
+        catch java.io.IOException from label40 to label41 with label16;
+        catch java.io.IOException from label42 to label43 with label16;
+        catch java.io.IOException from label44 to label45 with label16;
+        catch java.io.IOException from label46 to label47 with label16;
+    }
+
+    public void stopWorking()
+    {
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r0;
+        java.io.InputStream $r1;
+        java.io.IOException $r2;
+
+        $r0 := @this: com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.AuthAgentForwardThread: java.io.InputStream is>;
+
+     label1:
+        virtualinvoke $r1.<java.io.InputStream: void close()>();
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+}

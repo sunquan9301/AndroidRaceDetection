@@ -1,0 +1,37 @@
+class org.connectbot.ConsoleActivity$4 extends java.lang.Object implements android.view.View$OnClickListener
+{
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$4 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$4;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$4: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.view.View)
+    {
+        org.connectbot.ConsoleActivity$4 $r0;
+        android.view.View $r1;
+        org.connectbot.ConsoleActivity $r2;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$4;
+
+        $r1 := @parameter0: android.view.View;
+
+        $r2 = $r0.<org.connectbot.ConsoleActivity$4: org.connectbot.ConsoleActivity this$0>;
+
+        staticinvoke <org.connectbot.ConsoleActivity: void access$200(org.connectbot.ConsoleActivity,android.view.View)>($r2, $r1);
+
+        return;
+    }
+}

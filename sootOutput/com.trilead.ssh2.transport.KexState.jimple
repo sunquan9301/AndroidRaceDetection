@@ -1,0 +1,27 @@
+public class com.trilead.ssh2.transport.KexState extends java.lang.Object
+{
+    public byte[] H;
+    public java.math.BigInteger K;
+    public com.trilead.ssh2.DHGexParameters dhgexParameters;
+    public com.trilead.ssh2.crypto.dh.DhGroupExchange dhgx;
+    public com.trilead.ssh2.crypto.dh.GenericDhExchange dhx;
+    public java.lang.String hashAlgo;
+    public byte[] hostkey;
+    public com.trilead.ssh2.packets.PacketKexInit localKEX;
+    public com.trilead.ssh2.transport.NegotiatedParameters np;
+    public com.trilead.ssh2.packets.PacketKexInit remoteKEX;
+    public int state;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.transport.KexState $r0;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexState;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.KexState: int state> = 0;
+
+        return;
+    }
+}

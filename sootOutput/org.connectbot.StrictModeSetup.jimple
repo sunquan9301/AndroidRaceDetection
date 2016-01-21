@@ -1,0 +1,25 @@
+public class org.connectbot.StrictModeSetup extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.connectbot.StrictModeSetup $r0;
+
+        $r0 := @this: org.connectbot.StrictModeSetup;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void run()
+    {
+        android.os.StrictMode$ThreadPolicy $r0;
+
+        $r0 = <android.os.StrictMode$ThreadPolicy: android.os.StrictMode$ThreadPolicy LAX>;
+
+        staticinvoke <android.os.StrictMode: void setThreadPolicy(android.os.StrictMode$ThreadPolicy)>($r0);
+
+        return;
+    }
+}

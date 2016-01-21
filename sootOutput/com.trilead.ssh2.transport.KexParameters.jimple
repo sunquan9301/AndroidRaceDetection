@@ -1,0 +1,27 @@
+public class com.trilead.ssh2.transport.KexParameters extends java.lang.Object
+{
+    public java.lang.String[] compression_algorithms_client_to_server;
+    public java.lang.String[] compression_algorithms_server_to_client;
+    public byte[] cookie;
+    public java.lang.String[] encryption_algorithms_client_to_server;
+    public java.lang.String[] encryption_algorithms_server_to_client;
+    public boolean first_kex_packet_follows;
+    public java.lang.String[] kex_algorithms;
+    public java.lang.String[] languages_client_to_server;
+    public java.lang.String[] languages_server_to_client;
+    public java.lang.String[] mac_algorithms_client_to_server;
+    public java.lang.String[] mac_algorithms_server_to_client;
+    public int reserved_field1;
+    public java.lang.String[] server_host_key_algorithms;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.transport.KexParameters $r0;
+
+        $r0 := @this: com.trilead.ssh2.transport.KexParameters;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

@@ -1,0 +1,58 @@
+public class com.trilead.ssh2.packets.PacketChannelAuthAgentReq extends java.lang.Object
+{
+    byte[] payload;
+    public int recipientChannelID;
+
+    public void <init>(int)
+    {
+        com.trilead.ssh2.packets.PacketChannelAuthAgentReq $r0;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketChannelAuthAgentReq;
+
+        $i0 := @parameter0: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketChannelAuthAgentReq: int recipientChannelID> = $i0;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketChannelAuthAgentReq $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketChannelAuthAgentReq;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketChannelAuthAgentReq: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(98);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketChannelAuthAgentReq: int recipientChannelID>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>("auth-agent-req@openssh.com");
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeBoolean(boolean)>(1);
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketChannelAuthAgentReq: byte[] payload> = $r2;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketChannelAuthAgentReq: byte[] payload>;
+
+        return $r2;
+    }
+}

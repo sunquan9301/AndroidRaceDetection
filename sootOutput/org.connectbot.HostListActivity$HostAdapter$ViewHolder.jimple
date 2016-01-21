@@ -1,0 +1,23 @@
+class org.connectbot.HostListActivity$HostAdapter$ViewHolder extends java.lang.Object
+{
+    public android.widget.TextView caption;
+    public android.widget.ImageView icon;
+    public android.widget.TextView nickname;
+    final org.connectbot.HostListActivity$HostAdapter this$1;
+
+    void <init>(org.connectbot.HostListActivity$HostAdapter)
+    {
+        org.connectbot.HostListActivity$HostAdapter$ViewHolder $r0;
+        org.connectbot.HostListActivity$HostAdapter $r1;
+
+        $r0 := @this: org.connectbot.HostListActivity$HostAdapter$ViewHolder;
+
+        $r1 := @parameter0: org.connectbot.HostListActivity$HostAdapter;
+
+        $r0.<org.connectbot.HostListActivity$HostAdapter$ViewHolder: org.connectbot.HostListActivity$HostAdapter this$1> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

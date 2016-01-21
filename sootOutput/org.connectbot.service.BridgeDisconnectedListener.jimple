@@ -1,0 +1,5 @@
+public interface  org.connectbot.service.BridgeDisconnectedListener extends java.lang.Object
+{
+
+    public abstract void onDisconnected(org.connectbot.service.TerminalBridge);
+}

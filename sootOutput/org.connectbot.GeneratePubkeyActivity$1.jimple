@@ -1,0 +1,176 @@
+class org.connectbot.GeneratePubkeyActivity$1 extends java.lang.Object implements android.widget.RadioGroup$OnCheckedChangeListener
+{
+    final org.connectbot.GeneratePubkeyActivity this$0;
+
+    void <init>(org.connectbot.GeneratePubkeyActivity)
+    {
+        org.connectbot.GeneratePubkeyActivity$1 $r0;
+        org.connectbot.GeneratePubkeyActivity $r1;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$1;
+
+        $r1 := @parameter0: org.connectbot.GeneratePubkeyActivity;
+
+        $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onCheckedChanged(android.widget.RadioGroup, int)
+    {
+        org.connectbot.GeneratePubkeyActivity$1 $r0;
+        android.widget.RadioGroup $r1;
+        int $i0, $i1;
+        android.widget.SeekBar $r2;
+        org.connectbot.GeneratePubkeyActivity $r3;
+        android.widget.EditText $r4;
+        java.lang.String $r5;
+
+        $r0 := @this: org.connectbot.GeneratePubkeyActivity$1;
+
+        $r1 := @parameter0: android.widget.RadioGroup;
+
+        $i0 := @parameter1: int;
+
+        if $i0 != 2131427351 goto label1;
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$002(org.connectbot.GeneratePubkeyActivity,int)>($r3, 768);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar access$100(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        virtualinvoke $r2.<android.widget.SeekBar: void setEnabled(boolean)>(1);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar access$100(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i0 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $i0 = 2048 - $i0;
+
+        virtualinvoke $r2.<android.widget.SeekBar: void setProgress(int)>($i0);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>(2048);
+
+        virtualinvoke $r4.<android.widget.EditText: void setText(java.lang.CharSequence)>($r5);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        virtualinvoke $r4.<android.widget.EditText: void setEnabled(boolean)>(1);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: java.lang.String access$302(org.connectbot.GeneratePubkeyActivity,java.lang.String)>($r3, "RSA");
+
+        return;
+
+     label1:
+        if $i0 != 2131427352 goto label2;
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar access$100(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        virtualinvoke $r2.<android.widget.SeekBar: void setEnabled(boolean)>(0);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar access$100(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i0 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $i0 = 2048 - $i0;
+
+        virtualinvoke $r2.<android.widget.SeekBar: void setProgress(int)>($i0);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>(2048);
+
+        virtualinvoke $r4.<android.widget.EditText: void setText(java.lang.CharSequence)>($r5);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        virtualinvoke $r4.<android.widget.EditText: void setEnabled(boolean)>(0);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: java.lang.String access$302(org.connectbot.GeneratePubkeyActivity,java.lang.String)>($r3, "DSA");
+
+        return;
+
+     label2:
+        if $i0 != 2131427353 goto label3;
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i0 = <org.connectbot.GeneratePubkeyActivity: int ECDSA_DEFAULT_BITS>;
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$002(org.connectbot.GeneratePubkeyActivity,int)>($r3, $i0);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar access$100(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        virtualinvoke $r2.<android.widget.SeekBar: void setEnabled(boolean)>(1);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r2 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.SeekBar access$100(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $i0 = <org.connectbot.GeneratePubkeyActivity: int ECDSA_DEFAULT_BITS>;
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $i1 = staticinvoke <org.connectbot.GeneratePubkeyActivity: int access$000(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $i1 = $i0 - $i1;
+
+        virtualinvoke $r2.<android.widget.SeekBar: void setProgress(int)>($i1);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        $i1 = <org.connectbot.GeneratePubkeyActivity: int ECDSA_DEFAULT_BITS>;
+
+        $r5 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>($i1);
+
+        virtualinvoke $r4.<android.widget.EditText: void setText(java.lang.CharSequence)>($r5);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        $r4 = staticinvoke <org.connectbot.GeneratePubkeyActivity: android.widget.EditText access$200(org.connectbot.GeneratePubkeyActivity)>($r3);
+
+        virtualinvoke $r4.<android.widget.EditText: void setEnabled(boolean)>(1);
+
+        $r3 = $r0.<org.connectbot.GeneratePubkeyActivity$1: org.connectbot.GeneratePubkeyActivity this$0>;
+
+        staticinvoke <org.connectbot.GeneratePubkeyActivity: java.lang.String access$302(org.connectbot.GeneratePubkeyActivity,java.lang.String)>($r3, "EC");
+
+        return;
+
+     label3:
+        return;
+    }
+}

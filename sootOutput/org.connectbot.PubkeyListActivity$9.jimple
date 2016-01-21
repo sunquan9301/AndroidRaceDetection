@@ -1,0 +1,94 @@
+class org.connectbot.PubkeyListActivity$9 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.PubkeyListActivity this$0;
+    final org.connectbot.bean.PubkeyBean val$pubkey;
+
+    void <init>(org.connectbot.PubkeyListActivity, org.connectbot.bean.PubkeyBean)
+    {
+        org.connectbot.PubkeyListActivity$9 $r0;
+        org.connectbot.PubkeyListActivity $r1;
+        org.connectbot.bean.PubkeyBean $r2;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$9;
+
+        $r1 := @parameter0: org.connectbot.PubkeyListActivity;
+
+        $r2 := @parameter1: org.connectbot.bean.PubkeyBean;
+
+        $r0.<org.connectbot.PubkeyListActivity$9: org.connectbot.PubkeyListActivity this$0> = $r1;
+
+        $r0.<org.connectbot.PubkeyListActivity$9: org.connectbot.bean.PubkeyBean val$pubkey> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.PubkeyListActivity$9 $r0;
+        android.view.MenuItem $r1;
+        org.connectbot.PubkeyListActivity $r2;
+        byte $b0;
+        android.view.View $r3, $r5;
+        android.view.LayoutInflater $r4;
+        android.widget.TableRow $r6;
+        org.connectbot.bean.PubkeyBean $r7;
+        boolean $z0;
+        android.app.AlertDialog$Builder $r8;
+        org.connectbot.PubkeyListActivity$9$1 $r9;
+        android.app.AlertDialog $r10;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$9;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+        $b0 = 0;
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity$9: org.connectbot.PubkeyListActivity this$0>;
+
+        $r4 = $r2.<org.connectbot.PubkeyListActivity: android.view.LayoutInflater inflater>;
+
+        $r3 = virtualinvoke $r4.<android.view.LayoutInflater: android.view.View inflate(int,android.view.ViewGroup,boolean)>(2130903049, null, 0);
+
+        $r5 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427369);
+
+        $r6 = (android.widget.TableRow) $r5;
+
+        $r7 = $r0.<org.connectbot.PubkeyListActivity$9: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $z0 = virtualinvoke $r7.<org.connectbot.bean.PubkeyBean: boolean isEncrypted()>();
+
+        if $z0 == 0 goto label2;
+
+     label1:
+        virtualinvoke $r6.<android.widget.TableRow: void setVisibility(int)>($b0);
+
+        $r8 = new android.app.AlertDialog$Builder;
+
+        $r2 = $r0.<org.connectbot.PubkeyListActivity$9: org.connectbot.PubkeyListActivity this$0>;
+
+        specialinvoke $r8.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r2);
+
+        $r8 = virtualinvoke $r8.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setView(android.view.View)>($r3);
+
+        $r9 = new org.connectbot.PubkeyListActivity$9$1;
+
+        specialinvoke $r9.<org.connectbot.PubkeyListActivity$9$1: void <init>(org.connectbot.PubkeyListActivity$9,android.view.View)>($r0, $r3);
+
+        $r8 = virtualinvoke $r8.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(2131165245, $r9);
+
+        $r8 = virtualinvoke $r8.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(int,android.content.DialogInterface$OnClickListener)>(17039360, null);
+
+        $r10 = virtualinvoke $r8.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r10.<android.app.AlertDialog: void show()>();
+
+        return 1;
+
+     label2:
+        $b0 = 8;
+
+        goto label1;
+    }
+}

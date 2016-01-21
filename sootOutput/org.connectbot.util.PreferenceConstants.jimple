@@ -1,0 +1,75 @@
+public class org.connectbot.util.PreferenceConstants extends java.lang.Object
+{
+    public static final boolean PRE_ECLAIR;
+    public static final boolean PRE_FROYO;
+    public static final boolean PRE_HONEYCOMB;
+    public static final int SDK_INT;
+
+    static void <clinit>()
+    {
+        java.lang.String $r0;
+        boolean $z0, $z1;
+        int $i0;
+
+        $z0 = 1;
+
+        $r0 = <android.os.Build$VERSION: java.lang.String SDK>;
+
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r0);
+
+        <org.connectbot.util.PreferenceConstants: int SDK_INT> = $i0;
+
+        $i0 = <org.connectbot.util.PreferenceConstants: int SDK_INT>;
+
+        if $i0 >= 5 goto label4;
+
+        $z1 = 1;
+
+     label1:
+        <org.connectbot.util.PreferenceConstants: boolean PRE_ECLAIR> = $z1;
+
+        $i0 = <org.connectbot.util.PreferenceConstants: int SDK_INT>;
+
+        if $i0 >= 8 goto label5;
+
+        $z1 = 1;
+
+     label2:
+        <org.connectbot.util.PreferenceConstants: boolean PRE_FROYO> = $z1;
+
+        $i0 = <org.connectbot.util.PreferenceConstants: int SDK_INT>;
+
+        if $i0 >= 11 goto label6;
+
+     label3:
+        <org.connectbot.util.PreferenceConstants: boolean PRE_HONEYCOMB> = $z0;
+
+        return;
+
+     label4:
+        $z1 = 0;
+
+        goto label1;
+
+     label5:
+        $z1 = 0;
+
+        goto label2;
+
+     label6:
+        $z0 = 0;
+
+        goto label3;
+    }
+
+    public void <init>()
+    {
+        org.connectbot.util.PreferenceConstants $r0;
+
+        $r0 := @this: org.connectbot.util.PreferenceConstants;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

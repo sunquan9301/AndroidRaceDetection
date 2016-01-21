@@ -1,0 +1,34 @@
+class org.connectbot.service.TerminalManager$3 extends java.lang.Thread
+{
+    final org.connectbot.service.TerminalManager this$0;
+
+    void <init>(org.connectbot.service.TerminalManager)
+    {
+        org.connectbot.service.TerminalManager$3 $r0;
+        org.connectbot.service.TerminalManager $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$3;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager;
+
+        $r0.<org.connectbot.service.TerminalManager$3: org.connectbot.service.TerminalManager this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Thread: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.service.TerminalManager$3 $r0;
+        org.connectbot.service.TerminalManager $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$3;
+
+        $r1 = $r0.<org.connectbot.service.TerminalManager$3: org.connectbot.service.TerminalManager this$0>;
+
+        staticinvoke <org.connectbot.service.TerminalManager: void access$200(org.connectbot.service.TerminalManager)>($r1);
+
+        return;
+    }
+}

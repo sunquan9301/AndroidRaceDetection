@@ -1,0 +1,94 @@
+public class com.trilead.ssh2.packets.PacketSessionPtyResize extends java.lang.Object
+{
+    public int height;
+    byte[] payload;
+    public int pixelHeight;
+    public int pixelWidth;
+    public int recipientChannelID;
+    public int width;
+
+    public void <init>(int, int, int, int, int)
+    {
+        com.trilead.ssh2.packets.PacketSessionPtyResize $r0;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketSessionPtyResize;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        $i4 := @parameter4: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int recipientChannelID> = $i0;
+
+        $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int width> = $i1;
+
+        $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int height> = $i2;
+
+        $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int pixelWidth> = $i3;
+
+        $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int pixelHeight> = $i4;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketSessionPtyResize $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketSessionPtyResize;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(98);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int recipientChannelID>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(java.lang.String)>("window-change");
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeBoolean(boolean)>(0);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int width>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int height>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int pixelWidth>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $i0 = $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: int pixelHeight>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeUINT32(int)>($i0);
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: byte[] payload> = $r2;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketSessionPtyResize: byte[] payload>;
+
+        return $r2;
+    }
+}

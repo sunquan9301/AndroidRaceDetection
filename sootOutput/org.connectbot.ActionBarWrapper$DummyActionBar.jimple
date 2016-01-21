@@ -1,0 +1,28 @@
+class org.connectbot.ActionBarWrapper$DummyActionBar extends org.connectbot.ActionBarWrapper
+{
+
+    private void <init>()
+    {
+        org.connectbot.ActionBarWrapper$DummyActionBar $r0;
+
+        $r0 := @this: org.connectbot.ActionBarWrapper$DummyActionBar;
+
+        specialinvoke $r0.<org.connectbot.ActionBarWrapper: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.ActionBarWrapper$1)
+    {
+        org.connectbot.ActionBarWrapper$DummyActionBar $r0;
+        org.connectbot.ActionBarWrapper$1 $r1;
+
+        $r0 := @this: org.connectbot.ActionBarWrapper$DummyActionBar;
+
+        $r1 := @parameter0: org.connectbot.ActionBarWrapper$1;
+
+        specialinvoke $r0.<org.connectbot.ActionBarWrapper$DummyActionBar: void <init>()>();
+
+        return;
+    }
+}

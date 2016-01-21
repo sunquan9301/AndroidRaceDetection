@@ -1,0 +1,301 @@
+public class com.trilead.ssh2.channel.Channel extends java.lang.Object
+{
+    boolean EOF;
+    final java.lang.Object channelSendLock;
+    boolean closeMessageRecv;
+    boolean closeMessageSent;
+    final com.trilead.ssh2.channel.ChannelManager cm;
+    java.lang.String exit_signal;
+    java.lang.Integer exit_status;
+    int failedCounter;
+    java.lang.String hexX11FakeCookie;
+    int localID;
+    int localMaxPacketSize;
+    int localWindow;
+    final byte[] msgWindowAdjust;
+    private java.lang.String reasonClosed;
+    private final java.lang.Object reasonClosedLock;
+    int remoteID;
+    int remoteMaxPacketSize;
+    long remoteWindow;
+    int state;
+    final byte[] stderrBuffer;
+    int stderrReadpos;
+    final com.trilead.ssh2.channel.ChannelInputStream stderrStream;
+    int stderrWritepos;
+    final com.trilead.ssh2.channel.ChannelOutputStream stdinStream;
+    final byte[] stdoutBuffer;
+    int stdoutReadpos;
+    final com.trilead.ssh2.channel.ChannelInputStream stdoutStream;
+    int stdoutWritepos;
+    int successCounter;
+
+    public void <init>(com.trilead.ssh2.channel.ChannelManager)
+    {
+        com.trilead.ssh2.channel.Channel $r0;
+        com.trilead.ssh2.channel.ChannelManager $r1;
+        java.lang.Object $r2;
+        byte[] $r3;
+        com.trilead.ssh2.channel.ChannelOutputStream $r4;
+        com.trilead.ssh2.channel.ChannelInputStream $r5;
+
+        $r0 := @this: com.trilead.ssh2.channel.Channel;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.ChannelManager;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.Channel: int localID> = -1;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int remoteID> = -1;
+
+        $r2 = new java.lang.Object;
+
+        specialinvoke $r2.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock> = $r2;
+
+        $r0.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent> = 0;
+
+        $r3 = newarray (byte)[9];
+
+        $r0.<com.trilead.ssh2.channel.Channel: byte[] msgWindowAdjust> = $r3;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int state> = 1;
+
+        $r0.<com.trilead.ssh2.channel.Channel: boolean closeMessageRecv> = 0;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int successCounter> = 0;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int failedCounter> = 0;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int localWindow> = 0;
+
+        $r0.<com.trilead.ssh2.channel.Channel: long remoteWindow> = 0L;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int localMaxPacketSize> = -1;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int remoteMaxPacketSize> = -1;
+
+        $r3 = newarray (byte)[30000];
+
+        $r0.<com.trilead.ssh2.channel.Channel: byte[] stdoutBuffer> = $r3;
+
+        $r3 = newarray (byte)[30000];
+
+        $r0.<com.trilead.ssh2.channel.Channel: byte[] stderrBuffer> = $r3;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int stdoutReadpos> = 0;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int stdoutWritepos> = 0;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int stderrReadpos> = 0;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int stderrWritepos> = 0;
+
+        $r0.<com.trilead.ssh2.channel.Channel: boolean EOF> = 0;
+
+        $r2 = new java.lang.Object;
+
+        specialinvoke $r2.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.Channel: java.lang.Object reasonClosedLock> = $r2;
+
+        $r0.<com.trilead.ssh2.channel.Channel: java.lang.String reasonClosed> = null;
+
+        $r0.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm> = $r1;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int localWindow> = 30000;
+
+        $r0.<com.trilead.ssh2.channel.Channel: int localMaxPacketSize> = 33976;
+
+        $r4 = new com.trilead.ssh2.channel.ChannelOutputStream;
+
+        specialinvoke $r4.<com.trilead.ssh2.channel.ChannelOutputStream: void <init>(com.trilead.ssh2.channel.Channel)>($r0);
+
+        $r0.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelOutputStream stdinStream> = $r4;
+
+        $r5 = new com.trilead.ssh2.channel.ChannelInputStream;
+
+        specialinvoke $r5.<com.trilead.ssh2.channel.ChannelInputStream: void <init>(com.trilead.ssh2.channel.Channel,boolean)>($r0, 0);
+
+        $r0.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelInputStream stdoutStream> = $r5;
+
+        $r5 = new com.trilead.ssh2.channel.ChannelInputStream;
+
+        specialinvoke $r5.<com.trilead.ssh2.channel.ChannelInputStream: void <init>(com.trilead.ssh2.channel.Channel,boolean)>($r0, 1);
+
+        $r0.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelInputStream stderrStream> = $r5;
+
+        return;
+    }
+
+    public java.lang.String getExitSignal()
+    {
+        com.trilead.ssh2.channel.Channel $r0;
+        java.lang.String $r1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: com.trilead.ssh2.channel.Channel;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.channel.Channel: java.lang.String exit_signal>;
+
+        exitmonitor $r0;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public java.lang.Integer getExitStatus()
+    {
+        com.trilead.ssh2.channel.Channel $r0;
+        java.lang.Integer $r1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: com.trilead.ssh2.channel.Channel;
+
+        entermonitor $r0;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.channel.Channel: java.lang.Integer exit_status>;
+
+        exitmonitor $r0;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public java.lang.String getReasonClosed()
+    {
+        com.trilead.ssh2.channel.Channel $r0;
+        java.lang.String $r1;
+        java.lang.Object $r2;
+        java.lang.Throwable $r3;
+
+        $r0 := @this: com.trilead.ssh2.channel.Channel;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.Channel: java.lang.Object reasonClosedLock>;
+
+        entermonitor $r2;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.channel.Channel: java.lang.String reasonClosed>;
+
+        exitmonitor $r2;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r3 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label4:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public com.trilead.ssh2.channel.ChannelInputStream getStderrStream()
+    {
+        com.trilead.ssh2.channel.Channel $r0;
+        com.trilead.ssh2.channel.ChannelInputStream $r1;
+
+        $r0 := @this: com.trilead.ssh2.channel.Channel;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelInputStream stderrStream>;
+
+        return $r1;
+    }
+
+    public com.trilead.ssh2.channel.ChannelOutputStream getStdinStream()
+    {
+        com.trilead.ssh2.channel.Channel $r0;
+        com.trilead.ssh2.channel.ChannelOutputStream $r1;
+
+        $r0 := @this: com.trilead.ssh2.channel.Channel;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelOutputStream stdinStream>;
+
+        return $r1;
+    }
+
+    public com.trilead.ssh2.channel.ChannelInputStream getStdoutStream()
+    {
+        com.trilead.ssh2.channel.Channel $r0;
+        com.trilead.ssh2.channel.ChannelInputStream $r1;
+
+        $r0 := @this: com.trilead.ssh2.channel.Channel;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelInputStream stdoutStream>;
+
+        return $r1;
+    }
+
+    public void setReasonClosed(java.lang.String)
+    {
+        com.trilead.ssh2.channel.Channel $r0;
+        java.lang.String $r1, $r2;
+        java.lang.Object $r3;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: com.trilead.ssh2.channel.Channel;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.Channel: java.lang.Object reasonClosedLock>;
+
+        entermonitor $r3;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.channel.Channel: java.lang.String reasonClosed>;
+
+        if $r2 != null goto label2;
+
+        $r0.<com.trilead.ssh2.channel.Channel: java.lang.String reasonClosed> = $r1;
+
+     label2:
+        exitmonitor $r3;
+
+     label3:
+        return;
+
+     label4:
+        $r4 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label5:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+        catch java.lang.Throwable from label4 to label5 with label4;
+    }
+}

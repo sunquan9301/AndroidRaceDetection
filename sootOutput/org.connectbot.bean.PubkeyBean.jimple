@@ -1,0 +1,613 @@
+public class org.connectbot.bean.PubkeyBean extends org.connectbot.bean.AbstractBean
+{
+    private boolean confirmUse;
+    private transient java.lang.String description;
+    private boolean encrypted;
+    private long id;
+    private int lifetime;
+    private java.lang.String nickname;
+    private byte[] privateKey;
+    private byte[] publicKey;
+    private boolean startup;
+    private java.lang.String type;
+    private transient boolean unlocked;
+    private transient java.lang.Object unlockedPrivate;
+
+    public void <init>()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        specialinvoke $r0.<org.connectbot.bean.AbstractBean: void <init>()>();
+
+        $r0.<org.connectbot.bean.PubkeyBean: boolean encrypted> = 0;
+
+        $r0.<org.connectbot.bean.PubkeyBean: boolean startup> = 0;
+
+        $r0.<org.connectbot.bean.PubkeyBean: boolean confirmUse> = 0;
+
+        $r0.<org.connectbot.bean.PubkeyBean: int lifetime> = 0;
+
+        $r0.<org.connectbot.bean.PubkeyBean: boolean unlocked> = 0;
+
+        $r0.<org.connectbot.bean.PubkeyBean: java.lang.Object unlockedPrivate> = null;
+
+        return;
+    }
+
+    public boolean changePassword(java.lang.String, java.lang.String) throws java.lang.Exception
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        java.lang.String $r1, $r2, $r5;
+        java.lang.Exception $r3;
+        boolean $z0;
+        byte[] $r4;
+        java.security.PrivateKey $r6;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 = 0;
+
+     label1:
+        $r4 = virtualinvoke $r0.<org.connectbot.bean.PubkeyBean: byte[] getPrivateKey()>();
+
+        $r5 = virtualinvoke $r0.<org.connectbot.bean.PubkeyBean: java.lang.String getType()>();
+
+        $r6 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PrivateKey decodePrivate(byte[],java.lang.String,java.lang.String)>($r4, $r5, $r1);
+
+     label2:
+        $r4 = staticinvoke <org.connectbot.util.PubkeyUtils: byte[] getEncodedPrivate(java.security.PrivateKey,java.lang.String)>($r6, $r2);
+
+        virtualinvoke $r0.<org.connectbot.bean.PubkeyBean: void setPrivateKey(byte[])>($r4);
+
+        $i0 = virtualinvoke $r2.<java.lang.String: int length()>();
+
+        if $i0 <= 0 goto label3;
+
+        $z0 = 1;
+
+     label3:
+        virtualinvoke $r0.<org.connectbot.bean.PubkeyBean: void setEncrypted(boolean)>($z0);
+
+        return 1;
+
+     label4:
+        $r3 := @caughtexception;
+
+        return 0;
+
+        catch java.lang.Exception from label1 to label2 with label4;
+    }
+
+    public java.lang.String getDescription()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        java.security.NoSuchAlgorithmException $r1;
+        java.lang.StringBuilder $r2;
+        java.lang.String $r3, $r6;
+        java.security.PublicKey $r4;
+        byte[] $r5;
+        boolean $z0;
+        java.security.interfaces.RSAPublicKey $r7;
+        java.math.BigInteger $r8;
+        int $i0;
+        java.security.interfaces.ECPublicKey $r9;
+        java.security.spec.ECParameterSpec $r10;
+        java.security.spec.EllipticCurve $r11;
+        java.security.spec.ECField $r12;
+        java.security.spec.InvalidKeySpecException $r13;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r3 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String description>;
+
+        if $r3 != null goto label08;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = $r0.<org.connectbot.bean.PubkeyBean: byte[] publicKey>;
+
+        $r3 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String type>;
+
+     label01:
+        $r4 = staticinvoke <org.connectbot.util.PubkeyUtils: java.security.PublicKey decodePublic(byte[],java.lang.String)>($r5, $r3);
+
+     label02:
+        $r3 = "RSA";
+
+     label03:
+        $r6 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String type>;
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r6);
+
+     label04:
+        if $z0 == 0 goto label09;
+
+     label05:
+        $r7 = (java.security.interfaces.RSAPublicKey) $r4;
+
+        $r8 = interfaceinvoke $r7.<java.security.interfaces.RSAPublicKey: java.math.BigInteger getModulus()>();
+
+        $i0 = virtualinvoke $r8.<java.math.BigInteger: int bitLength()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("RSA ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-bit");
+
+     label06:
+        $z0 = $r0.<org.connectbot.bean.PubkeyBean: boolean encrypted>;
+
+        if $z0 == 0 goto label07;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" (encrypted)");
+
+     label07:
+        $r6 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r0.<org.connectbot.bean.PubkeyBean: java.lang.String description> = $r6;
+
+     label08:
+        $r6 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String description>;
+
+        return $r6;
+
+     label09:
+        $r6 = "DSA";
+
+        $r3 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String type>;
+
+     label10:
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label13;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("DSA 1024-bit");
+
+     label11:
+        goto label06;
+
+     label12:
+        $r1 := @caughtexception;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown Key Type");
+
+        goto label06;
+
+     label13:
+        $r6 = "EC";
+
+        $r3 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String type>;
+
+     label14:
+        $z0 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z0 == 0 goto label17;
+
+        $r9 = (java.security.interfaces.ECPublicKey) $r4;
+
+        $r10 = interfaceinvoke $r9.<java.security.interfaces.ECPublicKey: java.security.spec.ECParameterSpec getParams()>();
+
+        $r11 = virtualinvoke $r10.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r12 = virtualinvoke $r11.<java.security.spec.EllipticCurve: java.security.spec.ECField getField()>();
+
+        $i0 = interfaceinvoke $r12.<java.security.spec.ECField: int getFieldSize()>();
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("EC ");
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("-bit");
+
+     label15:
+        goto label06;
+
+     label16:
+        $r13 := @caughtexception;
+
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown Key Type");
+
+        goto label06;
+
+     label17:
+        virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown Key Type");
+
+     label18:
+        goto label06;
+
+        catch java.security.NoSuchAlgorithmException from label01 to label02 with label12;
+        catch java.security.NoSuchAlgorithmException from label03 to label04 with label12;
+        catch java.security.NoSuchAlgorithmException from label05 to label06 with label12;
+        catch java.security.spec.InvalidKeySpecException from label01 to label02 with label16;
+        catch java.security.spec.InvalidKeySpecException from label03 to label04 with label16;
+        catch java.security.spec.InvalidKeySpecException from label05 to label06 with label16;
+        catch java.security.NoSuchAlgorithmException from label10 to label11 with label12;
+        catch java.security.spec.InvalidKeySpecException from label10 to label11 with label16;
+        catch java.security.NoSuchAlgorithmException from label14 to label15 with label12;
+        catch java.security.spec.InvalidKeySpecException from label14 to label15 with label16;
+        catch java.security.NoSuchAlgorithmException from label17 to label18 with label12;
+        catch java.security.spec.InvalidKeySpecException from label17 to label18 with label16;
+    }
+
+    public long getId()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $l0 = $r0.<org.connectbot.bean.PubkeyBean: long id>;
+
+        return $l0;
+    }
+
+    public int getLifetime()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $i0 = $r0.<org.connectbot.bean.PubkeyBean: int lifetime>;
+
+        return $i0;
+    }
+
+    public java.lang.String getNickname()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String nickname>;
+
+        return $r1;
+    }
+
+    public byte[] getPrivateKey()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        byte[] $r1;
+        java.lang.Object $r2;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 = $r0.<org.connectbot.bean.PubkeyBean: byte[] privateKey>;
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = $r0.<org.connectbot.bean.PubkeyBean: byte[] privateKey>;
+
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.Object clone()>();
+
+        $r1 = (byte[]) $r2;
+
+        return $r1;
+    }
+
+    public byte[] getPublicKey()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        byte[] $r1;
+        java.lang.Object $r2;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 = $r0.<org.connectbot.bean.PubkeyBean: byte[] publicKey>;
+
+        if $r1 != null goto label1;
+
+        return null;
+
+     label1:
+        $r1 = $r0.<org.connectbot.bean.PubkeyBean: byte[] publicKey>;
+
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.Object clone()>();
+
+        $r1 = (byte[]) $r2;
+
+        return $r1;
+    }
+
+    public java.lang.String getType()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String type>;
+
+        return $r1;
+    }
+
+    public android.content.ContentValues getValues()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        android.content.ContentValues $r1;
+        byte $b0, $b1;
+        java.lang.String $r2;
+        java.lang.Integer $r3;
+        byte[] $r4;
+        boolean $z0;
+        int $i2;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $b0 = 1;
+
+        $r1 = new android.content.ContentValues;
+
+        specialinvoke $r1.<android.content.ContentValues: void <init>()>();
+
+        $r2 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String nickname>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("nickname", $r2);
+
+        $r2 = $r0.<org.connectbot.bean.PubkeyBean: java.lang.String type>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("type", $r2);
+
+        $r4 = $r0.<org.connectbot.bean.PubkeyBean: byte[] privateKey>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,byte[])>("private", $r4);
+
+        $r4 = $r0.<org.connectbot.bean.PubkeyBean: byte[] publicKey>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,byte[])>("public", $r4);
+
+        $z0 = $r0.<org.connectbot.bean.PubkeyBean: boolean encrypted>;
+
+        if $z0 == 0 goto label4;
+
+        $b1 = 1;
+
+     label1:
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($b1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("encrypted", $r3);
+
+        $z0 = $r0.<org.connectbot.bean.PubkeyBean: boolean startup>;
+
+        if $z0 == 0 goto label5;
+
+        $b1 = 1;
+
+     label2:
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($b1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("startup", $r3);
+
+        $z0 = $r0.<org.connectbot.bean.PubkeyBean: boolean confirmUse>;
+
+        if $z0 == 0 goto label6;
+
+     label3:
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($b0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("confirmuse", $r3);
+
+        $i2 = $r0.<org.connectbot.bean.PubkeyBean: int lifetime>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i2);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("lifetime", $r3);
+
+        return $r1;
+
+     label4:
+        $b1 = 0;
+
+        goto label1;
+
+     label5:
+        $b1 = 0;
+
+        goto label2;
+
+     label6:
+        $b0 = 0;
+
+        goto label3;
+    }
+
+    public boolean isConfirmUse()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $z0 = $r0.<org.connectbot.bean.PubkeyBean: boolean confirmUse>;
+
+        return $z0;
+    }
+
+    public boolean isEncrypted()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $z0 = $r0.<org.connectbot.bean.PubkeyBean: boolean encrypted>;
+
+        return $z0;
+    }
+
+    public boolean isStartup()
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $z0 = $r0.<org.connectbot.bean.PubkeyBean: boolean startup>;
+
+        return $z0;
+    }
+
+    public void setConfirmUse(boolean)
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.PubkeyBean: boolean confirmUse> = $z0;
+
+        return;
+    }
+
+    public void setEncrypted(boolean)
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.PubkeyBean: boolean encrypted> = $z0;
+
+        return;
+    }
+
+    public void setId(long)
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $l0 := @parameter0: long;
+
+        $r0.<org.connectbot.bean.PubkeyBean: long id> = $l0;
+
+        return;
+    }
+
+    public void setLifetime(int)
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $i0 := @parameter0: int;
+
+        $r0.<org.connectbot.bean.PubkeyBean: int lifetime> = $i0;
+
+        return;
+    }
+
+    public void setNickname(java.lang.String)
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.PubkeyBean: java.lang.String nickname> = $r1;
+
+        return;
+    }
+
+    public void setPrivateKey(byte[])
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        byte[] $r1;
+        java.lang.Object $r2;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 := @parameter0: byte[];
+
+        if $r1 != null goto label1;
+
+        $r0.<org.connectbot.bean.PubkeyBean: byte[] privateKey> = null;
+
+        return;
+
+     label1:
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.Object clone()>();
+
+        $r1 = (byte[]) $r2;
+
+        $r0.<org.connectbot.bean.PubkeyBean: byte[] privateKey> = $r1;
+
+        return;
+    }
+
+    public void setPublicKey(byte[])
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        byte[] $r1;
+        java.lang.Object $r2;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 := @parameter0: byte[];
+
+        if $r1 != null goto label1;
+
+        $r0.<org.connectbot.bean.PubkeyBean: byte[] publicKey> = null;
+
+        return;
+
+     label1:
+        $r2 = virtualinvoke $r1.<java.lang.Object: java.lang.Object clone()>();
+
+        $r1 = (byte[]) $r2;
+
+        $r0.<org.connectbot.bean.PubkeyBean: byte[] publicKey> = $r1;
+
+        return;
+    }
+
+    public void setStartup(boolean)
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.PubkeyBean: boolean startup> = $z0;
+
+        return;
+    }
+
+    public void setType(java.lang.String)
+    {
+        org.connectbot.bean.PubkeyBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.PubkeyBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.PubkeyBean: java.lang.String type> = $r1;
+
+        return;
+    }
+}

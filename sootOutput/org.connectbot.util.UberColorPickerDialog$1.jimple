@@ -1,0 +1,44 @@
+class org.connectbot.util.UberColorPickerDialog$1 extends java.lang.Object implements org.connectbot.util.UberColorPickerDialog$OnColorChangedListener
+{
+    final org.connectbot.util.UberColorPickerDialog this$0;
+
+    void <init>(org.connectbot.util.UberColorPickerDialog)
+    {
+        org.connectbot.util.UberColorPickerDialog$1 $r0;
+        org.connectbot.util.UberColorPickerDialog $r1;
+
+        $r0 := @this: org.connectbot.util.UberColorPickerDialog$1;
+
+        $r1 := @parameter0: org.connectbot.util.UberColorPickerDialog;
+
+        $r0.<org.connectbot.util.UberColorPickerDialog$1: org.connectbot.util.UberColorPickerDialog this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void colorChanged(int)
+    {
+        org.connectbot.util.UberColorPickerDialog$1 $r0;
+        int $i0;
+        org.connectbot.util.UberColorPickerDialog $r1;
+        org.connectbot.util.UberColorPickerDialog$OnColorChangedListener $r2;
+
+        $r0 := @this: org.connectbot.util.UberColorPickerDialog$1;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<org.connectbot.util.UberColorPickerDialog$1: org.connectbot.util.UberColorPickerDialog this$0>;
+
+        $r2 = staticinvoke <org.connectbot.util.UberColorPickerDialog: org.connectbot.util.UberColorPickerDialog$OnColorChangedListener access$000(org.connectbot.util.UberColorPickerDialog)>($r1);
+
+        interfaceinvoke $r2.<org.connectbot.util.UberColorPickerDialog$OnColorChangedListener: void colorChanged(int)>($i0);
+
+        $r1 = $r0.<org.connectbot.util.UberColorPickerDialog$1: org.connectbot.util.UberColorPickerDialog this$0>;
+
+        virtualinvoke $r1.<org.connectbot.util.UberColorPickerDialog: void dismiss()>();
+
+        return;
+    }
+}

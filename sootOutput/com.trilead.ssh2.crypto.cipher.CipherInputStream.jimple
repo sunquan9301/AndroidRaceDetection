@@ -1,0 +1,350 @@
+public class com.trilead.ssh2.crypto.cipher.CipherInputStream extends java.lang.Object
+{
+    final int BUFF_SIZE;
+    java.io.InputStream bi;
+    int blockSize;
+    byte[] buffer;
+    com.trilead.ssh2.crypto.cipher.BlockCipher currentCipher;
+    byte[] enc;
+    byte[] input_buffer;
+    int input_buffer_pos;
+    int input_buffer_size;
+    int pos;
+
+    public void <init>(com.trilead.ssh2.crypto.cipher.BlockCipher, java.io.InputStream)
+    {
+        com.trilead.ssh2.crypto.cipher.CipherInputStream $r0;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r1;
+        java.io.InputStream $r2;
+        byte[] $r3;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherInputStream;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.cipher.BlockCipher;
+
+        $r2 := @parameter1: java.io.InputStream;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int BUFF_SIZE> = 2048;
+
+        $r3 = newarray (byte)[2048];
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] input_buffer> = $r3;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_pos> = 0;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_size> = 0;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: java.io.InputStream bi> = $r2;
+
+        virtualinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: void changeCipher(com.trilead.ssh2.crypto.cipher.BlockCipher)>($r1);
+
+        return;
+    }
+
+    private int fill_buffer() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherInputStream $r0;
+        java.io.InputStream $r1;
+        byte[] $r2;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherInputStream;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_pos> = 0;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: java.io.InputStream bi>;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] input_buffer>;
+
+        $i0 = virtualinvoke $r1.<java.io.InputStream: int read(byte[],int,int)>($r2, 0, 2048);
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_size> = $i0;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_size>;
+
+        return $i0;
+    }
+
+    private void getBlock() throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherInputStream $r0;
+        java.lang.Exception $r1;
+        int $i0, $i1;
+        byte[] $r2, $r5;
+        java.io.IOException $r3;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherInputStream;
+
+        $i0 = 0;
+
+     label1:
+        $i1 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize>;
+
+        if $i0 >= $i1 goto label3;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] enc>;
+
+        $i1 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize>;
+
+        $i1 = $i1 - $i0;
+
+        $i1 = specialinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int internal_read(byte[],int,int)>($r2, $i0, $i1);
+
+        if $i1 >= 0 goto label2;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Cannot read full block, EOF reached.");
+
+        throw $r3;
+
+     label2:
+        $i0 = $i0 + $i1;
+
+        goto label1;
+
+     label3:
+        $r4 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: com.trilead.ssh2.crypto.cipher.BlockCipher currentCipher>;
+
+        $r5 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] enc>;
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] buffer>;
+
+        interfaceinvoke $r4.<com.trilead.ssh2.crypto.cipher.BlockCipher: void transformBlock(byte[],int,byte[],int)>($r5, 0, $r2, 0);
+
+     label4:
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int pos> = 0;
+
+        return;
+
+     label5:
+        $r1 := @caughtexception;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Error while decrypting block.");
+
+        throw $r3;
+
+        catch java.lang.Exception from label3 to label4 with label5;
+    }
+
+    private int internal_read(byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherInputStream $r0;
+        byte[] $r1, $r2;
+        int $i0, $i1, $i2, $i3;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherInputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_size>;
+
+        if $i2 >= 0 goto label1;
+
+        return -1;
+
+     label1:
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_pos>;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_size>;
+
+        if $i3 < $i2 goto label2;
+
+        $i2 = specialinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int fill_buffer()>();
+
+        if $i2 <= 0 goto label5;
+
+     label2:
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_size>;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_pos>;
+
+        $i2 = $i3 - $i2;
+
+        if $i1 <= $i2 goto label4;
+
+     label3:
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] input_buffer>;
+
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_pos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, $i3, $r1, $i0, $i2);
+
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_pos>;
+
+        $i3 = $i3 + $i2;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int input_buffer_pos> = $i3;
+
+        return $i2;
+
+     label4:
+        $i2 = $i1;
+
+        goto label3;
+
+     label5:
+        return -1;
+    }
+
+    public void changeCipher(com.trilead.ssh2.crypto.cipher.BlockCipher)
+    {
+        com.trilead.ssh2.crypto.cipher.CipherInputStream $r0;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r1;
+        int $i0;
+        byte[] $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherInputStream;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.cipher.BlockCipher;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: com.trilead.ssh2.crypto.cipher.BlockCipher currentCipher> = $r1;
+
+        $i0 = interfaceinvoke $r1.<com.trilead.ssh2.crypto.cipher.BlockCipher: int getBlockSize()>();
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize> = $i0;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize>;
+
+        $r2 = newarray (byte)[$i0];
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] buffer> = $r2;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize>;
+
+        $r2 = newarray (byte)[$i0];
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] enc> = $r2;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize>;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int pos> = $i0;
+
+        return;
+    }
+
+    public int read(byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherInputStream $r0;
+        byte[] $r1, $r2;
+        int $i0, $i1, $i2, $i3, $i4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherInputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i3 = 0;
+
+     label1:
+        if $i1 <= 0 goto label3;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int pos>;
+
+        $i4 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize>;
+
+        if $i2 < $i4 goto label2;
+
+        specialinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: void getBlock()>();
+
+     label2:
+        $i4 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize>;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int pos>;
+
+        $i2 = $i4 - $i2;
+
+        $i4 = staticinvoke <java.lang.Math: int min(int,int)>($i2, $i1);
+
+        $r2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: byte[] buffer>;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int pos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, $i2, $r1, $i0, $i4);
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int pos>;
+
+        $i2 = $i2 + $i4;
+
+        $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int pos> = $i2;
+
+        $i0 = $i0 + $i4;
+
+        $i1 = $i1 - $i4;
+
+        $i3 = $i3 + $i4;
+
+        goto label1;
+
+     label3:
+        return $i3;
+    }
+
+    public int readPlain(byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.cipher.CipherInputStream $r0;
+        byte[] $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+        java.io.IOException $r2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.CipherInputStream;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int pos>;
+
+        $i3 = $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int blockSize>;
+
+        if $i2 == $i3 goto label1;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Cannot read plain since crypto buffer is not aligned.");
+
+        throw $r2;
+
+     label1:
+        $i2 = 0;
+
+     label2:
+        if $i2 >= $i1 goto label4;
+
+        $i3 = $i0 + $i2;
+
+        $i4 = $i1 - $i2;
+
+        $i3 = specialinvoke $r0.<com.trilead.ssh2.crypto.cipher.CipherInputStream: int internal_read(byte[],int,int)>($r1, $i3, $i4);
+
+        if $i3 >= 0 goto label3;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Cannot fill buffer, EOF reached.");
+
+        throw $r2;
+
+     label3:
+        $i2 = $i2 + $i3;
+
+        goto label2;
+
+     label4:
+        return $i2;
+    }
+}

@@ -1,0 +1,2131 @@
+final class com.jcraft.jzlib.Inflate extends java.lang.Object
+{
+    private static byte[] mark;
+    com.jcraft.jzlib.InfBlocks blocks;
+    private byte[] crcbuf;
+    private int flags;
+    com.jcraft.jzlib.GZIPHeader gheader;
+    int marker;
+    int method;
+    int mode;
+    long need;
+    private int need_bytes;
+    private java.io.ByteArrayOutputStream tmp_string;
+    long was;
+    int wbits;
+    int wrap;
+    private final com.jcraft.jzlib.ZStream z;
+
+    static void <clinit>()
+    {
+        byte[] $r0;
+
+        $r0 = newarray (byte)[4];
+
+        $r0[0] = 0;
+
+        $r0[1] = 0;
+
+        $r0[2] = -1;
+
+        $r0[3] = -1;
+
+        <com.jcraft.jzlib.Inflate: byte[] mark> = $r0;
+
+        return;
+    }
+
+    void <init>(com.jcraft.jzlib.ZStream)
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        com.jcraft.jzlib.ZStream $r1;
+        byte[] $r2;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $r1 := @parameter0: com.jcraft.jzlib.ZStream;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Inflate: long was> = -1L;
+
+        $r0.<com.jcraft.jzlib.Inflate: int need_bytes> = -1;
+
+        $r2 = newarray (byte)[4];
+
+        $r0.<com.jcraft.jzlib.Inflate: byte[] crcbuf> = $r2;
+
+        $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader> = null;
+
+        $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string> = null;
+
+        $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z> = $r1;
+
+        return;
+    }
+
+    private void checksum(int, long)
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        int $i0, $i2, $i4;
+        long $l1, $l3;
+        byte[] $r1;
+        byte $b5;
+        com.jcraft.jzlib.ZStream $r2;
+        com.jcraft.jzlib.Checksum $r3;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $i0 := @parameter0: int;
+
+        $l1 := @parameter1: long;
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i0 goto label2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: byte[] crcbuf>;
+
+        $l3 = 255L & $l1;
+
+        $i4 = (int) $l3;
+
+        $b5 = (byte) $i4;
+
+        $r1[$i2] = $b5;
+
+        $l1 = $l1 >> 8;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label2:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: byte[] crcbuf>;
+
+        interfaceinvoke $r3.<com.jcraft.jzlib.Checksum: void update(byte[],int,int)>($r1, 0, $i0);
+
+        return;
+    }
+
+    private int readBytes(int, int) throws com.jcraft.jzlib.Inflate$Return
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        int $i0, $i1, $i4;
+        byte $b2;
+        java.io.ByteArrayOutputStream $r1;
+        long $l3;
+        com.jcraft.jzlib.ZStream $r2;
+        com.jcraft.jzlib.Inflate$Return $r3;
+        byte[] $r4;
+        com.jcraft.jzlib.Checksum $r5;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string>;
+
+        if $r1 != null goto label1;
+
+        $r1 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $r1.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string> = $r1;
+
+     label1:
+        $l3 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $b2 = $l3 cmp 0L;
+
+        if $b2 <= 0 goto label3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i4 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i4 != 0 goto label2;
+
+        $r3 = new com.jcraft.jzlib.Inflate$Return;
+
+        specialinvoke $r3.<com.jcraft.jzlib.Inflate$Return: void <init>(com.jcraft.jzlib.Inflate,int)>($r0, $i0);
+
+        throw $r3;
+
+     label2:
+        $i0 = $i1;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i4 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i4 = $i4 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i4;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l3 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l3 = $l3 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i4 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $b2 = $r4[$i4];
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i4 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        virtualinvoke $r1.<java.io.ByteArrayOutputStream: void write(byte[],int,int)>($r4, $i4, 1);
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r5 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i4 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        interfaceinvoke $r5.<com.jcraft.jzlib.Checksum: void update(byte[],int,int)>($r4, $i4, 1);
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i4 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i4 = $i4 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i4;
+
+        $l3 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l3 = $l3 - 1L;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l3;
+
+        goto label1;
+
+     label3:
+        return $i0;
+    }
+
+    private int readBytes(int, int, int) throws com.jcraft.jzlib.Inflate$Return
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        int $i0, $i1, $i2, $i3, $i5;
+        long $l4, $l8;
+        com.jcraft.jzlib.ZStream $r1;
+        com.jcraft.jzlib.Inflate$Return $r2;
+        byte[] $r3;
+        byte $b6;
+        short $s7;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 = $r0.<com.jcraft.jzlib.Inflate: int need_bytes>;
+
+        if $i3 != -1 goto label1;
+
+        $r0.<com.jcraft.jzlib.Inflate: int need_bytes> = $i0;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = 0L;
+
+     label1:
+        $i3 = $r0.<com.jcraft.jzlib.Inflate: int need_bytes>;
+
+        if $i3 <= 0 goto label3;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r1.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i3 != 0 goto label2;
+
+        $r2 = new com.jcraft.jzlib.Inflate$Return;
+
+        specialinvoke $r2.<com.jcraft.jzlib.Inflate$Return: void <init>(com.jcraft.jzlib.Inflate,int)>($r0, $i1);
+
+        throw $r2;
+
+     label2:
+        $i1 = $i2;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r1.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i3 = $i3 + -1;
+
+        $r1.<com.jcraft.jzlib.ZStream: int avail_in> = $i3;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l4 = $r1.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 + 1L;
+
+        $r1.<com.jcraft.jzlib.ZStream: long total_in> = $l4;
+
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r1.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i5 = $r1.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i3 = $i5 + 1;
+
+        $r1.<com.jcraft.jzlib.ZStream: int next_in_index> = $i3;
+
+        $b6 = $r3[$i5];
+
+        $s7 = $b6 & 255;
+
+        $i5 = $r0.<com.jcraft.jzlib.Inflate: int need_bytes>;
+
+        $i5 = $i0 - $i5;
+
+        $i5 = $i5 * 8;
+
+        $i5 = $s7 << $i5;
+
+        $l8 = (long) $i5;
+
+        $l8 = $l4 | $l8;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        $i5 = $r0.<com.jcraft.jzlib.Inflate: int need_bytes>;
+
+        $i5 = $i5 + -1;
+
+        $r0.<com.jcraft.jzlib.Inflate: int need_bytes> = $i5;
+
+        goto label1;
+
+     label3:
+        if $i0 != 2 goto label5;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l8 = $l8 & 65535L;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+     label4:
+        $r0.<com.jcraft.jzlib.Inflate: int need_bytes> = -1;
+
+        return $i1;
+
+     label5:
+        if $i0 != 4 goto label4;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l8 = $l8 & 4294967295L;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        goto label4;
+    }
+
+    private int readString(int, int) throws com.jcraft.jzlib.Inflate$Return
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        int $i0, $i1, $i3;
+        byte $b2;
+        java.io.ByteArrayOutputStream $r1;
+        com.jcraft.jzlib.ZStream $r2;
+        com.jcraft.jzlib.Inflate$Return $r3;
+        long $l4;
+        byte[] $r4;
+        com.jcraft.jzlib.Checksum $r5;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string>;
+
+        if $r1 != null goto label1;
+
+        $r1 = new java.io.ByteArrayOutputStream;
+
+        specialinvoke $r1.<java.io.ByteArrayOutputStream: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string> = $r1;
+
+     label1:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i3 != 0 goto label2;
+
+        $r3 = new com.jcraft.jzlib.Inflate$Return;
+
+        specialinvoke $r3.<com.jcraft.jzlib.Inflate$Return: void <init>(com.jcraft.jzlib.Inflate,int)>($r0, $i0);
+
+        throw $r3;
+
+     label2:
+        $i0 = $i1;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i3 = $i3 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l4;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $b2 = $r4[$i3];
+
+        if $b2 == 0 goto label3;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        virtualinvoke $r1.<java.io.ByteArrayOutputStream: void write(byte[],int,int)>($r4, $i3, 1);
+
+     label3:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r5 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        interfaceinvoke $r5.<com.jcraft.jzlib.Checksum: void update(byte[],int,int)>($r4, $i3, 1);
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i3 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i3 = $i3 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i3;
+
+        if $b2 != 0 goto label1;
+
+        return $i1;
+    }
+
+    int inflate(int)
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        int $i0, $i1, $i2, $i6;
+        com.jcraft.jzlib.Inflate$Return $r1, $r10, $r11, $r14, $r15, $r16, $r17, $r18, $r19, $r20;
+        com.jcraft.jzlib.ZStream $r2;
+        byte[] $r3, $r13;
+        byte $b3, $b5;
+        long $l4, $l8;
+        com.jcraft.jzlib.CRC32 $r4;
+        com.jcraft.jzlib.GZIPHeader $r5;
+        com.jcraft.jzlib.Adler32 $r6;
+        short $s7;
+        com.jcraft.jzlib.Checksum $r7;
+        com.jcraft.jzlib.InfBlocks $r8;
+        java.lang.String $r9;
+        boolean $z0;
+        java.io.ByteArrayOutputStream $r12;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $i0 := @parameter0: int;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        if $r2 == null goto label001;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        if $r3 != null goto label003;
+
+     label001:
+        if $i0 != 4 goto label002;
+
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int mode>;
+
+        if $i2 != 14 goto label002;
+
+        return 0;
+
+     label002:
+        return -2;
+
+     label003:
+        if $i0 != 4 goto label007;
+
+        $b3 = -5;
+
+     label004:
+        $i1 = -5;
+
+     label005:
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int mode>;
+
+        lookupswitch($i2)
+        {
+            case 2: goto label024;
+            case 3: goto label025;
+            case 4: goto label026;
+            case 5: goto label027;
+            case 6: goto label028;
+            case 7: goto label029;
+            case 8: goto label033;
+            case 9: goto label034;
+            case 10: goto label035;
+            case 11: goto label036;
+            case 12: goto label047;
+            case 13: goto label049;
+            case 14: goto label008;
+            case 15: goto label039;
+            case 16: goto label056;
+            case 17: goto label060;
+            case 18: goto label064;
+            case 19: goto label069;
+            case 20: goto label076;
+            case 21: goto label083;
+            case 22: goto label090;
+            case 23: goto label050;
+            default: goto label006;
+        };
+
+     label006:
+        return -2;
+
+     label007:
+        $b3 = 0;
+
+        goto label004;
+
+     label008:
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        if $i2 != 0 goto label009;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 7;
+
+        goto label005;
+
+     label009:
+        $i2 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readBytes(int,int,int)>(2, $i1, $b3);
+
+     label010:
+        $i1 = $i2;
+
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        if $i2 == 4 goto label011;
+
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        $i2 = $i2 & 2;
+
+        if $i2 == 0 goto label015;
+
+     label011:
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $b5 = $l4 cmp 35615L;
+
+        if $b5 != 0 goto label015;
+
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        if $i2 != 4 goto label012;
+
+        $r0.<com.jcraft.jzlib.Inflate: int wrap> = 2;
+
+     label012:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = new com.jcraft.jzlib.CRC32;
+
+        specialinvoke $r4.<com.jcraft.jzlib.CRC32: void <init>()>();
+
+        $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler> = $r4;
+
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        specialinvoke $r0.<com.jcraft.jzlib.Inflate: void checksum(int,long)>(2, $l4);
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 != null goto label013;
+
+        $r5 = new com.jcraft.jzlib.GZIPHeader;
+
+        specialinvoke $r5.<com.jcraft.jzlib.GZIPHeader: void <init>()>();
+
+        $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader> = $r5;
+
+     label013:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 23;
+
+        goto label005;
+
+     label014:
+        $r1 := @caughtexception;
+
+        $i1 = $r1.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label015:
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        $i2 = $i2 & 2;
+
+        if $i2 == 0 goto label016;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "incorrect header check";
+
+        goto label005;
+
+     label016:
+        $r0.<com.jcraft.jzlib.Inflate: int flags> = 0;
+
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $i2 = (int) $l4;
+
+        $i2 = $i2 & 255;
+
+        $r0.<com.jcraft.jzlib.Inflate: int method> = $i2;
+
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l4 = $l4 >> 8;
+
+        $i2 = (int) $l4;
+
+        $i0 = $i2 & 255;
+
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        $i2 = $i2 & 1;
+
+        if $i2 == 0 goto label017;
+
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int method>;
+
+        $i2 = $i2 << 8;
+
+        $i2 = $i2 + $i0;
+
+        $i2 = $i2 % 31;
+
+        if $i2 == 0 goto label019;
+
+     label017:
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int method>;
+
+        $i2 = $i2 & 15;
+
+        if $i2 == 8 goto label019;
+
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        if $i2 != 4 goto label018;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i2 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i2 = $i2 + -2;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i2;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i2 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i2 = $i2 + 2;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i2;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 - 2L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l4;
+
+        $r0.<com.jcraft.jzlib.Inflate: int wrap> = 0;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 7;
+
+        goto label005;
+
+     label018:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "incorrect header check";
+
+        goto label005;
+
+     label019:
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int method>;
+
+        $i2 = $i2 & 15;
+
+        if $i2 == 8 goto label020;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "unknown compression method";
+
+        goto label005;
+
+     label020:
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        if $i2 != 4 goto label021;
+
+        $r0.<com.jcraft.jzlib.Inflate: int wrap> = 1;
+
+     label021:
+        $i2 = $r0.<com.jcraft.jzlib.Inflate: int method>;
+
+        $i2 = $i2 >> 4;
+
+        $i2 = $i2 + 8;
+
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int wbits>;
+
+        if $i2 <= $i6 goto label022;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "invalid window size";
+
+        goto label005;
+
+     label022:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r6 = new com.jcraft.jzlib.Adler32;
+
+        specialinvoke $r6.<com.jcraft.jzlib.Adler32: void <init>()>();
+
+        $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler> = $r6;
+
+        $i6 = $i0 & 32;
+
+        if $i6 != 0 goto label023;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 7;
+
+        goto label005;
+
+     label023:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 2;
+
+     label024:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i6 == 0 goto label107;
+
+        $i1 = $b3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i6 = $i6 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l4;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i0 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i6 = $i0 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i6;
+
+        $b5 = $r3[$i0];
+
+        $s7 = $b5 & 255;
+
+        $i6 = $s7 << 24;
+
+        $l4 = (long) $i6;
+
+        $l4 = $l4 & 4278190080L;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l4;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 3;
+
+     label025:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i6 == 0 goto label108;
+
+        $i1 = $b3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i6 = $i6 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l4 = $l4 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l4;
+
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i0 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i2 = $i0 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i2;
+
+        $b5 = $r3[$i0];
+
+        $s7 = $b5 & 255;
+
+        $i6 = $s7 << 16;
+
+        $l8 = (long) $i6;
+
+        $l8 = $l8 & 16711680L;
+
+        $l8 = $l4 + $l8;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 4;
+
+     label026:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i6 == 0 goto label109;
+
+        $i1 = $b3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i6 = $i6 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l8 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l8 = $l8 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l8;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i2 = $i6 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i2;
+
+        $b5 = $r3[$i6];
+
+        $s7 = $b5 & 255;
+
+        $i6 = $s7 << 8;
+
+        $l4 = (long) $i6;
+
+        $l4 = $l4 & 65280L;
+
+        $l8 = $l8 + $l4;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 5;
+
+     label027:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i6 == 0 goto label110;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i6 = $i6 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l8 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l8 = $l8 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l8;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i2 = $i6 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i2;
+
+        $b5 = $r3[$i6];
+
+        $l4 = (long) $b5;
+
+        $l4 = $l4 & 255L;
+
+        $l8 = $l8 + $l4;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r7 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        interfaceinvoke $r7.<com.jcraft.jzlib.Checksum: void reset(long)>($l8);
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 6;
+
+        return 2;
+
+     label028:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "need dictionary";
+
+        $r0.<com.jcraft.jzlib.Inflate: int marker> = 0;
+
+        return -2;
+
+     label029:
+        $r8 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks>;
+
+        $i6 = virtualinvoke $r8.<com.jcraft.jzlib.InfBlocks: int proc(int)>($i1);
+
+        $i1 = $i6;
+
+        if $i6 != -3 goto label030;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r0.<com.jcraft.jzlib.Inflate: int marker> = 0;
+
+        goto label005;
+
+     label030:
+        if $i6 != 0 goto label031;
+
+        $i1 = $b3;
+
+     label031:
+        if $i1 != 1 goto label111;
+
+        $i1 = $b3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r7 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $l8 = interfaceinvoke $r7.<com.jcraft.jzlib.Checksum: long getValue()>();
+
+        $r0.<com.jcraft.jzlib.Inflate: long was> = $l8;
+
+        $r8 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks>;
+
+        virtualinvoke $r8.<com.jcraft.jzlib.InfBlocks: void reset()>();
+
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        if $i6 != 0 goto label032;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 12;
+
+        goto label005;
+
+     label032:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 8;
+
+     label033:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i6 == 0 goto label112;
+
+        $i1 = $b3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i6 = $i6 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l8 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l8 = $l8 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l8;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i2 = $i6 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i2;
+
+        $b5 = $r3[$i6];
+
+        $s7 = $b5 & 255;
+
+        $i6 = $s7 << 24;
+
+        $l8 = (long) $i6;
+
+        $l8 = $l8 & 4278190080L;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 9;
+
+     label034:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i6 == 0 goto label113;
+
+        $i1 = $b3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i6 = $i6 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l8 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l8 = $l8 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l8;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i2 = $i6 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i2;
+
+        $b5 = $r3[$i6];
+
+        $s7 = $b5 & 255;
+
+        $i6 = $s7 << 16;
+
+        $l4 = (long) $i6;
+
+        $l4 = $l4 & 16711680L;
+
+        $l8 = $l8 + $l4;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 10;
+
+     label035:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i6 == 0 goto label114;
+
+        $i1 = $b3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i6 = $i6 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l8 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l8 = $l8 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l8;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i2 = $i6 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i2;
+
+        $b5 = $r3[$i6];
+
+        $s7 = $b5 & 255;
+
+        $i6 = $s7 << 8;
+
+        $l4 = (long) $i6;
+
+        $l4 = $l4 & 65280L;
+
+        $l8 = $l8 + $l4;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 11;
+
+     label036:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        if $i6 == 0 goto label115;
+
+        $i1 = $b3;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int avail_in>;
+
+        $i6 = $i6 + -1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int avail_in> = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l8 = $r2.<com.jcraft.jzlib.ZStream: long total_in>;
+
+        $l8 = $l8 + 1L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = $l8;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r3 = $r2.<com.jcraft.jzlib.ZStream: byte[] next_in>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i6 = $r2.<com.jcraft.jzlib.ZStream: int next_in_index>;
+
+        $i2 = $i6 + 1;
+
+        $r2.<com.jcraft.jzlib.ZStream: int next_in_index> = $i2;
+
+        $b5 = $r3[$i6];
+
+        $l4 = (long) $b5;
+
+        $l4 = $l4 & 255L;
+
+        $l8 = $l8 + $l4;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        if $i6 == 0 goto label037;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l8 = $l8 & -16777216L;
+
+        $l8 = $l8 >> 24;
+
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l4 = $l4 & 16711680L;
+
+        $l4 = $l4 >> 8;
+
+        $l8 = $l8 | $l4;
+
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l4 = $l4 & 65280L;
+
+        $l4 = $l4 << 8;
+
+        $l8 = $l8 | $l4;
+
+        $l4 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l4 = $l4 & 65535L;
+
+        $l4 = $l4 << 24;
+
+        $l8 = $l8 | $l4;
+
+        $l8 = $l8 & 4294967295L;
+
+        $r0.<com.jcraft.jzlib.Inflate: long need> = $l8;
+
+     label037:
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long was>;
+
+        $i6 = (int) $l8;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $i2 = (int) $l8;
+
+        if $i6 == $i2 goto label042;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "incorrect data check";
+
+     label038:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 15;
+
+     label039:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int wrap>;
+
+        if $i6 == 0 goto label048;
+
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        if $i6 == 0 goto label048;
+
+     label040:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readBytes(int,int,int)>(4, $i1, $b3);
+
+     label041:
+        $i1 = $i6;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r9 = $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg>;
+
+        if $r9 == null goto label044;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r9 = $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg>;
+
+        $z0 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>("incorrect data check");
+
+        if $z0 == 0 goto label044;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r0.<com.jcraft.jzlib.Inflate: int marker> = 5;
+
+        goto label005;
+
+     label042:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        if $i6 == 0 goto label038;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label038;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: long crc> = $l8;
+
+        goto label038;
+
+     label043:
+        $r10 := @caughtexception;
+
+        $i1 = $r10.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label044:
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $l4 = $r2.<com.jcraft.jzlib.ZStream: long total_out>;
+
+        $l4 = $l4 & 4294967295L;
+
+        $b5 = $l8 cmp $l4;
+
+        if $b5 == 0 goto label045;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "incorrect length check";
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        goto label005;
+
+     label045:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = null;
+
+     label046:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 12;
+
+     label047:
+        return 1;
+
+     label048:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r9 = $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg>;
+
+        if $r9 == null goto label046;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r9 = $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg>;
+
+        $z0 = virtualinvoke $r9.<java.lang.String: boolean equals(java.lang.Object)>("incorrect data check");
+
+        if $z0 == 0 goto label046;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r0.<com.jcraft.jzlib.Inflate: int marker> = 5;
+
+        goto label005;
+
+     label049:
+        return -3;
+
+     label050:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readBytes(int,int,int)>(2, $i1, $b3);
+
+     label051:
+        $i1 = $i6;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $i6 = (int) $l8;
+
+        $i6 = $i6 & 65535;
+
+        $r0.<com.jcraft.jzlib.Inflate: int flags> = $i6;
+
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 255;
+
+        if $i6 == 8 goto label053;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "unknown compression method";
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        goto label005;
+
+     label052:
+        $r11 := @caughtexception;
+
+        $i1 = $r11.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label053:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 57344;
+
+        if $i6 == 0 goto label054;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "unknown header flags set";
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        goto label005;
+
+     label054:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 512;
+
+        if $i6 == 0 goto label055;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        specialinvoke $r0.<com.jcraft.jzlib.Inflate: void checksum(int,long)>(2, $l8);
+
+     label055:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 16;
+
+     label056:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readBytes(int,int,int)>(4, $i1, $b3);
+
+     label057:
+        $i1 = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label058;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: long time> = $l8;
+
+     label058:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 512;
+
+        if $i6 == 0 goto label059;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        specialinvoke $r0.<com.jcraft.jzlib.Inflate: void checksum(int,long)>(4, $l8);
+
+     label059:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 17;
+
+     label060:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readBytes(int,int,int)>(2, $i1, $b3);
+
+     label061:
+        $i1 = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label062;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $i6 = (int) $l8;
+
+        $i6 = $i6 & 255;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: int xflags> = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $i6 = (int) $l8;
+
+        $i6 = $i6 >> 8;
+
+        $i6 = $i6 & 255;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: int os> = $i6;
+
+     label062:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 512;
+
+        if $i6 == 0 goto label063;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        specialinvoke $r0.<com.jcraft.jzlib.Inflate: void checksum(int,long)>(2, $l8);
+
+     label063:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 18;
+
+     label064:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 1024;
+
+        if $i6 == 0 goto label097;
+
+     label065:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readBytes(int,int,int)>(2, $i1, $b3);
+
+     label066:
+        $i1 = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label067;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $i6 = (int) $l8;
+
+        $i6 = $i6 & 65535;
+
+        $r3 = newarray (byte)[$i6];
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: byte[] extra> = $r3;
+
+     label067:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 512;
+
+        if $i6 == 0 goto label068;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        specialinvoke $r0.<com.jcraft.jzlib.Inflate: void checksum(int,long)>(2, $l8);
+
+     label068:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 19;
+
+     label069:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 1024;
+
+        if $i6 == 0 goto label100;
+
+     label070:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readBytes(int,int)>($i1, $b3);
+
+     label071:
+        $i1 = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label075;
+
+     label072:
+        $r12 = $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string>;
+
+        $r3 = virtualinvoke $r12.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+     label073:
+        $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string> = null;
+
+        $i6 = lengthof $r3;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $r13 = $r5.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+        $i2 = lengthof $r13;
+
+        if $i6 != $i2 goto label098;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $r13 = $r5.<com.jcraft.jzlib.GZIPHeader: byte[] extra>;
+
+     label074:
+        $i6 = lengthof $r3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, 0, $r13, 0, $i6);
+
+     label075:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 20;
+
+     label076:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 2048;
+
+        if $i6 == 0 goto label102;
+
+     label077:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readString(int,int)>($i1, $b3);
+
+     label078:
+        $i1 = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label081;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+     label079:
+        $r12 = $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string>;
+
+        $r13 = virtualinvoke $r12.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+     label080:
+        $r5.<com.jcraft.jzlib.GZIPHeader: byte[] name> = $r13;
+
+     label081:
+        $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string> = null;
+
+     label082:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 21;
+
+     label083:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 4096;
+
+        if $i6 == 0 goto label104;
+
+     label084:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readString(int,int)>($i1, $b3);
+
+     label085:
+        $i1 = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label088;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+     label086:
+        $r12 = $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string>;
+
+        $r13 = virtualinvoke $r12.<java.io.ByteArrayOutputStream: byte[] toByteArray()>();
+
+     label087:
+        $r5.<com.jcraft.jzlib.GZIPHeader: byte[] comment> = $r13;
+
+     label088:
+        $r0.<com.jcraft.jzlib.Inflate: java.io.ByteArrayOutputStream tmp_string> = null;
+
+     label089:
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 22;
+
+     label090:
+        $i6 = $r0.<com.jcraft.jzlib.Inflate: int flags>;
+
+        $i6 = $i6 & 512;
+
+        if $i6 == 0 goto label106;
+
+     label091:
+        $i6 = specialinvoke $r0.<com.jcraft.jzlib.Inflate: int readBytes(int,int,int)>(2, $i1, $b3);
+
+     label092:
+        $i1 = $i6;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label093;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $l8 = $l8 & 65535L;
+
+        $i6 = (int) $l8;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: int hcrc> = $i6;
+
+     label093:
+        $l8 = $r0.<com.jcraft.jzlib.Inflate: long need>;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r7 = $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler>;
+
+        $l4 = interfaceinvoke $r7.<com.jcraft.jzlib.Checksum: long getValue()>();
+
+        $l4 = $l4 & 65535L;
+
+        $b5 = $l8 cmp $l4;
+
+        if $b5 == 0 goto label106;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "header crc mismatch";
+
+        $r0.<com.jcraft.jzlib.Inflate: int marker> = 5;
+
+        goto label005;
+
+     label094:
+        $r14 := @caughtexception;
+
+        $i1 = $r14.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label095:
+        $r15 := @caughtexception;
+
+        $i1 = $r15.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label096:
+        $r16 := @caughtexception;
+
+        $i1 = $r16.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label097:
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label068;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: byte[] extra> = null;
+
+        goto label068;
+
+     label098:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = "bad extra field length";
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 13;
+
+        goto label005;
+
+     label099:
+        $r17 := @caughtexception;
+
+        $i1 = $r17.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label100:
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label075;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: byte[] extra> = null;
+
+        goto label075;
+
+     label101:
+        $r18 := @caughtexception;
+
+        $i1 = $r18.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label102:
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label082;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: byte[] name> = null;
+
+        goto label082;
+
+     label103:
+        $r19 := @caughtexception;
+
+        $i1 = $r19.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label104:
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        if $r5 == null goto label089;
+
+        $r5 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.GZIPHeader gheader>;
+
+        $r5.<com.jcraft.jzlib.GZIPHeader: byte[] comment> = null;
+
+        goto label089;
+
+     label105:
+        $r20 := @caughtexception;
+
+        $i1 = $r20.<com.jcraft.jzlib.Inflate$Return: int r>;
+
+        return $i1;
+
+     label106:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r4 = new com.jcraft.jzlib.CRC32;
+
+        specialinvoke $r4.<com.jcraft.jzlib.CRC32: void <init>()>();
+
+        $r2.<com.jcraft.jzlib.ZStream: com.jcraft.jzlib.Checksum adler> = $r4;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 7;
+
+        goto label005;
+
+     label107:
+        return $i1;
+
+     label108:
+        return $i1;
+
+     label109:
+        return $i1;
+
+     label110:
+        return $i1;
+
+     label111:
+        return $i1;
+
+     label112:
+        return $i1;
+
+     label113:
+        return $i1;
+
+     label114:
+        return $i1;
+
+     label115:
+        return $i1;
+
+        catch com.jcraft.jzlib.Inflate$Return from label009 to label010 with label014;
+        catch com.jcraft.jzlib.Inflate$Return from label040 to label041 with label043;
+        catch com.jcraft.jzlib.Inflate$Return from label050 to label051 with label052;
+        catch com.jcraft.jzlib.Inflate$Return from label056 to label057 with label094;
+        catch com.jcraft.jzlib.Inflate$Return from label060 to label061 with label095;
+        catch com.jcraft.jzlib.Inflate$Return from label065 to label066 with label096;
+        catch com.jcraft.jzlib.Inflate$Return from label070 to label071 with label099;
+        catch com.jcraft.jzlib.Inflate$Return from label072 to label073 with label099;
+        catch com.jcraft.jzlib.Inflate$Return from label074 to label075 with label099;
+        catch com.jcraft.jzlib.Inflate$Return from label077 to label078 with label101;
+        catch com.jcraft.jzlib.Inflate$Return from label079 to label080 with label101;
+        catch com.jcraft.jzlib.Inflate$Return from label084 to label085 with label103;
+        catch com.jcraft.jzlib.Inflate$Return from label086 to label087 with label103;
+        catch com.jcraft.jzlib.Inflate$Return from label091 to label092 with label105;
+    }
+
+    int inflateEnd()
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        com.jcraft.jzlib.InfBlocks $r1;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks>;
+
+        if $r1 == null goto label1;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks>;
+
+        virtualinvoke $r1.<com.jcraft.jzlib.InfBlocks: void free()>();
+
+     label1:
+        return 0;
+    }
+
+    int inflateInit(int)
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        int $i0, $i1;
+        com.jcraft.jzlib.ZStream $r1;
+        com.jcraft.jzlib.InfBlocks $r2;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r1.<com.jcraft.jzlib.ZStream: java.lang.String msg> = null;
+
+        $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks> = null;
+
+        $r0.<com.jcraft.jzlib.Inflate: int wrap> = 0;
+
+        if $i0 >= 0 goto label3;
+
+        $i0 = neg $i0;
+
+     label1:
+        if $i0 < 8 goto label2;
+
+        if $i0 <= 15 goto label6;
+
+     label2:
+        virtualinvoke $r0.<com.jcraft.jzlib.Inflate: int inflateEnd()>();
+
+        return -2;
+
+     label3:
+        $i1 = 1073741824 & $i0;
+
+        if $i1 == 0 goto label4;
+
+        $r0.<com.jcraft.jzlib.Inflate: int wrap> = 4;
+
+        $i0 = $i0 & -1073741825;
+
+        if $i0 >= 48 goto label1;
+
+        $i0 = $i0 & 15;
+
+        goto label1;
+
+     label4:
+        $i1 = $i0 & -32;
+
+        if $i1 == 0 goto label5;
+
+        $r0.<com.jcraft.jzlib.Inflate: int wrap> = 4;
+
+        $i0 = $i0 & 15;
+
+        goto label1;
+
+     label5:
+        $i1 = $i0 >> 4;
+
+        $i1 = $i1 + 1;
+
+        $r0.<com.jcraft.jzlib.Inflate: int wrap> = $i1;
+
+        if $i0 >= 48 goto label1;
+
+        $i0 = $i0 & 15;
+
+        goto label1;
+
+     label6:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks>;
+
+        if $r2 == null goto label7;
+
+        $i1 = $r0.<com.jcraft.jzlib.Inflate: int wbits>;
+
+        if $i1 == $i0 goto label7;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks>;
+
+        virtualinvoke $r2.<com.jcraft.jzlib.InfBlocks: void free()>();
+
+        $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks> = null;
+
+     label7:
+        $r0.<com.jcraft.jzlib.Inflate: int wbits> = $i0;
+
+        $r2 = new com.jcraft.jzlib.InfBlocks;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $i1 = 1 << $i0;
+
+        specialinvoke $r2.<com.jcraft.jzlib.InfBlocks: void <init>(com.jcraft.jzlib.ZStream,int)>($r1, $i1);
+
+        $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks> = $r2;
+
+        virtualinvoke $r0.<com.jcraft.jzlib.Inflate: int inflateReset()>();
+
+        return 0;
+    }
+
+    int inflateReset()
+    {
+        com.jcraft.jzlib.Inflate $r0;
+        com.jcraft.jzlib.ZStream $r1, $r2;
+        com.jcraft.jzlib.InfBlocks $r3;
+
+        $r0 := @this: com.jcraft.jzlib.Inflate;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        if $r1 != null goto label1;
+
+        return -2;
+
+     label1:
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r1 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r1.<com.jcraft.jzlib.ZStream: long total_out> = 0L;
+
+        $r2.<com.jcraft.jzlib.ZStream: long total_in> = 0L;
+
+        $r2 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.ZStream z>;
+
+        $r2.<com.jcraft.jzlib.ZStream: java.lang.String msg> = null;
+
+        $r0.<com.jcraft.jzlib.Inflate: int mode> = 14;
+
+        $r0.<com.jcraft.jzlib.Inflate: int need_bytes> = -1;
+
+        $r3 = $r0.<com.jcraft.jzlib.Inflate: com.jcraft.jzlib.InfBlocks blocks>;
+
+        virtualinvoke $r3.<com.jcraft.jzlib.InfBlocks: void reset()>();
+
+        return 0;
+    }
+}

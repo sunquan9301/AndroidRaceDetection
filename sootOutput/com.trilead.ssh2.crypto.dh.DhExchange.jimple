@@ -1,0 +1,373 @@
+public class com.trilead.ssh2.crypto.dh.DhExchange extends com.trilead.ssh2.crypto.dh.GenericDhExchange
+{
+    private static final java.math.BigInteger G;
+    private static final java.math.BigInteger P1;
+    private static final java.math.BigInteger P14;
+    private javax.crypto.interfaces.DHPrivateKey clientPrivate;
+    private javax.crypto.interfaces.DHPublicKey clientPublic;
+    private javax.crypto.interfaces.DHPublicKey serverPublic;
+
+    static void <clinit>()
+    {
+        java.math.BigInteger $r0;
+
+        $r0 = new java.math.BigInteger;
+
+        specialinvoke $r0.<java.math.BigInteger: void <init>(java.lang.String,int)>("FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7EDEE386BFB5A899FA5AE9F24117C4B1FE649286651ECE65381FFFFFFFFFFFFFFFF", 16);
+
+        <com.trilead.ssh2.crypto.dh.DhExchange: java.math.BigInteger P1> = $r0;
+
+        $r0 = new java.math.BigInteger;
+
+        specialinvoke $r0.<java.math.BigInteger: void <init>(java.lang.String,int)>("FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7EDEE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3DC2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F83655D23DCA3AD961C62F356208552BB9ED529077096966D670C354E4ABC9804F1746C08CA18217C32905E462E36CE3BE39E772C180E86039B2783A2EC07A28FB5C55DF06F4C52C9DE2BCBF6955817183995497CEA956AE515D2261898FA051015728E5A8AACAA68FFFFFFFFFFFFFFFF", 16);
+
+        <com.trilead.ssh2.crypto.dh.DhExchange: java.math.BigInteger P14> = $r0;
+
+        $r0 = staticinvoke <java.math.BigInteger: java.math.BigInteger valueOf(long)>(2L);
+
+        <com.trilead.ssh2.crypto.dh.DhExchange: java.math.BigInteger G> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        com.trilead.ssh2.crypto.dh.DhExchange $r0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhExchange;
+
+        specialinvoke $r0.<com.trilead.ssh2.crypto.dh.GenericDhExchange: void <init>()>();
+
+        return;
+    }
+
+    public byte[] getE()
+    {
+        com.trilead.ssh2.crypto.dh.DhExchange $r0;
+        javax.crypto.interfaces.DHPublicKey $r1;
+        java.math.BigInteger $r2;
+        java.lang.IllegalStateException $r3;
+        byte[] $r4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhExchange;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey clientPublic>;
+
+        if $r1 != null goto label1;
+
+        $r3 = new java.lang.IllegalStateException;
+
+        specialinvoke $r3.<java.lang.IllegalStateException: void <init>(java.lang.String)>("DhExchange not initialized!");
+
+        throw $r3;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey clientPublic>;
+
+        $r2 = interfaceinvoke $r1.<javax.crypto.interfaces.DHPublicKey: java.math.BigInteger getY()>();
+
+        $r4 = virtualinvoke $r2.<java.math.BigInteger: byte[] toByteArray()>();
+
+        return $r4;
+    }
+
+    public java.lang.String getHashAlgo()
+    {
+        com.trilead.ssh2.crypto.dh.DhExchange $r0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhExchange;
+
+        return "SHA1";
+    }
+
+    protected byte[] getServerE()
+    {
+        com.trilead.ssh2.crypto.dh.DhExchange $r0;
+        javax.crypto.interfaces.DHPublicKey $r1;
+        java.math.BigInteger $r2;
+        java.lang.IllegalStateException $r3;
+        byte[] $r4;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhExchange;
+
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey serverPublic>;
+
+        if $r1 != null goto label1;
+
+        $r3 = new java.lang.IllegalStateException;
+
+        specialinvoke $r3.<java.lang.IllegalStateException: void <init>(java.lang.String)>("DhExchange not initialized!");
+
+        throw $r3;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey serverPublic>;
+
+        $r2 = interfaceinvoke $r1.<javax.crypto.interfaces.DHPublicKey: java.math.BigInteger getY()>();
+
+        $r4 = virtualinvoke $r2.<java.math.BigInteger: byte[] toByteArray()>();
+
+        return $r4;
+    }
+
+    public void init(java.lang.String) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.dh.DhExchange $r0;
+        java.lang.String $r1, $r4;
+        java.security.NoSuchAlgorithmException $r2;
+        javax.crypto.spec.DHParameterSpec $r3;
+        java.math.BigInteger $r5, $r6;
+        boolean $z0;
+        java.security.KeyPairGenerator $r7;
+        java.security.KeyPair $r8;
+        java.security.PrivateKey $r9;
+        javax.crypto.interfaces.DHPrivateKey $r10;
+        java.security.PublicKey $r11;
+        javax.crypto.interfaces.DHPublicKey $r12;
+        java.lang.IllegalArgumentException $r13;
+        java.lang.StringBuilder $r14;
+        java.io.IOException $r15;
+        java.lang.Throwable $r16;
+        java.security.InvalidAlgorithmParameterException $r17;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhExchange;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r4 = "diffie-hellman-group1-sha1";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label5;
+
+        $r3 = new javax.crypto.spec.DHParameterSpec;
+
+        $r6 = <com.trilead.ssh2.crypto.dh.DhExchange: java.math.BigInteger P1>;
+
+        $r5 = <com.trilead.ssh2.crypto.dh.DhExchange: java.math.BigInteger G>;
+
+        specialinvoke $r3.<javax.crypto.spec.DHParameterSpec: void <init>(java.math.BigInteger,java.math.BigInteger)>($r6, $r5);
+
+     label1:
+        $r7 = staticinvoke <java.security.KeyPairGenerator: java.security.KeyPairGenerator getInstance(java.lang.String)>("DH");
+
+        virtualinvoke $r7.<java.security.KeyPairGenerator: void initialize(java.security.spec.AlgorithmParameterSpec)>($r3);
+
+        $r8 = virtualinvoke $r7.<java.security.KeyPairGenerator: java.security.KeyPair generateKeyPair()>();
+
+        $r9 = virtualinvoke $r8.<java.security.KeyPair: java.security.PrivateKey getPrivate()>();
+
+     label2:
+        $r10 = (javax.crypto.interfaces.DHPrivateKey) $r9;
+
+     label3:
+        $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPrivateKey clientPrivate> = $r10;
+
+        $r11 = virtualinvoke $r8.<java.security.KeyPair: java.security.PublicKey getPublic()>();
+
+     label4:
+        $r12 = (javax.crypto.interfaces.DHPublicKey) $r11;
+
+        $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey clientPublic> = $r12;
+
+        return;
+
+     label5:
+        $r4 = "diffie-hellman-group14-sha1";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r1);
+
+        if $z0 == 0 goto label6;
+
+        $r3 = new javax.crypto.spec.DHParameterSpec;
+
+        $r6 = <com.trilead.ssh2.crypto.dh.DhExchange: java.math.BigInteger P14>;
+
+        $r5 = <com.trilead.ssh2.crypto.dh.DhExchange: java.math.BigInteger G>;
+
+        specialinvoke $r3.<javax.crypto.spec.DHParameterSpec: void <init>(java.math.BigInteger,java.math.BigInteger)>($r6, $r5);
+
+        goto label1;
+
+     label6:
+        $r13 = new java.lang.IllegalArgumentException;
+
+        $r14 = new java.lang.StringBuilder;
+
+        specialinvoke $r14.<java.lang.StringBuilder: void <init>()>();
+
+        $r14 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unknown DH group ");
+
+        $r14 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r4 = virtualinvoke $r14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r13.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($r4);
+
+        throw $r13;
+
+     label7:
+        $r2 := @caughtexception;
+
+        $r15 = new java.io.IOException;
+
+        specialinvoke $r15.<java.io.IOException: void <init>(java.lang.String)>("No DH keypair generator");
+
+        $r16 = virtualinvoke $r15.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r2);
+
+        $r15 = (java.io.IOException) $r16;
+
+        throw $r15;
+
+     label8:
+        $r17 := @caughtexception;
+
+        $r15 = new java.io.IOException;
+
+        specialinvoke $r15.<java.io.IOException: void <init>(java.lang.String)>("Invalid DH parameters");
+
+        $r16 = virtualinvoke $r15.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r17);
+
+        $r15 = (java.io.IOException) $r16;
+
+        throw $r15;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label7;
+        catch java.security.NoSuchAlgorithmException from label3 to label4 with label7;
+        catch java.security.InvalidAlgorithmParameterException from label1 to label2 with label8;
+        catch java.security.InvalidAlgorithmParameterException from label3 to label4 with label8;
+    }
+
+    public void setF(byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.crypto.dh.DhExchange $r0;
+        byte[] $r1;
+        java.security.NoSuchAlgorithmException $r2;
+        javax.crypto.interfaces.DHPublicKey $r3;
+        java.security.KeyFactory $r4;
+        java.lang.IllegalStateException $r5;
+        javax.crypto.spec.DHParameterSpec $r6;
+        javax.crypto.spec.DHPublicKeySpec $r7;
+        java.math.BigInteger $r8, $r9, $r10;
+        java.security.PublicKey $r11;
+        javax.crypto.KeyAgreement $r12;
+        javax.crypto.interfaces.DHPrivateKey $r13;
+        java.io.IOException $r14;
+        java.lang.Throwable $r15;
+        java.security.InvalidKeyException $r16;
+        java.security.spec.InvalidKeySpecException $r17;
+
+        $r0 := @this: com.trilead.ssh2.crypto.dh.DhExchange;
+
+        $r1 := @parameter0: byte[];
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey clientPublic>;
+
+        if $r3 != null goto label1;
+
+        $r5 = new java.lang.IllegalStateException;
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>("DhExchange not initialized!");
+
+        throw $r5;
+
+     label1:
+        $r4 = staticinvoke <java.security.KeyFactory: java.security.KeyFactory getInstance(java.lang.String)>("DH");
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey clientPublic>;
+
+        $r6 = interfaceinvoke $r3.<javax.crypto.interfaces.DHPublicKey: javax.crypto.spec.DHParameterSpec getParams()>();
+
+     label2:
+        $r7 = new javax.crypto.spec.DHPublicKeySpec;
+
+     label3:
+        $r8 = new java.math.BigInteger;
+
+        specialinvoke $r8.<java.math.BigInteger: void <init>(byte[])>($r1);
+
+        $r9 = virtualinvoke $r6.<javax.crypto.spec.DHParameterSpec: java.math.BigInteger getP()>();
+
+        $r10 = virtualinvoke $r6.<javax.crypto.spec.DHParameterSpec: java.math.BigInteger getG()>();
+
+        specialinvoke $r7.<javax.crypto.spec.DHPublicKeySpec: void <init>(java.math.BigInteger,java.math.BigInteger,java.math.BigInteger)>($r8, $r9, $r10);
+
+        $r11 = virtualinvoke $r4.<java.security.KeyFactory: java.security.PublicKey generatePublic(java.security.spec.KeySpec)>($r7);
+
+     label4:
+        $r3 = (javax.crypto.interfaces.DHPublicKey) $r11;
+
+     label5:
+        $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey serverPublic> = $r3;
+
+        $r12 = staticinvoke <javax.crypto.KeyAgreement: javax.crypto.KeyAgreement getInstance(java.lang.String)>("DH");
+
+        $r13 = $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPrivateKey clientPrivate>;
+
+        virtualinvoke $r12.<javax.crypto.KeyAgreement: void init(java.security.Key)>($r13);
+
+        $r3 = $r0.<com.trilead.ssh2.crypto.dh.DhExchange: javax.crypto.interfaces.DHPublicKey serverPublic>;
+
+        virtualinvoke $r12.<javax.crypto.KeyAgreement: java.security.Key doPhase(java.security.Key,boolean)>($r3, 1);
+
+     label6:
+        $r10 = new java.math.BigInteger;
+
+        $r1 = virtualinvoke $r12.<javax.crypto.KeyAgreement: byte[] generateSecret()>();
+
+        specialinvoke $r10.<java.math.BigInteger: void <init>(byte[])>($r1);
+
+        $r0.<com.trilead.ssh2.crypto.dh.DhExchange: java.math.BigInteger sharedSecret> = $r10;
+
+        return;
+
+     label7:
+        $r2 := @caughtexception;
+
+        $r14 = new java.io.IOException;
+
+        specialinvoke $r14.<java.io.IOException: void <init>(java.lang.String)>("No DH key agreement method");
+
+        $r15 = virtualinvoke $r14.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r2);
+
+        $r14 = (java.io.IOException) $r15;
+
+        throw $r14;
+
+     label8:
+        $r16 := @caughtexception;
+
+        $r14 = new java.io.IOException;
+
+        specialinvoke $r14.<java.io.IOException: void <init>(java.lang.String)>("Invalid DH key");
+
+        $r15 = virtualinvoke $r14.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r16);
+
+        $r14 = (java.io.IOException) $r15;
+
+        throw $r14;
+
+     label9:
+        $r17 := @caughtexception;
+
+        $r14 = new java.io.IOException;
+
+        specialinvoke $r14.<java.io.IOException: void <init>(java.lang.String)>("Invalid DH key");
+
+        $r15 = virtualinvoke $r14.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r17);
+
+        $r14 = (java.io.IOException) $r15;
+
+        throw $r14;
+
+        catch java.security.NoSuchAlgorithmException from label1 to label2 with label7;
+        catch java.security.NoSuchAlgorithmException from label3 to label4 with label7;
+        catch java.security.NoSuchAlgorithmException from label5 to label6 with label7;
+        catch java.security.InvalidKeyException from label1 to label2 with label8;
+        catch java.security.InvalidKeyException from label3 to label4 with label8;
+        catch java.security.InvalidKeyException from label5 to label6 with label8;
+        catch java.security.spec.InvalidKeySpecException from label1 to label2 with label9;
+        catch java.security.spec.InvalidKeySpecException from label3 to label4 with label9;
+        catch java.security.spec.InvalidKeySpecException from label5 to label6 with label9;
+    }
+}

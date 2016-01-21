@@ -1,0 +1,64 @@
+class org.connectbot.service.TerminalManager$IdleTask extends java.util.TimerTask
+{
+    final org.connectbot.service.TerminalManager this$0;
+
+    private void <init>(org.connectbot.service.TerminalManager)
+    {
+        org.connectbot.service.TerminalManager$IdleTask $r0;
+        org.connectbot.service.TerminalManager $r1;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$IdleTask;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager;
+
+        $r0.<org.connectbot.service.TerminalManager$IdleTask: org.connectbot.service.TerminalManager this$0> = $r1;
+
+        specialinvoke $r0.<java.util.TimerTask: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.service.TerminalManager, org.connectbot.service.TerminalManager$1)
+    {
+        org.connectbot.service.TerminalManager$IdleTask $r0;
+        org.connectbot.service.TerminalManager $r1;
+        org.connectbot.service.TerminalManager$1 $r2;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$IdleTask;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager;
+
+        $r2 := @parameter1: org.connectbot.service.TerminalManager$1;
+
+        specialinvoke $r0.<org.connectbot.service.TerminalManager$IdleTask: void <init>(org.connectbot.service.TerminalManager)>($r1);
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.service.TerminalManager$IdleTask $r0;
+        java.lang.Long $r1;
+        java.lang.Object[] $r2;
+        java.lang.String $r3;
+        org.connectbot.service.TerminalManager $r4;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$IdleTask;
+
+        $r2 = newarray (java.lang.Object)[1];
+
+        $r1 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(300L);
+
+        $r2[0] = $r1;
+
+        $r3 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Stopping service after timeout of ~%d seconds", $r2);
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.TerminalManager", $r3);
+
+        $r4 = $r0.<org.connectbot.service.TerminalManager$IdleTask: org.connectbot.service.TerminalManager this$0>;
+
+        virtualinvoke $r4.<org.connectbot.service.TerminalManager: void stopNow()>();
+
+        return;
+    }
+}

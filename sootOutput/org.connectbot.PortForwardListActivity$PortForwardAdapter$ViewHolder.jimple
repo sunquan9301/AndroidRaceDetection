@@ -1,0 +1,22 @@
+class org.connectbot.PortForwardListActivity$PortForwardAdapter$ViewHolder extends java.lang.Object
+{
+    public android.widget.TextView caption;
+    public android.widget.TextView nickname;
+    final org.connectbot.PortForwardListActivity$PortForwardAdapter this$1;
+
+    void <init>(org.connectbot.PortForwardListActivity$PortForwardAdapter)
+    {
+        org.connectbot.PortForwardListActivity$PortForwardAdapter$ViewHolder $r0;
+        org.connectbot.PortForwardListActivity$PortForwardAdapter $r1;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$PortForwardAdapter$ViewHolder;
+
+        $r1 := @parameter0: org.connectbot.PortForwardListActivity$PortForwardAdapter;
+
+        $r0.<org.connectbot.PortForwardListActivity$PortForwardAdapter$ViewHolder: org.connectbot.PortForwardListActivity$PortForwardAdapter this$1> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

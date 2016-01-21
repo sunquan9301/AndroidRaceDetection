@@ -1,0 +1,43 @@
+class org.connectbot.ActionBarWrapper$RealActionBar$1 extends java.lang.Object implements android.app.ActionBar$OnMenuVisibilityListener
+{
+    final org.connectbot.ActionBarWrapper$RealActionBar this$0;
+    final org.connectbot.ActionBarWrapper$OnMenuVisibilityListener val$listener;
+
+    void <init>(org.connectbot.ActionBarWrapper$RealActionBar, org.connectbot.ActionBarWrapper$OnMenuVisibilityListener)
+    {
+        org.connectbot.ActionBarWrapper$RealActionBar$1 $r0;
+        org.connectbot.ActionBarWrapper$RealActionBar $r1;
+        org.connectbot.ActionBarWrapper$OnMenuVisibilityListener $r2;
+
+        $r0 := @this: org.connectbot.ActionBarWrapper$RealActionBar$1;
+
+        $r1 := @parameter0: org.connectbot.ActionBarWrapper$RealActionBar;
+
+        $r2 := @parameter1: org.connectbot.ActionBarWrapper$OnMenuVisibilityListener;
+
+        $r0.<org.connectbot.ActionBarWrapper$RealActionBar$1: org.connectbot.ActionBarWrapper$RealActionBar this$0> = $r1;
+
+        $r0.<org.connectbot.ActionBarWrapper$RealActionBar$1: org.connectbot.ActionBarWrapper$OnMenuVisibilityListener val$listener> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onMenuVisibilityChanged(boolean)
+    {
+        org.connectbot.ActionBarWrapper$RealActionBar$1 $r0;
+        boolean $z0;
+        org.connectbot.ActionBarWrapper$OnMenuVisibilityListener $r1;
+
+        $r0 := @this: org.connectbot.ActionBarWrapper$RealActionBar$1;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = $r0.<org.connectbot.ActionBarWrapper$RealActionBar$1: org.connectbot.ActionBarWrapper$OnMenuVisibilityListener val$listener>;
+
+        interfaceinvoke $r1.<org.connectbot.ActionBarWrapper$OnMenuVisibilityListener: void onMenuVisibilityChanged(boolean)>($z0);
+
+        return;
+    }
+}

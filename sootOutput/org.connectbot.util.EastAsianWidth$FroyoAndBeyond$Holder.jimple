@@ -1,0 +1,37 @@
+class org.connectbot.util.EastAsianWidth$FroyoAndBeyond$Holder extends java.lang.Object
+{
+    private static final org.connectbot.util.EastAsianWidth$FroyoAndBeyond sInstance;
+
+    static void <clinit>()
+    {
+        org.connectbot.util.EastAsianWidth$FroyoAndBeyond $r0;
+
+        $r0 = new org.connectbot.util.EastAsianWidth$FroyoAndBeyond;
+
+        specialinvoke $r0.<org.connectbot.util.EastAsianWidth$FroyoAndBeyond: void <init>(org.connectbot.util.EastAsianWidth$1)>(null);
+
+        <org.connectbot.util.EastAsianWidth$FroyoAndBeyond$Holder: org.connectbot.util.EastAsianWidth$FroyoAndBeyond sInstance> = $r0;
+
+        return;
+    }
+
+    private void <init>()
+    {
+        org.connectbot.util.EastAsianWidth$FroyoAndBeyond$Holder $r0;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth$FroyoAndBeyond$Holder;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    static org.connectbot.util.EastAsianWidth$FroyoAndBeyond access$100()
+    {
+        org.connectbot.util.EastAsianWidth$FroyoAndBeyond $r0;
+
+        $r0 = <org.connectbot.util.EastAsianWidth$FroyoAndBeyond$Holder: org.connectbot.util.EastAsianWidth$FroyoAndBeyond sInstance>;
+
+        return $r0;
+    }
+}

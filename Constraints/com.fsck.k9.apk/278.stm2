@@ -1,0 +1,95 @@
+;com.fsck.k9.activity.misc.ExtendedAsyncTask android.app.Activity mActivity-com.fsck.k9.activity.misc.ExtendedAsyncTask- void restore(android.app.Activity)-com.fsck.k9.activity.Accounts$ImportAsyncTask- void showProgressDialog()-8.stm2
+(declare-const O0 Int)
+(declare-const O1 Int)
+(declare-const O2 Int)
+(declare-const O3 Int)
+(declare-const O4 Int)
+(declare-const O5 Int)
+
+
+(declare-const O6 Int)
+(declare-const O7 Int)
+(declare-const O8 Int)
+(declare-const O9 Int)
+(declare-const O10 Int)
+(declare-const O11 Int)
+(declare-const O12 Int)
+(declare-const O13 Int)
+(declare-const O14 Int)
+
+
+
+
+(assert (< O0 O1))
+(assert (< O1 O2))
+(assert (< O2 O3))
+(assert (< O3 O4))
+(assert (< O4 O5))
+
+
+(assert (< O6 O7))
+(assert (< O7 O8))
+(assert (< O8 O9))
+(assert (< O9 O10))
+(assert (< O10 O11))
+(assert (< O11 O12))
+(assert (< O12 O13))
+(assert (< O13 O14))
+
+
+
+
+
+
+(push)
+(check-sat)
+(assert (= O3 O11))
+(get-model)
+(pop)
+
+
+(push)
+(check-sat)
+(assert (= O3 O5))
+(get-model)
+(pop)
+
+
+(push)
+(check-sat)
+(assert (= O3 O5))
+(get-model)
+(pop)
+
+
+(push)
+(check-sat)
+(assert (= O3 O5))
+(get-model)
+(pop)
+
+
+(push)
+(check-sat)
+(assert (= O3 O5))
+(get-model)
+(pop)
+
+
+(push)
+(check-sat)
+(assert (= O3 O5))
+(get-model)
+(pop)
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,87 @@
+class com.trilead.ssh2.Connection$1 extends java.lang.Object implements java.lang.Runnable
+{
+    final com.trilead.ssh2.Connection this$0;
+    final com.trilead.ssh2.Connection$1TimeoutState val$state;
+
+    void <init>(com.trilead.ssh2.Connection, com.trilead.ssh2.Connection$1TimeoutState)
+    {
+        com.trilead.ssh2.Connection$1 $r0;
+        com.trilead.ssh2.Connection $r1;
+        com.trilead.ssh2.Connection$1TimeoutState $r2;
+
+        $r0 := @this: com.trilead.ssh2.Connection$1;
+
+        $r1 := @parameter0: com.trilead.ssh2.Connection;
+
+        $r2 := @parameter1: com.trilead.ssh2.Connection$1TimeoutState;
+
+        $r0.<com.trilead.ssh2.Connection$1: com.trilead.ssh2.Connection this$0> = $r1;
+
+        $r0.<com.trilead.ssh2.Connection$1: com.trilead.ssh2.Connection$1TimeoutState val$state> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        com.trilead.ssh2.Connection$1 $r0;
+        com.trilead.ssh2.Connection$1TimeoutState $r1, $r2;
+        com.trilead.ssh2.transport.TransportManager $r3;
+        boolean $z0;
+        com.trilead.ssh2.Connection $r4;
+        java.net.SocketTimeoutException $r5;
+        java.lang.Throwable $r6;
+
+        $r0 := @this: com.trilead.ssh2.Connection$1;
+
+        $r2 = $r0.<com.trilead.ssh2.Connection$1: com.trilead.ssh2.Connection$1TimeoutState val$state>;
+
+        entermonitor $r2;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.Connection$1: com.trilead.ssh2.Connection$1TimeoutState val$state>;
+
+        $z0 = $r1.<com.trilead.ssh2.Connection$1TimeoutState: boolean isCancelled>;
+
+        if $z0 == 0 goto label3;
+
+        exitmonitor $r2;
+
+     label2:
+        return;
+
+     label3:
+        $r1 = $r0.<com.trilead.ssh2.Connection$1: com.trilead.ssh2.Connection$1TimeoutState val$state>;
+
+        $r1.<com.trilead.ssh2.Connection$1TimeoutState: boolean timeoutSocketClosed> = 1;
+
+        $r4 = $r0.<com.trilead.ssh2.Connection$1: com.trilead.ssh2.Connection this$0>;
+
+        $r3 = staticinvoke <com.trilead.ssh2.Connection: com.trilead.ssh2.transport.TransportManager access$000(com.trilead.ssh2.Connection)>($r4);
+
+        $r5 = new java.net.SocketTimeoutException;
+
+        specialinvoke $r5.<java.net.SocketTimeoutException: void <init>(java.lang.String)>("The connect timeout expired");
+
+        virtualinvoke $r3.<com.trilead.ssh2.transport.TransportManager: void close(java.lang.Throwable,boolean)>($r5, 0);
+
+        exitmonitor $r2;
+
+     label4:
+        return;
+
+     label5:
+        $r6 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label6:
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+}

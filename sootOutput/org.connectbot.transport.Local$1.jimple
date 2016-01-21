@@ -1,0 +1,48 @@
+class org.connectbot.transport.Local$1 extends java.lang.Object implements java.lang.Runnable
+{
+    final org.connectbot.transport.Local this$0;
+    final int val$shellPid;
+
+    void <init>(org.connectbot.transport.Local, int)
+    {
+        org.connectbot.transport.Local$1 $r0;
+        org.connectbot.transport.Local $r1;
+        int $i0;
+
+        $r0 := @this: org.connectbot.transport.Local$1;
+
+        $r1 := @parameter0: org.connectbot.transport.Local;
+
+        $i0 := @parameter1: int;
+
+        $r0.<org.connectbot.transport.Local$1: org.connectbot.transport.Local this$0> = $r1;
+
+        $r0.<org.connectbot.transport.Local$1: int val$shellPid> = $i0;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.transport.Local$1 $r0;
+        int $i0;
+        org.connectbot.transport.Local $r1;
+        org.connectbot.service.TerminalBridge $r2;
+
+        $r0 := @this: org.connectbot.transport.Local$1;
+
+        $i0 = $r0.<org.connectbot.transport.Local$1: int val$shellPid>;
+
+        staticinvoke <com.google.ase.Exec: int waitFor(int)>($i0);
+
+        $r1 = $r0.<org.connectbot.transport.Local$1: org.connectbot.transport.Local this$0>;
+
+        $r2 = $r1.<org.connectbot.transport.Local: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r2.<org.connectbot.service.TerminalBridge: void dispatchDisconnect(boolean)>(0);
+
+        return;
+    }
+}

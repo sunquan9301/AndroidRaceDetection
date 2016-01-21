@@ -1,0 +1,348 @@
+public class org.connectbot.transport.SSH$HostKeyVerifier extends java.lang.Object implements com.trilead.ssh2.ServerHostKeyVerifier
+{
+    final org.connectbot.transport.SSH this$0;
+
+    public void <init>(org.connectbot.transport.SSH)
+    {
+        org.connectbot.transport.SSH$HostKeyVerifier $r0;
+        org.connectbot.transport.SSH $r1;
+
+        $r0 := @this: org.connectbot.transport.SSH$HostKeyVerifier;
+
+        $r1 := @parameter0: org.connectbot.transport.SSH;
+
+        $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean verifyServerHostKey(java.lang.String, int, java.lang.String, byte[]) throws java.io.IOException
+    {
+        org.connectbot.transport.SSH$HostKeyVerifier $r0;
+        java.lang.String $r1, $r2, $r4, $r6, $r14, $r19;
+        int $i0, $i1;
+        byte[] $r3;
+        char[] $r5;
+        org.connectbot.transport.SSH $r7;
+        com.trilead.ssh2.KnownHosts $r8;
+        org.connectbot.service.TerminalManager $r9;
+        org.connectbot.util.HostDatabase $r10;
+        java.util.Locale $r11;
+        java.lang.Object[] $r12;
+        java.lang.Integer $r13;
+        boolean $z0;
+        org.connectbot.service.TerminalBridge $r15;
+        android.content.res.Resources $r16;
+        org.connectbot.service.PromptHelper $r17;
+        java.lang.Boolean $r18;
+
+        $r0 := @this: org.connectbot.transport.SSH$HostKeyVerifier;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $r3 := @parameter3: byte[];
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r10 = $r9.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        $r8 = virtualinvoke $r10.<org.connectbot.util.HostDatabase: com.trilead.ssh2.KnownHosts getKnownHosts()>();
+
+        $r11 = <java.util.Locale: java.util.Locale US>;
+
+        $r12 = newarray (java.lang.Object)[2];
+
+        $r12[0] = $r1;
+
+        $r13 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r12[1] = $r13;
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String format(java.util.Locale,java.lang.String,java.lang.Object[])>($r11, "%s:%d", $r12);
+
+        $r14 = staticinvoke <com.trilead.ssh2.KnownHosts: java.lang.String createHexFingerprint(java.lang.String,byte[])>($r2, $r3);
+
+        $r4 = "ssh-rsa";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label03;
+
+        $r4 = "RSA";
+
+     label01:
+        $i1 = virtualinvoke $r8.<com.trilead.ssh2.KnownHosts: int verifyHostkey(java.lang.String,java.lang.String,byte[])>($r6, $r2, $r3);
+
+        lookupswitch($i1)
+        {
+            case 0: goto label06;
+            case 1: goto label07;
+            case 2: goto label10;
+            default: goto label02;
+        };
+
+     label02:
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r12 = newarray (java.lang.Object)[2];
+
+        $r12[0] = $r4;
+
+        $r12[1] = $r14;
+
+        $r14 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int,java.lang.Object[])>(2131165380, $r12);
+
+        virtualinvoke $r15.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r14);
+
+        return 0;
+
+     label03:
+        $r4 = "ssh-dss";
+
+        $z0 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r2);
+
+        if $z0 == 0 goto label04;
+
+        $r4 = "DSA";
+
+        goto label01;
+
+     label04:
+        $z0 = virtualinvoke $r2.<java.lang.String: boolean startsWith(java.lang.String)>("ecdsa-");
+
+        if $z0 == 0 goto label05;
+
+        $r4 = "EC";
+
+        goto label01;
+
+     label05:
+        $r4 = $r2;
+
+        goto label01;
+
+     label06:
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r12 = newarray (java.lang.Object)[2];
+
+        $r12[0] = $r4;
+
+        $r12[1] = $r14;
+
+        $r14 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int,java.lang.Object[])>(2131165383, $r12);
+
+        virtualinvoke $r15.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r14);
+
+        return 1;
+
+     label07:
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r12 = newarray (java.lang.Object)[1];
+
+        $r12[0] = $r1;
+
+        $r6 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int,java.lang.Object[])>(2131165272, $r12);
+
+        virtualinvoke $r15.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r6);
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r12 = newarray (java.lang.Object)[2];
+
+        $r12[0] = $r4;
+
+        $r12[1] = $r14;
+
+        $r14 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int,java.lang.Object[])>(2131165273, $r12);
+
+        virtualinvoke $r15.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r14);
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        $r17 = $r15.<org.connectbot.service.TerminalBridge: org.connectbot.service.PromptHelper promptHelper>;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r14 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int)>(2131165361);
+
+        $r18 = virtualinvoke $r17.<org.connectbot.service.PromptHelper: java.lang.Boolean requestBooleanPrompt(java.lang.String,java.lang.String)>(null, $r14);
+
+        if $r18 != null goto label08;
+
+        return 0;
+
+     label08:
+        $z0 = virtualinvoke $r18.<java.lang.Boolean: boolean booleanValue()>();
+
+        if $z0 == 0 goto label09;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r10 = $r9.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        virtualinvoke $r10.<org.connectbot.util.HostDatabase: void saveKnownHost(java.lang.String,int,java.lang.String,byte[])>($r1, $i0, $r2, $r3);
+
+     label09:
+        $z0 = virtualinvoke $r18.<java.lang.Boolean: boolean booleanValue()>();
+
+        return $z0;
+
+     label10:
+        $r12 = newarray (java.lang.Object)[1];
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r6 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int)>(2131165275);
+
+        $r12[0] = $r6;
+
+        $r6 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("@   %s   @", $r12);
+
+        $i1 = virtualinvoke $r6.<java.lang.String: int length()>();
+
+        $r5 = newarray (char)[$i1];
+
+        staticinvoke <java.util.Arrays: void fill(char[],char)>($r5, 64);
+
+        $r6 = new java.lang.String;
+
+        specialinvoke $r6.<java.lang.String: void <init>(char[])>($r5);
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r15.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r6);
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r19 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int)>(2131165274);
+
+        virtualinvoke $r15.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r19);
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        virtualinvoke $r15.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r6);
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r19 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int)>(2131165273);
+
+        $r12 = newarray (java.lang.Object)[2];
+
+        $r12[0] = $r4;
+
+        $r12[1] = $r14;
+
+        $r19 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>($r19, $r12);
+
+        virtualinvoke $r15.<org.connectbot.service.TerminalBridge: void outputLine(java.lang.String)>($r19);
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r15 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalBridge bridge>;
+
+        $r17 = $r15.<org.connectbot.service.TerminalBridge: org.connectbot.service.PromptHelper promptHelper>;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r16 = $r9.<org.connectbot.service.TerminalManager: android.content.res.Resources res>;
+
+        $r19 = virtualinvoke $r16.<android.content.res.Resources: java.lang.String getString(int)>(2131165361);
+
+        $r18 = virtualinvoke $r17.<org.connectbot.service.PromptHelper: java.lang.Boolean requestBooleanPrompt(java.lang.String,java.lang.String)>(null, $r19);
+
+        if $r18 == null goto label11;
+
+        $z0 = virtualinvoke $r18.<java.lang.Boolean: boolean booleanValue()>();
+
+        if $z0 == 0 goto label11;
+
+        $r7 = $r0.<org.connectbot.transport.SSH$HostKeyVerifier: org.connectbot.transport.SSH this$0>;
+
+        $r9 = $r7.<org.connectbot.transport.SSH: org.connectbot.service.TerminalManager manager>;
+
+        $r10 = $r9.<org.connectbot.service.TerminalManager: org.connectbot.util.HostDatabase hostdb>;
+
+        virtualinvoke $r10.<org.connectbot.util.HostDatabase: void saveKnownHost(java.lang.String,int,java.lang.String,byte[])>($r1, $i0, $r2, $r3);
+
+        return 1;
+
+     label11:
+        return 0;
+    }
+}

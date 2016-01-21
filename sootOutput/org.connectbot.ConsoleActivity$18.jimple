@@ -1,0 +1,87 @@
+class org.connectbot.ConsoleActivity$18 extends java.lang.Object implements android.view.MenuItem$OnMenuItemClickListener
+{
+    final org.connectbot.ConsoleActivity this$0;
+
+    void <init>(org.connectbot.ConsoleActivity)
+    {
+        org.connectbot.ConsoleActivity$18 $r0;
+        org.connectbot.ConsoleActivity $r1;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$18;
+
+        $r1 := @parameter0: org.connectbot.ConsoleActivity;
+
+        $r0.<org.connectbot.ConsoleActivity$18: org.connectbot.ConsoleActivity this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public boolean onMenuItemClick(android.view.MenuItem)
+    {
+        org.connectbot.ConsoleActivity$18 $r0;
+        android.view.MenuItem $r1;
+        android.app.Dialog $r2;
+        android.widget.ListView $r3;
+        org.connectbot.ConsoleActivity$URLItemListener $r4;
+        org.connectbot.ConsoleActivity $r5, $r10;
+        org.connectbot.TerminalView $r6;
+        org.connectbot.ConsoleActivity$TerminalPagerAdapter $r7;
+        org.connectbot.service.TerminalBridge $r8;
+        java.util.List $r9;
+        android.widget.ArrayAdapter $r11;
+
+        $r0 := @this: org.connectbot.ConsoleActivity$18;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+        $r5 = $r0.<org.connectbot.ConsoleActivity$18: org.connectbot.ConsoleActivity this$0>;
+
+        $r7 = $r5.<org.connectbot.ConsoleActivity: org.connectbot.ConsoleActivity$TerminalPagerAdapter adapter>;
+
+        $r6 = virtualinvoke $r7.<org.connectbot.ConsoleActivity$TerminalPagerAdapter: org.connectbot.TerminalView getCurrentTerminalView()>();
+
+        $r8 = $r6.<org.connectbot.TerminalView: org.connectbot.service.TerminalBridge bridge>;
+
+        $r9 = virtualinvoke $r8.<org.connectbot.service.TerminalBridge: java.util.List scanForURLs()>();
+
+        $r2 = new android.app.Dialog;
+
+        $r5 = $r0.<org.connectbot.ConsoleActivity$18: org.connectbot.ConsoleActivity this$0>;
+
+        specialinvoke $r2.<android.app.Dialog: void <init>(android.content.Context)>($r5);
+
+        virtualinvoke $r2.<android.app.Dialog: void setTitle(int)>(2131165264);
+
+        $r3 = new android.widget.ListView;
+
+        $r5 = $r0.<org.connectbot.ConsoleActivity$18: org.connectbot.ConsoleActivity this$0>;
+
+        specialinvoke $r3.<android.widget.ListView: void <init>(android.content.Context)>($r5);
+
+        $r4 = new org.connectbot.ConsoleActivity$URLItemListener;
+
+        $r10 = $r0.<org.connectbot.ConsoleActivity$18: org.connectbot.ConsoleActivity this$0>;
+
+        $r5 = $r0.<org.connectbot.ConsoleActivity$18: org.connectbot.ConsoleActivity this$0>;
+
+        specialinvoke $r4.<org.connectbot.ConsoleActivity$URLItemListener: void <init>(org.connectbot.ConsoleActivity,android.content.Context)>($r10, $r5);
+
+        virtualinvoke $r3.<android.widget.ListView: void setOnItemClickListener(android.widget.AdapterView$OnItemClickListener)>($r4);
+
+        $r11 = new android.widget.ArrayAdapter;
+
+        $r10 = $r0.<org.connectbot.ConsoleActivity$18: org.connectbot.ConsoleActivity this$0>;
+
+        specialinvoke $r11.<android.widget.ArrayAdapter: void <init>(android.content.Context,int,java.util.List)>($r10, 17367043, $r9);
+
+        virtualinvoke $r3.<android.widget.ListView: void setAdapter(android.widget.ListAdapter)>($r11);
+
+        virtualinvoke $r2.<android.app.Dialog: void setContentView(android.view.View)>($r3);
+
+        virtualinvoke $r2.<android.app.Dialog: void show()>();
+
+        return 1;
+    }
+}

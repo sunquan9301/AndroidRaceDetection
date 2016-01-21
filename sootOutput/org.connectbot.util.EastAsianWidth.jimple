@@ -1,0 +1,36 @@
+public abstract class org.connectbot.util.EastAsianWidth extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.connectbot.util.EastAsianWidth $r0;
+
+        $r0 := @this: org.connectbot.util.EastAsianWidth;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.connectbot.util.EastAsianWidth getInstance()
+    {
+        boolean $z0;
+        org.connectbot.util.EastAsianWidth$PreFroyo $r0;
+        org.connectbot.util.EastAsianWidth$FroyoAndBeyond $r1;
+
+        $z0 = <org.connectbot.util.PreferenceConstants: boolean PRE_FROYO>;
+
+        if $z0 == 0 goto label1;
+
+        $r0 = staticinvoke <org.connectbot.util.EastAsianWidth$PreFroyo$Holder: org.connectbot.util.EastAsianWidth$PreFroyo access$000()>();
+
+        return $r0;
+
+     label1:
+        $r1 = staticinvoke <org.connectbot.util.EastAsianWidth$FroyoAndBeyond$Holder: org.connectbot.util.EastAsianWidth$FroyoAndBeyond access$100()>();
+
+        return $r1;
+    }
+
+    public abstract void measure(char[], int, int, byte[], android.graphics.Paint, int);
+}

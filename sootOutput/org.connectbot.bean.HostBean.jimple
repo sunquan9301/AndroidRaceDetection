@@ -1,0 +1,1003 @@
+public class org.connectbot.bean.HostBean extends org.connectbot.bean.AbstractBean
+{
+    private java.lang.String color;
+    private boolean compression;
+    private java.lang.String delKey;
+    private java.lang.String encoding;
+    private int fontSize;
+    private byte[] hostKey;
+    private java.lang.String hostKeyAlgo;
+    private java.lang.String hostname;
+    private long id;
+    private long lastConnect;
+    private java.lang.String nickname;
+    private int port;
+    private java.lang.String postLogin;
+    private java.lang.String protocol;
+    private long pubkeyId;
+    private boolean quickDisconnect;
+    private boolean stayConnected;
+    private java.lang.String useAuthAgent;
+    private boolean useKeys;
+    private java.lang.String username;
+    private boolean wantSession;
+
+    public void <init>()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        specialinvoke $r0.<org.connectbot.bean.AbstractBean: void <init>()>();
+
+        $r0.<org.connectbot.bean.HostBean: long id> = -1L;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String nickname> = null;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String username> = null;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String hostname> = null;
+
+        $r0.<org.connectbot.bean.HostBean: int port> = 22;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String protocol> = "ssh";
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String hostKeyAlgo> = null;
+
+        $r0.<org.connectbot.bean.HostBean: byte[] hostKey> = null;
+
+        $r0.<org.connectbot.bean.HostBean: long lastConnect> = -1L;
+
+        $r0.<org.connectbot.bean.HostBean: boolean useKeys> = 1;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String useAuthAgent> = "no";
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String postLogin> = null;
+
+        $r0.<org.connectbot.bean.HostBean: long pubkeyId> = -1L;
+
+        $r0.<org.connectbot.bean.HostBean: boolean wantSession> = 1;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String delKey> = "del";
+
+        $r0.<org.connectbot.bean.HostBean: int fontSize> = -1;
+
+        $r0.<org.connectbot.bean.HostBean: boolean compression> = 0;
+
+        $r1 = <org.connectbot.util.HostDatabase: java.lang.String ENCODING_DEFAULT>;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String encoding> = $r1;
+
+        $r0.<org.connectbot.bean.HostBean: boolean stayConnected> = 0;
+
+        $r0.<org.connectbot.bean.HostBean: boolean quickDisconnect> = 0;
+
+        return;
+    }
+
+    public boolean equals(java.lang.Object)
+    {
+        org.connectbot.bean.HostBean $r0, $r2;
+        java.lang.Object $r1;
+        boolean $z0, $z1;
+        long $l0, $l2;
+        byte $b1;
+        java.lang.String $r3, $r4;
+        int $i3, $i4;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $z0 = 1;
+
+        if $r1 == null goto label13;
+
+        $z1 = $r1 instanceof org.connectbot.bean.HostBean;
+
+        if $z1 != 0 goto label01;
+
+        return 0;
+
+     label01:
+        $r2 = (org.connectbot.bean.HostBean) $r1;
+
+        $l0 = $r0.<org.connectbot.bean.HostBean: long id>;
+
+        $b1 = $l0 cmp -1L;
+
+        if $b1 == 0 goto label04;
+
+        $l0 = virtualinvoke $r2.<org.connectbot.bean.HostBean: long getId()>();
+
+        $b1 = $l0 cmp -1L;
+
+        if $b1 == 0 goto label04;
+
+        $l0 = virtualinvoke $r2.<org.connectbot.bean.HostBean: long getId()>();
+
+        $l2 = $r0.<org.connectbot.bean.HostBean: long id>;
+
+        $b1 = $l0 cmp $l2;
+
+        if $b1 != 0 goto label03;
+
+     label02:
+        return $z0;
+
+     label03:
+        $z0 = 0;
+
+        goto label02;
+
+     label04:
+        $r3 = $r0.<org.connectbot.bean.HostBean: java.lang.String nickname>;
+
+        if $r3 != null goto label09;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getNickname()>();
+
+        if $r3 != null goto label14;
+
+     label05:
+        $r3 = $r0.<org.connectbot.bean.HostBean: java.lang.String protocol>;
+
+        if $r3 != null goto label10;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getProtocol()>();
+
+        if $r3 != null goto label15;
+
+     label06:
+        $r3 = $r0.<org.connectbot.bean.HostBean: java.lang.String username>;
+
+        if $r3 != null goto label11;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getUsername()>();
+
+        if $r3 != null goto label16;
+
+     label07:
+        $r3 = $r0.<org.connectbot.bean.HostBean: java.lang.String hostname>;
+
+        if $r3 != null goto label12;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getHostname()>();
+
+        if $r3 != null goto label17;
+
+     label08:
+        $i3 = $r0.<org.connectbot.bean.HostBean: int port>;
+
+        $i4 = virtualinvoke $r2.<org.connectbot.bean.HostBean: int getPort()>();
+
+        if $i3 != $i4 goto label18;
+
+        return 1;
+
+     label09:
+        $r3 = $r0.<org.connectbot.bean.HostBean: java.lang.String nickname>;
+
+        $r4 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getNickname()>();
+
+        $z1 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>($r4);
+
+        if $z1 != 0 goto label05;
+
+        return 0;
+
+     label10:
+        $r4 = $r0.<org.connectbot.bean.HostBean: java.lang.String protocol>;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getProtocol()>();
+
+        $z1 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z1 != 0 goto label06;
+
+        return 0;
+
+     label11:
+        $r4 = $r0.<org.connectbot.bean.HostBean: java.lang.String username>;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getUsername()>();
+
+        $z1 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z1 != 0 goto label07;
+
+        return 0;
+
+     label12:
+        $r4 = $r0.<org.connectbot.bean.HostBean: java.lang.String hostname>;
+
+        $r3 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getHostname()>();
+
+        $z1 = virtualinvoke $r4.<java.lang.String: boolean equals(java.lang.Object)>($r3);
+
+        if $z1 != 0 goto label08;
+
+        return 0;
+
+     label13:
+        return 0;
+
+     label14:
+        return 0;
+
+     label15:
+        return 0;
+
+     label16:
+        return 0;
+
+     label17:
+        return 0;
+
+     label18:
+        return 0;
+    }
+
+    public java.lang.String getColor()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String color>;
+
+        return $r1;
+    }
+
+    public boolean getCompression()
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean compression>;
+
+        return $z0;
+    }
+
+    public java.lang.String getDelKey()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String delKey>;
+
+        return $r1;
+    }
+
+    public java.lang.String getEncoding()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String encoding>;
+
+        return $r1;
+    }
+
+    public int getFontSize()
+    {
+        org.connectbot.bean.HostBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $i0 = $r0.<org.connectbot.bean.HostBean: int fontSize>;
+
+        return $i0;
+    }
+
+    public java.lang.String getHostname()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String hostname>;
+
+        return $r1;
+    }
+
+    public long getId()
+    {
+        org.connectbot.bean.HostBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $l0 = $r0.<org.connectbot.bean.HostBean: long id>;
+
+        return $l0;
+    }
+
+    public long getLastConnect()
+    {
+        org.connectbot.bean.HostBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $l0 = $r0.<org.connectbot.bean.HostBean: long lastConnect>;
+
+        return $l0;
+    }
+
+    public java.lang.String getNickname()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String nickname>;
+
+        return $r1;
+    }
+
+    public int getPort()
+    {
+        org.connectbot.bean.HostBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $i0 = $r0.<org.connectbot.bean.HostBean: int port>;
+
+        return $i0;
+    }
+
+    public java.lang.String getPostLogin()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String postLogin>;
+
+        return $r1;
+    }
+
+    public java.lang.String getProtocol()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String protocol>;
+
+        return $r1;
+    }
+
+    public long getPubkeyId()
+    {
+        org.connectbot.bean.HostBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $l0 = $r0.<org.connectbot.bean.HostBean: long pubkeyId>;
+
+        return $l0;
+    }
+
+    public boolean getQuickDisconnect()
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean quickDisconnect>;
+
+        return $z0;
+    }
+
+    public boolean getStayConnected()
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean stayConnected>;
+
+        return $z0;
+    }
+
+    public android.net.Uri getUri()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.StringBuilder $r1, $r3;
+        java.lang.String $r2;
+        int $i0;
+        android.net.Uri $r4;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = new java.lang.StringBuilder;
+
+        specialinvoke $r1.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String protocol>;
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("://");
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String username>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String username>;
+
+        $r2 = staticinvoke <android.net.Uri: java.lang.String encode(java.lang.String)>($r2);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(64);
+
+     label1:
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String hostname>;
+
+        $r2 = staticinvoke <android.net.Uri: java.lang.String encode(java.lang.String)>($r2);
+
+        $r3 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(58);
+
+        $i0 = $r0.<org.connectbot.bean.HostBean: int port>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/#");
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String nickname>;
+
+        virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r2 = virtualinvoke $r1.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r4 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r2);
+
+        return $r4;
+    }
+
+    public java.lang.String getUseAuthAgent()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String useAuthAgent>;
+
+        return $r1;
+    }
+
+    public java.lang.String getUsername()
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String username>;
+
+        return $r1;
+    }
+
+    public android.content.ContentValues getValues()
+    {
+        org.connectbot.bean.HostBean $r0;
+        android.content.ContentValues $r1;
+        java.lang.String $r2;
+        java.lang.Integer $r3;
+        int $i0;
+        byte[] $r4;
+        long $l1;
+        java.lang.Long $r5;
+        boolean $z0;
+        java.lang.Boolean $r6;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 = new android.content.ContentValues;
+
+        specialinvoke $r1.<android.content.ContentValues: void <init>()>();
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String nickname>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("nickname", $r2);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String protocol>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("protocol", $r2);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String username>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("username", $r2);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String hostname>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("hostname", $r2);
+
+        $i0 = $r0.<org.connectbot.bean.HostBean: int port>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("port", $r3);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String hostKeyAlgo>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("hostkeyalgo", $r2);
+
+        $r4 = $r0.<org.connectbot.bean.HostBean: byte[] hostKey>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,byte[])>("hostkey", $r4);
+
+        $l1 = $r0.<org.connectbot.bean.HostBean: long lastConnect>;
+
+        $r5 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("lastconnect", $r5);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String color>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("color", $r2);
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean useKeys>;
+
+        $r2 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>($z0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("usekeys", $r2);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String useAuthAgent>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("useauthagent", $r2);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String postLogin>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("postlogin", $r2);
+
+        $l1 = $r0.<org.connectbot.bean.HostBean: long pubkeyId>;
+
+        $r5 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($l1);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Long)>("pubkeyid", $r5);
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean wantSession>;
+
+        $r2 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>($z0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("wantsession", $r2);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String delKey>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("delkey", $r2);
+
+        $i0 = $r0.<org.connectbot.bean.HostBean: int fontSize>;
+
+        $r3 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Integer)>("fontsize", $r3);
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean compression>;
+
+        $r2 = staticinvoke <java.lang.Boolean: java.lang.String toString(boolean)>($z0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("compression", $r2);
+
+        $r2 = $r0.<org.connectbot.bean.HostBean: java.lang.String encoding>;
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.String)>("encoding", $r2);
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean stayConnected>;
+
+        $r6 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($z0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Boolean)>("stayconnected", $r6);
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean quickDisconnect>;
+
+        $r6 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($z0);
+
+        virtualinvoke $r1.<android.content.ContentValues: void put(java.lang.String,java.lang.Boolean)>("quickdisconnect", $r6);
+
+        return $r1;
+    }
+
+    public boolean getWantSession()
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 = $r0.<org.connectbot.bean.HostBean: boolean wantSession>;
+
+        return $z0;
+    }
+
+    public int hashCode()
+    {
+        org.connectbot.bean.HostBean $r0;
+        int $i0, $i2, $i4;
+        byte $b1;
+        long $l3;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $i2 = 0;
+
+        $l3 = $r0.<org.connectbot.bean.HostBean: long id>;
+
+        $b1 = $l3 cmp -1L;
+
+        if $b1 == 0 goto label1;
+
+        $l3 = $r0.<org.connectbot.bean.HostBean: long id>;
+
+        $i2 = (int) $l3;
+
+        return $i2;
+
+     label1:
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String nickname>;
+
+        if $r1 != null goto label6;
+
+        $i0 = 0;
+
+     label2:
+        $i0 = $i0 + 217;
+
+        $i0 = $i0 * 31;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String protocol>;
+
+        if $r1 != null goto label7;
+
+        $i4 = 0;
+
+     label3:
+        $i4 = $i0 + $i4;
+
+        $i4 = $i4 * 31;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String username>;
+
+        if $r1 != null goto label8;
+
+        $i0 = 0;
+
+     label4:
+        $i4 = $i4 + $i0;
+
+        $i4 = $i4 * 31;
+
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String hostname>;
+
+        if $r1 != null goto label9;
+
+     label5:
+        $i4 = $i4 + $i2;
+
+        $i4 = $i4 * 31;
+
+        $i2 = $r0.<org.connectbot.bean.HostBean: int port>;
+
+        $i4 = $i4 + $i2;
+
+        return $i4;
+
+     label6:
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String nickname>;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+
+        goto label2;
+
+     label7:
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String protocol>;
+
+        $i4 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+
+        goto label3;
+
+     label8:
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String username>;
+
+        $i0 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+
+        goto label4;
+
+     label9:
+        $r1 = $r0.<org.connectbot.bean.HostBean: java.lang.String hostname>;
+
+        $i2 = virtualinvoke $r1.<java.lang.String: int hashCode()>();
+
+        goto label5;
+    }
+
+    public void setColor(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String color> = $r1;
+
+        return;
+    }
+
+    public void setCompression(boolean)
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.HostBean: boolean compression> = $z0;
+
+        return;
+    }
+
+    public void setDelKey(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String delKey> = $r1;
+
+        return;
+    }
+
+    public void setEncoding(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String encoding> = $r1;
+
+        return;
+    }
+
+    public void setFontSize(int)
+    {
+        org.connectbot.bean.HostBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $i0 := @parameter0: int;
+
+        $r0.<org.connectbot.bean.HostBean: int fontSize> = $i0;
+
+        return;
+    }
+
+    public void setHostname(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String hostname> = $r1;
+
+        return;
+    }
+
+    public void setId(long)
+    {
+        org.connectbot.bean.HostBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $l0 := @parameter0: long;
+
+        $r0.<org.connectbot.bean.HostBean: long id> = $l0;
+
+        return;
+    }
+
+    public void setLastConnect(long)
+    {
+        org.connectbot.bean.HostBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $l0 := @parameter0: long;
+
+        $r0.<org.connectbot.bean.HostBean: long lastConnect> = $l0;
+
+        return;
+    }
+
+    public void setNickname(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String nickname> = $r1;
+
+        return;
+    }
+
+    public void setPort(int)
+    {
+        org.connectbot.bean.HostBean $r0;
+        int $i0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $i0 := @parameter0: int;
+
+        $r0.<org.connectbot.bean.HostBean: int port> = $i0;
+
+        return;
+    }
+
+    public void setPostLogin(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String postLogin> = $r1;
+
+        return;
+    }
+
+    public void setProtocol(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String protocol> = $r1;
+
+        return;
+    }
+
+    public void setPubkeyId(long)
+    {
+        org.connectbot.bean.HostBean $r0;
+        long $l0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $l0 := @parameter0: long;
+
+        $r0.<org.connectbot.bean.HostBean: long pubkeyId> = $l0;
+
+        return;
+    }
+
+    public void setQuickDisconnect(boolean)
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.HostBean: boolean quickDisconnect> = $z0;
+
+        return;
+    }
+
+    public void setStayConnected(boolean)
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.HostBean: boolean stayConnected> = $z0;
+
+        return;
+    }
+
+    public void setUseAuthAgent(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String useAuthAgent> = $r1;
+
+        return;
+    }
+
+    public void setUseKeys(boolean)
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.HostBean: boolean useKeys> = $z0;
+
+        return;
+    }
+
+    public void setUsername(java.lang.String)
+    {
+        org.connectbot.bean.HostBean $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r0.<org.connectbot.bean.HostBean: java.lang.String username> = $r1;
+
+        return;
+    }
+
+    public void setWantSession(boolean)
+    {
+        org.connectbot.bean.HostBean $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.bean.HostBean;
+
+        $z0 := @parameter0: boolean;
+
+        $r0.<org.connectbot.bean.HostBean: boolean wantSession> = $z0;
+
+        return;
+    }
+}

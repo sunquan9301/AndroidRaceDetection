@@ -1,0 +1,169 @@
+public final class org.connectbot.R$id extends java.lang.Object
+{
+    public static final int action_next;
+    public static final int action_prev;
+    public static final int bg;
+    public static final int bits;
+    public static final int bits_slider;
+    public static final int button_ctrl;
+    public static final int button_down;
+    public static final int button_esc;
+    public static final int button_keyboard;
+    public static final int button_left;
+    public static final int button_right;
+    public static final int button_tab;
+    public static final int button_up;
+    public static final int color_grid;
+    public static final int confirm_use;
+    public static final int console_boolean_group;
+    public static final int console_flip;
+    public static final int console_password;
+    public static final int console_password_group;
+    public static final int console_password_instructions;
+    public static final int console_prompt;
+    public static final int console_prompt_no;
+    public static final int console_prompt_yes;
+    public static final int dsa;
+    public static final int ec;
+    public static final int entropy;
+    public static final int fg;
+    public static final int front_quickconnect;
+    public static final int height;
+    public static final int key_type;
+    public static final int keyboard_group;
+    public static final int nickname;
+    public static final int old_password;
+    public static final int old_password_prompt;
+    public static final int password1;
+    public static final int password2;
+    public static final int portforward_destination;
+    public static final int portforward_source;
+    public static final int portforward_type;
+    public static final int quickconnect;
+    public static final int rsa;
+    public static final int save;
+    public static final int spinners;
+    public static final int terminal_overlay;
+    public static final int topic_text;
+    public static final int topics;
+    public static final int transport_selection;
+    public static final int unlock_at_startup;
+    public static final int width;
+    public static final int wizard_flipper;
+
+    public void <init>()
+    {
+        org.connectbot.R$id $r0;
+
+        $r0 := @this: org.connectbot.R$id;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$id: int wizard_flipper> = 2131427366;
+
+        <org.connectbot.R$id: int width> = 2131427375;
+
+        <org.connectbot.R$id: int unlock_at_startup> = 2131427358;
+
+        <org.connectbot.R$id: int transport_selection> = 2131427364;
+
+        <org.connectbot.R$id: int topics> = 2131427361;
+
+        <org.connectbot.R$id: int topic_text> = 2131427362;
+
+        <org.connectbot.R$id: int terminal_overlay> = 2131427377;
+
+        <org.connectbot.R$id: int spinners> = 2131427328;
+
+        <org.connectbot.R$id: int save> = 2131427360;
+
+        <org.connectbot.R$id: int rsa> = 2131427351;
+
+        <org.connectbot.R$id: int quickconnect> = 2131427363;
+
+        <org.connectbot.R$id: int portforward_type> = 2131427372;
+
+        <org.connectbot.R$id: int portforward_source> = 2131427373;
+
+        <org.connectbot.R$id: int portforward_destination> = 2131427374;
+
+        <org.connectbot.R$id: int password2> = 2131427357;
+
+        <org.connectbot.R$id: int password1> = 2131427356;
+
+        <org.connectbot.R$id: int old_password_prompt> = 2131427369;
+
+        <org.connectbot.R$id: int old_password> = 2131427370;
+
+        <org.connectbot.R$id: int nickname> = 2131427349;
+
+        <org.connectbot.R$id: int keyboard_group> = 2131427340;
+
+        <org.connectbot.R$id: int key_type> = 2131427350;
+
+        <org.connectbot.R$id: int height> = 2131427376;
+
+        <org.connectbot.R$id: int front_quickconnect> = 2131427365;
+
+        <org.connectbot.R$id: int fg> = 2131427329;
+
+        <org.connectbot.R$id: int entropy> = 2131427371;
+
+        <org.connectbot.R$id: int ec> = 2131427353;
+
+        <org.connectbot.R$id: int dsa> = 2131427352;
+
+        <org.connectbot.R$id: int console_prompt_yes> = 2131427339;
+
+        <org.connectbot.R$id: int console_prompt_no> = 2131427338;
+
+        <org.connectbot.R$id: int console_prompt> = 2131427337;
+
+        <org.connectbot.R$id: int console_password_instructions> = 2131427334;
+
+        <org.connectbot.R$id: int console_password_group> = 2131427333;
+
+        <org.connectbot.R$id: int console_password> = 2131427335;
+
+        <org.connectbot.R$id: int console_flip> = 2131427332;
+
+        <org.connectbot.R$id: int console_boolean_group> = 2131427336;
+
+        <org.connectbot.R$id: int confirm_use> = 2131427359;
+
+        <org.connectbot.R$id: int color_grid> = 2131427331;
+
+        <org.connectbot.R$id: int button_up> = 2131427344;
+
+        <org.connectbot.R$id: int button_tab> = 2131427343;
+
+        <org.connectbot.R$id: int button_right> = 2131427347;
+
+        <org.connectbot.R$id: int button_left> = 2131427346;
+
+        <org.connectbot.R$id: int button_keyboard> = 2131427348;
+
+        <org.connectbot.R$id: int button_esc> = 2131427342;
+
+        <org.connectbot.R$id: int button_down> = 2131427345;
+
+        <org.connectbot.R$id: int button_ctrl> = 2131427341;
+
+        <org.connectbot.R$id: int bits_slider> = 2131427355;
+
+        <org.connectbot.R$id: int bits> = 2131427354;
+
+        <org.connectbot.R$id: int bg> = 2131427330;
+
+        <org.connectbot.R$id: int action_prev> = 2131427367;
+
+        <org.connectbot.R$id: int action_next> = 2131427368;
+
+        return;
+    }
+}

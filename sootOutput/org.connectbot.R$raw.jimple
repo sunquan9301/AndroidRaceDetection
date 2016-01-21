@@ -1,0 +1,22 @@
+public final class org.connectbot.R$raw extends java.lang.Object
+{
+    public static final int bell;
+
+    public void <init>()
+    {
+        org.connectbot.R$raw $r0;
+
+        $r0 := @this: org.connectbot.R$raw;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$raw: int bell> = 2131099648;
+
+        return;
+    }
+}

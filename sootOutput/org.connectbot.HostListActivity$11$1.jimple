@@ -1,0 +1,74 @@
+class org.connectbot.HostListActivity$11$1 extends java.lang.Object implements android.content.DialogInterface$OnClickListener
+{
+    final org.connectbot.HostListActivity$11 this$1;
+
+    void <init>(org.connectbot.HostListActivity$11)
+    {
+        org.connectbot.HostListActivity$11$1 $r0;
+        org.connectbot.HostListActivity$11 $r1;
+
+        $r0 := @this: org.connectbot.HostListActivity$11$1;
+
+        $r1 := @parameter0: org.connectbot.HostListActivity$11;
+
+        $r0.<org.connectbot.HostListActivity$11$1: org.connectbot.HostListActivity$11 this$1> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.content.DialogInterface, int)
+    {
+        org.connectbot.HostListActivity$11$1 $r0;
+        android.content.DialogInterface $r1;
+        int $i0;
+        org.connectbot.HostListActivity$11 $r2;
+        org.connectbot.service.TerminalBridge $r3;
+        org.connectbot.HostListActivity $r4;
+        org.connectbot.util.HostDatabase $r5;
+        org.connectbot.bean.HostBean $r6;
+        android.os.Handler $r7;
+
+        $r0 := @this: org.connectbot.HostListActivity$11$1;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $i0 := @parameter1: int;
+
+        $r2 = $r0.<org.connectbot.HostListActivity$11$1: org.connectbot.HostListActivity$11 this$1>;
+
+        $r3 = $r2.<org.connectbot.HostListActivity$11: org.connectbot.service.TerminalBridge val$bridge>;
+
+        if $r3 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.HostListActivity$11$1: org.connectbot.HostListActivity$11 this$1>;
+
+        $r3 = $r2.<org.connectbot.HostListActivity$11: org.connectbot.service.TerminalBridge val$bridge>;
+
+        virtualinvoke $r3.<org.connectbot.service.TerminalBridge: void dispatchDisconnect(boolean)>(1);
+
+     label1:
+        $r2 = $r0.<org.connectbot.HostListActivity$11$1: org.connectbot.HostListActivity$11 this$1>;
+
+        $r4 = $r2.<org.connectbot.HostListActivity$11: org.connectbot.HostListActivity this$0>;
+
+        $r5 = $r4.<org.connectbot.HostListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        $r2 = $r0.<org.connectbot.HostListActivity$11$1: org.connectbot.HostListActivity$11 this$1>;
+
+        $r6 = $r2.<org.connectbot.HostListActivity$11: org.connectbot.bean.HostBean val$host>;
+
+        virtualinvoke $r5.<org.connectbot.util.HostDatabase: void deleteHost(org.connectbot.bean.HostBean)>($r6);
+
+        $r2 = $r0.<org.connectbot.HostListActivity$11$1: org.connectbot.HostListActivity$11 this$1>;
+
+        $r4 = $r2.<org.connectbot.HostListActivity$11: org.connectbot.HostListActivity this$0>;
+
+        $r7 = $r4.<org.connectbot.HostListActivity: android.os.Handler updateHandler>;
+
+        virtualinvoke $r7.<android.os.Handler: boolean sendEmptyMessage(int)>(-1);
+
+        return;
+    }
+}

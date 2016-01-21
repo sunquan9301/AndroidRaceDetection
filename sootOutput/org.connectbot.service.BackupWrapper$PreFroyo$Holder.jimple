@@ -1,0 +1,28 @@
+class org.connectbot.service.BackupWrapper$PreFroyo$Holder extends java.lang.Object
+{
+    private static final org.connectbot.service.BackupWrapper$PreFroyo sInstance;
+
+    static void <clinit>()
+    {
+        org.connectbot.service.BackupWrapper$PreFroyo $r0;
+
+        $r0 = new org.connectbot.service.BackupWrapper$PreFroyo;
+
+        specialinvoke $r0.<org.connectbot.service.BackupWrapper$PreFroyo: void <init>(org.connectbot.service.BackupWrapper$1)>(null);
+
+        <org.connectbot.service.BackupWrapper$PreFroyo$Holder: org.connectbot.service.BackupWrapper$PreFroyo sInstance> = $r0;
+
+        return;
+    }
+
+    private void <init>()
+    {
+        org.connectbot.service.BackupWrapper$PreFroyo$Holder $r0;
+
+        $r0 := @this: org.connectbot.service.BackupWrapper$PreFroyo$Holder;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

@@ -1,0 +1,751 @@
+public final class org.connectbot.R$string extends java.lang.Object
+{
+    public static final int alert_disconnect_msg;
+    public static final int alert_key_corrupted_msg;
+    public static final int alert_passwords_do_not_match_msg;
+    public static final int alert_sdcard_absent;
+    public static final int alert_wrong_password_msg;
+    public static final int app_desc;
+    public static final int app_is_running;
+    public static final int app_name;
+    public static final int bind_never;
+    public static final int button_add;
+    public static final int button_change;
+    public static final int button_generate;
+    public static final int button_key_ctrl;
+    public static final int button_key_down;
+    public static final int button_key_esc;
+    public static final int button_key_left;
+    public static final int button_key_right;
+    public static final int button_key_tab;
+    public static final int button_key_up;
+    public static final int button_no;
+    public static final int button_resize;
+    public static final int button_yes;
+    public static final int color_bg_label;
+    public static final int color_blue;
+    public static final int color_gray;
+    public static final int color_green;
+    public static final int color_red;
+    public static final int colors_fg_label;
+    public static final int console_copy_done;
+    public static final int console_copy_start;
+    public static final int console_menu_close;
+    public static final int console_menu_copy;
+    public static final int console_menu_paste;
+    public static final int console_menu_portforwards;
+    public static final int console_menu_resize;
+    public static final int console_menu_urlscan;
+    public static final int copyright_info;
+    public static final int delete_message;
+    public static final int delete_neg;
+    public static final int delete_pos;
+    public static final int disconnect_all_message;
+    public static final int disconnect_all_neg;
+    public static final int disconnect_all_pos;
+    public static final int exceptions_submit_message;
+    public static final int format_hostname;
+    public static final int format_port;
+    public static final int format_username;
+    public static final int help_about;
+    public static final int help_intro;
+    public static final int help_keyboard;
+    public static final int hint_userhost;
+    public static final int host_authenticity_warning;
+    public static final int host_fingerprint;
+    public static final int host_verification_failure_warning;
+    public static final int host_verification_failure_warning_header;
+    public static final int hostpref_authagent_title;
+    public static final int hostpref_color_title;
+    public static final int hostpref_compression_summary;
+    public static final int hostpref_compression_title;
+    public static final int hostpref_connection_category;
+    public static final int hostpref_delkey_summary;
+    public static final int hostpref_delkey_title;
+    public static final int hostpref_encoding_summary;
+    public static final int hostpref_encoding_title;
+    public static final int hostpref_fontsize_title;
+    public static final int hostpref_hostname_title;
+    public static final int hostpref_nickname_title;
+    public static final int hostpref_port_title;
+    public static final int hostpref_postlogin_summary;
+    public static final int hostpref_postlogin_title;
+    public static final int hostpref_pubkeyid_title;
+    public static final int hostpref_quickdisconnect_summary;
+    public static final int hostpref_quickdisconnect_title;
+    public static final int hostpref_stayconnected_summary;
+    public static final int hostpref_stayconnected_title;
+    public static final int hostpref_username_title;
+    public static final int hostpref_wantsession_summary;
+    public static final int hostpref_wantsession_title;
+    public static final int image_description_connected;
+    public static final int image_description_down;
+    public static final int image_description_key_is_locked;
+    public static final int image_description_left;
+    public static final int image_description_right;
+    public static final int image_description_send_escape_character;
+    public static final int image_description_send_tab_character;
+    public static final int image_description_show_keyboard;
+    public static final int image_description_toggle_control_character;
+    public static final int image_description_up;
+    public static final int list_camera_ctrla;
+    public static final int list_camera_ctrlaspace;
+    public static final int list_camera_esc;
+    public static final int list_camera_esc_a;
+    public static final int list_camera_none;
+    public static final int list_delkey_backspace;
+    public static final int list_delkey_del;
+    public static final int list_format_error;
+    public static final int list_host_delete;
+    public static final int list_host_disconnect;
+    public static final int list_host_edit;
+    public static final int list_host_empty;
+    public static final int list_host_portforwards;
+    public static final int list_keymode_left;
+    public static final int list_keymode_none;
+    public static final int list_keymode_right;
+    public static final int list_menu_pubkeys;
+    public static final int list_menu_settings;
+    public static final int list_menu_sortcolor;
+    public static final int list_menu_sortname;
+    public static final int list_pubkeyids_any;
+    public static final int list_pubkeyids_none;
+    public static final int list_rotation_auto;
+    public static final int list_rotation_default;
+    public static final int list_rotation_land;
+    public static final int list_rotation_port;
+    public static final int local_shell_unavailable;
+    public static final int menu_colors_reset;
+    public static final int menu_delete;
+    public static final int menu_insert;
+    public static final int menu_preferences;
+    public static final int msg_copyright;
+    public static final int msg_version;
+    public static final int no;
+    public static final int notification_text;
+    public static final int only_alt;
+    public static final int portforward_delete;
+    public static final int portforward_done;
+    public static final int portforward_dynamic;
+    public static final int portforward_edit;
+    public static final int portforward_list_empty;
+    public static final int portforward_local;
+    public static final int portforward_menu_add;
+    public static final int portforward_pos;
+    public static final int portforward_problem;
+    public static final int portforward_remote;
+    public static final int pref_bell_category;
+    public static final int pref_bell_notification_summary;
+    public static final int pref_bell_notification_title;
+    public static final int pref_bell_title;
+    public static final int pref_bell_vibrate_title;
+    public static final int pref_bell_volume_title;
+    public static final int pref_bumpyarrows_summary;
+    public static final int pref_bumpyarrows_title;
+    public static final int pref_camera_summary;
+    public static final int pref_camera_title;
+    public static final int pref_conn_persist_summary;
+    public static final int pref_conn_persist_title;
+    public static final int pref_ctrlfkeys_summary;
+    public static final int pref_ctrlfkeys_title;
+    public static final int pref_emulation_category;
+    public static final int pref_emulation_summary;
+    public static final int pref_emulation_title;
+    public static final int pref_fullscreen_summary;
+    public static final int pref_fullscreen_title;
+    public static final int pref_keepalive_summary;
+    public static final int pref_keepalive_title;
+    public static final int pref_keyboard_category;
+    public static final int pref_keymode_summary;
+    public static final int pref_keymode_title;
+    public static final int pref_memkeys_summary;
+    public static final int pref_memkeys_title;
+    public static final int pref_rotation_summary;
+    public static final int pref_rotation_title;
+    public static final int pref_scrollback_summary;
+    public static final int pref_scrollback_title;
+    public static final int pref_shiftfkeys_summary;
+    public static final int pref_shiftfkeys_title;
+    public static final int pref_stickymodifiers_summary;
+    public static final int pref_stickymodifiers_title;
+    public static final int pref_titlebarhide_summary;
+    public static final int pref_titlebarhide_title;
+    public static final int pref_ui_category;
+    public static final int pref_volumefont_summary;
+    public static final int pref_volumefont_title;
+    public static final int pref_wifilock_summary;
+    public static final int pref_wifilock_title;
+    public static final int prompt_again;
+    public static final int prompt_allow_agent_to_use_key;
+    public static final int prompt_bits;
+    public static final int prompt_continue_connecting;
+    public static final int prompt_destination;
+    public static final int prompt_host_disconnected;
+    public static final int prompt_nickname;
+    public static final int prompt_nickname_hint_pubkey;
+    public static final int prompt_old_password;
+    public static final int prompt_password;
+    public static final int prompt_password_can_be_blank;
+    public static final int prompt_pubkey_password;
+    public static final int prompt_source_port;
+    public static final int prompt_type;
+    public static final int pubkey_change_password;
+    public static final int pubkey_confirm_use;
+    public static final int pubkey_copy_private;
+    public static final int pubkey_copy_public;
+    public static final int pubkey_delete;
+    public static final int pubkey_failed_add;
+    public static final int pubkey_gather_entropy;
+    public static final int pubkey_generate;
+    public static final int pubkey_generating;
+    public static final int pubkey_import;
+    public static final int pubkey_import_parse_problem;
+    public static final int pubkey_list_empty;
+    public static final int pubkey_list_pick;
+    public static final int pubkey_load_on_start;
+    public static final int pubkey_memory_load;
+    public static final int pubkey_memory_unload;
+    public static final int pubkey_touch_hint;
+    public static final int pubkey_touch_prompt;
+    public static final int pubkey_unknown_format;
+    public static final int pubkey_unlock;
+    public static final int resolve_connect;
+    public static final int resolve_entropy;
+    public static final int service_desc;
+    public static final int terminal_auth;
+    public static final int terminal_auth_fail;
+    public static final int terminal_auth_ki;
+    public static final int terminal_auth_ki_fail;
+    public static final int terminal_auth_pass;
+    public static final int terminal_auth_pass_fail;
+    public static final int terminal_auth_pubkey_any;
+    public static final int terminal_auth_pubkey_fail;
+    public static final int terminal_auth_pubkey_invalid;
+    public static final int terminal_auth_pubkey_specific;
+    public static final int terminal_connecting;
+    public static final int terminal_enable_portfoward;
+    public static final int terminal_failed;
+    public static final int terminal_kex_algorithm;
+    public static final int terminal_no_hosts_connected;
+    public static final int terminal_no_session;
+    public static final int terminal_sucess;
+    public static final int terminal_using_algorithm;
+    public static final int terminal_using_c2s_algorithm;
+    public static final int terminal_using_s2c_algorithm;
+    public static final int title_color_picker;
+    public static final int title_colors;
+    public static final int title_help;
+    public static final int title_host_editor;
+    public static final int title_hosts_list;
+    public static final int title_port_forwards_list;
+    public static final int title_pubkey_list;
+    public static final int with_confirmation;
+    public static final int wizard_agree;
+    public static final int wizard_back;
+    public static final int wizard_next;
+    public static final int yes;
+
+    public void <init>()
+    {
+        org.connectbot.R$string $r0;
+
+        $r0 := @this: org.connectbot.R$string;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$string: int yes> = 2131165239;
+
+        <org.connectbot.R$string: int wizard_next> = 2131165391;
+
+        <org.connectbot.R$string: int wizard_back> = 2131165390;
+
+        <org.connectbot.R$string: int wizard_agree> = 2131165389;
+
+        <org.connectbot.R$string: int with_confirmation> = 2131165388;
+
+        <org.connectbot.R$string: int title_pubkey_list> = 2131165222;
+
+        <org.connectbot.R$string: int title_port_forwards_list> = 2131165221;
+
+        <org.connectbot.R$string: int title_hosts_list> = 2131165220;
+
+        <org.connectbot.R$string: int title_host_editor> = 2131165219;
+
+        <org.connectbot.R$string: int title_help> = 2131165218;
+
+        <org.connectbot.R$string: int title_colors> = 2131165217;
+
+        <org.connectbot.R$string: int title_color_picker> = 2131165387;
+
+        <org.connectbot.R$string: int terminal_using_s2c_algorithm> = 2131165386;
+
+        <org.connectbot.R$string: int terminal_using_c2s_algorithm> = 2131165385;
+
+        <org.connectbot.R$string: int terminal_using_algorithm> = 2131165384;
+
+        <org.connectbot.R$string: int terminal_sucess> = 2131165383;
+
+        <org.connectbot.R$string: int terminal_no_session> = 2131165382;
+
+        <org.connectbot.R$string: int terminal_no_hosts_connected> = 2131165381;
+
+        <org.connectbot.R$string: int terminal_kex_algorithm> = 2131165409;
+
+        <org.connectbot.R$string: int terminal_failed> = 2131165380;
+
+        <org.connectbot.R$string: int terminal_enable_portfoward> = 2131165379;
+
+        <org.connectbot.R$string: int terminal_connecting> = 2131165378;
+
+        <org.connectbot.R$string: int terminal_auth_pubkey_specific> = 2131165377;
+
+        <org.connectbot.R$string: int terminal_auth_pubkey_invalid> = 2131165376;
+
+        <org.connectbot.R$string: int terminal_auth_pubkey_fail> = 2131165375;
+
+        <org.connectbot.R$string: int terminal_auth_pubkey_any> = 2131165374;
+
+        <org.connectbot.R$string: int terminal_auth_pass_fail> = 2131165373;
+
+        <org.connectbot.R$string: int terminal_auth_pass> = 2131165372;
+
+        <org.connectbot.R$string: int terminal_auth_ki_fail> = 2131165371;
+
+        <org.connectbot.R$string: int terminal_auth_ki> = 2131165370;
+
+        <org.connectbot.R$string: int terminal_auth_fail> = 2131165369;
+
+        <org.connectbot.R$string: int terminal_auth> = 2131165368;
+
+        <org.connectbot.R$string: int service_desc> = 2131165367;
+
+        <org.connectbot.R$string: int resolve_entropy> = 2131165366;
+
+        <org.connectbot.R$string: int resolve_connect> = 2131165216;
+
+        <org.connectbot.R$string: int pubkey_unlock> = 2131165215;
+
+        <org.connectbot.R$string: int pubkey_unknown_format> = 2131165214;
+
+        <org.connectbot.R$string: int pubkey_touch_prompt> = 2131165213;
+
+        <org.connectbot.R$string: int pubkey_touch_hint> = 2131165212;
+
+        <org.connectbot.R$string: int pubkey_memory_unload> = 2131165259;
+
+        <org.connectbot.R$string: int pubkey_memory_load> = 2131165211;
+
+        <org.connectbot.R$string: int pubkey_load_on_start> = 2131165258;
+
+        <org.connectbot.R$string: int pubkey_list_pick> = 2131165210;
+
+        <org.connectbot.R$string: int pubkey_list_empty> = 2131165209;
+
+        <org.connectbot.R$string: int pubkey_import_parse_problem> = 2131165238;
+
+        <org.connectbot.R$string: int pubkey_import> = 2131165208;
+
+        <org.connectbot.R$string: int pubkey_generating> = 2131165237;
+
+        <org.connectbot.R$string: int pubkey_generate> = 2131165207;
+
+        <org.connectbot.R$string: int pubkey_gather_entropy> = 2131165206;
+
+        <org.connectbot.R$string: int pubkey_failed_add> = 2131165365;
+
+        <org.connectbot.R$string: int pubkey_delete> = 2131165205;
+
+        <org.connectbot.R$string: int pubkey_copy_public> = 2131165204;
+
+        <org.connectbot.R$string: int pubkey_copy_private> = 2131165203;
+
+        <org.connectbot.R$string: int pubkey_confirm_use> = 2131165202;
+
+        <org.connectbot.R$string: int pubkey_change_password> = 2131165201;
+
+        <org.connectbot.R$string: int prompt_type> = 2131165200;
+
+        <org.connectbot.R$string: int prompt_source_port> = 2131165199;
+
+        <org.connectbot.R$string: int prompt_pubkey_password> = 2131165364;
+
+        <org.connectbot.R$string: int prompt_password_can_be_blank> = 2131165198;
+
+        <org.connectbot.R$string: int prompt_password> = 2131165197;
+
+        <org.connectbot.R$string: int prompt_old_password> = 2131165196;
+
+        <org.connectbot.R$string: int prompt_nickname_hint_pubkey> = 2131165363;
+
+        <org.connectbot.R$string: int prompt_nickname> = 2131165195;
+
+        <org.connectbot.R$string: int prompt_host_disconnected> = 2131165362;
+
+        <org.connectbot.R$string: int prompt_destination> = 2131165194;
+
+        <org.connectbot.R$string: int prompt_continue_connecting> = 2131165361;
+
+        <org.connectbot.R$string: int prompt_bits> = 2131165257;
+
+        <org.connectbot.R$string: int prompt_allow_agent_to_use_key> = 2131165360;
+
+        <org.connectbot.R$string: int prompt_again> = 2131165256;
+
+        <org.connectbot.R$string: int pref_wifilock_title> = 2131165359;
+
+        <org.connectbot.R$string: int pref_wifilock_summary> = 2131165358;
+
+        <org.connectbot.R$string: int pref_volumefont_title> = 2131165403;
+
+        <org.connectbot.R$string: int pref_volumefont_summary> = 2131165402;
+
+        <org.connectbot.R$string: int pref_ui_category> = 2131165357;
+
+        <org.connectbot.R$string: int pref_titlebarhide_title> = 2131165396;
+
+        <org.connectbot.R$string: int pref_titlebarhide_summary> = 2131165401;
+
+        <org.connectbot.R$string: int pref_stickymodifiers_title> = 2131165408;
+
+        <org.connectbot.R$string: int pref_stickymodifiers_summary> = 2131165407;
+
+        <org.connectbot.R$string: int pref_shiftfkeys_title> = 2131165400;
+
+        <org.connectbot.R$string: int pref_shiftfkeys_summary> = 2131165399;
+
+        <org.connectbot.R$string: int pref_scrollback_title> = 2131165356;
+
+        <org.connectbot.R$string: int pref_scrollback_summary> = 2131165355;
+
+        <org.connectbot.R$string: int pref_rotation_title> = 2131165354;
+
+        <org.connectbot.R$string: int pref_rotation_summary> = 2131165353;
+
+        <org.connectbot.R$string: int pref_memkeys_title> = 2131165352;
+
+        <org.connectbot.R$string: int pref_memkeys_summary> = 2131165351;
+
+        <org.connectbot.R$string: int pref_keymode_title> = 2131165350;
+
+        <org.connectbot.R$string: int pref_keymode_summary> = 2131165349;
+
+        <org.connectbot.R$string: int pref_keyboard_category> = 2131165348;
+
+        <org.connectbot.R$string: int pref_keepalive_title> = 2131165347;
+
+        <org.connectbot.R$string: int pref_keepalive_summary> = 2131165346;
+
+        <org.connectbot.R$string: int pref_fullscreen_title> = 2131165345;
+
+        <org.connectbot.R$string: int pref_fullscreen_summary> = 2131165344;
+
+        <org.connectbot.R$string: int pref_emulation_title> = 2131165343;
+
+        <org.connectbot.R$string: int pref_emulation_summary> = 2131165342;
+
+        <org.connectbot.R$string: int pref_emulation_category> = 2131165341;
+
+        <org.connectbot.R$string: int pref_ctrlfkeys_title> = 2131165398;
+
+        <org.connectbot.R$string: int pref_ctrlfkeys_summary> = 2131165397;
+
+        <org.connectbot.R$string: int pref_conn_persist_title> = 2131165340;
+
+        <org.connectbot.R$string: int pref_conn_persist_summary> = 2131165339;
+
+        <org.connectbot.R$string: int pref_camera_title> = 2131165338;
+
+        <org.connectbot.R$string: int pref_camera_summary> = 2131165337;
+
+        <org.connectbot.R$string: int pref_bumpyarrows_title> = 2131165336;
+
+        <org.connectbot.R$string: int pref_bumpyarrows_summary> = 2131165335;
+
+        <org.connectbot.R$string: int pref_bell_volume_title> = 2131165334;
+
+        <org.connectbot.R$string: int pref_bell_vibrate_title> = 2131165333;
+
+        <org.connectbot.R$string: int pref_bell_title> = 2131165332;
+
+        <org.connectbot.R$string: int pref_bell_notification_title> = 2131165331;
+
+        <org.connectbot.R$string: int pref_bell_notification_summary> = 2131165330;
+
+        <org.connectbot.R$string: int pref_bell_category> = 2131165329;
+
+        <org.connectbot.R$string: int portforward_remote> = 2131165328;
+
+        <org.connectbot.R$string: int portforward_problem> = 2131165327;
+
+        <org.connectbot.R$string: int portforward_pos> = 2131165326;
+
+        <org.connectbot.R$string: int portforward_menu_add> = 2131165325;
+
+        <org.connectbot.R$string: int portforward_local> = 2131165324;
+
+        <org.connectbot.R$string: int portforward_list_empty> = 2131165193;
+
+        <org.connectbot.R$string: int portforward_edit> = 2131165192;
+
+        <org.connectbot.R$string: int portforward_dynamic> = 2131165323;
+
+        <org.connectbot.R$string: int portforward_done> = 2131165322;
+
+        <org.connectbot.R$string: int portforward_delete> = 2131165191;
+
+        <org.connectbot.R$string: int only_alt> = 2131165406;
+
+        <org.connectbot.R$string: int notification_text> = 2131165321;
+
+        <org.connectbot.R$string: int no> = 2131165236;
+
+        <org.connectbot.R$string: int msg_version> = 2131165427;
+
+        <org.connectbot.R$string: int msg_copyright> = 2131165255;
+
+        <org.connectbot.R$string: int menu_preferences> = 2131165190;
+
+        <org.connectbot.R$string: int menu_insert> = 2131165189;
+
+        <org.connectbot.R$string: int menu_delete> = 2131165188;
+
+        <org.connectbot.R$string: int menu_colors_reset> = 2131165235;
+
+        <org.connectbot.R$string: int local_shell_unavailable> = 2131165320;
+
+        <org.connectbot.R$string: int list_rotation_port> = 2131165319;
+
+        <org.connectbot.R$string: int list_rotation_land> = 2131165318;
+
+        <org.connectbot.R$string: int list_rotation_default> = 2131165317;
+
+        <org.connectbot.R$string: int list_rotation_auto> = 2131165316;
+
+        <org.connectbot.R$string: int list_pubkeyids_none> = 2131165315;
+
+        <org.connectbot.R$string: int list_pubkeyids_any> = 2131165314;
+
+        <org.connectbot.R$string: int list_menu_sortname> = 2131165313;
+
+        <org.connectbot.R$string: int list_menu_sortcolor> = 2131165312;
+
+        <org.connectbot.R$string: int list_menu_settings> = 2131165311;
+
+        <org.connectbot.R$string: int list_menu_pubkeys> = 2131165310;
+
+        <org.connectbot.R$string: int list_keymode_right> = 2131165309;
+
+        <org.connectbot.R$string: int list_keymode_none> = 2131165254;
+
+        <org.connectbot.R$string: int list_keymode_left> = 2131165308;
+
+        <org.connectbot.R$string: int list_host_portforwards> = 2131165307;
+
+        <org.connectbot.R$string: int list_host_empty> = 2131165306;
+
+        <org.connectbot.R$string: int list_host_edit> = 2131165305;
+
+        <org.connectbot.R$string: int list_host_disconnect> = 2131165253;
+
+        <org.connectbot.R$string: int list_host_delete> = 2131165304;
+
+        <org.connectbot.R$string: int list_format_error> = 2131165187;
+
+        <org.connectbot.R$string: int list_delkey_del> = 2131165303;
+
+        <org.connectbot.R$string: int list_delkey_backspace> = 2131165302;
+
+        <org.connectbot.R$string: int list_camera_none> = 2131165301;
+
+        <org.connectbot.R$string: int list_camera_esc_a> = 2131165300;
+
+        <org.connectbot.R$string: int list_camera_esc> = 2131165299;
+
+        <org.connectbot.R$string: int list_camera_ctrlaspace> = 2131165298;
+
+        <org.connectbot.R$string: int list_camera_ctrla> = 2131165297;
+
+        <org.connectbot.R$string: int image_description_up> = 2131165426;
+
+        <org.connectbot.R$string: int image_description_toggle_control_character> = 2131165395;
+
+        <org.connectbot.R$string: int image_description_show_keyboard> = 2131165234;
+
+        <org.connectbot.R$string: int image_description_send_tab_character> = 2131165410;
+
+        <org.connectbot.R$string: int image_description_send_escape_character> = 2131165394;
+
+        <org.connectbot.R$string: int image_description_right> = 2131165425;
+
+        <org.connectbot.R$string: int image_description_left> = 2131165424;
+
+        <org.connectbot.R$string: int image_description_key_is_locked> = 2131165233;
+
+        <org.connectbot.R$string: int image_description_down> = 2131165423;
+
+        <org.connectbot.R$string: int image_description_connected> = 2131165232;
+
+        <org.connectbot.R$string: int hostpref_wantsession_title> = 2131165296;
+
+        <org.connectbot.R$string: int hostpref_wantsession_summary> = 2131165295;
+
+        <org.connectbot.R$string: int hostpref_username_title> = 2131165294;
+
+        <org.connectbot.R$string: int hostpref_stayconnected_title> = 2131165293;
+
+        <org.connectbot.R$string: int hostpref_stayconnected_summary> = 2131165292;
+
+        <org.connectbot.R$string: int hostpref_quickdisconnect_title> = 2131165405;
+
+        <org.connectbot.R$string: int hostpref_quickdisconnect_summary> = 2131165404;
+
+        <org.connectbot.R$string: int hostpref_pubkeyid_title> = 2131165291;
+
+        <org.connectbot.R$string: int hostpref_postlogin_title> = 2131165290;
+
+        <org.connectbot.R$string: int hostpref_postlogin_summary> = 2131165289;
+
+        <org.connectbot.R$string: int hostpref_port_title> = 2131165288;
+
+        <org.connectbot.R$string: int hostpref_nickname_title> = 2131165287;
+
+        <org.connectbot.R$string: int hostpref_hostname_title> = 2131165286;
+
+        <org.connectbot.R$string: int hostpref_fontsize_title> = 2131165285;
+
+        <org.connectbot.R$string: int hostpref_encoding_title> = 2131165284;
+
+        <org.connectbot.R$string: int hostpref_encoding_summary> = 2131165283;
+
+        <org.connectbot.R$string: int hostpref_delkey_title> = 2131165282;
+
+        <org.connectbot.R$string: int hostpref_delkey_summary> = 2131165281;
+
+        <org.connectbot.R$string: int hostpref_connection_category> = 2131165280;
+
+        <org.connectbot.R$string: int hostpref_compression_title> = 2131165279;
+
+        <org.connectbot.R$string: int hostpref_compression_summary> = 2131165278;
+
+        <org.connectbot.R$string: int hostpref_color_title> = 2131165277;
+
+        <org.connectbot.R$string: int hostpref_authagent_title> = 2131165276;
+
+        <org.connectbot.R$string: int host_verification_failure_warning_header> = 2131165275;
+
+        <org.connectbot.R$string: int host_verification_failure_warning> = 2131165274;
+
+        <org.connectbot.R$string: int host_fingerprint> = 2131165273;
+
+        <org.connectbot.R$string: int host_authenticity_warning> = 2131165272;
+
+        <org.connectbot.R$string: int hint_userhost> = 2131165271;
+
+        <org.connectbot.R$string: int help_keyboard> = 2131165186;
+
+        <org.connectbot.R$string: int help_intro> = 2131165231;
+
+        <org.connectbot.R$string: int help_about> = 2131165185;
+
+        <org.connectbot.R$string: int format_username> = 2131165270;
+
+        <org.connectbot.R$string: int format_port> = 2131165269;
+
+        <org.connectbot.R$string: int format_hostname> = 2131165268;
+
+        <org.connectbot.R$string: int exceptions_submit_message> = 2131165184;
+
+        <org.connectbot.R$string: int disconnect_all_pos> = 2131165422;
+
+        <org.connectbot.R$string: int disconnect_all_neg> = 2131165421;
+
+        <org.connectbot.R$string: int disconnect_all_message> = 2131165420;
+
+        <org.connectbot.R$string: int delete_pos> = 2131165267;
+
+        <org.connectbot.R$string: int delete_neg> = 2131165266;
+
+        <org.connectbot.R$string: int delete_message> = 2131165265;
+
+        <org.connectbot.R$string: int copyright_info> = 2131165419;
+
+        <org.connectbot.R$string: int console_menu_urlscan> = 2131165264;
+
+        <org.connectbot.R$string: int console_menu_resize> = 2131165263;
+
+        <org.connectbot.R$string: int console_menu_portforwards> = 2131165252;
+
+        <org.connectbot.R$string: int console_menu_paste> = 2131165251;
+
+        <org.connectbot.R$string: int console_menu_copy> = 2131165250;
+
+        <org.connectbot.R$string: int console_menu_close> = 2131165249;
+
+        <org.connectbot.R$string: int console_copy_start> = 2131165262;
+
+        <org.connectbot.R$string: int console_copy_done> = 2131165248;
+
+        <org.connectbot.R$string: int colors_fg_label> = 2131165393;
+
+        <org.connectbot.R$string: int color_red> = 2131165230;
+
+        <org.connectbot.R$string: int color_green> = 2131165229;
+
+        <org.connectbot.R$string: int color_gray> = 2131165228;
+
+        <org.connectbot.R$string: int color_blue> = 2131165227;
+
+        <org.connectbot.R$string: int color_bg_label> = 2131165392;
+
+        <org.connectbot.R$string: int button_yes> = 2131165226;
+
+        <org.connectbot.R$string: int button_resize> = 2131165247;
+
+        <org.connectbot.R$string: int button_no> = 2131165225;
+
+        <org.connectbot.R$string: int button_key_up> = 2131165418;
+
+        <org.connectbot.R$string: int button_key_tab> = 2131165417;
+
+        <org.connectbot.R$string: int button_key_right> = 2131165416;
+
+        <org.connectbot.R$string: int button_key_left> = 2131165415;
+
+        <org.connectbot.R$string: int button_key_esc> = 2131165414;
+
+        <org.connectbot.R$string: int button_key_down> = 2131165413;
+
+        <org.connectbot.R$string: int button_key_ctrl> = 2131165412;
+
+        <org.connectbot.R$string: int button_generate> = 2131165246;
+
+        <org.connectbot.R$string: int button_change> = 2131165245;
+
+        <org.connectbot.R$string: int button_add> = 2131165244;
+
+        <org.connectbot.R$string: int bind_never> = 2131165261;
+
+        <org.connectbot.R$string: int app_name> = 2131165411;
+
+        <org.connectbot.R$string: int app_is_running> = 2131165224;
+
+        <org.connectbot.R$string: int app_desc> = 2131165223;
+
+        <org.connectbot.R$string: int alert_wrong_password_msg> = 2131165243;
+
+        <org.connectbot.R$string: int alert_sdcard_absent> = 2131165242;
+
+        <org.connectbot.R$string: int alert_passwords_do_not_match_msg> = 2131165241;
+
+        <org.connectbot.R$string: int alert_key_corrupted_msg> = 2131165260;
+
+        <org.connectbot.R$string: int alert_disconnect_msg> = 2131165240;
+
+        return;
+    }
+}

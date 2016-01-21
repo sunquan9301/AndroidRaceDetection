@@ -1,0 +1,11 @@
+interface  com.jcraft.jzlib.Checksum extends java.lang.Object
+{
+
+    public abstract long getValue();
+
+    public abstract void reset();
+
+    public abstract void reset(long);
+
+    public abstract void update(byte[], int, int);
+}

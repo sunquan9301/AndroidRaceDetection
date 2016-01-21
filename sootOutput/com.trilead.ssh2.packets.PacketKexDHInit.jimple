@@ -1,0 +1,58 @@
+public class com.trilead.ssh2.packets.PacketKexDHInit extends java.lang.Object
+{
+    byte[] payload;
+    byte[] publicKey;
+
+    public void <init>(byte[])
+    {
+        com.trilead.ssh2.packets.PacketKexDHInit $r0;
+        byte[] $r1;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketKexDHInit;
+
+        $r1 := @parameter0: byte[];
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketKexDHInit: byte[] publicKey> = $r1;
+
+        return;
+    }
+
+    public byte[] getPayload()
+    {
+        com.trilead.ssh2.packets.PacketKexDHInit $r0;
+        com.trilead.ssh2.packets.TypesWriter $r1;
+        byte[] $r2, $r3;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.packets.PacketKexDHInit;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketKexDHInit: byte[] payload>;
+
+        if $r2 != null goto label1;
+
+        $r1 = new com.trilead.ssh2.packets.TypesWriter;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void <init>()>();
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeByte(int)>(30);
+
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketKexDHInit: byte[] publicKey>;
+
+        $r2 = $r0.<com.trilead.ssh2.packets.PacketKexDHInit: byte[] publicKey>;
+
+        $i0 = lengthof $r2;
+
+        virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: void writeString(byte[],int,int)>($r3, 0, $i0);
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.packets.TypesWriter: byte[] getBytes()>();
+
+        $r0.<com.trilead.ssh2.packets.PacketKexDHInit: byte[] payload> = $r2;
+
+     label1:
+        $r3 = $r0.<com.trilead.ssh2.packets.PacketKexDHInit: byte[] payload>;
+
+        return $r3;
+    }
+}

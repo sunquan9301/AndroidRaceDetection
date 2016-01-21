@@ -1,0 +1,257 @@
+class org.connectbot.TerminalView$AccessibilityStateTester extends android.os.AsyncTask
+{
+    final org.connectbot.TerminalView this$0;
+
+    private void <init>(org.connectbot.TerminalView)
+    {
+        org.connectbot.TerminalView$AccessibilityStateTester $r0;
+        org.connectbot.TerminalView $r1;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityStateTester;
+
+        $r1 := @parameter0: org.connectbot.TerminalView;
+
+        $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0> = $r1;
+
+        specialinvoke $r0.<android.os.AsyncTask: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.TerminalView, org.connectbot.TerminalView$1)
+    {
+        org.connectbot.TerminalView$AccessibilityStateTester $r0;
+        org.connectbot.TerminalView $r1;
+        org.connectbot.TerminalView$1 $r2;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityStateTester;
+
+        $r1 := @parameter0: org.connectbot.TerminalView;
+
+        $r2 := @parameter1: org.connectbot.TerminalView$1;
+
+        specialinvoke $r0.<org.connectbot.TerminalView$AccessibilityStateTester: void <init>(org.connectbot.TerminalView)>($r1);
+
+        return;
+    }
+
+    protected transient java.lang.Boolean doInBackground(java.lang.Void[])
+    {
+        org.connectbot.TerminalView$AccessibilityStateTester $r0;
+        java.lang.Void[] $r1;
+        org.connectbot.TerminalView $r2;
+        boolean $z0, $z1;
+        int $i0, $i1, $i2;
+        android.content.Intent $r3;
+        android.content.Context $r4;
+        java.lang.Object $r5;
+        android.view.accessibility.AccessibilityManager $r6;
+        java.lang.Boolean $r7;
+        android.content.ContentResolver $r8;
+        android.content.pm.PackageManager $r9;
+        java.util.List $r10;
+        android.content.pm.ResolveInfo $r11;
+        java.lang.StringBuilder $r12;
+        android.content.pm.ServiceInfo $r13;
+        java.lang.String $r14;
+        android.net.Uri $r15;
+        android.database.Cursor $r16;
+        java.util.regex.Pattern $r17;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityStateTester;
+
+        $r1 := @parameter0: java.lang.Void[];
+
+        $r2 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        $r4 = staticinvoke <org.connectbot.TerminalView: android.content.Context access$600(org.connectbot.TerminalView)>($r2);
+
+        $r5 = virtualinvoke $r4.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("accessibility");
+
+        $r6 = (android.view.accessibility.AccessibilityManager) $r5;
+
+        $z0 = virtualinvoke $r6.<android.view.accessibility.AccessibilityManager: boolean isEnabled()>();
+
+        if $z0 != 0 goto label1;
+
+        $r7 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>(0);
+
+        return $r7;
+
+     label1:
+        $r3 = new android.content.Intent;
+
+        specialinvoke $r3.<android.content.Intent: void <init>(java.lang.String)>("android.accessibilityservice.AccessibilityService");
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent addCategory(java.lang.String)>("android.accessibilityservice.category.FEEDBACK_SPOKEN");
+
+        $r2 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        $r4 = staticinvoke <org.connectbot.TerminalView: android.content.Context access$600(org.connectbot.TerminalView)>($r2);
+
+        $r8 = virtualinvoke $r4.<android.content.Context: android.content.ContentResolver getContentResolver()>();
+
+        $r2 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        $r4 = staticinvoke <org.connectbot.TerminalView: android.content.Context access$600(org.connectbot.TerminalView)>($r2);
+
+        $r9 = virtualinvoke $r4.<android.content.Context: android.content.pm.PackageManager getPackageManager()>();
+
+        $r10 = virtualinvoke $r9.<android.content.pm.PackageManager: java.util.List queryIntentServices(android.content.Intent,int)>($r3, 0);
+
+        $z0 = 0;
+
+        $i1 = interfaceinvoke $r10.<java.util.List: int size()>();
+
+        $i0 = 0;
+
+     label2:
+        if $i0 >= $i1 goto label3;
+
+        $r5 = interfaceinvoke $r10.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r11 = (android.content.pm.ResolveInfo) $r5;
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("content://");
+
+        $r13 = $r11.<android.content.pm.ResolveInfo: android.content.pm.ServiceInfo serviceInfo>;
+
+        $r14 = $r13.<android.content.pm.ServiceInfo: java.lang.String packageName>;
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r14);
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(".providers.StatusProvider");
+
+        $r14 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r15 = staticinvoke <android.net.Uri: android.net.Uri parse(java.lang.String)>($r14);
+
+        $r16 = virtualinvoke $r8.<android.content.ContentResolver: android.database.Cursor query(android.net.Uri,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String)>($r15, null, null, null, null);
+
+        if $r16 == null goto label5;
+
+        $z1 = interfaceinvoke $r16.<android.database.Cursor: boolean moveToFirst()>();
+
+        if $z1 == 0 goto label5;
+
+        $i2 = interfaceinvoke $r16.<android.database.Cursor: int getInt(int)>(0);
+
+        interfaceinvoke $r16.<android.database.Cursor: void close()>();
+
+        if $i2 != 1 goto label5;
+
+        $z0 = 1;
+
+     label3:
+        if $z0 == 0 goto label4;
+
+        $r2 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        $r17 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String)>("\\x1b\\[K[^m]+[m|:]");
+
+        staticinvoke <org.connectbot.TerminalView: java.util.regex.Pattern access$502(org.connectbot.TerminalView,java.util.regex.Pattern)>($r2, $r17);
+
+     label4:
+        $r7 = staticinvoke <java.lang.Boolean: java.lang.Boolean valueOf(boolean)>($z0);
+
+        return $r7;
+
+     label5:
+        $i0 = $i0 + 1;
+
+        goto label2;
+    }
+
+    protected volatile java.lang.Object doInBackground(java.lang.Object[])
+    {
+        org.connectbot.TerminalView$AccessibilityStateTester $r0;
+        java.lang.Object[] $r1;
+        java.lang.Boolean $r2;
+        java.lang.Void[] $r3;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityStateTester;
+
+        $r1 := @parameter0: java.lang.Object[];
+
+        $r3 = (java.lang.Void[]) $r1;
+
+        $r2 = virtualinvoke $r0.<org.connectbot.TerminalView$AccessibilityStateTester: java.lang.Boolean doInBackground(java.lang.Void[])>($r3);
+
+        return $r2;
+    }
+
+    protected void onPostExecute(java.lang.Boolean)
+    {
+        org.connectbot.TerminalView$AccessibilityStateTester $r0;
+        java.lang.Boolean $r1;
+        org.connectbot.TerminalView $r2, $r3;
+        boolean $z0;
+        org.connectbot.TerminalView$AccessibilityEventSender $r4;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityStateTester;
+
+        $r1 := @parameter0: java.lang.Boolean;
+
+        $r2 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        $z0 = virtualinvoke $r1.<java.lang.Boolean: boolean booleanValue()>();
+
+        staticinvoke <org.connectbot.TerminalView: boolean access$702(org.connectbot.TerminalView,boolean)>($r2, $z0);
+
+        $r2 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        staticinvoke <org.connectbot.TerminalView: boolean access$802(org.connectbot.TerminalView,boolean)>($r2, 1);
+
+        $z0 = virtualinvoke $r1.<java.lang.Boolean: boolean booleanValue()>();
+
+        if $z0 == 0 goto label1;
+
+        $r3 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        $r4 = new org.connectbot.TerminalView$AccessibilityEventSender;
+
+        $r2 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        specialinvoke $r4.<org.connectbot.TerminalView$AccessibilityEventSender: void <init>(org.connectbot.TerminalView,org.connectbot.TerminalView$1)>($r2, null);
+
+        staticinvoke <org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender access$902(org.connectbot.TerminalView,org.connectbot.TerminalView$AccessibilityEventSender)>($r3, $r4);
+
+        $r3 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        $r2 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        $r4 = staticinvoke <org.connectbot.TerminalView: org.connectbot.TerminalView$AccessibilityEventSender access$900(org.connectbot.TerminalView)>($r2);
+
+        virtualinvoke $r3.<org.connectbot.TerminalView: boolean postDelayed(java.lang.Runnable,long)>($r4, 1000L);
+
+        return;
+
+     label1:
+        $r3 = $r0.<org.connectbot.TerminalView$AccessibilityStateTester: org.connectbot.TerminalView this$0>;
+
+        staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$402(org.connectbot.TerminalView,java.lang.StringBuffer)>($r3, null);
+
+        return;
+    }
+
+    protected volatile void onPostExecute(java.lang.Object)
+    {
+        org.connectbot.TerminalView$AccessibilityStateTester $r0;
+        java.lang.Object $r1;
+        java.lang.Boolean $r2;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityStateTester;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $r2 = (java.lang.Boolean) $r1;
+
+        virtualinvoke $r0.<org.connectbot.TerminalView$AccessibilityStateTester: void onPostExecute(java.lang.Boolean)>($r2);
+
+        return;
+    }
+}

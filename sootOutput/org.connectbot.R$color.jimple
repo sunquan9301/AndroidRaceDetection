@@ -1,0 +1,28 @@
+public final class org.connectbot.R$color extends java.lang.Object
+{
+    public static final int blue;
+    public static final int green;
+    public static final int red;
+
+    public void <init>()
+    {
+        org.connectbot.R$color $r0;
+
+        $r0 := @this: org.connectbot.R$color;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.connectbot.R$color: int red> = 2131361794;
+
+        <org.connectbot.R$color: int green> = 2131361793;
+
+        <org.connectbot.R$color: int blue> = 2131361792;
+
+        return;
+    }
+}

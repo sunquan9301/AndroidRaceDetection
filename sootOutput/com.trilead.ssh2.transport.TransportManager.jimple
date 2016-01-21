@@ -1,0 +1,1634 @@
+public class com.trilead.ssh2.transport.TransportManager extends java.lang.Object
+{
+    private static final com.trilead.ssh2.log.Logger log;
+    private final java.util.Vector asynchronousQueue;
+    private java.lang.Thread asynchronousThread;
+    boolean connectionClosed;
+    java.util.Vector connectionMonitors;
+    java.lang.Object connectionSemaphore;
+    boolean flagKexOngoing;
+    java.lang.String hostname;
+    com.trilead.ssh2.transport.KexManager km;
+    java.util.Vector messageHandlers;
+    boolean monitorsWereInformed;
+    int port;
+    java.lang.Throwable reasonClosedCause;
+    java.lang.Thread receiveThread;
+    final java.net.Socket sock;
+    com.trilead.ssh2.transport.TransportConnection tc;
+
+    static void <clinit>()
+    {
+        com.trilead.ssh2.log.Logger $r0;
+
+        $r0 = staticinvoke <com.trilead.ssh2.log.Logger: com.trilead.ssh2.log.Logger getLogger(java.lang.Class)>(class "com/trilead/ssh2/transport/TransportManager");
+
+        <com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.log.Logger log> = $r0;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        java.lang.String $r1;
+        int $i0;
+        java.util.Vector $r2;
+        java.net.Socket $r3;
+        java.lang.Object $r4;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new java.util.Vector;
+
+        specialinvoke $r2.<java.util.Vector: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector asynchronousQueue> = $r2;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread asynchronousThread> = null;
+
+        $r3 = new java.net.Socket;
+
+        specialinvoke $r3.<java.net.Socket: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock> = $r3;
+
+        $r4 = new java.lang.Object;
+
+        specialinvoke $r4.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore> = $r4;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: boolean flagKexOngoing> = 0;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: boolean connectionClosed> = 0;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Throwable reasonClosedCause> = null;
+
+        $r2 = new java.util.Vector;
+
+        specialinvoke $r2.<java.util.Vector: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers> = $r2;
+
+        $r2 = new java.util.Vector;
+
+        specialinvoke $r2.<java.util.Vector: void <init>()>();
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector connectionMonitors> = $r2;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: boolean monitorsWereInformed> = 0;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.String hostname> = $r1;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: int port> = $i0;
+
+        return;
+    }
+
+    static java.util.Vector access$000(com.trilead.ssh2.transport.TransportManager)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        java.util.Vector $r1;
+
+        $r0 := @parameter0: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector asynchronousQueue>;
+
+        return $r1;
+    }
+
+    static java.lang.Thread access$102(com.trilead.ssh2.transport.TransportManager, java.lang.Thread)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        java.lang.Thread $r1;
+
+        $r0 := @parameter0: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter1: java.lang.Thread;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread asynchronousThread> = $r1;
+
+        return $r1;
+    }
+
+    static com.trilead.ssh2.log.Logger access$200()
+    {
+        com.trilead.ssh2.log.Logger $r0;
+
+        $r0 = <com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.log.Logger log>;
+
+        return $r0;
+    }
+
+    private void establishConnection(com.trilead.ssh2.ProxyData, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.ProxyData $r1;
+        int $i0, $i1;
+        byte[] $r2;
+        java.lang.String $r3, $r14;
+        java.lang.NumberFormatException $r4;
+        java.lang.StringBuffer $r5;
+        java.net.Socket $r6;
+        java.lang.StringBuilder $r7;
+        boolean $z0;
+        com.trilead.ssh2.HTTPProxyData $r8;
+        char[] $r9;
+        java.lang.String[] $r10;
+        java.io.OutputStream $r11;
+        java.io.InputStream $r12;
+        java.io.IOException $r13;
+        char $c2;
+        com.trilead.ssh2.HTTPProxyException $r15;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.ProxyData;
+
+        $i0 := @parameter1: int;
+
+        if $r1 != null goto label01;
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.String hostname>;
+
+        $i1 = $r0.<com.trilead.ssh2.transport.TransportManager: int port>;
+
+        staticinvoke <com.trilead.ssh2.transport.TransportManager: void tryAllAddresses(java.net.Socket,java.lang.String,int,int)>($r6, $r3, $i1, $i0);
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        virtualinvoke $r6.<java.net.Socket: void setSoTimeout(int)>(0);
+
+        return;
+
+     label01:
+        $z0 = $r1 instanceof com.trilead.ssh2.HTTPProxyData;
+
+        if $z0 == 0 goto label14;
+
+        $r8 = (com.trilead.ssh2.HTTPProxyData) $r1;
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        $r3 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String proxyHost>;
+
+        $i1 = $r8.<com.trilead.ssh2.HTTPProxyData: int proxyPort>;
+
+        staticinvoke <com.trilead.ssh2.transport.TransportManager: void tryAllAddresses(java.net.Socket,java.lang.String,int,int)>($r6, $r3, $i1, $i0);
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        virtualinvoke $r6.<java.net.Socket: void setSoTimeout(int)>(0);
+
+        $r5 = new java.lang.StringBuffer;
+
+        specialinvoke $r5.<java.lang.StringBuffer: void <init>()>();
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("CONNECT ");
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.String hostname>;
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(char)>(58);
+
+        $i1 = $r0.<com.trilead.ssh2.transport.TransportManager: int port>;
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(int)>($i1);
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>(" HTTP/1.0\r\n");
+
+        $r3 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String proxyUser>;
+
+        if $r3 == null goto label02;
+
+        $r3 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String proxyPass>;
+
+        if $r3 == null goto label02;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String proxyUser>;
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $r3 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String proxyPass>;
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r3 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $r2 = virtualinvoke $r3.<java.lang.String: byte[] getBytes(java.lang.String)>("ISO-8859-1");
+
+        $r9 = staticinvoke <com.trilead.ssh2.crypto.Base64: char[] encode(byte[])>($r2);
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("Proxy-Authorization: Basic ");
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(char[])>($r9);
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\r\n");
+
+     label02:
+        $r10 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String[] requestHeaderLines>;
+
+        if $r10 == null goto label05;
+
+        $i0 = 0;
+
+     label03:
+        $r10 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String[] requestHeaderLines>;
+
+        $i1 = lengthof $r10;
+
+        if $i0 >= $i1 goto label05;
+
+        $r10 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String[] requestHeaderLines>;
+
+        $r3 = $r10[$i0];
+
+        if $r3 == null goto label04;
+
+        $r10 = $r8.<com.trilead.ssh2.HTTPProxyData: java.lang.String[] requestHeaderLines>;
+
+        $r3 = $r10[$i0];
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r3);
+
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\r\n");
+
+     label04:
+        $i0 = $i0 + 1;
+
+        goto label03;
+
+     label05:
+        virtualinvoke $r5.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>("\r\n");
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        $r11 = virtualinvoke $r6.<java.net.Socket: java.io.OutputStream getOutputStream()>();
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        $r2 = virtualinvoke $r3.<java.lang.String: byte[] getBytes(java.lang.String)>("ISO-8859-1");
+
+        virtualinvoke $r11.<java.io.OutputStream: void write(byte[])>($r2);
+
+        virtualinvoke $r11.<java.io.OutputStream: void flush()>();
+
+        $r2 = newarray (byte)[1024];
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        $r12 = virtualinvoke $r6.<java.net.Socket: java.io.InputStream getInputStream()>();
+
+        $i1 = staticinvoke <com.trilead.ssh2.transport.ClientServerHello: int readLineRN(java.io.InputStream,byte[])>($r12, $r2);
+
+        $r3 = new java.lang.String;
+
+        specialinvoke $r3.<java.lang.String: void <init>(byte[],int,int,java.lang.String)>($r2, 0, $i1, "ISO-8859-1");
+
+        $z0 = virtualinvoke $r3.<java.lang.String: boolean startsWith(java.lang.String)>("HTTP/");
+
+        if $z0 != 0 goto label06;
+
+        $r13 = new java.io.IOException;
+
+        specialinvoke $r13.<java.io.IOException: void <init>(java.lang.String)>("The proxy did not send back a valid HTTP response.");
+
+        throw $r13;
+
+     label06:
+        $i1 = virtualinvoke $r3.<java.lang.String: int length()>();
+
+        if $i1 < 14 goto label07;
+
+        $c2 = virtualinvoke $r3.<java.lang.String: char charAt(int)>(8);
+
+        if $c2 != 32 goto label07;
+
+        $c2 = virtualinvoke $r3.<java.lang.String: char charAt(int)>(12);
+
+        if $c2 == 32 goto label08;
+
+     label07:
+        $r13 = new java.io.IOException;
+
+        specialinvoke $r13.<java.io.IOException: void <init>(java.lang.String)>("The proxy did not send back a valid HTTP response.");
+
+        throw $r13;
+
+     label08:
+        $r14 = virtualinvoke $r3.<java.lang.String: java.lang.String substring(int,int)>(9, 12);
+
+        $i1 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r14);
+
+     label09:
+        if $i1 < 0 goto label10;
+
+        if $i1 <= 999 goto label12;
+
+     label10:
+        $r13 = new java.io.IOException;
+
+        specialinvoke $r13.<java.io.IOException: void <init>(java.lang.String)>("The proxy did not send back a valid HTTP response.");
+
+        throw $r13;
+
+     label11:
+        $r4 := @caughtexception;
+
+        $r13 = new java.io.IOException;
+
+        specialinvoke $r13.<java.io.IOException: void <init>(java.lang.String)>("The proxy did not send back a valid HTTP response.");
+
+        throw $r13;
+
+     label12:
+        if $i1 == 200 goto label13;
+
+        $r15 = new com.trilead.ssh2.HTTPProxyException;
+
+        $r14 = virtualinvoke $r3.<java.lang.String: java.lang.String substring(int)>(13);
+
+        specialinvoke $r15.<com.trilead.ssh2.HTTPProxyException: void <init>(java.lang.String,int)>($r14, $i1);
+
+        throw $r15;
+
+     label13:
+        $i1 = staticinvoke <com.trilead.ssh2.transport.ClientServerHello: int readLineRN(java.io.InputStream,byte[])>($r12, $r2);
+
+        if $i1 != 0 goto label13;
+
+        return;
+
+     label14:
+        $r13 = new java.io.IOException;
+
+        specialinvoke $r13.<java.io.IOException: void <init>(java.lang.String)>("Unsupported ProxyData");
+
+        throw $r13;
+
+        catch java.lang.NumberFormatException from label08 to label09 with label11;
+    }
+
+    private static void tryAllAddresses(java.net.Socket, java.lang.String, int, int) throws java.io.IOException
+    {
+        java.net.Socket $r0;
+        java.lang.String $r1;
+        int $i0, $i1, $i2, $i3;
+        java.net.InetAddress $r2;
+        java.net.InetSocketAddress $r3;
+        java.net.InetAddress[] $r4;
+        java.net.SocketTimeoutException $r5;
+
+        $r0 := @parameter0: java.net.Socket;
+
+        $r1 := @parameter1: java.lang.String;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $r4 = staticinvoke <java.net.InetAddress: java.net.InetAddress[] getAllByName(java.lang.String)>($r1);
+
+        $i3 = lengthof $r4;
+
+        $i2 = 0;
+
+     label1:
+        if $i2 >= $i3 goto label5;
+
+        $r2 = $r4[$i2];
+
+        $r3 = new java.net.InetSocketAddress;
+
+     label2:
+        specialinvoke $r3.<java.net.InetSocketAddress: void <init>(java.net.InetAddress,int)>($r2, $i0);
+
+        virtualinvoke $r0.<java.net.Socket: void connect(java.net.SocketAddress,int)>($r3, $i1);
+
+     label3:
+        return;
+
+     label4:
+        $r5 := @caughtexception;
+
+        $i2 = $i2 + 1;
+
+        goto label1;
+
+     label5:
+        $r5 = new java.net.SocketTimeoutException;
+
+        specialinvoke $r5.<java.net.SocketTimeoutException: void <init>(java.lang.String)>("Could not connect; socket timed out");
+
+        throw $r5;
+
+        catch java.net.SocketTimeoutException from label2 to label3 with label4;
+    }
+
+    public void changeRecvCipher(com.trilead.ssh2.crypto.cipher.BlockCipher, com.trilead.ssh2.crypto.digest.MAC)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r1;
+        com.trilead.ssh2.crypto.digest.MAC $r2;
+        com.trilead.ssh2.transport.TransportConnection $r3;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.cipher.BlockCipher;
+
+        $r2 := @parameter1: com.trilead.ssh2.crypto.digest.MAC;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        virtualinvoke $r3.<com.trilead.ssh2.transport.TransportConnection: void changeRecvCipher(com.trilead.ssh2.crypto.cipher.BlockCipher,com.trilead.ssh2.crypto.digest.MAC)>($r1, $r2);
+
+        return;
+    }
+
+    public void changeRecvCompression(com.trilead.ssh2.compression.ICompressor)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.compression.ICompressor $r1;
+        com.trilead.ssh2.transport.TransportConnection $r2;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.compression.ICompressor;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        virtualinvoke $r2.<com.trilead.ssh2.transport.TransportConnection: void changeRecvCompression(com.trilead.ssh2.compression.ICompressor)>($r1);
+
+        return;
+    }
+
+    public void changeSendCipher(com.trilead.ssh2.crypto.cipher.BlockCipher, com.trilead.ssh2.crypto.digest.MAC)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.crypto.cipher.BlockCipher $r1;
+        com.trilead.ssh2.crypto.digest.MAC $r2;
+        com.trilead.ssh2.transport.TransportConnection $r3;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.cipher.BlockCipher;
+
+        $r2 := @parameter1: com.trilead.ssh2.crypto.digest.MAC;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        virtualinvoke $r3.<com.trilead.ssh2.transport.TransportConnection: void changeSendCipher(com.trilead.ssh2.crypto.cipher.BlockCipher,com.trilead.ssh2.crypto.digest.MAC)>($r1, $r2);
+
+        return;
+    }
+
+    public void changeSendCompression(com.trilead.ssh2.compression.ICompressor)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.compression.ICompressor $r1;
+        com.trilead.ssh2.transport.TransportConnection $r2;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.compression.ICompressor;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        virtualinvoke $r2.<com.trilead.ssh2.transport.TransportConnection: void changeSendCompression(com.trilead.ssh2.compression.ICompressor)>($r1);
+
+        return;
+    }
+
+    public void close(java.lang.Throwable, boolean)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        java.lang.Throwable $r1, $r11, $r12;
+        boolean $z0, $z1;
+        int $i0, $i1;
+        java.util.Vector $r2;
+        java.net.Socket $r3;
+        java.lang.Object $r4, $r9;
+        java.lang.String $r5;
+        com.trilead.ssh2.packets.PacketDisconnect $r6;
+        byte[] $r7;
+        com.trilead.ssh2.transport.TransportConnection $r8;
+        com.trilead.ssh2.ConnectionMonitor $r10;
+        java.lang.Exception $r13;
+        java.io.IOException $r14, $r15, $r16;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: java.lang.Throwable;
+
+        $z0 := @parameter1: boolean;
+
+        if $z0 != 0 goto label02;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+     label01:
+        virtualinvoke $r3.<java.net.Socket: void close()>();
+
+     label02:
+        $r4 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore>;
+
+        entermonitor $r4;
+
+     label03:
+        $z1 = $r0.<com.trilead.ssh2.transport.TransportManager: boolean connectionClosed>;
+
+     label04:
+        if $z1 != 0 goto label12;
+
+        if $z0 != 1 goto label11;
+
+     label05:
+        $r6 = new com.trilead.ssh2.packets.PacketDisconnect;
+
+     label06:
+        $r5 = virtualinvoke $r1.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        specialinvoke $r6.<com.trilead.ssh2.packets.PacketDisconnect: void <init>(int,java.lang.String,java.lang.String)>(11, $r5, "");
+
+        $r7 = virtualinvoke $r6.<com.trilead.ssh2.packets.PacketDisconnect: byte[] getPayload()>();
+
+     label07:
+        $r8 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        if $r8 == null goto label09;
+
+     label08:
+        $r8 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        virtualinvoke $r8.<com.trilead.ssh2.transport.TransportConnection: void sendMessage(byte[])>($r7);
+
+     label09:
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+     label10:
+        virtualinvoke $r3.<java.net.Socket: void close()>();
+
+     label11:
+        $r0.<com.trilead.ssh2.transport.TransportManager: boolean connectionClosed> = 1;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Throwable reasonClosedCause> = $r1;
+
+     label12:
+        $r9 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore>;
+
+        virtualinvoke $r9.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r4;
+
+     label13:
+        $r2 = null;
+
+        entermonitor $r0;
+
+     label14:
+        $z1 = $r0.<com.trilead.ssh2.transport.TransportManager: boolean monitorsWereInformed>;
+
+        if $z1 != 0 goto label15;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: boolean monitorsWereInformed> = 1;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector connectionMonitors>;
+
+        $r9 = virtualinvoke $r2.<java.util.Vector: java.lang.Object clone()>();
+
+        $r2 = (java.util.Vector) $r9;
+
+     label15:
+        exitmonitor $r0;
+
+     label16:
+        if $r2 == null goto label30;
+
+        $i0 = 0;
+
+     label17:
+        $i1 = virtualinvoke $r2.<java.util.Vector: int size()>();
+
+        if $i0 >= $i1 goto label31;
+
+     label18:
+        $r9 = virtualinvoke $r2.<java.util.Vector: java.lang.Object elementAt(int)>($i0);
+
+        $r10 = (com.trilead.ssh2.ConnectionMonitor) $r9;
+
+        $r11 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Throwable reasonClosedCause>;
+
+        interfaceinvoke $r10.<com.trilead.ssh2.ConnectionMonitor: void connectionLost(java.lang.Throwable)>($r11);
+
+     label19:
+        $i0 = $i0 + 1;
+
+        goto label17;
+
+     label20:
+        $r12 := @caughtexception;
+
+     label21:
+        exitmonitor $r4;
+
+     label22:
+        throw $r12;
+
+     label23:
+        $r11 := @caughtexception;
+
+     label24:
+        exitmonitor $r0;
+
+     label25:
+        throw $r11;
+
+     label26:
+        $r13 := @caughtexception;
+
+        goto label19;
+
+     label27:
+        $r14 := @caughtexception;
+
+        goto label11;
+
+     label28:
+        $r15 := @caughtexception;
+
+        goto label09;
+
+     label29:
+        $r16 := @caughtexception;
+
+        goto label02;
+
+     label30:
+        return;
+
+     label31:
+        return;
+
+        catch java.io.IOException from label01 to label02 with label29;
+        catch java.lang.Throwable from label03 to label04 with label20;
+        catch java.io.IOException from label06 to label07 with label28;
+        catch java.io.IOException from label08 to label09 with label28;
+        catch java.lang.Throwable from label05 to label09 with label20;
+        catch java.io.IOException from label10 to label11 with label27;
+        catch java.lang.Throwable from label09 to label11 with label20;
+        catch java.lang.Throwable from label11 to label13 with label20;
+        catch java.lang.Throwable from label14 to label16 with label23;
+        catch java.lang.Exception from label18 to label19 with label26;
+        catch java.lang.Throwable from label21 to label22 with label20;
+        catch java.lang.Throwable from label24 to label25 with label23;
+    }
+
+    public com.trilead.ssh2.ConnectionInfo getConnectionInfo(int) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        int $i0;
+        com.trilead.ssh2.transport.KexManager $r1;
+        com.trilead.ssh2.ConnectionInfo $r2;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.KexManager km>;
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.transport.KexManager: com.trilead.ssh2.ConnectionInfo getOrWaitForConnectionInfo(int)>($i0);
+
+        return $r2;
+    }
+
+    public int getPacketOverheadEstimate()
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.transport.TransportConnection $r1;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        $i0 = virtualinvoke $r1.<com.trilead.ssh2.transport.TransportConnection: int getPacketOverheadEstimate()>();
+
+        return $i0;
+    }
+
+    public java.lang.Throwable getReasonClosedCause()
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        java.lang.Throwable $r1;
+        java.lang.Object $r2;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore>;
+
+        entermonitor $r2;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Throwable reasonClosedCause>;
+
+        exitmonitor $r2;
+
+     label2:
+        return $r1;
+
+     label3:
+        $r1 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label4:
+        throw $r1;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public byte[] getSessionIdentifier()
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.transport.KexManager $r1;
+        byte[] $r2;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.KexManager km>;
+
+        $r2 = $r1.<com.trilead.ssh2.transport.KexManager: byte[] sessionId>;
+
+        return $r2;
+    }
+
+    public void initialize(com.trilead.ssh2.crypto.CryptoWishList, com.trilead.ssh2.ServerHostKeyVerifier, com.trilead.ssh2.DHGexParameters, int, java.security.SecureRandom, com.trilead.ssh2.ProxyData) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.crypto.CryptoWishList $r1;
+        com.trilead.ssh2.ServerHostKeyVerifier $r2;
+        com.trilead.ssh2.DHGexParameters $r3;
+        int $i0;
+        java.security.SecureRandom $r4;
+        com.trilead.ssh2.ProxyData $r5;
+        java.net.Socket $r6;
+        com.trilead.ssh2.transport.ClientServerHello $r7;
+        java.lang.String $r8;
+        java.io.InputStream $r9;
+        java.io.OutputStream $r10;
+        com.trilead.ssh2.transport.TransportConnection $r11;
+        com.trilead.ssh2.transport.KexManager $r12;
+        java.lang.Thread $r13;
+        com.trilead.ssh2.transport.TransportManager$1 $r14;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.crypto.CryptoWishList;
+
+        $r2 := @parameter1: com.trilead.ssh2.ServerHostKeyVerifier;
+
+        $r3 := @parameter2: com.trilead.ssh2.DHGexParameters;
+
+        $i0 := @parameter3: int;
+
+        $r4 := @parameter4: java.security.SecureRandom;
+
+        $r5 := @parameter5: com.trilead.ssh2.ProxyData;
+
+        specialinvoke $r0.<com.trilead.ssh2.transport.TransportManager: void establishConnection(com.trilead.ssh2.ProxyData,int)>($r5, $i0);
+
+        $r7 = new com.trilead.ssh2.transport.ClientServerHello;
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        $r9 = virtualinvoke $r6.<java.net.Socket: java.io.InputStream getInputStream()>();
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        $r10 = virtualinvoke $r6.<java.net.Socket: java.io.OutputStream getOutputStream()>();
+
+        specialinvoke $r7.<com.trilead.ssh2.transport.ClientServerHello: void <init>(java.io.InputStream,java.io.OutputStream)>($r9, $r10);
+
+        $r11 = new com.trilead.ssh2.transport.TransportConnection;
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        $r9 = virtualinvoke $r6.<java.net.Socket: java.io.InputStream getInputStream()>();
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        $r10 = virtualinvoke $r6.<java.net.Socket: java.io.OutputStream getOutputStream()>();
+
+        specialinvoke $r11.<com.trilead.ssh2.transport.TransportConnection: void <init>(java.io.InputStream,java.io.OutputStream,java.security.SecureRandom)>($r9, $r10, $r4);
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc> = $r11;
+
+        $r12 = new com.trilead.ssh2.transport.KexManager;
+
+        $r8 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.String hostname>;
+
+        $i0 = $r0.<com.trilead.ssh2.transport.TransportManager: int port>;
+
+        specialinvoke $r12.<com.trilead.ssh2.transport.KexManager: void <init>(com.trilead.ssh2.transport.TransportManager,com.trilead.ssh2.transport.ClientServerHello,com.trilead.ssh2.crypto.CryptoWishList,java.lang.String,int,com.trilead.ssh2.ServerHostKeyVerifier,java.security.SecureRandom)>($r0, $r7, $r1, $r8, $i0, $r2, $r4);
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.KexManager km> = $r12;
+
+        $r12 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.KexManager km>;
+
+        virtualinvoke $r12.<com.trilead.ssh2.transport.KexManager: void initiateKEX(com.trilead.ssh2.crypto.CryptoWishList,com.trilead.ssh2.DHGexParameters)>($r1, $r3);
+
+        $r13 = new java.lang.Thread;
+
+        $r14 = new com.trilead.ssh2.transport.TransportManager$1;
+
+        specialinvoke $r14.<com.trilead.ssh2.transport.TransportManager$1: void <init>(com.trilead.ssh2.transport.TransportManager)>($r0);
+
+        specialinvoke $r13.<java.lang.Thread: void <init>(java.lang.Runnable)>($r14);
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread receiveThread> = $r13;
+
+        $r13 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread receiveThread>;
+
+        virtualinvoke $r13.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+        $r13 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread receiveThread>;
+
+        virtualinvoke $r13.<java.lang.Thread: void start()>();
+
+        return;
+    }
+
+    public void kexFinished() throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        java.lang.Object $r1, $r2;
+        java.lang.Throwable $r3;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore>;
+
+        entermonitor $r1;
+
+     label1:
+        $r0.<com.trilead.ssh2.transport.TransportManager: boolean flagKexOngoing> = 0;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore>;
+
+        virtualinvoke $r2.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r3 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void receiveLoop() throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        java.lang.StringBuffer $r1;
+        int $i0, $i3, $i5;
+        com.trilead.ssh2.transport.MessageHandler $r2;
+        byte[] $r3;
+        com.trilead.ssh2.packets.TypesReader $r4;
+        short $s1;
+        com.trilead.ssh2.transport.TransportConnection $r5;
+        byte $b2;
+        com.trilead.ssh2.log.Logger $r6;
+        boolean $z0;
+        java.lang.String $r7;
+        char $c4;
+        java.lang.StringBuilder $r8;
+        java.io.IOException $r9;
+        com.trilead.ssh2.transport.KexManager $r10;
+        java.util.Vector $r11;
+        java.lang.Object $r12;
+        com.trilead.ssh2.transport.TransportManager$HandlerEntry $r13;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r3 = newarray (byte)[35000];
+
+     label01:
+        $r5 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        $i0 = lengthof $r3;
+
+        $i0 = virtualinvoke $r5.<com.trilead.ssh2.transport.TransportConnection: int receiveMessage(byte[],int,int)>($r3, 0, $i0);
+
+        $b2 = $r3[0];
+
+        $s1 = $b2 & 255;
+
+        if $s1 == 2 goto label01;
+
+        if $s1 != 4 goto label06;
+
+        $r6 = <com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label01;
+
+        $r4 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r4.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r3, 0, $i0);
+
+        virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+        virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: boolean readBoolean()>();
+
+        $r1 = new java.lang.StringBuffer;
+
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+
+        $r7 = virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString(java.lang.String)>("UTF-8");
+
+        virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+
+        $i0 = 0;
+
+     label02:
+        $i3 = virtualinvoke $r1.<java.lang.StringBuffer: int length()>();
+
+        if $i0 >= $i3 goto label05;
+
+        $c4 = virtualinvoke $r1.<java.lang.StringBuffer: char charAt(int)>($i0);
+
+        if $c4 < 32 goto label04;
+
+        if $c4 > 126 goto label04;
+
+     label03:
+        $i0 = $i0 + 1;
+
+        goto label02;
+
+     label04:
+        virtualinvoke $r1.<java.lang.StringBuffer: void setCharAt(int,char)>($i0, 65533);
+
+        goto label03;
+
+     label05:
+        $r6 = <com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.log.Logger log>;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("DEBUG Message from remote: \'");
+
+        $r7 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'");
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r7);
+
+        goto label01;
+
+     label06:
+        if $s1 != 3 goto label07;
+
+        $r9 = new java.io.IOException;
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>("Peer sent UNIMPLEMENTED message, that should not happen.");
+
+        throw $r9;
+
+     label07:
+        if $s1 != 1 goto label13;
+
+        $r4 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r4.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r3, 0, $i0);
+
+        virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+        $i3 = virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $r1 = new java.lang.StringBuffer;
+
+        specialinvoke $r1.<java.lang.StringBuffer: void <init>()>();
+
+        $r7 = virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString(java.lang.String)>("UTF-8");
+
+        virtualinvoke $r1.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r7);
+
+        $i0 = virtualinvoke $r1.<java.lang.StringBuffer: int length()>();
+
+        if $i0 <= 255 goto label08;
+
+        virtualinvoke $r1.<java.lang.StringBuffer: void setLength(int)>(255);
+
+        virtualinvoke $r1.<java.lang.StringBuffer: void setCharAt(int,char)>(254, 46);
+
+        virtualinvoke $r1.<java.lang.StringBuffer: void setCharAt(int,char)>(253, 46);
+
+        virtualinvoke $r1.<java.lang.StringBuffer: void setCharAt(int,char)>(252, 46);
+
+     label08:
+        $i0 = 0;
+
+     label09:
+        $i5 = virtualinvoke $r1.<java.lang.StringBuffer: int length()>();
+
+        if $i0 >= $i5 goto label12;
+
+        $c4 = virtualinvoke $r1.<java.lang.StringBuffer: char charAt(int)>($i0);
+
+        if $c4 < 32 goto label11;
+
+        if $c4 > 126 goto label11;
+
+     label10:
+        $i0 = $i0 + 1;
+
+        goto label09;
+
+     label11:
+        virtualinvoke $r1.<java.lang.StringBuffer: void setCharAt(int,char)>($i0, 65533);
+
+        goto label10;
+
+     label12:
+        $r9 = new java.io.IOException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Peer sent DISCONNECT message (reason code ");
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("): ");
+
+        $r7 = virtualinvoke $r1.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r7);
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>($r7);
+
+        throw $r9;
+
+     label13:
+        if $s1 == 20 goto label14;
+
+        if $s1 == 21 goto label14;
+
+        if $s1 < 30 goto label15;
+
+        if $s1 > 49 goto label15;
+
+     label14:
+        $r10 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.KexManager km>;
+
+        virtualinvoke $r10.<com.trilead.ssh2.transport.KexManager: void handleMessage(byte[],int)>($r3, $i0);
+
+        goto label01;
+
+     label15:
+        if $s1 != 52 goto label16;
+
+        $r5 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+        virtualinvoke $r5.<com.trilead.ssh2.transport.TransportConnection: void startCompression()>();
+
+     label16:
+        $r2 = null;
+
+        $i5 = 0;
+
+     label17:
+        $r11 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers>;
+
+        $i3 = virtualinvoke $r11.<java.util.Vector: int size()>();
+
+        if $i5 >= $i3 goto label18;
+
+        $r11 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers>;
+
+        $r12 = virtualinvoke $r11.<java.util.Vector: java.lang.Object elementAt(int)>($i5);
+
+        $r13 = (com.trilead.ssh2.transport.TransportManager$HandlerEntry) $r12;
+
+        $i3 = $r13.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: int low>;
+
+        if $i3 > $s1 goto label19;
+
+        $i3 = $r13.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: int high>;
+
+        if $s1 > $i3 goto label19;
+
+        $r2 = $r13.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: com.trilead.ssh2.transport.MessageHandler mh>;
+
+     label18:
+        if $r2 != null goto label20;
+
+        $r9 = new java.io.IOException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH message (type ");
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s1);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r7 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r9.<java.io.IOException: void <init>(java.lang.String)>($r7);
+
+        throw $r9;
+
+     label19:
+        $i5 = $i5 + 1;
+
+        goto label17;
+
+     label20:
+        interfaceinvoke $r2.<com.trilead.ssh2.transport.MessageHandler: void handleMessage(byte[],int)>($r3, $i0);
+
+        goto label01;
+    }
+
+    public void registerMessageHandler(com.trilead.ssh2.transport.MessageHandler, int, int)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.transport.MessageHandler $r1;
+        int $i0, $i1;
+        com.trilead.ssh2.transport.TransportManager$HandlerEntry $r2;
+        java.util.Vector $r3, $r4;
+        java.lang.Throwable $r5;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.transport.MessageHandler;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r2 = new com.trilead.ssh2.transport.TransportManager$HandlerEntry;
+
+        specialinvoke $r2.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: void <init>(com.trilead.ssh2.transport.TransportManager)>($r0);
+
+        $r2.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: com.trilead.ssh2.transport.MessageHandler mh> = $r1;
+
+        $r2.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: int low> = $i0;
+
+        $r2.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: int high> = $i1;
+
+        $r4 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers>;
+
+        entermonitor $r4;
+
+     label1:
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers>;
+
+        virtualinvoke $r3.<java.util.Vector: void addElement(java.lang.Object)>($r2);
+
+        exitmonitor $r4;
+
+     label2:
+        return;
+
+     label3:
+        $r5 := @caughtexception;
+
+        exitmonitor $r4;
+
+     label4:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void removeMessageHandler(com.trilead.ssh2.transport.MessageHandler, int, int)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        com.trilead.ssh2.transport.MessageHandler $r1, $r6;
+        int $i0, $i1, $i2, $i3;
+        java.util.Vector $r2, $r3;
+        java.lang.Object $r4;
+        com.trilead.ssh2.transport.TransportManager$HandlerEntry $r5;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.transport.MessageHandler;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers>;
+
+        entermonitor $r3;
+
+        $i2 = 0;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers>;
+
+        $i3 = virtualinvoke $r2.<java.util.Vector: int size()>();
+
+        if $i2 >= $i3 goto label2;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers>;
+
+        $r4 = virtualinvoke $r2.<java.util.Vector: java.lang.Object elementAt(int)>($i2);
+
+        $r5 = (com.trilead.ssh2.transport.TransportManager$HandlerEntry) $r4;
+
+        $r6 = $r5.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: com.trilead.ssh2.transport.MessageHandler mh>;
+
+        if $r6 != $r1 goto label4;
+
+        $i3 = $r5.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: int low>;
+
+        if $i3 != $i0 goto label4;
+
+        $i3 = $r5.<com.trilead.ssh2.transport.TransportManager$HandlerEntry: int high>;
+
+        if $i3 != $i1 goto label4;
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector messageHandlers>;
+
+        virtualinvoke $r2.<java.util.Vector: void removeElementAt(int)>($i2);
+
+     label2:
+        exitmonitor $r3;
+
+     label3:
+        return;
+
+     label4:
+        $i2 = $i2 + 1;
+
+     label5:
+        goto label1;
+
+     label6:
+        $r7 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label7:
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label3 with label6;
+        catch java.lang.Throwable from label5 to label7 with label6;
+    }
+
+    public void sendAsynchronousMessage(byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        byte[] $r1;
+        java.util.Vector $r2, $r3;
+        int $i0;
+        java.io.IOException $r4;
+        java.lang.Throwable $r5;
+        java.lang.Thread $r6;
+        com.trilead.ssh2.transport.TransportManager$AsynchronousWorker $r7;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: byte[];
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector asynchronousQueue>;
+
+        entermonitor $r3;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector asynchronousQueue>;
+
+        virtualinvoke $r2.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+
+        $r2 = $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector asynchronousQueue>;
+
+        $i0 = virtualinvoke $r2.<java.util.Vector: int size()>();
+
+        if $i0 <= 100 goto label4;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("Error: the peer is not consuming our asynchronous replies.");
+
+        throw $r4;
+
+     label2:
+        $r5 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label3:
+        throw $r5;
+
+     label4:
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread asynchronousThread>;
+
+        if $r6 != null goto label5;
+
+        $r7 = new com.trilead.ssh2.transport.TransportManager$AsynchronousWorker;
+
+        specialinvoke $r7.<com.trilead.ssh2.transport.TransportManager$AsynchronousWorker: void <init>(com.trilead.ssh2.transport.TransportManager)>($r0);
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread asynchronousThread> = $r7;
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread asynchronousThread>;
+
+        virtualinvoke $r6.<java.lang.Thread: void setDaemon(boolean)>(1);
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread asynchronousThread>;
+
+        virtualinvoke $r6.<java.lang.Thread: void start()>();
+
+     label5:
+        exitmonitor $r3;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label2;
+        catch java.lang.Throwable from label4 to label6 with label2;
+    }
+
+    public void sendKexMessage(byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        byte[] $r1;
+        java.io.IOException $r2;
+        boolean $z0;
+        java.lang.Object $r3;
+        java.lang.Throwable $r4;
+        com.trilead.ssh2.transport.TransportConnection $r5;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: byte[];
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore>;
+
+        entermonitor $r3;
+
+     label01:
+        $z0 = $r0.<com.trilead.ssh2.transport.TransportManager: boolean connectionClosed>;
+
+        if $z0 == 0 goto label04;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Sorry, this connection is closed.");
+
+        $r4 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Throwable reasonClosedCause>;
+
+        $r4 = virtualinvoke $r2.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r4);
+
+        $r2 = (java.io.IOException) $r4;
+
+        throw $r2;
+
+     label02:
+        $r4 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label03:
+        throw $r4;
+
+     label04:
+        $r0.<com.trilead.ssh2.transport.TransportManager: boolean flagKexOngoing> = 1;
+
+     label05:
+        $r5 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+     label06:
+        virtualinvoke $r5.<com.trilead.ssh2.transport.TransportConnection: void sendMessage(byte[])>($r1);
+
+     label07:
+        exitmonitor $r3;
+
+     label08:
+        return;
+
+     label09:
+        $r2 := @caughtexception;
+
+        virtualinvoke $r0.<com.trilead.ssh2.transport.TransportManager: void close(java.lang.Throwable,boolean)>($r2, 0);
+
+        throw $r2;
+
+     label10:
+        nop;
+
+        catch java.lang.Throwable from label01 to label03 with label02;
+        catch java.lang.Throwable from label04 to label05 with label02;
+        catch java.io.IOException from label06 to label07 with label09;
+        catch java.lang.Throwable from label05 to label07 with label02;
+        catch java.lang.Throwable from label07 to label08 with label02;
+        catch java.lang.Throwable from label09 to label10 with label02;
+    }
+
+    public void sendMessage(byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        byte[] $r1;
+        java.io.IOException $r2;
+        java.lang.Thread $r3, $r4;
+        java.lang.Object $r5, $r8;
+        boolean $z0;
+        java.lang.Throwable $r6;
+        com.trilead.ssh2.transport.TransportConnection $r7;
+        java.lang.InterruptedException $r9;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: byte[];
+
+        $r4 = staticinvoke <java.lang.Thread: java.lang.Thread currentThread()>();
+
+        $r3 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Thread receiveThread>;
+
+        if $r4 != $r3 goto label01;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Assertion error: sendMessage may never be invoked by the receiver thread!");
+
+        throw $r2;
+
+     label01:
+        $r5 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore>;
+
+        entermonitor $r5;
+
+     label02:
+        $z0 = $r0.<com.trilead.ssh2.transport.TransportManager: boolean connectionClosed>;
+
+        if $z0 == 0 goto label05;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("Sorry, this connection is closed.");
+
+        $r6 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Throwable reasonClosedCause>;
+
+        $r6 = virtualinvoke $r2.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r6);
+
+        $r2 = (java.io.IOException) $r6;
+
+        throw $r2;
+
+     label03:
+        $r6 := @caughtexception;
+
+        exitmonitor $r5;
+
+     label04:
+        throw $r6;
+
+     label05:
+        $z0 = $r0.<com.trilead.ssh2.transport.TransportManager: boolean flagKexOngoing>;
+
+     label06:
+        if $z0 != 0 goto label11;
+
+     label07:
+        $r7 = $r0.<com.trilead.ssh2.transport.TransportManager: com.trilead.ssh2.transport.TransportConnection tc>;
+
+     label08:
+        virtualinvoke $r7.<com.trilead.ssh2.transport.TransportConnection: void sendMessage(byte[])>($r1);
+
+     label09:
+        exitmonitor $r5;
+
+     label10:
+        return;
+
+     label11:
+        $r8 = $r0.<com.trilead.ssh2.transport.TransportManager: java.lang.Object connectionSemaphore>;
+
+     label12:
+        virtualinvoke $r8.<java.lang.Object: void wait()>();
+
+     label13:
+        goto label02;
+
+     label14:
+        $r9 := @caughtexception;
+
+        goto label02;
+
+     label15:
+        $r2 := @caughtexception;
+
+     label16:
+        virtualinvoke $r0.<com.trilead.ssh2.transport.TransportManager: void close(java.lang.Throwable,boolean)>($r2, 0);
+
+        throw $r2;
+
+     label17:
+        nop;
+
+        catch java.lang.Throwable from label02 to label04 with label03;
+        catch java.lang.Throwable from label05 to label06 with label03;
+        catch java.io.IOException from label08 to label09 with label15;
+        catch java.lang.Throwable from label07 to label09 with label03;
+        catch java.lang.Throwable from label09 to label10 with label03;
+        catch java.lang.InterruptedException from label12 to label13 with label14;
+        catch java.lang.Throwable from label11 to label13 with label03;
+        catch java.lang.Throwable from label16 to label17 with label03;
+    }
+
+    public void setConnectionMonitors(java.util.Vector)
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        java.util.Vector $r1;
+        java.lang.Object $r2;
+        java.lang.Throwable $r3;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $r1 := @parameter0: java.util.Vector;
+
+        entermonitor $r0;
+
+     label1:
+        $r2 = virtualinvoke $r1.<java.util.Vector: java.lang.Object clone()>();
+
+        $r1 = (java.util.Vector) $r2;
+
+        $r0.<com.trilead.ssh2.transport.TransportManager: java.util.Vector connectionMonitors> = $r1;
+
+        exitmonitor $r0;
+
+     label2:
+        return;
+
+     label3:
+        $r3 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label4:
+        throw $r3;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void setTcpNoDelay(boolean) throws java.io.IOException
+    {
+        com.trilead.ssh2.transport.TransportManager $r0;
+        boolean $z0;
+        java.net.Socket $r1;
+
+        $r0 := @this: com.trilead.ssh2.transport.TransportManager;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = $r0.<com.trilead.ssh2.transport.TransportManager: java.net.Socket sock>;
+
+        virtualinvoke $r1.<java.net.Socket: void setTcpNoDelay(boolean)>($z0);
+
+        return;
+    }
+}

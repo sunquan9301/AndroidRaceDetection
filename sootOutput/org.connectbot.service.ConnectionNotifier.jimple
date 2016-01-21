@@ -1,0 +1,263 @@
+public abstract class org.connectbot.service.ConnectionNotifier extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.connectbot.service.ConnectionNotifier $r0;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static org.connectbot.service.ConnectionNotifier getInstance()
+    {
+        boolean $z0;
+        org.connectbot.service.ConnectionNotifier$PreEclair $r0;
+        org.connectbot.service.ConnectionNotifier$EclairAndBeyond $r1;
+
+        $z0 = <org.connectbot.util.PreferenceConstants: boolean PRE_ECLAIR>;
+
+        if $z0 == 0 goto label1;
+
+        $r0 = staticinvoke <org.connectbot.service.ConnectionNotifier$PreEclair$Holder: org.connectbot.service.ConnectionNotifier$PreEclair access$000()>();
+
+        return $r0;
+
+     label1:
+        $r1 = staticinvoke <org.connectbot.service.ConnectionNotifier$EclairAndBeyond$Holder: org.connectbot.service.ConnectionNotifier$EclairAndBeyond access$100()>();
+
+        return $r1;
+    }
+
+    protected android.app.NotificationManager getNotificationManager(android.content.Context)
+    {
+        org.connectbot.service.ConnectionNotifier $r0;
+        android.content.Context $r1;
+        java.lang.Object $r2;
+        android.app.NotificationManager $r3;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 = virtualinvoke $r1.<android.content.Context: java.lang.Object getSystemService(java.lang.String)>("notification");
+
+        $r3 = (android.app.NotificationManager) $r2;
+
+        return $r3;
+    }
+
+    public abstract void hideRunningNotification(android.app.Service);
+
+    protected android.app.Notification newActivityNotification(android.content.Context, org.connectbot.bean.HostBean)
+    {
+        org.connectbot.service.ConnectionNotifier $r0;
+        android.content.Context $r1;
+        org.connectbot.bean.HostBean $r2;
+        android.content.Intent $r3;
+        java.lang.Object[] $r4;
+        android.support.v4.app.NotificationCompat$Builder $r5, $r11;
+        android.content.res.Resources $r6;
+        java.lang.String $r7, $r10;
+        android.net.Uri $r8;
+        android.app.PendingIntent $r9;
+        boolean $z0;
+        android.app.Notification $r12;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: org.connectbot.bean.HostBean;
+
+        $r5 = virtualinvoke $r0.<org.connectbot.service.ConnectionNotifier: android.support.v4.app.NotificationCompat$Builder newNotificationBuilder(android.content.Context)>($r1);
+
+        $r6 = virtualinvoke $r1.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r4 = newarray (java.lang.Object)[1];
+
+        $r7 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getNickname()>();
+
+        $r4[0] = $r7;
+
+        $r7 = virtualinvoke $r6.<android.content.res.Resources: java.lang.String getString(int,java.lang.Object[])>(2131165321, $r4);
+
+        $r3 = new android.content.Intent;
+
+        specialinvoke $r3.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r1, class "org/connectbot/ConsoleActivity");
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent setAction(java.lang.String)>("android.intent.action.VIEW");
+
+        $r8 = virtualinvoke $r2.<org.connectbot.bean.HostBean: android.net.Uri getUri()>();
+
+        virtualinvoke $r3.<android.content.Intent: android.content.Intent setData(android.net.Uri)>($r8);
+
+        $r9 = staticinvoke <android.app.PendingIntent: android.app.PendingIntent getActivity(android.content.Context,int,android.content.Intent,int)>($r1, 0, $r3, 0);
+
+        $r10 = virtualinvoke $r6.<android.content.res.Resources: java.lang.String getString(int)>(2131165411);
+
+        $r11 = virtualinvoke $r5.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setContentTitle(java.lang.CharSequence)>($r10);
+
+        $r11 = virtualinvoke $r11.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setContentText(java.lang.CharSequence)>($r7);
+
+        virtualinvoke $r11.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setContentIntent(android.app.PendingIntent)>($r9);
+
+        virtualinvoke $r5.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setAutoCancel(boolean)>(1);
+
+        virtualinvoke $r5.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setDefaults(int)>(4);
+
+        $r10 = "red";
+
+        $r7 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getColor()>();
+
+        $z0 = virtualinvoke $r10.<java.lang.String: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label2;
+
+        virtualinvoke $r5.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setLights(int,int,int)>(-65536, 300, 1000);
+
+     label1:
+        $r12 = virtualinvoke $r5.<android.support.v4.app.NotificationCompat$Builder: android.app.Notification build()>();
+
+        return $r12;
+
+     label2:
+        $r10 = "green";
+
+        $r7 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getColor()>();
+
+        $z0 = virtualinvoke $r10.<java.lang.String: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label3;
+
+        virtualinvoke $r5.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setLights(int,int,int)>(-16711936, 300, 1000);
+
+        goto label1;
+
+     label3:
+        $r10 = "blue";
+
+        $r7 = virtualinvoke $r2.<org.connectbot.bean.HostBean: java.lang.String getColor()>();
+
+        $z0 = virtualinvoke $r10.<java.lang.String: boolean equals(java.lang.Object)>($r7);
+
+        if $z0 == 0 goto label4;
+
+        virtualinvoke $r5.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setLights(int,int,int)>(-16776961, 300, 1000);
+
+        goto label1;
+
+     label4:
+        virtualinvoke $r5.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setLights(int,int,int)>(-1, 300, 1000);
+
+        goto label1;
+    }
+
+    protected android.support.v4.app.NotificationCompat$Builder newNotificationBuilder(android.content.Context)
+    {
+        org.connectbot.service.ConnectionNotifier $r0;
+        android.content.Context $r1;
+        android.support.v4.app.NotificationCompat$Builder $r2;
+        long $l0;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 = new android.support.v4.app.NotificationCompat$Builder;
+
+        specialinvoke $r2.<android.support.v4.app.NotificationCompat$Builder: void <init>(android.content.Context)>($r1);
+
+        $r2 = virtualinvoke $r2.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setSmallIcon(int)>(2130837510);
+
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $r2 = virtualinvoke $r2.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setWhen(long)>($l0);
+
+        return $r2;
+    }
+
+    protected android.app.Notification newRunningNotification(android.content.Context)
+    {
+        org.connectbot.service.ConnectionNotifier $r0;
+        android.content.Context $r1;
+        android.content.Intent $r2;
+        android.support.v4.app.NotificationCompat$Builder $r3;
+        android.app.PendingIntent $r4;
+        android.content.res.Resources $r5;
+        java.lang.String $r6;
+        android.app.Notification $r7;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.service.ConnectionNotifier: android.support.v4.app.NotificationCompat$Builder newNotificationBuilder(android.content.Context)>($r1);
+
+        virtualinvoke $r3.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setOngoing(boolean)>(1);
+
+        virtualinvoke $r3.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setWhen(long)>(0L);
+
+        $r2 = new android.content.Intent;
+
+        specialinvoke $r2.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r1, class "org/connectbot/ConsoleActivity");
+
+        $r4 = staticinvoke <android.app.PendingIntent: android.app.PendingIntent getActivity(android.content.Context,int,android.content.Intent,int)>($r1, 1, $r2, 0);
+
+        virtualinvoke $r3.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setContentIntent(android.app.PendingIntent)>($r4);
+
+        $r5 = virtualinvoke $r1.<android.content.Context: android.content.res.Resources getResources()>();
+
+        $r6 = virtualinvoke $r5.<android.content.res.Resources: java.lang.String getString(int)>(2131165411);
+
+        virtualinvoke $r3.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setContentTitle(java.lang.CharSequence)>($r6);
+
+        $r6 = virtualinvoke $r5.<android.content.res.Resources: java.lang.String getString(int)>(2131165224);
+
+        virtualinvoke $r3.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder setContentText(java.lang.CharSequence)>($r6);
+
+        $r2 = new android.content.Intent;
+
+        specialinvoke $r2.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r1, class "org/connectbot/HostListActivity");
+
+        virtualinvoke $r2.<android.content.Intent: android.content.Intent setAction(java.lang.String)>("org.connectbot.action.DISCONNECT");
+
+        $r6 = virtualinvoke $r5.<android.content.res.Resources: java.lang.String getString(int)>(2131165253);
+
+        $r4 = staticinvoke <android.app.PendingIntent: android.app.PendingIntent getActivity(android.content.Context,int,android.content.Intent,int)>($r1, 3, $r2, 0);
+
+        virtualinvoke $r3.<android.support.v4.app.NotificationCompat$Builder: android.support.v4.app.NotificationCompat$Builder addAction(int,java.lang.CharSequence,android.app.PendingIntent)>(17301560, $r6, $r4);
+
+        $r7 = virtualinvoke $r3.<android.support.v4.app.NotificationCompat$Builder: android.app.Notification build()>();
+
+        return $r7;
+    }
+
+    public void showActivityNotification(android.app.Service, org.connectbot.bean.HostBean)
+    {
+        org.connectbot.service.ConnectionNotifier $r0;
+        android.app.Service $r1;
+        org.connectbot.bean.HostBean $r2;
+        android.app.NotificationManager $r3;
+        android.app.Notification $r4;
+
+        $r0 := @this: org.connectbot.service.ConnectionNotifier;
+
+        $r1 := @parameter0: android.app.Service;
+
+        $r2 := @parameter1: org.connectbot.bean.HostBean;
+
+        $r3 = virtualinvoke $r0.<org.connectbot.service.ConnectionNotifier: android.app.NotificationManager getNotificationManager(android.content.Context)>($r1);
+
+        $r4 = virtualinvoke $r0.<org.connectbot.service.ConnectionNotifier: android.app.Notification newActivityNotification(android.content.Context,org.connectbot.bean.HostBean)>($r1, $r2);
+
+        virtualinvoke $r3.<android.app.NotificationManager: void notify(int,android.app.Notification)>(2, $r4);
+
+        return;
+    }
+
+    public abstract void showRunningNotification(android.app.Service);
+}

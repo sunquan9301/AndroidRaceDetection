@@ -1,0 +1,65 @@
+public class com.trilead.ssh2.LocalPortForwarder extends java.lang.Object
+{
+    com.trilead.ssh2.channel.ChannelManager cm;
+    java.lang.String host_to_connect;
+    com.trilead.ssh2.channel.LocalAcceptThread lat;
+    int port_to_connect;
+
+    void <init>(com.trilead.ssh2.channel.ChannelManager, java.net.InetSocketAddress, java.lang.String, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.LocalPortForwarder $r0;
+        com.trilead.ssh2.channel.ChannelManager $r1;
+        java.net.InetSocketAddress $r2;
+        java.lang.String $r3;
+        int $i0;
+        com.trilead.ssh2.channel.LocalAcceptThread $r4;
+
+        $r0 := @this: com.trilead.ssh2.LocalPortForwarder;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.ChannelManager;
+
+        $r2 := @parameter1: java.net.InetSocketAddress;
+
+        $r3 := @parameter2: java.lang.String;
+
+        $i0 := @parameter3: int;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.LocalPortForwarder: com.trilead.ssh2.channel.ChannelManager cm> = $r1;
+
+        $r0.<com.trilead.ssh2.LocalPortForwarder: java.lang.String host_to_connect> = $r3;
+
+        $r0.<com.trilead.ssh2.LocalPortForwarder: int port_to_connect> = $i0;
+
+        $r4 = new com.trilead.ssh2.channel.LocalAcceptThread;
+
+        specialinvoke $r4.<com.trilead.ssh2.channel.LocalAcceptThread: void <init>(com.trilead.ssh2.channel.ChannelManager,java.net.InetSocketAddress,java.lang.String,int)>($r1, $r2, $r3, $i0);
+
+        $r0.<com.trilead.ssh2.LocalPortForwarder: com.trilead.ssh2.channel.LocalAcceptThread lat> = $r4;
+
+        $r4 = $r0.<com.trilead.ssh2.LocalPortForwarder: com.trilead.ssh2.channel.LocalAcceptThread lat>;
+
+        virtualinvoke $r4.<com.trilead.ssh2.channel.LocalAcceptThread: void setDaemon(boolean)>(1);
+
+        $r4 = $r0.<com.trilead.ssh2.LocalPortForwarder: com.trilead.ssh2.channel.LocalAcceptThread lat>;
+
+        virtualinvoke $r4.<com.trilead.ssh2.channel.LocalAcceptThread: void start()>();
+
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        com.trilead.ssh2.LocalPortForwarder $r0;
+        com.trilead.ssh2.channel.LocalAcceptThread $r1;
+
+        $r0 := @this: com.trilead.ssh2.LocalPortForwarder;
+
+        $r1 = $r0.<com.trilead.ssh2.LocalPortForwarder: com.trilead.ssh2.channel.LocalAcceptThread lat>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.channel.LocalAcceptThread: void stopWorking()>();
+
+        return;
+    }
+}

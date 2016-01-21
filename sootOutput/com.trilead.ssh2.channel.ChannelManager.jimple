@@ -1,0 +1,6250 @@
+public class com.trilead.ssh2.channel.ChannelManager extends java.lang.Object implements com.trilead.ssh2.transport.MessageHandler
+{
+    private static final com.trilead.ssh2.log.Logger log;
+    private com.trilead.ssh2.AuthAgentCallback authAgent;
+    private java.util.Vector channels;
+    private int globalFailedCounter;
+    private int globalSuccessCounter;
+    private java.util.Vector listenerThreads;
+    private boolean listenerThreadsAllowed;
+    private int nextLocalChannel;
+    private java.util.HashMap remoteForwardings;
+    private boolean shutdown;
+    private com.trilead.ssh2.transport.TransportManager tm;
+    private java.util.HashMap x11_magic_cookies;
+
+    static void <clinit>()
+    {
+        com.trilead.ssh2.log.Logger $r0;
+
+        $r0 = staticinvoke <com.trilead.ssh2.log.Logger: com.trilead.ssh2.log.Logger getLogger(java.lang.Class)>(class "com/trilead/ssh2/channel/ChannelManager");
+
+        <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log> = $r0;
+
+        return;
+    }
+
+    public void <init>(com.trilead.ssh2.transport.TransportManager)
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.transport.TransportManager $r1;
+        java.util.HashMap $r2;
+        java.util.Vector $r3;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.transport.TransportManager;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap x11_magic_cookies> = $r2;
+
+        $r3 = new java.util.Vector;
+
+        specialinvoke $r3.<java.util.Vector: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels> = $r3;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int nextLocalChannel> = 100;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: boolean shutdown> = 0;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter> = 0;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter> = 0;
+
+        $r2 = new java.util.HashMap;
+
+        specialinvoke $r2.<java.util.HashMap: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings> = $r2;
+
+        $r3 = new java.util.Vector;
+
+        specialinvoke $r3.<java.util.Vector: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector listenerThreads> = $r3;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: boolean listenerThreadsAllowed> = 1;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm> = $r1;
+
+        virtualinvoke $r1.<com.trilead.ssh2.transport.TransportManager: void registerMessageHandler(com.trilead.ssh2.transport.MessageHandler,int,int)>($r0, 80, 100);
+
+        return;
+    }
+
+    private int addChannel(com.trilead.ssh2.channel.Channel)
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        java.util.Vector $r2, $r3;
+        int $i0, $i1;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r3;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        virtualinvoke $r2.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+
+        $i1 = $r0.<com.trilead.ssh2.channel.ChannelManager: int nextLocalChannel>;
+
+        $i0 = $i1 + 1;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int nextLocalChannel> = $i0;
+
+        exitmonitor $r3;
+
+     label2:
+        return $i1;
+
+     label3:
+        $r4 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label4:
+        throw $r4;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    private com.trilead.ssh2.channel.Channel getChannel(int)
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        int $i0, $i1, $i2;
+        java.util.Vector $r1, $r2;
+        java.lang.Object $r3;
+        com.trilead.ssh2.channel.Channel $r4;
+        java.lang.Throwable $r5;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $i0 := @parameter0: int;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r2;
+
+        $i1 = 0;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        $i2 = virtualinvoke $r1.<java.util.Vector: int size()>();
+
+        if $i1 >= $i2 goto label5;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        $r3 = virtualinvoke $r1.<java.util.Vector: java.lang.Object elementAt(int)>($i1);
+
+        $r4 = (com.trilead.ssh2.channel.Channel) $r3;
+
+        $i2 = $r4.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        if $i2 != $i0 goto label3;
+
+        exitmonitor $r2;
+
+     label2:
+        return $r4;
+
+     label3:
+        $i1 = $i1 + 1;
+
+     label4:
+        goto label1;
+
+     label5:
+        exitmonitor $r2;
+
+     label6:
+        return null;
+
+     label7:
+        $r5 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label8:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label2 with label7;
+        catch java.lang.Throwable from label4 to label6 with label7;
+        catch java.lang.Throwable from label7 to label8 with label7;
+    }
+
+    private void removeChannel(int)
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        int $i0, $i1, $i2;
+        java.util.Vector $r1, $r2;
+        java.lang.Object $r3;
+        com.trilead.ssh2.channel.Channel $r4;
+        java.lang.Throwable $r5;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $i0 := @parameter0: int;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r2;
+
+        $i1 = 0;
+
+     label1:
+        $r1 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        $i2 = virtualinvoke $r1.<java.util.Vector: int size()>();
+
+        if $i1 >= $i2 goto label2;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        $r3 = virtualinvoke $r1.<java.util.Vector: java.lang.Object elementAt(int)>($i1);
+
+        $r4 = (com.trilead.ssh2.channel.Channel) $r3;
+
+        $i2 = $r4.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        if $i2 != $i0 goto label4;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        virtualinvoke $r1.<java.util.Vector: void removeElementAt(int)>($i1);
+
+     label2:
+        exitmonitor $r2;
+
+     label3:
+        return;
+
+     label4:
+        $i1 = $i1 + 1;
+
+     label5:
+        goto label1;
+
+     label6:
+        $r5 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label7:
+        throw $r5;
+
+        catch java.lang.Throwable from label1 to label3 with label6;
+        catch java.lang.Throwable from label5 to label7 with label6;
+    }
+
+    private final boolean waitForChannelRequestResult(com.trilead.ssh2.channel.Channel) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        java.lang.String $r2, $r3;
+        int $i0;
+        java.lang.StringBuilder $r4;
+        java.io.IOException $r5;
+        java.lang.Throwable $r6;
+        java.lang.InterruptedException $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        entermonitor $r1;
+
+     label01:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int successCounter>;
+
+        if $i0 != 0 goto label10;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int failedCounter>;
+
+        if $i0 != 0 goto label10;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i0 == 2 goto label07;
+
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+     label02:
+        $r2 = $r3;
+
+     label03:
+        if $r3 != null goto label04;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("state: ");
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label04:
+        $r5 = new java.io.IOException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("This SSH2 channel is not open (");
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r5;
+
+     label05:
+        $r6 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label06:
+        throw $r6;
+
+     label07:
+        virtualinvoke $r1.<java.lang.Object: void wait()>();
+
+     label08:
+        goto label01;
+
+     label09:
+        $r7 := @caughtexception;
+
+        goto label01;
+
+     label10:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int failedCounter>;
+
+        if $i0 != 0 goto label12;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int successCounter>;
+
+        if $i0 != 1 goto label12;
+
+        exitmonitor $r1;
+
+     label11:
+        return 1;
+
+     label12:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int failedCounter>;
+
+        if $i0 != 1 goto label14;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int successCounter>;
+
+        if $i0 != 0 goto label14;
+
+        exitmonitor $r1;
+
+     label13:
+        return 0;
+
+     label14:
+        $r5 = new java.io.IOException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal state. The server sent ");
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int successCounter>;
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" SSH_MSG_CHANNEL_SUCCESS and ");
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int failedCounter>;
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" SSH_MSG_CHANNEL_FAILURE messages.");
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r5;
+
+     label15:
+        nop;
+
+        catch java.lang.Throwable from label01 to label02 with label05;
+        catch java.lang.Throwable from label03 to label06 with label05;
+        catch java.lang.InterruptedException from label07 to label08 with label09;
+        catch java.lang.Throwable from label07 to label08 with label05;
+        catch java.lang.Throwable from label10 to label11 with label05;
+        catch java.lang.Throwable from label12 to label13 with label05;
+        catch java.lang.Throwable from label14 to label15 with label05;
+    }
+
+    private final boolean waitForGlobalRequestResult() throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        java.util.Vector $r1, $r5;
+        int $i0;
+        java.lang.StringBuilder $r2;
+        boolean $z0;
+        java.io.IOException $r3;
+        java.lang.Throwable $r4;
+        java.lang.InterruptedException $r6;
+        java.lang.String $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r1;
+
+     label01:
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter>;
+
+        if $i0 != 0 goto label08;
+
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter>;
+
+        if $i0 != 0 goto label08;
+
+        $z0 = $r0.<com.trilead.ssh2.channel.ChannelManager: boolean shutdown>;
+
+        if $z0 == 0 goto label04;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("The connection is being shutdown");
+
+        throw $r3;
+
+     label02:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label03:
+        throw $r4;
+
+     label04:
+        $r5 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+     label05:
+        virtualinvoke $r5.<java.lang.Object: void wait()>();
+
+     label06:
+        goto label01;
+
+     label07:
+        $r6 := @caughtexception;
+
+        goto label01;
+
+     label08:
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter>;
+
+        if $i0 != 0 goto label10;
+
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter>;
+
+        if $i0 != 1 goto label10;
+
+        exitmonitor $r1;
+
+     label09:
+        return 1;
+
+     label10:
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter>;
+
+        if $i0 != 1 goto label12;
+
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter>;
+
+        if $i0 != 0 goto label12;
+
+        exitmonitor $r1;
+
+     label11:
+        return 0;
+
+     label12:
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Illegal state. The server sent ");
+
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" SSH_MSG_REQUEST_SUCCESS and ");
+
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" SSH_MSG_REQUEST_FAILURE messages.");
+
+        $r7 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r7);
+
+        throw $r3;
+
+     label13:
+        nop;
+
+        catch java.lang.Throwable from label01 to label03 with label02;
+        catch java.lang.InterruptedException from label05 to label06 with label07;
+        catch java.lang.Throwable from label04 to label06 with label02;
+        catch java.lang.Throwable from label08 to label09 with label02;
+        catch java.lang.Throwable from label10 to label11 with label02;
+        catch java.lang.Throwable from label12 to label13 with label02;
+    }
+
+    private void waitUntilChannelOpen(com.trilead.ssh2.channel.Channel) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        java.lang.String $r2, $r3;
+        int $i0;
+        java.lang.InterruptedException $r4;
+        java.lang.StringBuilder $r5;
+        java.io.IOException $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        entermonitor $r1;
+
+     label01:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+     label02:
+        if $i0 != 1 goto label06;
+
+     label03:
+        virtualinvoke $r1.<java.lang.Object: void wait()>();
+
+     label04:
+        goto label01;
+
+     label05:
+        $r4 := @caughtexception;
+
+        goto label01;
+
+     label06:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i0 == 2 goto label12;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void removeChannel(int)>($i0);
+
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+     label07:
+        $r2 = $r3;
+
+     label08:
+        if $r3 != null goto label09;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("state: ");
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label09:
+        $r6 = new java.io.IOException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Could not open channel (");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r6;
+
+     label10:
+        $r7 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label11:
+        throw $r7;
+
+     label12:
+        exitmonitor $r1;
+
+     label13:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label10;
+        catch java.lang.InterruptedException from label03 to label04 with label05;
+        catch java.lang.Throwable from label03 to label04 with label10;
+        catch java.lang.Throwable from label06 to label07 with label10;
+        catch java.lang.Throwable from label08 to label11 with label10;
+        catch java.lang.Throwable from label12 to label13 with label10;
+    }
+
+    public com.trilead.ssh2.channel.X11ServerData checkX11Cookie(java.lang.String)
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        java.lang.String $r1;
+        java.util.HashMap $r2, $r3;
+        java.lang.Object $r4;
+        com.trilead.ssh2.channel.X11ServerData $r5;
+        java.lang.Throwable $r6;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap x11_magic_cookies>;
+
+        entermonitor $r3;
+
+        if $r1 == null goto label3;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap x11_magic_cookies>;
+
+        $r4 = virtualinvoke $r2.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r1);
+
+        $r5 = (com.trilead.ssh2.channel.X11ServerData) $r4;
+
+        exitmonitor $r3;
+
+     label2:
+        return $r5;
+
+     label3:
+        exitmonitor $r3;
+
+     label4:
+        return null;
+
+     label5:
+        $r6 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label6:
+        throw $r6;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label5 to label6 with label5;
+    }
+
+    public void closeAllChannels()
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        int $i0, $i1;
+        com.trilead.ssh2.log.Logger $r1;
+        boolean $z0;
+        java.util.Vector $r2, $r3;
+        java.lang.Object $r4;
+        com.trilead.ssh2.channel.Channel $r5;
+        java.lang.Throwable $r6;
+        java.io.IOException $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r1.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label01;
+
+        $r1 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r1.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, "Closing all channels");
+
+     label01:
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r2;
+
+     label02:
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        $r4 = virtualinvoke $r3.<java.util.Vector: java.lang.Object clone()>();
+
+        $r3 = (java.util.Vector) $r4;
+
+        exitmonitor $r2;
+
+     label03:
+        $i0 = 0;
+
+     label04:
+        $i1 = virtualinvoke $r3.<java.util.Vector: int size()>();
+
+        if $i0 >= $i1 goto label11;
+
+        $r4 = virtualinvoke $r3.<java.util.Vector: java.lang.Object elementAt(int)>($i0);
+
+        $r5 = (com.trilead.ssh2.channel.Channel) $r4;
+
+     label05:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r5, "Closing all channels", 1);
+
+     label06:
+        $i0 = $i0 + 1;
+
+        goto label04;
+
+     label07:
+        $r6 := @caughtexception;
+
+     label08:
+        exitmonitor $r2;
+
+     label09:
+        throw $r6;
+
+     label10:
+        $r7 := @caughtexception;
+
+        goto label06;
+
+     label11:
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label07;
+        catch java.io.IOException from label05 to label06 with label10;
+        catch java.lang.Throwable from label08 to label09 with label07;
+    }
+
+    public void closeChannel(com.trilead.ssh2.channel.Channel, java.lang.String, boolean) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        java.lang.String $r2;
+        boolean $z0;
+        byte[] $r3;
+        int $i0;
+        byte $b1;
+        java.lang.Object $r4;
+        java.lang.Throwable $r5, $r9;
+        com.trilead.ssh2.transport.TransportManager $r6;
+        com.trilead.ssh2.log.Logger $r7;
+        java.lang.StringBuilder $r8;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $z0 := @parameter2: boolean;
+
+        $r3 = newarray (byte)[5];
+
+        entermonitor $r1;
+
+        if $z0 == 0 goto label02;
+
+     label01:
+        $r1.<com.trilead.ssh2.channel.Channel: int state> = 4;
+
+        $r1.<com.trilead.ssh2.channel.Channel: boolean EOF> = 1;
+
+     label02:
+        virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: void setReasonClosed(java.lang.String)>($r2);
+
+        $r3[0] = 97;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i0 = $i0 >> 24;
+
+        $b1 = (byte) $i0;
+
+        $r3[1] = $b1;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i0 = $i0 >> 16;
+
+        $b1 = (byte) $i0;
+
+        $r3[2] = $b1;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i0 = $i0 >> 8;
+
+        $b1 = (byte) $i0;
+
+        $r3[3] = $b1;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $b1 = (byte) $i0;
+
+        $r3[4] = $b1;
+
+        virtualinvoke $r1.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r1;
+
+     label03:
+        $r4 = $r1.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock>;
+
+        entermonitor $r4;
+
+     label04:
+        $z0 = $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent>;
+
+        if $z0 != 1 goto label09;
+
+        exitmonitor $r4;
+
+     label05:
+        return;
+
+     label06:
+        $r5 := @caughtexception;
+
+     label07:
+        exitmonitor $r1;
+
+     label08:
+        throw $r5;
+
+     label09:
+        $r6 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r6.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r3);
+
+        $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent> = 1;
+
+        exitmonitor $r4;
+
+     label10:
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r7.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label14;
+
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Sent SSH_MSG_CHANNEL_CLOSE (channel ");
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r2);
+
+        return;
+
+     label11:
+        $r9 := @caughtexception;
+
+     label12:
+        exitmonitor $r4;
+
+     label13:
+        throw $r9;
+
+     label14:
+        return;
+
+        catch java.lang.Throwable from label01 to label03 with label06;
+        catch java.lang.Throwable from label04 to label05 with label11;
+        catch java.lang.Throwable from label07 to label08 with label06;
+        catch java.lang.Throwable from label09 to label10 with label11;
+        catch java.lang.Throwable from label12 to label13 with label11;
+    }
+
+    public int getAvailable(com.trilead.ssh2.channel.Channel, boolean) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        boolean $z0;
+        int $i0, $i1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $z0 := @parameter1: boolean;
+
+        entermonitor $r1;
+
+        if $z0 == 0 goto label06;
+
+     label01:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        $i1 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+     label02:
+        $i0 = $i0 - $i1;
+
+     label03:
+        if $i0 <= 0 goto label08;
+
+     label04:
+        exitmonitor $r1;
+
+     label05:
+        return $i0;
+
+     label06:
+        $i1 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+     label07:
+        $i0 = $i1 - $i0;
+
+        goto label03;
+
+     label08:
+        $z0 = $r1.<com.trilead.ssh2.channel.Channel: boolean EOF>;
+
+     label09:
+        if $z0 == 0 goto label11;
+
+        $i0 = -1;
+
+     label10:
+        goto label04;
+
+     label11:
+        $i0 = 0;
+
+     label12:
+        goto label04;
+
+     label13:
+        $r2 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label14:
+        throw $r2;
+
+        catch java.lang.Throwable from label01 to label02 with label13;
+        catch java.lang.Throwable from label03 to label05 with label13;
+        catch java.lang.Throwable from label06 to label07 with label13;
+        catch java.lang.Throwable from label08 to label09 with label13;
+        catch java.lang.Throwable from label10 to label11 with label13;
+        catch java.lang.Throwable from label12 to label14 with label13;
+    }
+
+    public int getChannelData(com.trilead.ssh2.channel.Channel, boolean, byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        boolean $z0, $z1;
+        byte[] $r2, $r3;
+        int $i0, $i1, $i2, $i3, $i4, $i5;
+        java.lang.Throwable $r4, $r11;
+        java.lang.InterruptedException $r5;
+        com.trilead.ssh2.log.Logger $r6;
+        java.lang.StringBuilder $r7;
+        java.lang.String $r8;
+        java.lang.Object $r9;
+        byte $b6;
+        com.trilead.ssh2.transport.TransportManager $r10;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $z0 := @parameter1: boolean;
+
+        $r2 := @parameter2: byte[];
+
+        $i0 := @parameter3: int;
+
+        $i1 := @parameter4: int;
+
+        $i2 = 0;
+
+        entermonitor $r1;
+
+     label01:
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+        $i4 = $i4 - $i3;
+
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+     label02:
+        $i3 = $i3 - $i5;
+
+        if $z0 != 0 goto label08;
+
+        if $i4 == 0 goto label08;
+
+     label03:
+        if $z0 != 0 goto label18;
+
+        if $i4 <= $i1 goto label17;
+
+     label04:
+        $r3 = $r1.<com.trilead.ssh2.channel.Channel: byte[] stdoutBuffer>;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i5, $r2, $i0, $i1);
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+        $i5 = $i5 + $i1;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos> = $i5;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        if $i5 == $i4 goto label05;
+
+        $r3 = $r1.<com.trilead.ssh2.channel.Channel: byte[] stdoutBuffer>;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+        $r2 = $r1.<com.trilead.ssh2.channel.Channel: byte[] stdoutBuffer>;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+        $i4 = $i4 - $i3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i5, $r2, 0, $i4);
+
+     label05:
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+        $i5 = $i5 - $i4;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int stdoutWritepos> = $i5;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos> = 0;
+
+     label06:
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i5 == 2 goto label23;
+
+        exitmonitor $r1;
+
+     label07:
+        return $i1;
+
+     label08:
+        if $z0 == 0 goto label09;
+
+        if $i3 != 0 goto label03;
+
+     label09:
+        $z1 = $r1.<com.trilead.ssh2.channel.Channel: boolean EOF>;
+
+        if $z1 != 0 goto label10;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i5 == 2 goto label14;
+
+     label10:
+        exitmonitor $r1;
+
+     label11:
+        return -1;
+
+     label12:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label13:
+        throw $r4;
+
+     label14:
+        virtualinvoke $r1.<java.lang.Object: void wait()>();
+
+     label15:
+        goto label01;
+
+     label16:
+        $r5 := @caughtexception;
+
+        goto label01;
+
+     label17:
+        $i1 = $i4;
+
+        goto label04;
+
+     label18:
+        if $i3 <= $i1 goto label21;
+
+     label19:
+        $r3 = $r1.<com.trilead.ssh2.channel.Channel: byte[] stderrBuffer>;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i5, $r2, $i0, $i1);
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+        $i5 = $i5 + $i1;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos> = $i5;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        if $i5 == $i4 goto label20;
+
+        $r3 = $r1.<com.trilead.ssh2.channel.Channel: byte[] stderrBuffer>;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+        $r2 = $r1.<com.trilead.ssh2.channel.Channel: byte[] stderrBuffer>;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+        $i4 = $i4 - $i3;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r3, $i5, $r2, 0, $i4);
+
+     label20:
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+        $i5 = $i5 - $i4;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int stderrWritepos> = $i5;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos> = 0;
+
+        goto label06;
+
+     label21:
+        $i1 = $i3;
+
+     label22:
+        goto label19;
+
+     label23:
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        if $i5 >= 15000 goto label24;
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        $i5 = 30000 - $i5;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        $i4 = 30000 - $i4;
+
+        $i4 = staticinvoke <java.lang.Math: int min(int,int)>($i5, $i4);
+
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        $i2 = $i4 - $i5;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int localWindow> = $i4;
+
+     label24:
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        exitmonitor $r1;
+
+     label25:
+        if $i2 <= 0 goto label29;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z1 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z1 == 0 goto label26;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r7 = new java.lang.StringBuilder;
+
+        specialinvoke $r7.<java.lang.StringBuilder: void <init>()>();
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Sending SSH_MSG_CHANNEL_WINDOW_ADJUST (channel ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r7 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r8 = virtualinvoke $r7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, $r8);
+
+     label26:
+        $r9 = $r1.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock>;
+
+        entermonitor $r9;
+
+     label27:
+        $r2 = $r1.<com.trilead.ssh2.channel.Channel: byte[] msgWindowAdjust>;
+
+        $r2[0] = 93;
+
+        $i5 = $i3 >> 24;
+
+        $b6 = (byte) $i5;
+
+        $r2[1] = $b6;
+
+        $i5 = $i3 >> 16;
+
+        $b6 = (byte) $i5;
+
+        $r2[2] = $b6;
+
+        $i5 = $i3 >> 8;
+
+        $b6 = (byte) $i5;
+
+        $r2[3] = $b6;
+
+        $b6 = (byte) $i3;
+
+        $r2[4] = $b6;
+
+        $i5 = $i2 >> 24;
+
+        $b6 = (byte) $i5;
+
+        $r2[5] = $b6;
+
+        $i5 = $i2 >> 16;
+
+        $b6 = (byte) $i5;
+
+        $r2[6] = $b6;
+
+        $i5 = $i2 >> 8;
+
+        $b6 = (byte) $i5;
+
+        $r2[7] = $b6;
+
+        $b6 = (byte) $i2;
+
+        $r2[8] = $b6;
+
+        $z1 = $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent>;
+
+        if $z1 != 0 goto label28;
+
+        $r10 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r10.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r2);
+
+     label28:
+        exitmonitor $r9;
+
+     label29:
+        return $i1;
+
+     label30:
+        $r11 := @caughtexception;
+
+        exitmonitor $r9;
+
+     label31:
+        throw $r11;
+
+        catch java.lang.Throwable from label01 to label02 with label12;
+        catch java.lang.Throwable from label04 to label07 with label12;
+        catch java.lang.Throwable from label08 to label11 with label12;
+        catch java.lang.Throwable from label12 to label13 with label12;
+        catch java.lang.InterruptedException from label14 to label15 with label16;
+        catch java.lang.Throwable from label14 to label15 with label12;
+        catch java.lang.Throwable from label19 to label21 with label12;
+        catch java.lang.Throwable from label22 to label25 with label12;
+        catch java.lang.Throwable from label27 to label29 with label30;
+        catch java.lang.Throwable from label30 to label31 with label30;
+    }
+
+    public void handleMessage(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i1;
+        com.trilead.ssh2.log.Logger $r2;
+        boolean $z0;
+        java.util.Vector $r3, $r4;
+        java.lang.Object $r5;
+        com.trilead.ssh2.channel.IChannelWorkerThread $r6;
+        com.trilead.ssh2.channel.Channel $r7;
+        java.lang.Throwable $r8, $r9, $r10;
+        byte $b2;
+        java.io.IOException $r11;
+        java.lang.StringBuilder $r12;
+        short $s3;
+        java.lang.String $r13;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $r1 != null goto label21;
+
+        $r2 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r2.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label01;
+
+        $r2 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r2.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, "HandleMessage: got shutdown");
+
+     label01:
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector listenerThreads>;
+
+        entermonitor $r3;
+
+        $i0 = 0;
+
+     label02:
+        $r4 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector listenerThreads>;
+
+        $i1 = virtualinvoke $r4.<java.util.Vector: int size()>();
+
+        if $i0 >= $i1 goto label05;
+
+        $r4 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector listenerThreads>;
+
+        $r5 = virtualinvoke $r4.<java.util.Vector: java.lang.Object elementAt(int)>($i0);
+
+        $r6 = (com.trilead.ssh2.channel.IChannelWorkerThread) $r5;
+
+        interfaceinvoke $r6.<com.trilead.ssh2.channel.IChannelWorkerThread: void stopWorking()>();
+
+     label03:
+        $i0 = $i0 + 1;
+
+     label04:
+        goto label02;
+
+     label05:
+        $r0.<com.trilead.ssh2.channel.ChannelManager: boolean listenerThreadsAllowed> = 0;
+
+        exitmonitor $r3;
+
+     label06:
+        $r4 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r4;
+
+     label07:
+        $r0.<com.trilead.ssh2.channel.ChannelManager: boolean shutdown> = 1;
+
+        $i1 = 0;
+
+     label08:
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        $i0 = virtualinvoke $r3.<java.util.Vector: int size()>();
+
+        if $i1 >= $i0 goto label19;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        $r5 = virtualinvoke $r3.<java.util.Vector: java.lang.Object elementAt(int)>($i1);
+
+        $r7 = (com.trilead.ssh2.channel.Channel) $r5;
+
+        entermonitor $r7;
+
+     label09:
+        $r7.<com.trilead.ssh2.channel.Channel: boolean EOF> = 1;
+
+        $r7.<com.trilead.ssh2.channel.Channel: int state> = 4;
+
+        virtualinvoke $r7.<com.trilead.ssh2.channel.Channel: void setReasonClosed(java.lang.String)>("The connection is being shutdown");
+
+        $r7.<com.trilead.ssh2.channel.Channel: boolean closeMessageRecv> = 1;
+
+        virtualinvoke $r7.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r7;
+
+     label10:
+        $i1 = $i1 + 1;
+
+        goto label08;
+
+     label11:
+        $r8 := @caughtexception;
+
+     label12:
+        exitmonitor $r3;
+
+     label13:
+        throw $r8;
+
+     label14:
+        $r9 := @caughtexception;
+
+     label15:
+        exitmonitor $r7;
+
+     label16:
+        throw $r9;
+
+     label17:
+        $r10 := @caughtexception;
+
+        exitmonitor $r4;
+
+     label18:
+        throw $r10;
+
+     label19:
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        virtualinvoke $r3.<java.util.Vector: void setSize(int)>(0);
+
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        virtualinvoke $r3.<java.util.Vector: void trimToSize()>();
+
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        virtualinvoke $r3.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r4;
+
+     label20:
+        return;
+
+     label21:
+        $b2 = $r1[0];
+
+        lookupswitch($b2)
+        {
+            case 80: goto label34;
+            case 81: goto label35;
+            case 82: goto label36;
+            case 83: goto label22;
+            case 84: goto label22;
+            case 85: goto label22;
+            case 86: goto label22;
+            case 87: goto label22;
+            case 88: goto label22;
+            case 89: goto label22;
+            case 90: goto label29;
+            case 91: goto label23;
+            case 92: goto label33;
+            case 93: goto label24;
+            case 94: goto label25;
+            case 95: goto label26;
+            case 96: goto label28;
+            case 97: goto label30;
+            case 98: goto label27;
+            case 99: goto label31;
+            case 100: goto label32;
+            default: goto label22;
+        };
+
+     label22:
+        $r11 = new java.io.IOException;
+
+        $r12 = new java.lang.StringBuilder;
+
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot handle unknown channel message ");
+
+        $b2 = $r1[0];
+
+        $s3 = $b2 & 255;
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($s3);
+
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r11.<java.io.IOException: void <init>(java.lang.String)>($r13);
+
+        throw $r11;
+
+     label23:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelOpenConfirmation(byte[],int)>($r1, $i0);
+
+        return;
+
+     label24:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelWindowAdjust(byte[],int)>($r1, $i0);
+
+        return;
+
+     label25:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelData(byte[],int)>($r1, $i0);
+
+        return;
+
+     label26:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelExtendedData(byte[],int)>($r1, $i0);
+
+        return;
+
+     label27:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelRequest(byte[],int)>($r1, $i0);
+
+        return;
+
+     label28:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelEOF(byte[],int)>($r1, $i0);
+
+        return;
+
+     label29:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelOpen(byte[],int)>($r1, $i0);
+
+        return;
+
+     label30:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelClose(byte[],int)>($r1, $i0);
+
+        return;
+
+     label31:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelSuccess(byte[],int)>($r1, $i0);
+
+        return;
+
+     label32:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelFailure(byte[],int)>($r1, $i0);
+
+        return;
+
+     label33:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgChannelOpenFailure(byte[],int)>($r1, $i0);
+
+        return;
+
+     label34:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgGlobalRequest(byte[],int)>($r1, $i0);
+
+        return;
+
+     label35:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgGlobalSuccess()>();
+
+        return;
+
+     label36:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void msgGlobalFailure()>();
+
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label11;
+        catch java.lang.Throwable from label04 to label06 with label11;
+        catch java.lang.Throwable from label07 to label09 with label17;
+        catch java.lang.Throwable from label09 to label10 with label14;
+        catch java.lang.Throwable from label12 to label13 with label11;
+        catch java.lang.Throwable from label15 to label16 with label14;
+        catch java.lang.Throwable from label16 to label18 with label17;
+        catch java.lang.Throwable from label19 to label20 with label17;
+    }
+
+    public void msgChannelClose(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i3;
+        java.lang.StringBuilder $r2;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        byte $b1;
+        short $s2;
+        com.trilead.ssh2.channel.Channel $r5;
+        com.trilead.ssh2.log.Logger $r6;
+        boolean $z0;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $i0 == 5 goto label1;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_CLOSE message has wrong size (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label1:
+        $b1 = $r1[1];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $s2 << 24;
+
+        $b1 = $r1[2];
+
+        $s2 = $b1 & 255;
+
+        $i3 = $s2 << 16;
+
+        $i3 = $i0 | $i3;
+
+        $b1 = $r1[3];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $s2 << 8;
+
+        $i3 = $i3 | $i0;
+
+        $b1 = $r1[4];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $i3 | $s2;
+
+        $r5 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i0);
+
+        if $r5 != null goto label2;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_CLOSE message for non-existent channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label2:
+        entermonitor $r5;
+
+     label3:
+        $r5.<com.trilead.ssh2.channel.Channel: boolean EOF> = 1;
+
+        $r5.<com.trilead.ssh2.channel.Channel: int state> = 4;
+
+        virtualinvoke $r5.<com.trilead.ssh2.channel.Channel: void setReasonClosed(java.lang.String)>("Close requested by remote");
+
+        $r5.<com.trilead.ssh2.channel.Channel: boolean closeMessageRecv> = 1;
+
+        $i3 = $r5.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void removeChannel(int)>($i3);
+
+        virtualinvoke $r5.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r5;
+
+     label4:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label8;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_CLOSE (channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r4);
+
+        return;
+
+     label5:
+        $r7 := @caughtexception;
+
+     label6:
+        exitmonitor $r5;
+
+     label7:
+        throw $r7;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public void msgChannelData(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1, $r8;
+        int $i0, $i1, $i2, $i5;
+        java.lang.StringBuilder $r2;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        byte $b3;
+        short $s4;
+        com.trilead.ssh2.channel.Channel $r5;
+        com.trilead.ssh2.log.Logger $r6;
+        boolean $z0;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $i0 > 9 goto label01;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_DATA message has wrong size (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label01:
+        $b3 = $r1[1];
+
+        $s4 = $b3 & 255;
+
+        $i2 = $s4 << 24;
+
+        $b3 = $r1[2];
+
+        $s4 = $b3 & 255;
+
+        $i1 = $s4 << 16;
+
+        $i2 = $i2 | $i1;
+
+        $b3 = $r1[3];
+
+        $s4 = $b3 & 255;
+
+        $i1 = $s4 << 8;
+
+        $i2 = $i2 | $i1;
+
+        $b3 = $r1[4];
+
+        $s4 = $b3 & 255;
+
+        $i1 = $i2 | $s4;
+
+        $b3 = $r1[5];
+
+        $s4 = $b3 & 255;
+
+        $i2 = $s4 << 24;
+
+        $b3 = $r1[6];
+
+        $s4 = $b3 & 255;
+
+        $i5 = $s4 << 16;
+
+        $i5 = $i2 | $i5;
+
+        $b3 = $r1[7];
+
+        $s4 = $b3 & 255;
+
+        $i2 = $s4 << 8;
+
+        $i5 = $i5 | $i2;
+
+        $b3 = $r1[8];
+
+        $s4 = $b3 & 255;
+
+        $i2 = $i5 | $s4;
+
+        $r5 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i1);
+
+        if $r5 != null goto label02;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_DATA message for non-existent channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label02:
+        $i5 = $i0 + -9;
+
+        if $i2 == $i5 goto label03;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_DATA message has wrong len (calculated ");
+
+        $i5 = $i0 + -9;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", got ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label03:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label04;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_DATA (channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, $r4);
+
+     label04:
+        entermonitor $r5;
+
+     label05:
+        $i5 = $r5.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i5 != 4 goto label07;
+
+        exitmonitor $r5;
+
+     label06:
+        return;
+
+     label07:
+        $i5 = $r5.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i5 == 2 goto label10;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_DATA, but channel is not in correct state (");
+
+        $i5 = $r5.<com.trilead.ssh2.channel.Channel: int state>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i5);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label08:
+        $r7 := @caughtexception;
+
+        exitmonitor $r5;
+
+     label09:
+        throw $r7;
+
+     label10:
+        $i5 = $r5.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        if $i5 >= $i2 goto label11;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Remote sent too much data, does not fit into window.");
+
+        throw $r3;
+
+     label11:
+        $i5 = $r5.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        $i5 = $i5 - $i2;
+
+        $r5.<com.trilead.ssh2.channel.Channel: int localWindow> = $i5;
+
+        $r8 = $r5.<com.trilead.ssh2.channel.Channel: byte[] stdoutBuffer>;
+
+        $i5 = $r5.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 9, $r8, $i5, $i2);
+
+        $i5 = $r5.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        $i5 = $i5 + $i2;
+
+        $r5.<com.trilead.ssh2.channel.Channel: int stdoutWritepos> = $i5;
+
+        virtualinvoke $r5.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r5;
+
+     label12:
+        return;
+
+        catch java.lang.Throwable from label05 to label06 with label08;
+        catch java.lang.Throwable from label07 to label09 with label08;
+        catch java.lang.Throwable from label10 to label12 with label08;
+    }
+
+    public void msgChannelEOF(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i3;
+        java.lang.StringBuilder $r2;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        byte $b1;
+        short $s2;
+        com.trilead.ssh2.channel.Channel $r5;
+        com.trilead.ssh2.log.Logger $r6;
+        boolean $z0;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $i0 == 5 goto label1;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_EOF message has wrong size (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label1:
+        $b1 = $r1[1];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $s2 << 24;
+
+        $b1 = $r1[2];
+
+        $s2 = $b1 & 255;
+
+        $i3 = $s2 << 16;
+
+        $i3 = $i0 | $i3;
+
+        $b1 = $r1[3];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $s2 << 8;
+
+        $i3 = $i3 | $i0;
+
+        $b1 = $r1[4];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $i3 | $s2;
+
+        $r5 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i0);
+
+        if $r5 != null goto label2;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_EOF message for non-existent channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label2:
+        entermonitor $r5;
+
+     label3:
+        $r5.<com.trilead.ssh2.channel.Channel: boolean EOF> = 1;
+
+        virtualinvoke $r5.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r5;
+
+     label4:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label8;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_EOF (channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r4);
+
+        return;
+
+     label5:
+        $r7 := @caughtexception;
+
+     label6:
+        exitmonitor $r5;
+
+     label7:
+        throw $r7;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public void msgChannelExtendedData(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1, $r8;
+        int $i0, $i1, $i2, $i3, $i6;
+        java.lang.StringBuilder $r2;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        byte $b4;
+        short $s5;
+        com.trilead.ssh2.channel.Channel $r5;
+        com.trilead.ssh2.log.Logger $r6;
+        boolean $z0;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $i0 > 13 goto label01;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_EXTENDED_DATA message has wrong size (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label01:
+        $b4 = $r1[1];
+
+        $s5 = $b4 & 255;
+
+        $i3 = $s5 << 24;
+
+        $b4 = $r1[2];
+
+        $s5 = $b4 & 255;
+
+        $i2 = $s5 << 16;
+
+        $i3 = $i3 | $i2;
+
+        $b4 = $r1[3];
+
+        $s5 = $b4 & 255;
+
+        $i2 = $s5 << 8;
+
+        $i3 = $i3 | $i2;
+
+        $b4 = $r1[4];
+
+        $s5 = $b4 & 255;
+
+        $i2 = $i3 | $s5;
+
+        $b4 = $r1[5];
+
+        $s5 = $b4 & 255;
+
+        $i3 = $s5 << 24;
+
+        $b4 = $r1[6];
+
+        $s5 = $b4 & 255;
+
+        $i1 = $s5 << 16;
+
+        $i3 = $i3 | $i1;
+
+        $b4 = $r1[7];
+
+        $s5 = $b4 & 255;
+
+        $i1 = $s5 << 8;
+
+        $i3 = $i3 | $i1;
+
+        $b4 = $r1[8];
+
+        $s5 = $b4 & 255;
+
+        $i1 = $i3 | $s5;
+
+        $b4 = $r1[9];
+
+        $s5 = $b4 & 255;
+
+        $i3 = $s5 << 24;
+
+        $b4 = $r1[10];
+
+        $s5 = $b4 & 255;
+
+        $i6 = $s5 << 16;
+
+        $i6 = $i3 | $i6;
+
+        $b4 = $r1[11];
+
+        $s5 = $b4 & 255;
+
+        $i3 = $s5 << 8;
+
+        $i6 = $i6 | $i3;
+
+        $b4 = $r1[12];
+
+        $s5 = $b4 & 255;
+
+        $i3 = $i6 | $s5;
+
+        $r5 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i2);
+
+        if $r5 != null goto label02;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_EXTENDED_DATA message for non-existent channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label02:
+        if $i1 == 1 goto label03;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_EXTENDED_DATA message has unknown type (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label03:
+        $i6 = $i0 + -13;
+
+        if $i3 == $i6 goto label04;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_EXTENDED_DATA message has wrong len (calculated ");
+
+        $i6 = $i0 + -13;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", got ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label04:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label05;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_EXTENDED_DATA (channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, $r4);
+
+     label05:
+        entermonitor $r5;
+
+     label06:
+        $i6 = $r5.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i6 != 4 goto label08;
+
+        exitmonitor $r5;
+
+     label07:
+        return;
+
+     label08:
+        $i6 = $r5.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i6 == 2 goto label11;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_EXTENDED_DATA, but channel is not in correct state (");
+
+        $i6 = $r5.<com.trilead.ssh2.channel.Channel: int state>;
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i6);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label09:
+        $r7 := @caughtexception;
+
+        exitmonitor $r5;
+
+     label10:
+        throw $r7;
+
+     label11:
+        $i6 = $r5.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        if $i6 >= $i3 goto label12;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Remote sent too much data, does not fit into window.");
+
+        throw $r3;
+
+     label12:
+        $i6 = $r5.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        $i6 = $i6 - $i3;
+
+        $r5.<com.trilead.ssh2.channel.Channel: int localWindow> = $i6;
+
+        $r8 = $r5.<com.trilead.ssh2.channel.Channel: byte[] stderrBuffer>;
+
+        $i6 = $r5.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, 13, $r8, $i6, $i3);
+
+        $i6 = $r5.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        $i6 = $i6 + $i3;
+
+        $r5.<com.trilead.ssh2.channel.Channel: int stderrWritepos> = $i6;
+
+        virtualinvoke $r5.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r5;
+
+     label13:
+        return;
+
+        catch java.lang.Throwable from label06 to label07 with label09;
+        catch java.lang.Throwable from label08 to label10 with label09;
+        catch java.lang.Throwable from label11 to label13 with label09;
+    }
+
+    public void msgChannelFailure(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i3;
+        java.lang.StringBuilder $r2;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        byte $b1;
+        short $s2;
+        com.trilead.ssh2.channel.Channel $r5;
+        com.trilead.ssh2.log.Logger $r6;
+        boolean $z0;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $i0 == 5 goto label1;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_FAILURE message has wrong size (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label1:
+        $b1 = $r1[1];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $s2 << 24;
+
+        $b1 = $r1[2];
+
+        $s2 = $b1 & 255;
+
+        $i3 = $s2 << 16;
+
+        $i3 = $i0 | $i3;
+
+        $b1 = $r1[3];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $s2 << 8;
+
+        $i3 = $i3 | $i0;
+
+        $b1 = $r1[4];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $i3 | $s2;
+
+        $r5 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i0);
+
+        if $r5 != null goto label2;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_FAILURE message for non-existent channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label2:
+        entermonitor $r5;
+
+     label3:
+        $i3 = $r5.<com.trilead.ssh2.channel.Channel: int failedCounter>;
+
+        $i3 = $i3 + 1;
+
+        $r5.<com.trilead.ssh2.channel.Channel: int failedCounter> = $i3;
+
+        virtualinvoke $r5.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r5;
+
+     label4:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label8;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_FAILURE (channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r4);
+
+        return;
+
+     label5:
+        $r7 := @caughtexception;
+
+     label6:
+        exitmonitor $r5;
+
+     label7:
+        throw $r7;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public void msgChannelOpen(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i1, $i2, $i3, $i5;
+        com.trilead.ssh2.channel.RemoteAcceptThread $r2;
+        com.trilead.ssh2.channel.Channel $r3;
+        java.util.HashMap $r4, $r11;
+        com.trilead.ssh2.channel.AuthAgentForwardThread $r5;
+        com.trilead.ssh2.packets.PacketChannelOpenFailure $r6;
+        com.trilead.ssh2.channel.RemoteX11AcceptThread $r7;
+        com.trilead.ssh2.packets.TypesReader $r8;
+        java.lang.String $r9, $r10, $r20;
+        boolean $z0;
+        com.trilead.ssh2.transport.TransportManager $r12;
+        com.trilead.ssh2.log.Logger $r13;
+        long $l4;
+        java.lang.Throwable $r14, $r15, $r19, $r21, $r23;
+        java.lang.Integer $r16;
+        java.lang.Object $r17;
+        com.trilead.ssh2.channel.RemoteForwardingData $r18;
+        com.trilead.ssh2.AuthAgentCallback $r22;
+        java.lang.StringBuilder $r24;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r8 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r8.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+        $r9 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $i0 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $i1 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $i2 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $r10 = "x11";
+
+        $z0 = virtualinvoke $r10.<java.lang.String: boolean equals(java.lang.Object)>($r9);
+
+        if $z0 == 0 goto label14;
+
+        $r4 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap x11_magic_cookies>;
+
+        entermonitor $r4;
+
+     label01:
+        $r11 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap x11_magic_cookies>;
+
+        $i3 = virtualinvoke $r11.<java.util.HashMap: int size()>();
+
+        if $i3 != 0 goto label04;
+
+        $r6 = new com.trilead.ssh2.packets.PacketChannelOpenFailure;
+
+        specialinvoke $r6.<com.trilead.ssh2.packets.PacketChannelOpenFailure: void <init>(int,int,java.lang.String,java.lang.String)>($i0, 1, "X11 forwarding not activated", "");
+
+        $r12 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r1 = virtualinvoke $r6.<com.trilead.ssh2.packets.PacketChannelOpenFailure: byte[] getPayload()>();
+
+        virtualinvoke $r12.<com.trilead.ssh2.transport.TransportManager: void sendAsynchronousMessage(byte[])>($r1);
+
+        $r13 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r13.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label02;
+
+        $r13 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r13.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, "Unexpected X11 request, denying it!");
+
+     label02:
+        exitmonitor $r4;
+
+     label03:
+        return;
+
+     label04:
+        exitmonitor $r4;
+
+     label05:
+        $r10 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $i3 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $r3 = new com.trilead.ssh2.channel.Channel;
+
+        specialinvoke $r3.<com.trilead.ssh2.channel.Channel: void <init>(com.trilead.ssh2.channel.ChannelManager)>($r0);
+
+        entermonitor $r3;
+
+     label06:
+        $r3.<com.trilead.ssh2.channel.Channel: int remoteID> = $i0;
+
+        $l4 = (long) $i1;
+
+        $l4 = $l4 & 4294967295L;
+
+        $r3.<com.trilead.ssh2.channel.Channel: long remoteWindow> = $l4;
+
+        $r3.<com.trilead.ssh2.channel.Channel: int remoteMaxPacketSize> = $i2;
+
+        $i2 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: int addChannel(com.trilead.ssh2.channel.Channel)>($r3);
+
+        $r3.<com.trilead.ssh2.channel.Channel: int localID> = $i2;
+
+        exitmonitor $r3;
+
+     label07:
+        $r7 = new com.trilead.ssh2.channel.RemoteX11AcceptThread;
+
+        specialinvoke $r7.<com.trilead.ssh2.channel.RemoteX11AcceptThread: void <init>(com.trilead.ssh2.channel.Channel,java.lang.String,int)>($r3, $r10, $i3);
+
+        virtualinvoke $r7.<com.trilead.ssh2.channel.RemoteX11AcceptThread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r7.<com.trilead.ssh2.channel.RemoteX11AcceptThread: void start()>();
+
+        return;
+
+     label08:
+        $r14 := @caughtexception;
+
+     label09:
+        exitmonitor $r4;
+
+     label10:
+        throw $r14;
+
+     label11:
+        $r15 := @caughtexception;
+
+     label12:
+        exitmonitor $r3;
+
+     label13:
+        throw $r15;
+
+     label14:
+        $r10 = "forwarded-tcpip";
+
+        $z0 = virtualinvoke $r10.<java.lang.String: boolean equals(java.lang.Object)>($r9);
+
+        if $z0 == 0 goto label26;
+
+        $r10 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $i3 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $r9 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $i5 = virtualinvoke $r8.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $r11 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        entermonitor $r11;
+
+     label15:
+        $r4 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        $r16 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i3);
+
+        $r17 = virtualinvoke $r4.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r16);
+
+        $r18 = (com.trilead.ssh2.channel.RemoteForwardingData) $r17;
+
+        exitmonitor $r11;
+
+     label16:
+        if $r18 != null goto label20;
+
+        $r6 = new com.trilead.ssh2.packets.PacketChannelOpenFailure;
+
+        specialinvoke $r6.<com.trilead.ssh2.packets.PacketChannelOpenFailure: void <init>(int,int,java.lang.String,java.lang.String)>($i0, 1, "No thanks, unknown port in forwarded-tcpip request", "");
+
+        $r12 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r1 = virtualinvoke $r6.<com.trilead.ssh2.packets.PacketChannelOpenFailure: byte[] getPayload()>();
+
+        virtualinvoke $r12.<com.trilead.ssh2.transport.TransportManager: void sendAsynchronousMessage(byte[])>($r1);
+
+        $r13 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r13.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label33;
+
+        $r13 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r13.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, "Unexpected forwarded-tcpip request, denying it!");
+
+        return;
+
+     label17:
+        $r19 := @caughtexception;
+
+     label18:
+        exitmonitor $r11;
+
+     label19:
+        throw $r19;
+
+     label20:
+        $r3 = new com.trilead.ssh2.channel.Channel;
+
+        specialinvoke $r3.<com.trilead.ssh2.channel.Channel: void <init>(com.trilead.ssh2.channel.ChannelManager)>($r0);
+
+        entermonitor $r3;
+
+     label21:
+        $r3.<com.trilead.ssh2.channel.Channel: int remoteID> = $i0;
+
+        $l4 = (long) $i1;
+
+        $l4 = $l4 & 4294967295L;
+
+        $r3.<com.trilead.ssh2.channel.Channel: long remoteWindow> = $l4;
+
+        $r3.<com.trilead.ssh2.channel.Channel: int remoteMaxPacketSize> = $i2;
+
+        $i2 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: int addChannel(com.trilead.ssh2.channel.Channel)>($r3);
+
+        $r3.<com.trilead.ssh2.channel.Channel: int localID> = $i2;
+
+        exitmonitor $r3;
+
+     label22:
+        $r2 = new com.trilead.ssh2.channel.RemoteAcceptThread;
+
+        $r20 = $r18.<com.trilead.ssh2.channel.RemoteForwardingData: java.lang.String targetAddress>;
+
+        $i2 = $r18.<com.trilead.ssh2.channel.RemoteForwardingData: int targetPort>;
+
+        specialinvoke $r2.<com.trilead.ssh2.channel.RemoteAcceptThread: void <init>(com.trilead.ssh2.channel.Channel,java.lang.String,int,java.lang.String,int,java.lang.String,int)>($r3, $r10, $i3, $r9, $i5, $r20, $i2);
+
+        virtualinvoke $r2.<com.trilead.ssh2.channel.RemoteAcceptThread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r2.<com.trilead.ssh2.channel.RemoteAcceptThread: void start()>();
+
+        return;
+
+     label23:
+        $r21 := @caughtexception;
+
+     label24:
+        exitmonitor $r3;
+
+     label25:
+        throw $r21;
+
+     label26:
+        $r20 = "auth-agent@openssh.com";
+
+        $z0 = virtualinvoke $r20.<java.lang.String: boolean equals(java.lang.Object)>($r9);
+
+        if $z0 == 0 goto label32;
+
+        $r3 = new com.trilead.ssh2.channel.Channel;
+
+        specialinvoke $r3.<com.trilead.ssh2.channel.Channel: void <init>(com.trilead.ssh2.channel.ChannelManager)>($r0);
+
+        entermonitor $r3;
+
+     label27:
+        $r3.<com.trilead.ssh2.channel.Channel: int remoteID> = $i0;
+
+        $l4 = (long) $i1;
+
+        $l4 = $l4 & 4294967295L;
+
+        $r3.<com.trilead.ssh2.channel.Channel: long remoteWindow> = $l4;
+
+        $r3.<com.trilead.ssh2.channel.Channel: int remoteMaxPacketSize> = $i2;
+
+        $i5 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: int addChannel(com.trilead.ssh2.channel.Channel)>($r3);
+
+        $r3.<com.trilead.ssh2.channel.Channel: int localID> = $i5;
+
+        exitmonitor $r3;
+
+     label28:
+        $r5 = new com.trilead.ssh2.channel.AuthAgentForwardThread;
+
+        $r22 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        specialinvoke $r5.<com.trilead.ssh2.channel.AuthAgentForwardThread: void <init>(com.trilead.ssh2.channel.Channel,com.trilead.ssh2.AuthAgentCallback)>($r3, $r22);
+
+        virtualinvoke $r5.<com.trilead.ssh2.channel.AuthAgentForwardThread: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r5.<com.trilead.ssh2.channel.AuthAgentForwardThread: void start()>();
+
+        return;
+
+     label29:
+        $r23 := @caughtexception;
+
+     label30:
+        exitmonitor $r3;
+
+     label31:
+        throw $r23;
+
+     label32:
+        $r6 = new com.trilead.ssh2.packets.PacketChannelOpenFailure;
+
+        specialinvoke $r6.<com.trilead.ssh2.packets.PacketChannelOpenFailure: void <init>(int,int,java.lang.String,java.lang.String)>($i0, 3, "Unknown channel type", "");
+
+        $r12 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r1 = virtualinvoke $r6.<com.trilead.ssh2.packets.PacketChannelOpenFailure: byte[] getPayload()>();
+
+        virtualinvoke $r12.<com.trilead.ssh2.transport.TransportManager: void sendAsynchronousMessage(byte[])>($r1);
+
+        $r13 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r13.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label34;
+
+        $r13 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r24 = new java.lang.StringBuilder;
+
+        specialinvoke $r24.<java.lang.StringBuilder: void <init>()>();
+
+        $r24 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The peer tried to open an unsupported channel type (");
+
+        $r24 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r24 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r20 = virtualinvoke $r24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r13.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(20, $r20);
+
+        return;
+
+     label33:
+        return;
+
+     label34:
+        return;
+
+        catch java.lang.Throwable from label01 to label03 with label08;
+        catch java.lang.Throwable from label04 to label05 with label08;
+        catch java.lang.Throwable from label06 to label07 with label11;
+        catch java.lang.Throwable from label09 to label10 with label08;
+        catch java.lang.Throwable from label12 to label13 with label11;
+        catch java.lang.Throwable from label15 to label16 with label17;
+        catch java.lang.Throwable from label18 to label19 with label17;
+        catch java.lang.Throwable from label21 to label22 with label23;
+        catch java.lang.Throwable from label24 to label25 with label23;
+        catch java.lang.Throwable from label27 to label28 with label29;
+        catch java.lang.Throwable from label30 to label31 with label29;
+    }
+
+    public void msgChannelOpenConfirmation(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0;
+        com.trilead.ssh2.packets.PacketChannelOpenConfirmation $r2;
+        java.lang.StringBuilder $r3;
+        com.trilead.ssh2.channel.Channel $r4;
+        java.io.IOException $r5;
+        java.lang.String $r6;
+        java.lang.Throwable $r7;
+        long $l1;
+        com.trilead.ssh2.log.Logger $r8;
+        boolean $z0;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r2 = new com.trilead.ssh2.packets.PacketChannelOpenConfirmation;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        $i0 = $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: int recipientChannelID>;
+
+        $r4 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i0);
+
+        if $r4 != null goto label1;
+
+        $r5 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_OPEN_CONFIRMATION message for non-existent channel ");
+
+        $i0 = $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: int recipientChannelID>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r6);
+
+        throw $r5;
+
+     label1:
+        entermonitor $r4;
+
+     label2:
+        $i0 = $r4.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i0 == 1 goto label5;
+
+        $r5 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_OPEN_CONFIRMATION message for channel ");
+
+        $i0 = $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: int recipientChannelID>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r6);
+
+        throw $r5;
+
+     label3:
+        $r7 := @caughtexception;
+
+        exitmonitor $r4;
+
+     label4:
+        throw $r7;
+
+     label5:
+        $i0 = $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: int senderChannelID>;
+
+        $r4.<com.trilead.ssh2.channel.Channel: int remoteID> = $i0;
+
+        $i0 = $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: int initialWindowSize>;
+
+        $l1 = (long) $i0;
+
+        $l1 = $l1 & 4294967295L;
+
+        $r4.<com.trilead.ssh2.channel.Channel: long remoteWindow> = $l1;
+
+        $i0 = $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: int maxPacketSize>;
+
+        $r4.<com.trilead.ssh2.channel.Channel: int remoteMaxPacketSize> = $i0;
+
+        $r4.<com.trilead.ssh2.channel.Channel: int state> = 2;
+
+        virtualinvoke $r4.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r4;
+
+     label6:
+        $r8 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r8.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label7;
+
+        $r8 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_OPEN_CONFIRMATION (channel ");
+
+        $i0 = $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: int recipientChannelID>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" / remote: ");
+
+        $i0 = $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: int senderChannelID>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r8.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r6);
+
+        return;
+
+     label7:
+        return;
+
+        catch java.lang.Throwable from label2 to label4 with label3;
+        catch java.lang.Throwable from label5 to label6 with label3;
+    }
+
+    public void msgChannelOpenFailure(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i1, $i2;
+        java.lang.StringBuffer $r2;
+        java.lang.String $r3, $r8;
+        com.trilead.ssh2.packets.TypesReader $r4;
+        java.lang.StringBuilder $r5;
+        java.io.IOException $r6;
+        com.trilead.ssh2.channel.Channel $r7;
+        char $c3;
+        com.trilead.ssh2.log.Logger $r9;
+        boolean $z0;
+        java.lang.Throwable $r10;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $i0 >= 5 goto label01;
+
+        $r6 = new java.io.IOException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_OPEN_FAILURE message has wrong size (");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r6;
+
+     label01:
+        $r4 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r4.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+        $i1 = virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $r7 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i1);
+
+        if $r7 != null goto label02;
+
+        $r6 = new java.io.IOException;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_OPEN_FAILURE message for non-existent channel ");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r6.<java.io.IOException: void <init>(java.lang.String)>($r3);
+
+        throw $r6;
+
+     label02:
+        $i0 = virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $r8 = virtualinvoke $r4.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString(java.lang.String)>("UTF-8");
+
+        lookupswitch($i0)
+        {
+            case 1: goto label07;
+            case 2: goto label08;
+            case 3: goto label09;
+            case 4: goto label10;
+            default: goto label03;
+        };
+
+     label03:
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("UNKNOWN REASON CODE (");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r3 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label04:
+        $r2 = new java.lang.StringBuffer;
+
+        specialinvoke $r2.<java.lang.StringBuffer: void <init>()>();
+
+        virtualinvoke $r2.<java.lang.StringBuffer: java.lang.StringBuffer append(java.lang.String)>($r8);
+
+        $i0 = 0;
+
+     label05:
+        $i2 = virtualinvoke $r2.<java.lang.StringBuffer: int length()>();
+
+        if $i0 >= $i2 goto label12;
+
+        $c3 = virtualinvoke $r2.<java.lang.StringBuffer: char charAt(int)>($i0);
+
+        if $c3 < 32 goto label11;
+
+        if $c3 > 126 goto label11;
+
+     label06:
+        $i0 = $i0 + 1;
+
+        goto label05;
+
+     label07:
+        $r3 = "SSH_OPEN_ADMINISTRATIVELY_PROHIBITED";
+
+        goto label04;
+
+     label08:
+        $r3 = "SSH_OPEN_CONNECT_FAILED";
+
+        goto label04;
+
+     label09:
+        $r3 = "SSH_OPEN_UNKNOWN_CHANNEL_TYPE";
+
+        goto label04;
+
+     label10:
+        $r3 = "SSH_OPEN_RESOURCE_SHORTAGE";
+
+        goto label04;
+
+     label11:
+        virtualinvoke $r2.<java.lang.StringBuffer: void setCharAt(int,char)>($i0, 65533);
+
+        goto label06;
+
+     label12:
+        entermonitor $r7;
+
+     label13:
+        $r7.<com.trilead.ssh2.channel.Channel: boolean EOF> = 1;
+
+        $r7.<com.trilead.ssh2.channel.Channel: int state> = 4;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("The server refused to open the channel (");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r3);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", \'");
+
+        $r8 = virtualinvoke $r2.<java.lang.StringBuffer: java.lang.String toString()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\')");
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r7.<com.trilead.ssh2.channel.Channel: void setReasonClosed(java.lang.String)>($r8);
+
+        virtualinvoke $r7.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r7;
+
+     label14:
+        $r9 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r9.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label18;
+
+        $r9 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_OPEN_FAILURE (channel ");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r9.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r8);
+
+        return;
+
+     label15:
+        $r10 := @caughtexception;
+
+     label16:
+        exitmonitor $r7;
+
+     label17:
+        throw $r10;
+
+     label18:
+        return;
+
+        catch java.lang.Throwable from label13 to label14 with label15;
+        catch java.lang.Throwable from label16 to label17 with label15;
+    }
+
+    public void msgChannelRequest(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i1, $i2;
+        com.trilead.ssh2.packets.TypesReader $r2;
+        java.lang.StringBuilder $r3;
+        com.trilead.ssh2.channel.Channel $r4;
+        java.io.IOException $r5;
+        java.lang.String $r6, $r8;
+        boolean $z0, $z1;
+        com.trilead.ssh2.log.Logger $r7;
+        java.lang.Integer $r9;
+        java.lang.Throwable $r10, $r11;
+        byte $b3;
+        com.trilead.ssh2.transport.TransportManager $r12;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r2 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+        $i0 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $r4 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i0);
+
+        if $r4 != null goto label01;
+
+        $r5 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_REQUEST message for non-existent channel ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r6);
+
+        throw $r5;
+
+     label01:
+        $r6 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString(java.lang.String)>("US-ASCII");
+
+        $z0 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: boolean readBoolean()>();
+
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z1 = virtualinvoke $r7.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z1 == 0 goto label02;
+
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_REQUEST (channel ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", \'");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\')");
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, $r8);
+
+     label02:
+        $z1 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("exit-status");
+
+        if $z1 == 0 goto label10;
+
+        if $z0 == 0 goto label03;
+
+        $r5 = new java.io.IOException;
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>("Badly formatted SSH_MSG_CHANNEL_REQUEST message, \'want reply\' is true");
+
+        throw $r5;
+
+     label03:
+        $i1 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int readUINT32()>();
+
+        $i2 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int remain()>();
+
+        if $i2 == 0 goto label04;
+
+        $r5 = new java.io.IOException;
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>("Badly formatted SSH_MSG_CHANNEL_REQUEST message");
+
+        throw $r5;
+
+     label04:
+        entermonitor $r4;
+
+     label05:
+        $r9 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i1);
+
+        $r4.<com.trilead.ssh2.channel.Channel: java.lang.Integer exit_status> = $r9;
+
+        virtualinvoke $r4.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r4;
+
+     label06:
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z1 = virtualinvoke $r7.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z1 == 0 goto label20;
+
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got EXIT STATUS (channel ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", status ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r8);
+
+        return;
+
+     label07:
+        $r10 := @caughtexception;
+
+     label08:
+        exitmonitor $r4;
+
+     label09:
+        throw $r10;
+
+     label10:
+        $z1 = virtualinvoke $r6.<java.lang.String: boolean equals(java.lang.Object)>("exit-signal");
+
+        if $z1 == 0 goto label18;
+
+        if $z0 == 0 goto label11;
+
+        $r5 = new java.io.IOException;
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>("Badly formatted SSH_MSG_CHANNEL_REQUEST message, \'want reply\' is true");
+
+        throw $r5;
+
+     label11:
+        $r8 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString(java.lang.String)>("US-ASCII");
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: boolean readBoolean()>();
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $i2 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int remain()>();
+
+        if $i2 == 0 goto label12;
+
+        $r5 = new java.io.IOException;
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>("Badly formatted SSH_MSG_CHANNEL_REQUEST message");
+
+        throw $r5;
+
+     label12:
+        entermonitor $r4;
+
+     label13:
+        $r4.<com.trilead.ssh2.channel.Channel: java.lang.String exit_signal> = $r8;
+
+        virtualinvoke $r4.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r4;
+
+     label14:
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z1 = virtualinvoke $r7.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z1 == 0 goto label21;
+
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got EXIT SIGNAL (channel ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", signal ");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r8);
+
+        return;
+
+     label15:
+        $r11 := @caughtexception;
+
+     label16:
+        exitmonitor $r4;
+
+     label17:
+        throw $r11;
+
+     label18:
+        if $z0 == 0 goto label19;
+
+        $r1 = newarray (byte)[5];
+
+        $r1[0] = 100;
+
+        $i2 = $r4.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i2 = $i2 >> 24;
+
+        $b3 = (byte) $i2;
+
+        $r1[1] = $b3;
+
+        $i2 = $r4.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i2 = $i2 >> 16;
+
+        $b3 = (byte) $i2;
+
+        $r1[2] = $b3;
+
+        $i2 = $r4.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i2 = $i2 >> 8;
+
+        $b3 = (byte) $i2;
+
+        $r1[3] = $b3;
+
+        $i2 = $r4.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $b3 = (byte) $i2;
+
+        $r1[4] = $b3;
+
+        $r12 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r12.<com.trilead.ssh2.transport.TransportManager: void sendAsynchronousMessage(byte[])>($r1);
+
+     label19:
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z1 = virtualinvoke $r7.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z1 == 0 goto label22;
+
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Channel request \'");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\' is not known, ignoring it");
+
+        $r8 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r8);
+
+        return;
+
+     label20:
+        return;
+
+     label21:
+        return;
+
+     label22:
+        return;
+
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.lang.Throwable from label08 to label09 with label07;
+        catch java.lang.Throwable from label13 to label14 with label15;
+        catch java.lang.Throwable from label16 to label17 with label15;
+    }
+
+    public void msgChannelSuccess(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i3;
+        java.lang.StringBuilder $r2;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        byte $b1;
+        short $s2;
+        com.trilead.ssh2.channel.Channel $r5;
+        com.trilead.ssh2.log.Logger $r6;
+        boolean $z0;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $i0 == 5 goto label1;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_SUCCESS message has wrong size (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label1:
+        $b1 = $r1[1];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $s2 << 24;
+
+        $b1 = $r1[2];
+
+        $s2 = $b1 & 255;
+
+        $i3 = $s2 << 16;
+
+        $i3 = $i0 | $i3;
+
+        $b1 = $r1[3];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $s2 << 8;
+
+        $i3 = $i3 | $i0;
+
+        $b1 = $r1[4];
+
+        $s2 = $b1 & 255;
+
+        $i0 = $i3 | $s2;
+
+        $r5 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i0);
+
+        if $r5 != null goto label2;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_SUCCESS message for non-existent channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label2:
+        entermonitor $r5;
+
+     label3:
+        $i3 = $r5.<com.trilead.ssh2.channel.Channel: int successCounter>;
+
+        $i3 = $i3 + 1;
+
+        $r5.<com.trilead.ssh2.channel.Channel: int successCounter> = $i3;
+
+        virtualinvoke $r5.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r5;
+
+     label4:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label8;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_SUCCESS (channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, $r4);
+
+        return;
+
+     label5:
+        $r7 := @caughtexception;
+
+     label6:
+        exitmonitor $r5;
+
+     label7:
+        throw $r7;
+
+     label8:
+        return;
+
+        catch java.lang.Throwable from label3 to label4 with label5;
+        catch java.lang.Throwable from label6 to label7 with label5;
+    }
+
+    public void msgChannelWindowAdjust(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0, $i1, $i5;
+        java.lang.StringBuilder $r2;
+        long $l2, $l6;
+        java.io.IOException $r3;
+        java.lang.String $r4;
+        byte $b3;
+        short $s4;
+        com.trilead.ssh2.channel.Channel $r5;
+        com.trilead.ssh2.log.Logger $r6;
+        boolean $z0;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        if $i0 == 9 goto label01;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH_MSG_CHANNEL_WINDOW_ADJUST message has wrong size (");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label01:
+        $b3 = $r1[1];
+
+        $s4 = $b3 & 255;
+
+        $i1 = $s4 << 24;
+
+        $b3 = $r1[2];
+
+        $s4 = $b3 & 255;
+
+        $i0 = $s4 << 16;
+
+        $i1 = $i1 | $i0;
+
+        $b3 = $r1[3];
+
+        $s4 = $b3 & 255;
+
+        $i0 = $s4 << 8;
+
+        $i1 = $i1 | $i0;
+
+        $b3 = $r1[4];
+
+        $s4 = $b3 & 255;
+
+        $i0 = $i1 | $s4;
+
+        $b3 = $r1[5];
+
+        $s4 = $b3 & 255;
+
+        $i1 = $s4 << 24;
+
+        $b3 = $r1[6];
+
+        $s4 = $b3 & 255;
+
+        $i5 = $s4 << 16;
+
+        $i5 = $i1 | $i5;
+
+        $b3 = $r1[7];
+
+        $s4 = $b3 & 255;
+
+        $i1 = $s4 << 8;
+
+        $i5 = $i5 | $i1;
+
+        $b3 = $r1[8];
+
+        $s4 = $b3 & 255;
+
+        $i1 = $i5 | $s4;
+
+        $r5 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel getChannel(int)>($i0);
+
+        if $r5 != null goto label02;
+
+        $r3 = new java.io.IOException;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected SSH_MSG_CHANNEL_WINDOW_ADJUST message for non-existent channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r4);
+
+        throw $r3;
+
+     label02:
+        entermonitor $r5;
+
+     label03:
+        $l6 = $r5.<com.trilead.ssh2.channel.Channel: long remoteWindow>;
+
+        $l2 = (long) $i1;
+
+     label04:
+        $l2 = $l2 & 4294967295L;
+
+     label05:
+        $l6 = $l6 + $l2;
+
+        $r5.<com.trilead.ssh2.channel.Channel: long remoteWindow> = $l6;
+
+        $l6 = $r5.<com.trilead.ssh2.channel.Channel: long remoteWindow>;
+
+     label06:
+        $b3 = $l6 cmp 4294967295L;
+
+     label07:
+        if $b3 <= 0 goto label08;
+
+        $r5.<com.trilead.ssh2.channel.Channel: long remoteWindow> = 4294967295L;
+
+     label08:
+        virtualinvoke $r5.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r5;
+
+     label09:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label13;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r2 = new java.lang.StringBuilder;
+
+        specialinvoke $r2.<java.lang.StringBuilder: void <init>()>();
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_CHANNEL_WINDOW_ADJUST (channel ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", ");
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r2 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, $r4);
+
+        return;
+
+     label10:
+        $r7 := @caughtexception;
+
+     label11:
+        exitmonitor $r5;
+
+     label12:
+        throw $r7;
+
+     label13:
+        return;
+
+        catch java.lang.Throwable from label03 to label04 with label10;
+        catch java.lang.Throwable from label05 to label06 with label10;
+        catch java.lang.Throwable from label07 to label09 with label10;
+        catch java.lang.Throwable from label11 to label12 with label10;
+    }
+
+    public void msgGlobalFailure() throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        int $i0;
+        java.util.Vector $r1, $r2;
+        boolean $z0;
+        com.trilead.ssh2.log.Logger $r3;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r1;
+
+     label1:
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter>;
+
+        $i0 = $i0 + 1;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter> = $i0;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        virtualinvoke $r2.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r1;
+
+     label2:
+        $r3 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r3.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label6;
+
+        $r3 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r3.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, "Got SSH_MSG_REQUEST_FAILURE");
+
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+     label4:
+        exitmonitor $r1;
+
+     label5:
+        throw $r4;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public void msgGlobalRequest(byte[], int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        byte[] $r1;
+        int $i0;
+        com.trilead.ssh2.packets.TypesReader $r2;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r4;
+        boolean $z0;
+        com.trilead.ssh2.transport.TransportManager $r5;
+        com.trilead.ssh2.log.Logger $r6;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r2 = new com.trilead.ssh2.packets.TypesReader;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.TypesReader: void <init>(byte[],int,int)>($r1, 0, $i0);
+
+        virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: int readByte()>();
+
+        $r4 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: java.lang.String readString()>();
+
+        $z0 = virtualinvoke $r2.<com.trilead.ssh2.packets.TypesReader: boolean readBoolean()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = newarray (byte)[1];
+
+        $r1[0] = 82;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r5.<com.trilead.ssh2.transport.TransportManager: void sendAsynchronousMessage(byte[])>($r1);
+
+     label1:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label2;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Got SSH_MSG_GLOBAL_REQUEST (");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, $r4);
+
+        return;
+
+     label2:
+        return;
+    }
+
+    public void msgGlobalSuccess() throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        int $i0;
+        java.util.Vector $r1, $r2;
+        boolean $z0;
+        com.trilead.ssh2.log.Logger $r3;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r1;
+
+     label1:
+        $i0 = $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter>;
+
+        $i0 = $i0 + 1;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter> = $i0;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        virtualinvoke $r2.<java.lang.Object: void notifyAll()>();
+
+        exitmonitor $r1;
+
+     label2:
+        $r3 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r3.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label6;
+
+        $r3 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r3.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(80, "Got SSH_MSG_REQUEST_SUCCESS");
+
+        return;
+
+     label3:
+        $r4 := @caughtexception;
+
+     label4:
+        exitmonitor $r1;
+
+     label5:
+        throw $r4;
+
+     label6:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public com.trilead.ssh2.channel.Channel openDirectTCPIPChannel(java.lang.String, int, java.lang.String, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        java.lang.String $r1, $r2;
+        int $i0, $i1, $i2, $i3, $i4;
+        com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel $r3;
+        com.trilead.ssh2.channel.Channel $r4;
+        com.trilead.ssh2.transport.TransportManager $r5;
+        byte[] $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $i1 := @parameter3: int;
+
+        $r4 = new com.trilead.ssh2.channel.Channel;
+
+        specialinvoke $r4.<com.trilead.ssh2.channel.Channel: void <init>(com.trilead.ssh2.channel.ChannelManager)>($r0);
+
+        entermonitor $r4;
+
+     label1:
+        $i3 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: int addChannel(com.trilead.ssh2.channel.Channel)>($r4);
+
+        $r4.<com.trilead.ssh2.channel.Channel: int localID> = $i3;
+
+        exitmonitor $r4;
+
+     label2:
+        $r3 = new com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel;
+
+        $i4 = $r4.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        $i2 = $r4.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        $i3 = $r4.<com.trilead.ssh2.channel.Channel: int localMaxPacketSize>;
+
+        specialinvoke $r3.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: void <init>(int,int,int,java.lang.String,int,java.lang.String,int)>($i4, $i2, $i3, $r1, $i0, $r2, $i1);
+
+        $r5 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r6 = virtualinvoke $r3.<com.trilead.ssh2.packets.PacketOpenDirectTCPIPChannel: byte[] getPayload()>();
+
+        virtualinvoke $r5.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r6);
+
+        specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void waitUntilChannelOpen(com.trilead.ssh2.channel.Channel)>($r4);
+
+        return $r4;
+
+     label3:
+        $r7 := @caughtexception;
+
+     label4:
+        exitmonitor $r4;
+
+     label5:
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label4 to label5 with label3;
+    }
+
+    public com.trilead.ssh2.channel.Channel openSessionChannel() throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        com.trilead.ssh2.packets.PacketOpenSessionChannel $r2;
+        java.lang.StringBuilder $r3;
+        int $i0, $i1, $i2;
+        com.trilead.ssh2.log.Logger $r4;
+        boolean $z0;
+        java.lang.String $r5;
+        com.trilead.ssh2.transport.TransportManager $r6;
+        byte[] $r7;
+        java.lang.Throwable $r8;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 = new com.trilead.ssh2.channel.Channel;
+
+        specialinvoke $r1.<com.trilead.ssh2.channel.Channel: void <init>(com.trilead.ssh2.channel.ChannelManager)>($r0);
+
+        entermonitor $r1;
+
+     label1:
+        $i0 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: int addChannel(com.trilead.ssh2.channel.Channel)>($r1);
+
+        $r1.<com.trilead.ssh2.channel.Channel: int localID> = $i0;
+
+        exitmonitor $r1;
+
+     label2:
+        $r4 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r4.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label3;
+
+        $r4 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Sending SSH_MSG_CHANNEL_OPEN (Channel ");
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r4.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r5);
+
+     label3:
+        $r2 = new com.trilead.ssh2.packets.PacketOpenSessionChannel;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        $i1 = $r1.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        $i2 = $r1.<com.trilead.ssh2.channel.Channel: int localMaxPacketSize>;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.PacketOpenSessionChannel: void <init>(int,int,int)>($i0, $i1, $i2);
+
+        $r6 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r7 = virtualinvoke $r2.<com.trilead.ssh2.packets.PacketOpenSessionChannel: byte[] getPayload()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r7);
+
+        specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void waitUntilChannelOpen(com.trilead.ssh2.channel.Channel)>($r1);
+
+        return $r1;
+
+     label4:
+        $r8 := @caughtexception;
+
+     label5:
+        exitmonitor $r1;
+
+     label6:
+        throw $r8;
+
+        catch java.lang.Throwable from label1 to label2 with label4;
+        catch java.lang.Throwable from label5 to label6 with label4;
+    }
+
+    public void registerThread(com.trilead.ssh2.channel.IChannelWorkerThread) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.IChannelWorkerThread $r1;
+        boolean $z0;
+        java.util.Vector $r2, $r5;
+        java.io.IOException $r3;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.IChannelWorkerThread;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector listenerThreads>;
+
+        entermonitor $r2;
+
+     label1:
+        $z0 = $r0.<com.trilead.ssh2.channel.ChannelManager: boolean listenerThreadsAllowed>;
+
+        if $z0 != 0 goto label4;
+
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("Too late, this connection is closed.");
+
+        throw $r3;
+
+     label2:
+        $r4 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label3:
+        throw $r4;
+
+     label4:
+        $r5 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector listenerThreads>;
+
+        virtualinvoke $r5.<java.util.Vector: void addElement(java.lang.Object)>($r1);
+
+        exitmonitor $r2;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label2;
+        catch java.lang.Throwable from label4 to label5 with label2;
+    }
+
+    public void requestCancelGlobalForward(int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        int $i0;
+        com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest $r1;
+        java.util.HashMap $r2, $r3;
+        java.lang.Integer $r4;
+        java.lang.Object $r5;
+        com.trilead.ssh2.channel.RemoteForwardingData $r6;
+        java.io.IOException $r7;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r9;
+        java.lang.Throwable $r10, $r15, $r16, $r17, $r18;
+        java.util.Vector $r11;
+        com.trilead.ssh2.transport.TransportManager $r12;
+        byte[] $r13;
+        com.trilead.ssh2.log.Logger $r14;
+        boolean $z0;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $i0 := @parameter0: int;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        entermonitor $r3;
+
+     label01:
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        $r4 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r5 = virtualinvoke $r2.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r4);
+
+        $r6 = (com.trilead.ssh2.channel.RemoteForwardingData) $r5;
+
+        if $r6 != null goto label04;
+
+        $r7 = new java.io.IOException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Sorry, there is no known remote forwarding for remote port ");
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>($r9);
+
+        throw $r7;
+
+     label02:
+        $r10 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label03:
+        throw $r10;
+
+     label04:
+        exitmonitor $r3;
+
+     label05:
+        $r11 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r11;
+
+     label06:
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter> = 0;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter> = 0;
+
+        exitmonitor $r11;
+
+     label07:
+        $r1 = new com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest;
+
+        $r9 = $r6.<com.trilead.ssh2.channel.RemoteForwardingData: java.lang.String bindAddress>;
+
+        $i0 = $r6.<com.trilead.ssh2.channel.RemoteForwardingData: int bindPort>;
+
+        specialinvoke $r1.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: void <init>(boolean,java.lang.String,int)>(1, $r9, $i0);
+
+        $r12 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r13 = virtualinvoke $r1.<com.trilead.ssh2.packets.PacketGlobalCancelForwardRequest: byte[] getPayload()>();
+
+        virtualinvoke $r12.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r13);
+
+        $r14 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r14.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label08;
+
+        $r14 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Requesting cancelation of remote forward (\'");
+
+        $r9 = $r6.<com.trilead.ssh2.channel.RemoteForwardingData: java.lang.String bindAddress>;
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r9);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', ");
+
+        $i0 = $r6.<com.trilead.ssh2.channel.RemoteForwardingData: int bindPort>;
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r14.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r9);
+
+     label08:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: boolean waitForGlobalRequestResult()>();
+
+        if $z0 != 0 goto label15;
+
+        $r7 = new java.io.IOException;
+
+        specialinvoke $r7.<java.io.IOException: void <init>(java.lang.String)>("The server denied the request.");
+
+        throw $r7;
+
+     label09:
+        $r15 := @caughtexception;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        entermonitor $r3;
+
+     label10:
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>($r6);
+
+        exitmonitor $r3;
+
+     label11:
+        throw $r15;
+
+     label12:
+        $r16 := @caughtexception;
+
+     label13:
+        exitmonitor $r11;
+
+     label14:
+        throw $r16;
+
+     label15:
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        entermonitor $r3;
+
+     label16:
+        $r2 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        virtualinvoke $r2.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>($r6);
+
+        exitmonitor $r3;
+
+     label17:
+        return;
+
+     label18:
+        $r17 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label19:
+        throw $r17;
+
+     label20:
+        $r18 := @caughtexception;
+
+     label21:
+        exitmonitor $r3;
+
+     label22:
+        throw $r18;
+
+        catch java.lang.Throwable from label01 to label03 with label02;
+        catch java.lang.Throwable from label04 to label05 with label02;
+        catch java.lang.Throwable from label06 to label07 with label12;
+        catch java.lang.Throwable from label08 to label09 with label09;
+        catch java.lang.Throwable from label10 to label11 with label20;
+        catch java.lang.Throwable from label13 to label14 with label12;
+        catch java.lang.Throwable from label16 to label17 with label18;
+        catch java.lang.Throwable from label18 to label19 with label18;
+        catch java.lang.Throwable from label21 to label22 with label20;
+    }
+
+    public boolean requestChannelAgentForwarding(com.trilead.ssh2.channel.Channel, com.trilead.ssh2.AuthAgentCallback) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        com.trilead.ssh2.AuthAgentCallback $r2, $r4;
+        com.trilead.ssh2.packets.PacketChannelAuthAgentReq $r3;
+        boolean $z0;
+        java.lang.IllegalStateException $r5;
+        java.lang.Throwable $r6, $r11;
+        java.util.Vector $r7;
+        com.trilead.ssh2.log.Logger $r8;
+        int $i0;
+        com.trilead.ssh2.transport.TransportManager $r9;
+        byte[] $r10;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $r2 := @parameter1: com.trilead.ssh2.AuthAgentCallback;
+
+        entermonitor $r0;
+
+     label01:
+        $r4 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.AuthAgentCallback authAgent>;
+
+        if $r4 == null goto label04;
+
+        $r5 = new java.lang.IllegalStateException;
+
+        specialinvoke $r5.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Auth agent already exists");
+
+        throw $r5;
+
+     label02:
+        $r6 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label03:
+        throw $r6;
+
+     label04:
+        $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.AuthAgentCallback authAgent> = $r2;
+
+        exitmonitor $r0;
+
+     label05:
+        $r7 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r7;
+
+     label06:
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter> = 0;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter> = 0;
+
+        exitmonitor $r7;
+
+     label07:
+        $r8 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r8.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label08;
+
+        $r8 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r8.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, "Requesting agent forwarding");
+
+     label08:
+        $r3 = new com.trilead.ssh2.packets.PacketChannelAuthAgentReq;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        specialinvoke $r3.<com.trilead.ssh2.packets.PacketChannelAuthAgentReq: void <init>(int)>($i0);
+
+        $r9 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r10 = virtualinvoke $r3.<com.trilead.ssh2.packets.PacketChannelAuthAgentReq: byte[] getPayload()>();
+
+        virtualinvoke $r9.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r10);
+
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: boolean waitForChannelRequestResult(com.trilead.ssh2.channel.Channel)>($r1);
+
+        if $z0 != 0 goto label12;
+
+        return 0;
+
+     label09:
+        $r11 := @caughtexception;
+
+     label10:
+        exitmonitor $r7;
+
+     label11:
+        throw $r11;
+
+     label12:
+        return 1;
+
+        catch java.lang.Throwable from label01 to label03 with label02;
+        catch java.lang.Throwable from label04 to label05 with label02;
+        catch java.lang.Throwable from label06 to label07 with label09;
+        catch java.lang.Throwable from label10 to label11 with label09;
+    }
+
+    public int requestGlobalForward(java.lang.String, int, java.lang.String, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        java.lang.String $r1, $r2;
+        int $i0, $i1;
+        java.io.IOException $r3;
+        com.trilead.ssh2.packets.PacketGlobalForwardRequest $r4;
+        com.trilead.ssh2.channel.RemoteForwardingData $r5;
+        java.util.HashMap $r6, $r7;
+        java.lang.StringBuilder $r8;
+        java.lang.Integer $r9;
+        java.lang.Object $r10;
+        java.lang.Throwable $r11, $r16, $r17;
+        java.util.Vector $r12;
+        com.trilead.ssh2.transport.TransportManager $r13;
+        byte[] $r14;
+        com.trilead.ssh2.log.Logger $r15;
+        boolean $z0;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: java.lang.String;
+
+        $i1 := @parameter3: int;
+
+        $r5 = new com.trilead.ssh2.channel.RemoteForwardingData;
+
+        specialinvoke $r5.<com.trilead.ssh2.channel.RemoteForwardingData: void <init>()>();
+
+        $r5.<com.trilead.ssh2.channel.RemoteForwardingData: java.lang.String bindAddress> = $r1;
+
+        $r5.<com.trilead.ssh2.channel.RemoteForwardingData: int bindPort> = $i0;
+
+        $r5.<com.trilead.ssh2.channel.RemoteForwardingData: java.lang.String targetAddress> = $r2;
+
+        $r5.<com.trilead.ssh2.channel.RemoteForwardingData: int targetPort> = $i1;
+
+        $r7 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        entermonitor $r7;
+
+     label01:
+        $r9 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>($i0);
+
+        $r6 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        $r10 = virtualinvoke $r6.<java.util.HashMap: java.lang.Object get(java.lang.Object)>($r9);
+
+        if $r10 == null goto label04;
+
+        $r3 = new java.io.IOException;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("There is already a forwarding for remote port ");
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r2 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>($r2);
+
+        throw $r3;
+
+     label02:
+        $r11 := @caughtexception;
+
+        exitmonitor $r7;
+
+     label03:
+        throw $r11;
+
+     label04:
+        $r6 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        virtualinvoke $r6.<java.util.HashMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($r9, $r5);
+
+        exitmonitor $r7;
+
+     label05:
+        $r12 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r12;
+
+     label06:
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalFailedCounter> = 0;
+
+        $r0.<com.trilead.ssh2.channel.ChannelManager: int globalSuccessCounter> = 0;
+
+        exitmonitor $r12;
+
+     label07:
+        $r4 = new com.trilead.ssh2.packets.PacketGlobalForwardRequest;
+
+        specialinvoke $r4.<com.trilead.ssh2.packets.PacketGlobalForwardRequest: void <init>(boolean,java.lang.String,int)>(1, $r1, $i0);
+
+        $r13 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r14 = virtualinvoke $r4.<com.trilead.ssh2.packets.PacketGlobalForwardRequest: byte[] getPayload()>();
+
+        virtualinvoke $r13.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r14);
+
+        $r15 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r15.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label08;
+
+        $r15 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Requesting a remote forwarding (\'");
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\', ");
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r15.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r2);
+
+     label08:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: boolean waitForGlobalRequestResult()>();
+
+     label09:
+        if $z0 != 0 goto label20;
+
+     label10:
+        $r3 = new java.io.IOException;
+
+        specialinvoke $r3.<java.io.IOException: void <init>(java.lang.String)>("The server denied the request (did you enable port forwarding?)");
+
+        throw $r3;
+
+     label11:
+        $r3 := @caughtexception;
+
+        $r7 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        entermonitor $r7;
+
+     label12:
+        $r6 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap remoteForwardings>;
+
+        virtualinvoke $r6.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>($r5);
+
+        exitmonitor $r7;
+
+     label13:
+        throw $r3;
+
+     label14:
+        $r16 := @caughtexception;
+
+     label15:
+        exitmonitor $r12;
+
+     label16:
+        throw $r16;
+
+     label17:
+        $r17 := @caughtexception;
+
+     label18:
+        exitmonitor $r7;
+
+     label19:
+        throw $r17;
+
+     label20:
+        return $i0;
+
+        catch java.lang.Throwable from label01 to label03 with label02;
+        catch java.lang.Throwable from label04 to label05 with label02;
+        catch java.lang.Throwable from label06 to label07 with label14;
+        catch java.io.IOException from label08 to label09 with label11;
+        catch java.io.IOException from label10 to label11 with label11;
+        catch java.lang.Throwable from label12 to label13 with label17;
+        catch java.lang.Throwable from label15 to label16 with label14;
+        catch java.lang.Throwable from label18 to label19 with label17;
+    }
+
+    public void requestPTY(com.trilead.ssh2.channel.Channel, java.lang.String, int, int, int, int, byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        java.lang.String $r2;
+        int $i0, $i1, $i2, $i3, $i4;
+        byte[] $r3;
+        com.trilead.ssh2.packets.PacketSessionPtyRequest $r4;
+        java.io.IOException $r5, $r11;
+        java.lang.StringBuilder $r6;
+        java.lang.Throwable $r7, $r9;
+        java.lang.Object $r8;
+        boolean $z0;
+        com.trilead.ssh2.transport.TransportManager $r10;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+        $i2 := @parameter4: int;
+
+        $i3 := @parameter5: int;
+
+        $r3 := @parameter6: byte[];
+
+        entermonitor $r1;
+
+     label01:
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i4 == 2 goto label04;
+
+        $r5 = new java.io.IOException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot request PTY on this channel (");
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r2);
+
+        throw $r5;
+
+     label02:
+        $r7 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label03:
+        throw $r7;
+
+     label04:
+        $r4 = new com.trilead.ssh2.packets.PacketSessionPtyRequest;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        specialinvoke $r4.<com.trilead.ssh2.packets.PacketSessionPtyRequest: void <init>(int,boolean,java.lang.String,int,int,int,int,byte[])>($i4, 1, $r2, $i0, $i1, $i2, $i3, $r3);
+
+        $r1.<com.trilead.ssh2.channel.Channel: int failedCounter> = 0;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int successCounter> = 0;
+
+        exitmonitor $r1;
+
+     label05:
+        $r8 = $r1.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock>;
+
+        entermonitor $r8;
+
+     label06:
+        $z0 = $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent>;
+
+        if $z0 == 0 goto label09;
+
+        $r5 = new java.io.IOException;
+
+        $r6 = new java.lang.StringBuilder;
+
+        specialinvoke $r6.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot request PTY on this channel (");
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r2);
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r2 = virtualinvoke $r6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r2);
+
+        throw $r5;
+
+     label07:
+        $r9 := @caughtexception;
+
+        exitmonitor $r8;
+
+     label08:
+        throw $r9;
+
+     label09:
+        $r10 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r3 = virtualinvoke $r4.<com.trilead.ssh2.packets.PacketSessionPtyRequest: byte[] getPayload()>();
+
+        virtualinvoke $r10.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r3);
+
+        exitmonitor $r8;
+
+     label10:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: boolean waitForChannelRequestResult(com.trilead.ssh2.channel.Channel)>($r1);
+
+     label11:
+        if $z0 != 0 goto label14;
+
+     label12:
+        $r5 = new java.io.IOException;
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>("The server denied the request.");
+
+        throw $r5;
+
+     label13:
+        $r5 := @caughtexception;
+
+        $r11 = new java.io.IOException;
+
+        specialinvoke $r11.<java.io.IOException: void <init>(java.lang.String)>("PTY request failed");
+
+        $r9 = virtualinvoke $r11.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r5);
+
+        $r11 = (java.io.IOException) $r9;
+
+        throw $r11;
+
+     label14:
+        return;
+
+        catch java.lang.Throwable from label01 to label03 with label02;
+        catch java.lang.Throwable from label04 to label05 with label02;
+        catch java.lang.Throwable from label06 to label08 with label07;
+        catch java.lang.Throwable from label09 to label10 with label07;
+        catch java.io.IOException from label10 to label11 with label13;
+        catch java.io.IOException from label12 to label13 with label13;
+    }
+
+    public void requestShell(com.trilead.ssh2.channel.Channel) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        java.io.IOException $r2, $r11;
+        com.trilead.ssh2.packets.PacketSessionStartShell $r3;
+        int $i0;
+        java.lang.StringBuilder $r4;
+        java.lang.String $r5;
+        java.lang.Throwable $r6, $r8;
+        java.lang.Object $r7;
+        boolean $z0;
+        com.trilead.ssh2.transport.TransportManager $r9;
+        byte[] $r10;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        entermonitor $r1;
+
+     label01:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i0 == 2 goto label04;
+
+        $r2 = new java.io.IOException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot start shell on this channel (");
+
+        $r5 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r5);
+
+        throw $r2;
+
+     label02:
+        $r6 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label03:
+        throw $r6;
+
+     label04:
+        $r3 = new com.trilead.ssh2.packets.PacketSessionStartShell;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        specialinvoke $r3.<com.trilead.ssh2.packets.PacketSessionStartShell: void <init>(int,boolean)>($i0, 1);
+
+        $r1.<com.trilead.ssh2.channel.Channel: int failedCounter> = 0;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int successCounter> = 0;
+
+        exitmonitor $r1;
+
+     label05:
+        $r7 = $r1.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock>;
+
+        entermonitor $r7;
+
+     label06:
+        $z0 = $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent>;
+
+        if $z0 == 0 goto label09;
+
+        $r2 = new java.io.IOException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot start shell on this channel (");
+
+        $r5 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r5 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>($r5);
+
+        throw $r2;
+
+     label07:
+        $r8 := @caughtexception;
+
+        exitmonitor $r7;
+
+     label08:
+        throw $r8;
+
+     label09:
+        $r9 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r10 = virtualinvoke $r3.<com.trilead.ssh2.packets.PacketSessionStartShell: byte[] getPayload()>();
+
+        virtualinvoke $r9.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r10);
+
+        exitmonitor $r7;
+
+     label10:
+        $z0 = specialinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: boolean waitForChannelRequestResult(com.trilead.ssh2.channel.Channel)>($r1);
+
+     label11:
+        if $z0 != 0 goto label14;
+
+     label12:
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("The server denied the request.");
+
+        throw $r2;
+
+     label13:
+        $r2 := @caughtexception;
+
+        $r11 = new java.io.IOException;
+
+        specialinvoke $r11.<java.io.IOException: void <init>(java.lang.String)>("The shell request failed.");
+
+        $r8 = virtualinvoke $r11.<java.io.IOException: java.lang.Throwable initCause(java.lang.Throwable)>($r2);
+
+        $r11 = (java.io.IOException) $r8;
+
+        throw $r11;
+
+     label14:
+        return;
+
+        catch java.lang.Throwable from label01 to label03 with label02;
+        catch java.lang.Throwable from label04 to label05 with label02;
+        catch java.lang.Throwable from label06 to label08 with label07;
+        catch java.lang.Throwable from label09 to label10 with label07;
+        catch java.io.IOException from label10 to label11 with label13;
+        catch java.io.IOException from label12 to label13 with label13;
+    }
+
+    public void resizePTY(com.trilead.ssh2.channel.Channel, int, int, int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+        com.trilead.ssh2.packets.PacketSessionPtyResize $r2;
+        java.lang.StringBuilder $r3;
+        java.io.IOException $r4;
+        java.lang.String $r5;
+        java.lang.Throwable $r6, $r8;
+        java.lang.Object $r7;
+        boolean $z0;
+        com.trilead.ssh2.transport.TransportManager $r9;
+        byte[] $r10;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i3 := @parameter4: int;
+
+        entermonitor $r1;
+
+     label01:
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i4 == 2 goto label04;
+
+        $r4 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot request PTY on this channel (");
+
+        $r5 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>($r5);
+
+        throw $r4;
+
+     label02:
+        $r6 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label03:
+        throw $r6;
+
+     label04:
+        $r2 = new com.trilead.ssh2.packets.PacketSessionPtyResize;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.PacketSessionPtyResize: void <init>(int,int,int,int,int)>($i4, $i0, $i1, $i2, $i3);
+
+        $r1.<com.trilead.ssh2.channel.Channel: int failedCounter> = 0;
+
+        $r1.<com.trilead.ssh2.channel.Channel: int successCounter> = 0;
+
+        exitmonitor $r1;
+
+     label05:
+        $r7 = $r1.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock>;
+
+        entermonitor $r7;
+
+     label06:
+        $z0 = $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent>;
+
+        if $z0 == 0 goto label09;
+
+        $r4 = new java.io.IOException;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Cannot request PTY on this channel (");
+
+        $r5 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>($r5);
+
+        throw $r4;
+
+     label07:
+        $r8 := @caughtexception;
+
+        exitmonitor $r7;
+
+     label08:
+        throw $r8;
+
+     label09:
+        $r9 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r10 = virtualinvoke $r2.<com.trilead.ssh2.packets.PacketSessionPtyResize: byte[] getPayload()>();
+
+        virtualinvoke $r9.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r10);
+
+        exitmonitor $r7;
+
+     label10:
+        return;
+
+        catch java.lang.Throwable from label01 to label03 with label02;
+        catch java.lang.Throwable from label04 to label05 with label02;
+        catch java.lang.Throwable from label06 to label08 with label07;
+        catch java.lang.Throwable from label09 to label10 with label07;
+    }
+
+    public void sendData(com.trilead.ssh2.channel.Channel, byte[], int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        byte[] $r2, $r3;
+        int $i0, $i1, $i2, $i3, $i7;
+        java.lang.StringBuilder $r4;
+        java.io.IOException $r5;
+        java.lang.String $r6;
+        java.lang.Throwable $r7, $r10;
+        long $l4, $l6;
+        byte $b5;
+        com.trilead.ssh2.transport.TransportManager $r8;
+        java.lang.Object $r9;
+        boolean $z0;
+        java.lang.InterruptedException $r11;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $r2 := @parameter1: byte[];
+
+        $i0 := @parameter2: int;
+
+        $i1 := @parameter3: int;
+
+     label01:
+        if $i1 <= 0 goto label26;
+
+        entermonitor $r1;
+
+     label02:
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i3 != 4 goto label05;
+
+        $r5 = new java.io.IOException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH channel is closed. (");
+
+        $r6 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r6);
+
+        throw $r5;
+
+     label03:
+        $r7 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label04:
+        throw $r7;
+
+     label05:
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i3 == 2 goto label06;
+
+        $r5 = new java.io.IOException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH channel in strange state. (");
+
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i3);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r6);
+
+        throw $r5;
+
+     label06:
+        $l4 = $r1.<com.trilead.ssh2.channel.Channel: long remoteWindow>;
+
+     label07:
+        $b5 = $l4 cmp 0L;
+
+     label08:
+        if $b5 == 0 goto label19;
+
+        $l4 = $r1.<com.trilead.ssh2.channel.Channel: long remoteWindow>;
+
+        $l6 = (long) $i1;
+
+     label09:
+        $b5 = $l4 cmp $l6;
+
+     label10:
+        if $b5 < 0 goto label22;
+
+        $i3 = $i1;
+
+     label11:
+        $i2 = $r1.<com.trilead.ssh2.channel.Channel: int remoteMaxPacketSize>;
+
+        $r8 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $i7 = virtualinvoke $r8.<com.trilead.ssh2.transport.TransportManager: int getPacketOverheadEstimate()>();
+
+     label12:
+        $i7 = $i7 + 9;
+
+        $i2 = $i2 - $i7;
+
+        if $i2 > 0 goto label13;
+
+        $i2 = 1;
+
+     label13:
+        if $i3 <= $i2 goto label14;
+
+        $i3 = $i2;
+
+     label14:
+        $l6 = $r1.<com.trilead.ssh2.channel.Channel: long remoteWindow>;
+
+        $l4 = (long) $i3;
+
+        $l6 = $l6 - $l4;
+
+        $r1.<com.trilead.ssh2.channel.Channel: long remoteWindow> = $l6;
+
+        $i7 = $i3 + 9;
+
+        $r3 = newarray (byte)[$i7];
+
+        $r3[0] = 94;
+
+        $i7 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i7 = $i7 >> 24;
+
+        $b5 = (byte) $i7;
+
+        $r3[1] = $b5;
+
+        $i7 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i7 = $i7 >> 16;
+
+        $b5 = (byte) $i7;
+
+        $r3[2] = $b5;
+
+        $i7 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i7 = $i7 >> 8;
+
+        $b5 = (byte) $i7;
+
+        $r3[3] = $b5;
+
+        $i7 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $b5 = (byte) $i7;
+
+        $r3[4] = $b5;
+
+        $i7 = $i3 >> 24;
+
+        $b5 = (byte) $i7;
+
+        $r3[5] = $b5;
+
+        $i7 = $i3 >> 16;
+
+        $b5 = (byte) $i7;
+
+        $r3[6] = $b5;
+
+        $i7 = $i3 >> 8;
+
+        $b5 = (byte) $i7;
+
+        $r3[7] = $b5;
+
+        $b5 = (byte) $i3;
+
+        $r3[8] = $b5;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r2, $i0, $r3, 9, $i3);
+
+        exitmonitor $r1;
+
+     label15:
+        $r9 = $r1.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock>;
+
+        entermonitor $r9;
+
+     label16:
+        $z0 = $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent>;
+
+        if $z0 != 1 goto label24;
+
+        $r5 = new java.io.IOException;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("SSH channel is closed. (");
+
+        $r6 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getReasonClosed()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r6 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $r5.<java.io.IOException: void <init>(java.lang.String)>($r6);
+
+        throw $r5;
+
+     label17:
+        $r10 := @caughtexception;
+
+        exitmonitor $r9;
+
+     label18:
+        throw $r10;
+
+     label19:
+        virtualinvoke $r1.<java.lang.Object: void wait()>();
+
+     label20:
+        goto label02;
+
+     label21:
+        $r11 := @caughtexception;
+
+        goto label02;
+
+     label22:
+        $l6 = $r1.<com.trilead.ssh2.channel.Channel: long remoteWindow>;
+
+     label23:
+        $i3 = (int) $l6;
+
+        goto label11;
+
+     label24:
+        $r8 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r8.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r3);
+
+        exitmonitor $r9;
+
+     label25:
+        $i0 = $i0 + $i3;
+
+        $i1 = $i1 - $i3;
+
+        goto label01;
+
+     label26:
+        return;
+
+        catch java.lang.Throwable from label02 to label04 with label03;
+        catch java.lang.Throwable from label05 to label07 with label03;
+        catch java.lang.Throwable from label08 to label09 with label03;
+        catch java.lang.Throwable from label10 to label12 with label03;
+        catch java.lang.Throwable from label13 to label15 with label03;
+        catch java.lang.Throwable from label16 to label18 with label17;
+        catch java.lang.InterruptedException from label19 to label20 with label21;
+        catch java.lang.Throwable from label19 to label20 with label03;
+        catch java.lang.Throwable from label22 to label23 with label03;
+        catch java.lang.Throwable from label24 to label25 with label17;
+    }
+
+    public void sendEOF(com.trilead.ssh2.channel.Channel) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        byte[] $r2;
+        boolean $z0;
+        int $i0;
+        byte $b1;
+        java.lang.Object $r3;
+        java.lang.Throwable $r4, $r5;
+        com.trilead.ssh2.transport.TransportManager $r6;
+        com.trilead.ssh2.log.Logger $r7;
+        java.lang.StringBuilder $r8;
+        java.lang.String $r9;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $r2 = newarray (byte)[5];
+
+        entermonitor $r1;
+
+     label01:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i0 == 2 goto label03;
+
+        exitmonitor $r1;
+
+     label02:
+        return;
+
+     label03:
+        $r2[0] = 96;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i0 = $i0 >> 24;
+
+        $b1 = (byte) $i0;
+
+        $r2[1] = $b1;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i0 = $i0 >> 16;
+
+        $b1 = (byte) $i0;
+
+        $r2[2] = $b1;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i0 = $i0 >> 8;
+
+        $b1 = (byte) $i0;
+
+        $r2[3] = $b1;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $b1 = (byte) $i0;
+
+        $r2[4] = $b1;
+
+        exitmonitor $r1;
+
+     label04:
+        $r3 = $r1.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock>;
+
+        entermonitor $r3;
+
+     label05:
+        $z0 = $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent>;
+
+        if $z0 != 1 goto label12;
+
+        exitmonitor $r3;
+
+     label06:
+        return;
+
+     label07:
+        $r4 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label08:
+        throw $r4;
+
+     label09:
+        $r5 := @caughtexception;
+
+     label10:
+        exitmonitor $r1;
+
+     label11:
+        throw $r5;
+
+     label12:
+        $r6 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        virtualinvoke $r6.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r2);
+
+        exitmonitor $r3;
+
+     label13:
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r7.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label14;
+
+        $r7 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $r8 = new java.lang.StringBuilder;
+
+        specialinvoke $r8.<java.lang.StringBuilder: void <init>()>();
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Sent EOF (Channel ");
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/");
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r8 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r9 = virtualinvoke $r8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r7.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, $r9);
+
+        return;
+
+     label14:
+        return;
+
+        catch java.lang.Throwable from label01 to label02 with label09;
+        catch java.lang.Throwable from label03 to label04 with label09;
+        catch java.lang.Throwable from label05 to label06 with label07;
+        catch java.lang.Throwable from label07 to label08 with label07;
+        catch java.lang.Throwable from label10 to label11 with label09;
+        catch java.lang.Throwable from label12 to label13 with label07;
+    }
+
+    public void sendOpenConfirmation(com.trilead.ssh2.channel.Channel) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        com.trilead.ssh2.packets.PacketChannelOpenConfirmation $r2;
+        int $i0, $i1, $i2, $i3;
+        byte[] $r3;
+        java.lang.Object $r4;
+        boolean $z0;
+        java.lang.Throwable $r5, $r7;
+        com.trilead.ssh2.transport.TransportManager $r6;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        entermonitor $r1;
+
+     label01:
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+        if $i0 == 1 goto label03;
+
+        exitmonitor $r1;
+
+     label02:
+        return;
+
+     label03:
+        $r1.<com.trilead.ssh2.channel.Channel: int state> = 2;
+
+        $r2 = new com.trilead.ssh2.packets.PacketChannelOpenConfirmation;
+
+        $i3 = $r1.<com.trilead.ssh2.channel.Channel: int remoteID>;
+
+        $i0 = $r1.<com.trilead.ssh2.channel.Channel: int localID>;
+
+        $i1 = $r1.<com.trilead.ssh2.channel.Channel: int localWindow>;
+
+        $i2 = $r1.<com.trilead.ssh2.channel.Channel: int localMaxPacketSize>;
+
+        specialinvoke $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: void <init>(int,int,int,int)>($i3, $i0, $i1, $i2);
+
+     label04:
+        exitmonitor $r1;
+
+     label05:
+        $r4 = $r1.<com.trilead.ssh2.channel.Channel: java.lang.Object channelSendLock>;
+
+        entermonitor $r4;
+
+     label06:
+        $z0 = $r1.<com.trilead.ssh2.channel.Channel: boolean closeMessageSent>;
+
+        if $z0 != 1 goto label11;
+
+        exitmonitor $r4;
+
+     label07:
+        return;
+
+     label08:
+        $r5 := @caughtexception;
+
+     label09:
+        exitmonitor $r1;
+
+     label10:
+        throw $r5;
+
+     label11:
+        $r6 = $r0.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.transport.TransportManager tm>;
+
+        $r3 = virtualinvoke $r2.<com.trilead.ssh2.packets.PacketChannelOpenConfirmation: byte[] getPayload()>();
+
+        virtualinvoke $r6.<com.trilead.ssh2.transport.TransportManager: void sendMessage(byte[])>($r3);
+
+        exitmonitor $r4;
+
+     label12:
+        return;
+
+     label13:
+        $r7 := @caughtexception;
+
+        exitmonitor $r4;
+
+     label14:
+        throw $r7;
+
+     label15:
+        $r5 := @caughtexception;
+
+        goto label09;
+
+        catch java.lang.Throwable from label01 to label02 with label08;
+        catch java.lang.Throwable from label03 to label04 with label08;
+        catch java.lang.Throwable from label04 to label05 with label15;
+        catch java.lang.Throwable from label06 to label07 with label13;
+        catch java.lang.Throwable from label09 to label10 with label08;
+        catch java.lang.Throwable from label11 to label12 with label13;
+        catch java.lang.Throwable from label13 to label14 with label13;
+    }
+
+    public void unRegisterX11Cookie(java.lang.String, boolean)
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        java.lang.String $r1, $r11;
+        boolean $z0;
+        int $i0, $i1;
+        java.lang.IllegalStateException $r2;
+        java.util.HashMap $r3, $r4;
+        java.lang.Throwable $r5, $r12, $r14;
+        com.trilead.ssh2.log.Logger $r6;
+        java.util.Vector $r7, $r8;
+        java.lang.Object $r9;
+        com.trilead.ssh2.channel.Channel $r10;
+        java.io.IOException $r13;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $z0 := @parameter1: boolean;
+
+        if $r1 != null goto label01;
+
+        $r2 = new java.lang.IllegalStateException;
+
+        specialinvoke $r2.<java.lang.IllegalStateException: void <init>(java.lang.String)>("hexFakeCookie may not be null");
+
+        throw $r2;
+
+     label01:
+        $r3 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap x11_magic_cookies>;
+
+        entermonitor $r3;
+
+     label02:
+        $r4 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.HashMap x11_magic_cookies>;
+
+        virtualinvoke $r4.<java.util.HashMap: java.lang.Object remove(java.lang.Object)>($r1);
+
+        exitmonitor $r3;
+
+     label03:
+        if $z0 != 0 goto label06;
+
+        return;
+
+     label04:
+        $r5 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label05:
+        throw $r5;
+
+     label06:
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        $z0 = virtualinvoke $r6.<com.trilead.ssh2.log.Logger: boolean isEnabled()>();
+
+        if $z0 == 0 goto label07;
+
+        $r6 = <com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.log.Logger log>;
+
+        virtualinvoke $r6.<com.trilead.ssh2.log.Logger: void log(int,java.lang.String)>(50, "Closing all X11 channels for the given fake cookie");
+
+     label07:
+        $r7 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        entermonitor $r7;
+
+     label08:
+        $r8 = $r0.<com.trilead.ssh2.channel.ChannelManager: java.util.Vector channels>;
+
+        $r9 = virtualinvoke $r8.<java.util.Vector: java.lang.Object clone()>();
+
+        $r8 = (java.util.Vector) $r9;
+
+        exitmonitor $r7;
+
+     label09:
+        $i0 = 0;
+
+     label10:
+        $i1 = virtualinvoke $r8.<java.util.Vector: int size()>();
+
+        if $i0 >= $i1 goto label23;
+
+        $r9 = virtualinvoke $r8.<java.util.Vector: java.lang.Object elementAt(int)>($i0);
+
+        $r10 = (com.trilead.ssh2.channel.Channel) $r9;
+
+        entermonitor $r10;
+
+     label11:
+        $r11 = $r10.<com.trilead.ssh2.channel.Channel: java.lang.String hexX11FakeCookie>;
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean equals(java.lang.Object)>($r11);
+
+        if $z0 != 0 goto label16;
+
+        exitmonitor $r10;
+
+     label12:
+        $i0 = $i0 + 1;
+
+        goto label10;
+
+     label13:
+        $r12 := @caughtexception;
+
+     label14:
+        exitmonitor $r7;
+
+     label15:
+        throw $r12;
+
+     label16:
+        exitmonitor $r10;
+
+     label17:
+        virtualinvoke $r0.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r10, "Closing X11 channel since the corresponding session is closing", 1);
+
+     label18:
+        goto label12;
+
+     label19:
+        $r13 := @caughtexception;
+
+        goto label12;
+
+     label20:
+        $r14 := @caughtexception;
+
+     label21:
+        exitmonitor $r10;
+
+     label22:
+        throw $r14;
+
+     label23:
+        return;
+
+        catch java.lang.Throwable from label02 to label03 with label04;
+        catch java.lang.Throwable from label04 to label05 with label04;
+        catch java.lang.Throwable from label08 to label09 with label13;
+        catch java.lang.Throwable from label11 to label12 with label20;
+        catch java.lang.Throwable from label14 to label15 with label13;
+        catch java.lang.Throwable from label16 to label17 with label20;
+        catch java.io.IOException from label17 to label18 with label19;
+        catch java.lang.Throwable from label21 to label22 with label20;
+    }
+
+    public int waitForCondition(com.trilead.ssh2.channel.Channel, long, int)
+    {
+        com.trilead.ssh2.channel.ChannelManager $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        long $l0, $l3;
+        int $i1, $i4, $i5, $i6;
+        byte $b2, $b7;
+        boolean $z0, $z1;
+        java.lang.Integer $r2;
+        java.lang.String $r3;
+        java.lang.Throwable $r4;
+        java.lang.InterruptedException $r5;
+
+        $r0 := @this: com.trilead.ssh2.channel.ChannelManager;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.Channel;
+
+        $l0 := @parameter1: long;
+
+        $i1 := @parameter2: int;
+
+        $l3 = 0L;
+
+        $z0 = 0;
+
+        entermonitor $r1;
+
+     label01:
+        $b2 = 0;
+
+     label02:
+        $i5 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutWritepos>;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stdoutReadpos>;
+
+        $i5 = $i5 - $i4;
+
+        $i4 = $r1.<com.trilead.ssh2.channel.Channel: int stderrWritepos>;
+
+        $i6 = $r1.<com.trilead.ssh2.channel.Channel: int stderrReadpos>;
+
+     label03:
+        $i4 = $i4 - $i6;
+
+        if $i5 <= 0 goto label04;
+
+        $b2 = 0 | 4;
+
+     label04:
+        if $i4 <= 0 goto label05;
+
+        $b2 = $b2 | 8;
+
+     label05:
+        $z1 = $r1.<com.trilead.ssh2.channel.Channel: boolean EOF>;
+
+        if $z1 == 0 goto label06;
+
+        $b2 = $b2 | 16;
+
+     label06:
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.Integer getExitStatus()>();
+
+        if $r2 == null goto label07;
+
+        $b2 = $b2 | 32;
+
+     label07:
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: java.lang.String getExitSignal()>();
+
+        if $r3 == null goto label08;
+
+        $b2 = $b2 | 64;
+
+     label08:
+        $i6 = $r1.<com.trilead.ssh2.channel.Channel: int state>;
+
+     label09:
+        if $i6 != 4 goto label12;
+
+        $b2 = $b2 | 2;
+
+     label10:
+        $b2 = $b2 | 16;
+
+        exitmonitor $r1;
+
+     label11:
+        return $b2;
+
+     label12:
+        $i6 = $b2 & $i1;
+
+     label13:
+        if $i6 == 0 goto label17;
+
+        exitmonitor $r1;
+
+     label14:
+        return $b2;
+
+     label15:
+        $r4 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label16:
+        throw $r4;
+
+     label17:
+        $b7 = $l0 cmp 0L;
+
+        if $b7 <= 0 goto label20;
+
+        if $z0 != 0 goto label24;
+
+     label18:
+        $l3 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+     label19:
+        $l3 = $l3 + $l0;
+
+        $z0 = 1;
+
+     label20:
+        $b7 = $l0 cmp 0L;
+
+        if $b7 <= 0 goto label28;
+
+     label21:
+        virtualinvoke $r1.<java.lang.Object: void wait(long)>($l0);
+
+     label22:
+        goto label01;
+
+     label23:
+        $r5 := @caughtexception;
+
+        goto label01;
+
+     label24:
+        $l0 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+     label25:
+        $l0 = $l3 - $l0;
+
+        $b7 = $l0 cmp 0L;
+
+        if $b7 > 0 goto label20;
+
+     label26:
+        $b7 = $b2 | 1;
+
+        exitmonitor $r1;
+
+     label27:
+        return $b7;
+
+     label28:
+        virtualinvoke $r1.<java.lang.Object: void wait()>();
+
+     label29:
+        goto label01;
+
+        catch java.lang.Throwable from label02 to label03 with label15;
+        catch java.lang.Throwable from label04 to label09 with label15;
+        catch java.lang.Throwable from label10 to label11 with label15;
+        catch java.lang.Throwable from label13 to label14 with label15;
+        catch java.lang.Throwable from label15 to label16 with label15;
+        catch java.lang.Throwable from label18 to label19 with label15;
+        catch java.lang.InterruptedException from label21 to label22 with label23;
+        catch java.lang.Throwable from label21 to label22 with label15;
+        catch java.lang.Throwable from label24 to label25 with label15;
+        catch java.lang.Throwable from label26 to label27 with label15;
+        catch java.lang.InterruptedException from label28 to label29 with label23;
+        catch java.lang.Throwable from label28 to label29 with label15;
+    }
+}

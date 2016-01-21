@@ -1,0 +1,8 @@
+public class com.trilead.ssh2.HTTPProxyData extends java.lang.Object implements com.trilead.ssh2.ProxyData
+{
+    public final java.lang.String proxyHost;
+    public final java.lang.String proxyPass;
+    public final int proxyPort;
+    public final java.lang.String proxyUser;
+    public final java.lang.String[] requestHeaderLines;
+}

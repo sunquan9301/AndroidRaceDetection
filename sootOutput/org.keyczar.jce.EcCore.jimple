@@ -1,0 +1,247 @@
+public final class org.keyczar.jce.EcCore extends java.lang.Object
+{
+    private static final java.math.BigInteger THREE;
+
+    static void <clinit>()
+    {
+        java.math.BigInteger $r0;
+
+        $r0 = staticinvoke <java.math.BigInteger: java.math.BigInteger valueOf(long)>(3L);
+
+        <org.keyczar.jce.EcCore: java.math.BigInteger THREE> = $r0;
+
+        return;
+    }
+
+    private static java.math.BigInteger[] addPointsA(java.math.BigInteger[], java.math.BigInteger[], java.security.spec.ECParameterSpec)
+    {
+        java.math.BigInteger[] $r0, $r1, $r3;
+        java.security.spec.ECParameterSpec $r2;
+        java.math.BigInteger $r4, $r8, $r9, $r10;
+        java.security.spec.EllipticCurve $r5;
+        java.security.spec.ECField $r6;
+        java.security.spec.ECFieldFp $r7;
+
+        $r0 := @parameter0: java.math.BigInteger[];
+
+        $r1 := @parameter1: java.math.BigInteger[];
+
+        $r2 := @parameter2: java.security.spec.ECParameterSpec;
+
+        $r5 = virtualinvoke $r2.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r6 = virtualinvoke $r5.<java.security.spec.EllipticCurve: java.security.spec.ECField getField()>();
+
+        $r7 = (java.security.spec.ECFieldFp) $r6;
+
+        $r8 = virtualinvoke $r7.<java.security.spec.ECFieldFp: java.math.BigInteger getP()>();
+
+        $r4 = $r1[0];
+
+        if $r4 == null goto label1;
+
+        $r4 = $r1[1];
+
+        if $r4 != null goto label2;
+
+     label1:
+        return $r0;
+
+     label2:
+        $r4 = $r0[0];
+
+        if $r4 == null goto label3;
+
+        $r4 = $r0[1];
+
+        if $r4 != null goto label4;
+
+     label3:
+        return $r1;
+
+     label4:
+        $r9 = $r1[1];
+
+        $r4 = $r0[1];
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r4);
+
+        $r10 = $r1[0];
+
+        $r4 = $r0[0];
+
+        $r10 = virtualinvoke $r10.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r4);
+
+        $r10 = virtualinvoke $r10.<java.math.BigInteger: java.math.BigInteger modInverse(java.math.BigInteger)>($r8);
+
+        $r10 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger multiply(java.math.BigInteger)>($r10);
+
+        $r3 = newarray (java.math.BigInteger)[2];
+
+        $r9 = virtualinvoke $r10.<java.math.BigInteger: java.math.BigInteger pow(int)>(2);
+
+        $r4 = $r0[0];
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r4);
+
+        $r4 = $r1[0];
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r4);
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger mod(java.math.BigInteger)>($r8);
+
+        $r3[0] = $r9;
+
+        $r9 = $r0[0];
+
+        $r4 = $r3[0];
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r4);
+
+        $r10 = virtualinvoke $r10.<java.math.BigInteger: java.math.BigInteger multiply(java.math.BigInteger)>($r9);
+
+        $r9 = $r0[1];
+
+        $r10 = virtualinvoke $r10.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r9);
+
+        $r10 = virtualinvoke $r10.<java.math.BigInteger: java.math.BigInteger mod(java.math.BigInteger)>($r8);
+
+        $r3[1] = $r10;
+
+        return $r3;
+    }
+
+    private static java.math.BigInteger[] doublePointA(java.math.BigInteger[], java.security.spec.ECParameterSpec)
+    {
+        java.math.BigInteger[] $r0, $r2;
+        java.security.spec.ECParameterSpec $r1;
+        java.math.BigInteger $r3, $r7, $r8, $r9;
+        java.security.spec.EllipticCurve $r4;
+        java.security.spec.ECField $r5;
+        java.security.spec.ECFieldFp $r6;
+
+        $r0 := @parameter0: java.math.BigInteger[];
+
+        $r1 := @parameter1: java.security.spec.ECParameterSpec;
+
+        $r4 = virtualinvoke $r1.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r5 = virtualinvoke $r4.<java.security.spec.EllipticCurve: java.security.spec.ECField getField()>();
+
+        $r6 = (java.security.spec.ECFieldFp) $r5;
+
+        $r7 = virtualinvoke $r6.<java.security.spec.ECFieldFp: java.math.BigInteger getP()>();
+
+        $r4 = virtualinvoke $r1.<java.security.spec.ECParameterSpec: java.security.spec.EllipticCurve getCurve()>();
+
+        $r8 = virtualinvoke $r4.<java.security.spec.EllipticCurve: java.math.BigInteger getA()>();
+
+        $r3 = $r0[0];
+
+        if $r3 == null goto label1;
+
+        $r3 = $r0[1];
+
+        if $r3 != null goto label2;
+
+     label1:
+        return $r0;
+
+     label2:
+        $r3 = $r0[0];
+
+        $r9 = virtualinvoke $r3.<java.math.BigInteger: java.math.BigInteger pow(int)>(2);
+
+        $r3 = <org.keyczar.jce.EcCore: java.math.BigInteger THREE>;
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger multiply(java.math.BigInteger)>($r3);
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger add(java.math.BigInteger)>($r8);
+
+        $r8 = $r0[1];
+
+        $r8 = virtualinvoke $r8.<java.math.BigInteger: java.math.BigInteger shiftLeft(int)>(1);
+
+        $r8 = virtualinvoke $r8.<java.math.BigInteger: java.math.BigInteger modInverse(java.math.BigInteger)>($r7);
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger multiply(java.math.BigInteger)>($r8);
+
+        $r2 = newarray (java.math.BigInteger)[2];
+
+        $r8 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger pow(int)>(2);
+
+        $r3 = $r0[0];
+
+        $r3 = virtualinvoke $r3.<java.math.BigInteger: java.math.BigInteger shiftLeft(int)>(1);
+
+        $r8 = virtualinvoke $r8.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r3);
+
+        $r8 = virtualinvoke $r8.<java.math.BigInteger: java.math.BigInteger mod(java.math.BigInteger)>($r7);
+
+        $r2[0] = $r8;
+
+        $r8 = $r0[0];
+
+        $r3 = $r2[0];
+
+        $r8 = virtualinvoke $r8.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r3);
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger multiply(java.math.BigInteger)>($r8);
+
+        $r8 = $r0[1];
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger subtract(java.math.BigInteger)>($r8);
+
+        $r9 = virtualinvoke $r9.<java.math.BigInteger: java.math.BigInteger mod(java.math.BigInteger)>($r7);
+
+        $r2[1] = $r9;
+
+        return $r2;
+    }
+
+    public static java.math.BigInteger[] multiplyPointA(java.math.BigInteger[], java.math.BigInteger, java.security.spec.ECParameterSpec)
+    {
+        java.math.BigInteger[] $r0, $r3, $r4;
+        java.math.BigInteger $r1;
+        java.security.spec.ECParameterSpec $r2;
+        int $i0;
+        boolean $z0;
+
+        $r0 := @parameter0: java.math.BigInteger[];
+
+        $r1 := @parameter1: java.math.BigInteger;
+
+        $r2 := @parameter2: java.security.spec.ECParameterSpec;
+
+        $r3 = newarray (java.math.BigInteger)[2];
+
+        $r3[0] = null;
+
+        $r3[1] = null;
+
+        $i0 = virtualinvoke $r1.<java.math.BigInteger: int bitLength()>();
+
+        $i0 = $i0 + -1;
+
+     label1:
+        if $i0 < 0 goto label3;
+
+        $r4 = staticinvoke <org.keyczar.jce.EcCore: java.math.BigInteger[] doublePointA(java.math.BigInteger[],java.security.spec.ECParameterSpec)>($r3, $r2);
+
+        $r3 = $r4;
+
+        $z0 = virtualinvoke $r1.<java.math.BigInteger: boolean testBit(int)>($i0);
+
+        if $z0 == 0 goto label2;
+
+        $r3 = staticinvoke <org.keyczar.jce.EcCore: java.math.BigInteger[] addPointsA(java.math.BigInteger[],java.math.BigInteger[],java.security.spec.ECParameterSpec)>($r4, $r0, $r2);
+
+     label2:
+        $i0 = $i0 + -1;
+
+        goto label1;
+
+     label3:
+        return $r3;
+    }
+}

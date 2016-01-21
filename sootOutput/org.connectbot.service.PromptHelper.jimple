@@ -1,0 +1,259 @@
+public class org.connectbot.service.PromptHelper extends java.lang.Object
+{
+    private android.os.Handler handler;
+    public java.lang.String promptHint;
+    public java.lang.String promptInstructions;
+    public java.lang.Object promptRequested;
+    private java.util.concurrent.Semaphore promptResponse;
+    private java.util.concurrent.Semaphore promptToken;
+    private java.lang.Object response;
+    private final java.lang.Object tag;
+
+    public void <init>(java.lang.Object)
+    {
+        org.connectbot.service.PromptHelper $r0;
+        java.lang.Object $r1;
+        java.util.concurrent.Semaphore $r2;
+
+        $r0 := @this: org.connectbot.service.PromptHelper;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<org.connectbot.service.PromptHelper: android.os.Handler handler> = null;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.String promptInstructions> = null;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.String promptHint> = null;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.Object promptRequested> = null;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.Object response> = null;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.Object tag> = $r1;
+
+        $r2 = new java.util.concurrent.Semaphore;
+
+        specialinvoke $r2.<java.util.concurrent.Semaphore: void <init>(int)>(1);
+
+        $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptToken> = $r2;
+
+        $r2 = new java.util.concurrent.Semaphore;
+
+        specialinvoke $r2.<java.util.concurrent.Semaphore: void <init>(int)>(0);
+
+        $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptResponse> = $r2;
+
+        return;
+    }
+
+    private java.lang.Object requestPrompt(java.lang.String, java.lang.String, java.lang.Object) throws java.lang.InterruptedException
+    {
+        org.connectbot.service.PromptHelper $r0;
+        java.lang.String $r1, $r2;
+        java.lang.Object $r3;
+        java.util.concurrent.Semaphore $r4;
+        android.os.Message $r5;
+        android.os.Handler $r6;
+        java.lang.Throwable $r7;
+
+        $r0 := @this: org.connectbot.service.PromptHelper;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+        $r3 := @parameter2: java.lang.Object;
+
+        $r4 = $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptToken>;
+
+        virtualinvoke $r4.<java.util.concurrent.Semaphore: void acquire()>();
+
+     label1:
+        $r0.<org.connectbot.service.PromptHelper: java.lang.String promptInstructions> = $r1;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.String promptHint> = $r2;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.Object promptRequested> = $r3;
+
+        $r6 = $r0.<org.connectbot.service.PromptHelper: android.os.Handler handler>;
+
+        if $r6 == null goto label2;
+
+        $r6 = $r0.<org.connectbot.service.PromptHelper: android.os.Handler handler>;
+
+        $r3 = $r0.<org.connectbot.service.PromptHelper: java.lang.Object tag>;
+
+        $r5 = staticinvoke <android.os.Message: android.os.Message obtain(android.os.Handler,int,java.lang.Object)>($r6, -1, $r3);
+
+        virtualinvoke $r5.<android.os.Message: void sendToTarget()>();
+
+     label2:
+        $r4 = $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptResponse>;
+
+        virtualinvoke $r4.<java.util.concurrent.Semaphore: void acquire()>();
+
+        $r3 = virtualinvoke $r0.<org.connectbot.service.PromptHelper: java.lang.Object popResponse()>();
+
+     label3:
+        $r4 = $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptToken>;
+
+        virtualinvoke $r4.<java.util.concurrent.Semaphore: void release()>();
+
+        return $r3;
+
+     label4:
+        $r7 := @caughtexception;
+
+        $r4 = $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptToken>;
+
+        virtualinvoke $r4.<java.util.concurrent.Semaphore: void release()>();
+
+        throw $r7;
+
+        catch java.lang.Throwable from label1 to label3 with label4;
+    }
+
+    public void cancelPrompt()
+    {
+        org.connectbot.service.PromptHelper $r0;
+        java.util.concurrent.Semaphore $r1;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.PromptHelper;
+
+        $r1 = $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptToken>;
+
+        $z0 = virtualinvoke $r1.<java.util.concurrent.Semaphore: boolean tryAcquire()>();
+
+        if $z0 != 0 goto label1;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.Object response> = null;
+
+        $r1 = $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptResponse>;
+
+        virtualinvoke $r1.<java.util.concurrent.Semaphore: void release()>();
+
+        return;
+
+     label1:
+        $r1 = $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptToken>;
+
+        virtualinvoke $r1.<java.util.concurrent.Semaphore: void release()>();
+
+        return;
+    }
+
+    protected java.lang.Object popResponse()
+    {
+        org.connectbot.service.PromptHelper $r0;
+        java.lang.Object $r1;
+
+        $r0 := @this: org.connectbot.service.PromptHelper;
+
+        $r1 = $r0.<org.connectbot.service.PromptHelper: java.lang.Object response>;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.Object response> = null;
+
+        return $r1;
+    }
+
+    public java.lang.Boolean requestBooleanPrompt(java.lang.String, java.lang.String)
+    {
+        org.connectbot.service.PromptHelper $r0;
+        java.lang.String $r1, $r2;
+        java.lang.Object $r3;
+        java.lang.Boolean $r4;
+        java.lang.Exception $r5;
+
+        $r0 := @this: org.connectbot.service.PromptHelper;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+     label1:
+        $r3 = specialinvoke $r0.<org.connectbot.service.PromptHelper: java.lang.Object requestPrompt(java.lang.String,java.lang.String,java.lang.Object)>($r1, $r2, class "java/lang/Boolean");
+
+        $r4 = (java.lang.Boolean) $r3;
+
+     label2:
+        return $r4;
+
+     label3:
+        $r5 := @caughtexception;
+
+        return null;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public java.lang.String requestStringPrompt(java.lang.String, java.lang.String)
+    {
+        org.connectbot.service.PromptHelper $r0;
+        java.lang.String $r1, $r2;
+        java.lang.Object $r3;
+        java.lang.Exception $r4;
+
+        $r0 := @this: org.connectbot.service.PromptHelper;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $r2 := @parameter1: java.lang.String;
+
+     label1:
+        $r3 = specialinvoke $r0.<org.connectbot.service.PromptHelper: java.lang.Object requestPrompt(java.lang.String,java.lang.String,java.lang.Object)>($r1, $r2, class "java/lang/String");
+
+        $r2 = (java.lang.String) $r3;
+
+     label2:
+        return $r2;
+
+     label3:
+        $r4 := @caughtexception;
+
+        return null;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+    }
+
+    public void setHandler(android.os.Handler)
+    {
+        org.connectbot.service.PromptHelper $r0;
+        android.os.Handler $r1;
+
+        $r0 := @this: org.connectbot.service.PromptHelper;
+
+        $r1 := @parameter0: android.os.Handler;
+
+        $r0.<org.connectbot.service.PromptHelper: android.os.Handler handler> = $r1;
+
+        return;
+    }
+
+    public void setResponse(java.lang.Object)
+    {
+        org.connectbot.service.PromptHelper $r0;
+        java.lang.Object $r1;
+        java.util.concurrent.Semaphore $r2;
+
+        $r0 := @this: org.connectbot.service.PromptHelper;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.Object response> = $r1;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.Object promptRequested> = null;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.String promptInstructions> = null;
+
+        $r0.<org.connectbot.service.PromptHelper: java.lang.String promptHint> = null;
+
+        $r2 = $r0.<org.connectbot.service.PromptHelper: java.util.concurrent.Semaphore promptResponse>;
+
+        virtualinvoke $r2.<java.util.concurrent.Semaphore: void release()>();
+
+        return;
+    }
+}

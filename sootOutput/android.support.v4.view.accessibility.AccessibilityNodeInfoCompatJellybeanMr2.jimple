@@ -1,0 +1,18 @@
+class android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellybeanMr2 extends java.lang.Object
+{
+
+    public static java.lang.String getViewIdResourceName(java.lang.Object)
+    {
+        java.lang.Object $r0;
+        java.lang.String $r1;
+        android.view.accessibility.AccessibilityNodeInfo $r2;
+
+        $r0 := @parameter0: java.lang.Object;
+
+        $r2 = (android.view.accessibility.AccessibilityNodeInfo) $r0;
+
+        $r1 = virtualinvoke $r2.<android.view.accessibility.AccessibilityNodeInfo: java.lang.String getViewIdResourceName()>();
+
+        return $r1;
+    }
+}

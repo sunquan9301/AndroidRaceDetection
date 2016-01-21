@@ -1,0 +1,179 @@
+class org.connectbot.PubkeyListActivity$9$1 extends java.lang.Object implements android.content.DialogInterface$OnClickListener
+{
+    final org.connectbot.PubkeyListActivity$9 this$1;
+    final android.view.View val$changePasswordView;
+
+    void <init>(org.connectbot.PubkeyListActivity$9, android.view.View)
+    {
+        org.connectbot.PubkeyListActivity$9$1 $r0;
+        org.connectbot.PubkeyListActivity$9 $r1;
+        android.view.View $r2;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$9$1;
+
+        $r1 := @parameter0: org.connectbot.PubkeyListActivity$9;
+
+        $r2 := @parameter1: android.view.View;
+
+        $r0.<org.connectbot.PubkeyListActivity$9$1: org.connectbot.PubkeyListActivity$9 this$1> = $r1;
+
+        $r0.<org.connectbot.PubkeyListActivity$9$1: android.view.View val$changePasswordView> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.content.DialogInterface, int)
+    {
+        org.connectbot.PubkeyListActivity$9$1 $r0;
+        android.content.DialogInterface $r1;
+        int $i0;
+        java.lang.Exception $r2;
+        android.view.View $r3;
+        android.widget.EditText $r4;
+        android.text.Editable $r5;
+        java.lang.String $r6, $r7, $r8;
+        boolean $z0;
+        android.app.AlertDialog$Builder $r9;
+        org.connectbot.PubkeyListActivity$9 $r10;
+        org.connectbot.PubkeyListActivity $r11;
+        android.app.AlertDialog $r12;
+        org.connectbot.bean.PubkeyBean $r13;
+        org.connectbot.util.PubkeyDatabase $r14;
+
+        $r0 := @this: org.connectbot.PubkeyListActivity$9$1;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $i0 := @parameter1: int;
+
+        $r3 = $r0.<org.connectbot.PubkeyListActivity$9$1: android.view.View val$changePasswordView>;
+
+        $r3 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427370);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r5 = virtualinvoke $r4.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r6 = virtualinvoke $r5.<java.lang.Object: java.lang.String toString()>();
+
+        $r3 = $r0.<org.connectbot.PubkeyListActivity$9$1: android.view.View val$changePasswordView>;
+
+        $r3 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427356);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r5 = virtualinvoke $r4.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r7 = virtualinvoke $r5.<java.lang.Object: java.lang.String toString()>();
+
+        $r3 = $r0.<org.connectbot.PubkeyListActivity$9$1: android.view.View val$changePasswordView>;
+
+        $r3 = virtualinvoke $r3.<android.view.View: android.view.View findViewById(int)>(2131427357);
+
+        $r4 = (android.widget.EditText) $r3;
+
+        $r5 = virtualinvoke $r4.<android.widget.EditText: android.text.Editable getText()>();
+
+        $r8 = virtualinvoke $r5.<java.lang.Object: java.lang.String toString()>();
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>($r8);
+
+        if $z0 != 0 goto label1;
+
+        $r9 = new android.app.AlertDialog$Builder;
+
+        $r10 = $r0.<org.connectbot.PubkeyListActivity$9$1: org.connectbot.PubkeyListActivity$9 this$1>;
+
+        $r11 = $r10.<org.connectbot.PubkeyListActivity$9: org.connectbot.PubkeyListActivity this$0>;
+
+        specialinvoke $r9.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r11);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setMessage(int)>(2131165241);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(17039370, null);
+
+        $r12 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r12.<android.app.AlertDialog: void show()>();
+
+        return;
+
+     label1:
+        $r10 = $r0.<org.connectbot.PubkeyListActivity$9$1: org.connectbot.PubkeyListActivity$9 this$1>;
+
+        $r13 = $r10.<org.connectbot.PubkeyListActivity$9: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        $z0 = virtualinvoke $r13.<org.connectbot.bean.PubkeyBean: boolean changePassword(java.lang.String,java.lang.String)>($r6, $r7);
+
+        if $z0 != 0 goto label4;
+
+        $r9 = new android.app.AlertDialog$Builder;
+
+        $r10 = $r0.<org.connectbot.PubkeyListActivity$9$1: org.connectbot.PubkeyListActivity$9 this$1>;
+
+        $r11 = $r10.<org.connectbot.PubkeyListActivity$9: org.connectbot.PubkeyListActivity this$0>;
+
+        specialinvoke $r9.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r11);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setMessage(int)>(2131165243);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(17039370, null);
+
+        $r12 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r12.<android.app.AlertDialog: void show()>();
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.PubkeyListActivity", "Could not change private key password", $r2);
+
+        $r9 = new android.app.AlertDialog$Builder;
+
+        $r10 = $r0.<org.connectbot.PubkeyListActivity$9$1: org.connectbot.PubkeyListActivity$9 this$1>;
+
+        $r11 = $r10.<org.connectbot.PubkeyListActivity$9: org.connectbot.PubkeyListActivity this$0>;
+
+        specialinvoke $r9.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>($r11);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setMessage(int)>(2131165260);
+
+        $r9 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(int,android.content.DialogInterface$OnClickListener)>(17039370, null);
+
+        $r12 = virtualinvoke $r9.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r12.<android.app.AlertDialog: void show()>();
+
+        return;
+
+     label4:
+        $r10 = $r0.<org.connectbot.PubkeyListActivity$9$1: org.connectbot.PubkeyListActivity$9 this$1>;
+
+        $r11 = $r10.<org.connectbot.PubkeyListActivity$9: org.connectbot.PubkeyListActivity this$0>;
+
+        $r14 = $r11.<org.connectbot.PubkeyListActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        $r10 = $r0.<org.connectbot.PubkeyListActivity$9$1: org.connectbot.PubkeyListActivity$9 this$1>;
+
+        $r13 = $r10.<org.connectbot.PubkeyListActivity$9: org.connectbot.bean.PubkeyBean val$pubkey>;
+
+        virtualinvoke $r14.<org.connectbot.util.PubkeyDatabase: org.connectbot.bean.PubkeyBean savePubkey(org.connectbot.bean.PubkeyBean)>($r13);
+
+        $r10 = $r0.<org.connectbot.PubkeyListActivity$9$1: org.connectbot.PubkeyListActivity$9 this$1>;
+
+        $r11 = $r10.<org.connectbot.PubkeyListActivity$9: org.connectbot.PubkeyListActivity this$0>;
+
+        virtualinvoke $r11.<org.connectbot.PubkeyListActivity: void updateList()>();
+
+     label5:
+        return;
+
+        catch java.lang.Exception from label1 to label2 with label3;
+        catch java.lang.Exception from label4 to label5 with label3;
+    }
+}

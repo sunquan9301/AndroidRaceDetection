@@ -1,0 +1,150 @@
+public class net.sourceforge.jsocks.SocksException extends java.io.IOException
+{
+    static final java.lang.String[] localErrorMessage;
+    static final java.lang.String[] serverReplyMessage;
+    public int errCode;
+    java.lang.String errString;
+
+    static void <clinit>()
+    {
+        java.lang.String[] $r0;
+
+        $r0 = newarray (java.lang.String)[9];
+
+        $r0[0] = "Succeeded";
+
+        $r0[1] = "General SOCKS server failure";
+
+        $r0[2] = "Connection not allowed by ruleset";
+
+        $r0[3] = "Network unreachable";
+
+        $r0[4] = "Host unreachable";
+
+        $r0[5] = "Connection refused";
+
+        $r0[6] = "TTL expired";
+
+        $r0[7] = "Command not supported";
+
+        $r0[8] = "Address type not supported";
+
+        <net.sourceforge.jsocks.SocksException: java.lang.String[] serverReplyMessage> = $r0;
+
+        $r0 = newarray (java.lang.String)[6];
+
+        $r0[0] = "SOCKS server not specified";
+
+        $r0[1] = "Unable to contact SOCKS server";
+
+        $r0[2] = "IO error";
+
+        $r0[3] = "None of Authentication methods are supported";
+
+        $r0[4] = "Authentication failed";
+
+        $r0[5] = "General SOCKS fault";
+
+        <net.sourceforge.jsocks.SocksException: java.lang.String[] localErrorMessage> = $r0;
+
+        return;
+    }
+
+    public void <init>(int)
+    {
+        net.sourceforge.jsocks.SocksException $r0;
+        int $i0, $i1;
+        java.lang.String[] $r1;
+        java.lang.String $r2;
+
+        $r0 := @this: net.sourceforge.jsocks.SocksException;
+
+        $i0 := @parameter0: int;
+
+        specialinvoke $r0.<java.io.IOException: void <init>()>();
+
+        $r0.<net.sourceforge.jsocks.SocksException: int errCode> = $i0;
+
+        $i1 = $i0 >> 16;
+
+        if $i1 != 0 goto label3;
+
+        $r1 = <net.sourceforge.jsocks.SocksException: java.lang.String[] serverReplyMessage>;
+
+        $i1 = lengthof $r1;
+
+        if $i0 > $i1 goto label2;
+
+        $r1 = <net.sourceforge.jsocks.SocksException: java.lang.String[] serverReplyMessage>;
+
+        $r2 = $r1[$i0];
+
+     label1:
+        $r0.<net.sourceforge.jsocks.SocksException: java.lang.String errString> = $r2;
+
+        return;
+
+     label2:
+        $r2 = "Unknown error message";
+
+        goto label1;
+
+     label3:
+        $i1 = $i0 >> 16;
+
+        $i1 = $i1 + -1;
+
+        $r1 = <net.sourceforge.jsocks.SocksException: java.lang.String[] localErrorMessage>;
+
+        $i0 = lengthof $r1;
+
+        if $i1 > $i0 goto label5;
+
+        $r1 = <net.sourceforge.jsocks.SocksException: java.lang.String[] localErrorMessage>;
+
+        $r2 = $r1[$i1];
+
+     label4:
+        $r0.<net.sourceforge.jsocks.SocksException: java.lang.String errString> = $r2;
+
+        return;
+
+     label5:
+        $r2 = "Unknown error message";
+
+        goto label4;
+    }
+
+    public void <init>(int, java.lang.String)
+    {
+        net.sourceforge.jsocks.SocksException $r0;
+        int $i0;
+        java.lang.String $r1;
+
+        $r0 := @this: net.sourceforge.jsocks.SocksException;
+
+        $i0 := @parameter0: int;
+
+        $r1 := @parameter1: java.lang.String;
+
+        specialinvoke $r0.<java.io.IOException: void <init>()>();
+
+        $r0.<net.sourceforge.jsocks.SocksException: int errCode> = $i0;
+
+        $r0.<net.sourceforge.jsocks.SocksException: java.lang.String errString> = $r1;
+
+        return;
+    }
+
+    public java.lang.String toString()
+    {
+        net.sourceforge.jsocks.SocksException $r0;
+        java.lang.String $r1;
+
+        $r0 := @this: net.sourceforge.jsocks.SocksException;
+
+        $r1 = $r0.<net.sourceforge.jsocks.SocksException: java.lang.String errString>;
+
+        return $r1;
+    }
+}

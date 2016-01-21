@@ -1,0 +1,28 @@
+class org.connectbot.service.BackupWrapper$PreFroyo extends org.connectbot.service.BackupWrapper
+{
+
+    private void <init>()
+    {
+        org.connectbot.service.BackupWrapper$PreFroyo $r0;
+
+        $r0 := @this: org.connectbot.service.BackupWrapper$PreFroyo;
+
+        specialinvoke $r0.<org.connectbot.service.BackupWrapper: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.service.BackupWrapper$1)
+    {
+        org.connectbot.service.BackupWrapper$PreFroyo $r0;
+        org.connectbot.service.BackupWrapper$1 $r1;
+
+        $r0 := @this: org.connectbot.service.BackupWrapper$PreFroyo;
+
+        $r1 := @parameter0: org.connectbot.service.BackupWrapper$1;
+
+        specialinvoke $r0.<org.connectbot.service.BackupWrapper$PreFroyo: void <init>()>();
+
+        return;
+    }
+}

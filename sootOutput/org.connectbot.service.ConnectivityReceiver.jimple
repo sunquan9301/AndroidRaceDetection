@@ -1,0 +1,435 @@
+public class org.connectbot.service.ConnectivityReceiver extends android.content.BroadcastReceiver
+{
+    private boolean mIsConnected;
+    private java.lang.Object[] mLock;
+    private boolean mLockingWifi;
+    private int mNetworkRef;
+    private final org.connectbot.service.TerminalManager mTerminalManager;
+    private final android.net.wifi.WifiManager$WifiLock mWifiLock;
+
+    public void <init>(org.connectbot.service.TerminalManager, boolean)
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        org.connectbot.service.TerminalManager $r1;
+        boolean $z0, $z1;
+        android.content.IntentFilter $r2;
+        java.lang.Object[] $r3;
+        android.net.NetworkInfo$State $r4, $r10;
+        java.lang.Object $r5;
+        android.net.ConnectivityManager $r6;
+        android.net.wifi.WifiManager $r7;
+        android.net.wifi.WifiManager$WifiLock $r8;
+        android.net.NetworkInfo $r9;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $r1 := @parameter0: org.connectbot.service.TerminalManager;
+
+        $z0 := @parameter1: boolean;
+
+        $z1 = 0;
+
+        specialinvoke $r0.<android.content.BroadcastReceiver: void <init>()>();
+
+        $r0.<org.connectbot.service.ConnectivityReceiver: boolean mIsConnected> = 0;
+
+        $r0.<org.connectbot.service.ConnectivityReceiver: int mNetworkRef> = 0;
+
+        $r3 = newarray (java.lang.Object)[0];
+
+        $r0.<org.connectbot.service.ConnectivityReceiver: java.lang.Object[] mLock> = $r3;
+
+        $r0.<org.connectbot.service.ConnectivityReceiver: org.connectbot.service.TerminalManager mTerminalManager> = $r1;
+
+        $r5 = virtualinvoke $r1.<org.connectbot.service.TerminalManager: java.lang.Object getSystemService(java.lang.String)>("connectivity");
+
+        $r6 = (android.net.ConnectivityManager) $r5;
+
+        $r5 = virtualinvoke $r1.<org.connectbot.service.TerminalManager: java.lang.Object getSystemService(java.lang.String)>("wifi");
+
+        $r7 = (android.net.wifi.WifiManager) $r5;
+
+        $r8 = virtualinvoke $r7.<android.net.wifi.WifiManager: android.net.wifi.WifiManager$WifiLock createWifiLock(java.lang.String)>("CB.ConnectivityManager");
+
+        $r0.<org.connectbot.service.ConnectivityReceiver: android.net.wifi.WifiManager$WifiLock mWifiLock> = $r8;
+
+        $r9 = virtualinvoke $r6.<android.net.ConnectivityManager: android.net.NetworkInfo getActiveNetworkInfo()>();
+
+        if $r9 == null goto label2;
+
+        $r10 = virtualinvoke $r9.<android.net.NetworkInfo: android.net.NetworkInfo$State getState()>();
+
+        $r4 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State CONNECTED>;
+
+        if $r10 != $r4 goto label1;
+
+        $z1 = 1;
+
+     label1:
+        $r0.<org.connectbot.service.ConnectivityReceiver: boolean mIsConnected> = $z1;
+
+     label2:
+        $r0.<org.connectbot.service.ConnectivityReceiver: boolean mLockingWifi> = $z0;
+
+        $r2 = new android.content.IntentFilter;
+
+        specialinvoke $r2.<android.content.IntentFilter: void <init>()>();
+
+        virtualinvoke $r2.<android.content.IntentFilter: void addAction(java.lang.String)>("android.net.conn.CONNECTIVITY_CHANGE");
+
+        virtualinvoke $r1.<org.connectbot.service.TerminalManager: android.content.Intent registerReceiver(android.content.BroadcastReceiver,android.content.IntentFilter)>($r0, $r2);
+
+        return;
+    }
+
+    private void acquireWifiLockIfNecessaryLocked()
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        boolean $z0;
+        int $i0;
+        android.net.wifi.WifiManager$WifiLock $r1;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $z0 = $r0.<org.connectbot.service.ConnectivityReceiver: boolean mLockingWifi>;
+
+        if $z0 == 0 goto label1;
+
+        $i0 = $r0.<org.connectbot.service.ConnectivityReceiver: int mNetworkRef>;
+
+        if $i0 <= 0 goto label2;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: android.net.wifi.WifiManager$WifiLock mWifiLock>;
+
+        $z0 = virtualinvoke $r1.<android.net.wifi.WifiManager$WifiLock: boolean isHeld()>();
+
+        if $z0 != 0 goto label3;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: android.net.wifi.WifiManager$WifiLock mWifiLock>;
+
+        virtualinvoke $r1.<android.net.wifi.WifiManager$WifiLock: void acquire()>();
+
+        return;
+
+     label1:
+        return;
+
+     label2:
+        return;
+
+     label3:
+        return;
+    }
+
+    private void releaseWifiLockIfNecessaryLocked()
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        int $i0;
+        boolean $z0;
+        android.net.wifi.WifiManager$WifiLock $r1;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $i0 = $r0.<org.connectbot.service.ConnectivityReceiver: int mNetworkRef>;
+
+        if $i0 != 0 goto label1;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: android.net.wifi.WifiManager$WifiLock mWifiLock>;
+
+        $z0 = virtualinvoke $r1.<android.net.wifi.WifiManager$WifiLock: boolean isHeld()>();
+
+        if $z0 == 0 goto label2;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: android.net.wifi.WifiManager$WifiLock mWifiLock>;
+
+        virtualinvoke $r1.<android.net.wifi.WifiManager$WifiLock: void release()>();
+
+        return;
+
+     label1:
+        return;
+
+     label2:
+        return;
+    }
+
+    public void cleanup()
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        android.net.wifi.WifiManager$WifiLock $r1;
+        boolean $z0;
+        org.connectbot.service.TerminalManager $r2;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: android.net.wifi.WifiManager$WifiLock mWifiLock>;
+
+        $z0 = virtualinvoke $r1.<android.net.wifi.WifiManager$WifiLock: boolean isHeld()>();
+
+        if $z0 == 0 goto label1;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: android.net.wifi.WifiManager$WifiLock mWifiLock>;
+
+        virtualinvoke $r1.<android.net.wifi.WifiManager$WifiLock: void release()>();
+
+     label1:
+        $r2 = $r0.<org.connectbot.service.ConnectivityReceiver: org.connectbot.service.TerminalManager mTerminalManager>;
+
+        virtualinvoke $r2.<org.connectbot.service.TerminalManager: void unregisterReceiver(android.content.BroadcastReceiver)>($r0);
+
+        return;
+    }
+
+    public void decRef()
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        int $i0;
+        java.lang.Object[] $r1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: java.lang.Object[] mLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $i0 = $r0.<org.connectbot.service.ConnectivityReceiver: int mNetworkRef>;
+
+        $i0 = $i0 + -1;
+
+        $r0.<org.connectbot.service.ConnectivityReceiver: int mNetworkRef> = $i0;
+
+        specialinvoke $r0.<org.connectbot.service.ConnectivityReceiver: void releaseWifiLockIfNecessaryLocked()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void incRef()
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        int $i0;
+        java.lang.Object[] $r1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: java.lang.Object[] mLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $i0 = $r0.<org.connectbot.service.ConnectivityReceiver: int mNetworkRef>;
+
+        $i0 = $i0 + 1;
+
+        $r0.<org.connectbot.service.ConnectivityReceiver: int mNetworkRef> = $i0;
+
+        specialinvoke $r0.<org.connectbot.service.ConnectivityReceiver: void acquireWifiLockIfNecessaryLocked()>();
+
+        exitmonitor $r1;
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label4:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public boolean isConnected()
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        boolean $z0;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $z0 = $r0.<org.connectbot.service.ConnectivityReceiver: boolean mIsConnected>;
+
+        return $z0;
+    }
+
+    public void onReceive(android.content.Context, android.content.Intent)
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        android.content.Context $r1;
+        android.content.Intent $r2;
+        boolean $z0, $z1, $z2;
+        java.lang.String $r3;
+        java.lang.StringBuilder $r4;
+        org.connectbot.service.TerminalManager $r5;
+        android.os.Bundle $r6;
+        java.lang.Object $r7;
+        android.net.NetworkInfo $r8;
+        android.net.NetworkInfo$State $r9, $r10;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: android.content.Intent;
+
+        $z0 = 0;
+
+        $r3 = virtualinvoke $r2.<android.content.Intent: java.lang.String getAction()>();
+
+        $z1 = virtualinvoke $r3.<java.lang.String: boolean equals(java.lang.Object)>("android.net.conn.CONNECTIVITY_CHANGE");
+
+        if $z1 != 0 goto label1;
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("onReceived() called: ");
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r2);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int w(java.lang.String,java.lang.String)>("CB.ConnectivityManager", $r3);
+
+        return;
+
+     label1:
+        $z1 = virtualinvoke $r2.<android.content.Intent: boolean getBooleanExtra(java.lang.String,boolean)>("noConnectivity", 0);
+
+        $z2 = virtualinvoke $r2.<android.content.Intent: boolean getBooleanExtra(java.lang.String,boolean)>("isFailover", 0);
+
+        $r4 = new java.lang.StringBuilder;
+
+        specialinvoke $r4.<java.lang.StringBuilder: void <init>()>();
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("onReceived() called; noConnectivity? ");
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z1);
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; isFailover? ");
+
+        $r4 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.StringBuilder append(boolean)>($z2);
+
+        $r3 = virtualinvoke $r4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>("CB.ConnectivityManager", $r3);
+
+        if $z1 == 0 goto label2;
+
+        if $z2 != 0 goto label2;
+
+        $z2 = $r0.<org.connectbot.service.ConnectivityReceiver: boolean mIsConnected>;
+
+        if $z2 == 0 goto label2;
+
+        $r0.<org.connectbot.service.ConnectivityReceiver: boolean mIsConnected> = 0;
+
+        $r5 = $r0.<org.connectbot.service.ConnectivityReceiver: org.connectbot.service.TerminalManager mTerminalManager>;
+
+        virtualinvoke $r5.<org.connectbot.service.TerminalManager: void onConnectivityLost()>();
+
+        return;
+
+     label2:
+        $z2 = $r0.<org.connectbot.service.ConnectivityReceiver: boolean mIsConnected>;
+
+        if $z2 != 0 goto label4;
+
+        $r6 = virtualinvoke $r2.<android.content.Intent: android.os.Bundle getExtras()>();
+
+        $r7 = virtualinvoke $r6.<android.os.Bundle: java.lang.Object get(java.lang.String)>("networkInfo");
+
+        $r8 = (android.net.NetworkInfo) $r7;
+
+        $r9 = virtualinvoke $r8.<android.net.NetworkInfo: android.net.NetworkInfo$State getState()>();
+
+        $r10 = <android.net.NetworkInfo$State: android.net.NetworkInfo$State CONNECTED>;
+
+        if $r9 != $r10 goto label3;
+
+        $z0 = 1;
+
+     label3:
+        $r0.<org.connectbot.service.ConnectivityReceiver: boolean mIsConnected> = $z0;
+
+        if $z0 == 0 goto label5;
+
+        $r5 = $r0.<org.connectbot.service.ConnectivityReceiver: org.connectbot.service.TerminalManager mTerminalManager>;
+
+        virtualinvoke $r5.<org.connectbot.service.TerminalManager: void onConnectivityRestored()>();
+
+        return;
+
+     label4:
+        return;
+
+     label5:
+        return;
+    }
+
+    public void setWantWifiLock(boolean)
+    {
+        org.connectbot.service.ConnectivityReceiver $r0;
+        boolean $z0;
+        java.lang.Object[] $r1;
+        java.lang.Throwable $r2;
+
+        $r0 := @this: org.connectbot.service.ConnectivityReceiver;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 = $r0.<org.connectbot.service.ConnectivityReceiver: java.lang.Object[] mLock>;
+
+        entermonitor $r1;
+
+     label1:
+        $r0.<org.connectbot.service.ConnectivityReceiver: boolean mLockingWifi> = $z0;
+
+        $z0 = $r0.<org.connectbot.service.ConnectivityReceiver: boolean mLockingWifi>;
+
+        if $z0 == 0 goto label4;
+
+        specialinvoke $r0.<org.connectbot.service.ConnectivityReceiver: void acquireWifiLockIfNecessaryLocked()>();
+
+     label2:
+        exitmonitor $r1;
+
+     label3:
+        return;
+
+     label4:
+        specialinvoke $r0.<org.connectbot.service.ConnectivityReceiver: void releaseWifiLockIfNecessaryLocked()>();
+
+        goto label2;
+
+     label5:
+        $r2 := @caughtexception;
+
+        exitmonitor $r1;
+
+     label6:
+        throw $r2;
+
+        catch java.lang.Throwable from label1 to label3 with label5;
+        catch java.lang.Throwable from label4 to label6 with label5;
+    }
+}

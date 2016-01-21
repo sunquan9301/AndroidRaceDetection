@@ -1,0 +1,9 @@
+public interface  com.trilead.ssh2.crypto.cipher.BlockCipher extends java.lang.Object
+{
+
+    public abstract int getBlockSize();
+
+    public abstract void init(boolean, byte[]);
+
+    public abstract void transformBlock(byte[], int, byte[], int);
+}

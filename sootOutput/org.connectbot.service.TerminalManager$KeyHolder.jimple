@@ -1,0 +1,17 @@
+public class org.connectbot.service.TerminalManager$KeyHolder extends java.lang.Object
+{
+    public org.connectbot.bean.PubkeyBean bean;
+    public byte[] openSSHPubkey;
+    public java.security.KeyPair pair;
+
+    public void <init>()
+    {
+        org.connectbot.service.TerminalManager$KeyHolder $r0;
+
+        $r0 := @this: org.connectbot.service.TerminalManager$KeyHolder;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

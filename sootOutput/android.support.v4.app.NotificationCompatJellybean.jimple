@@ -1,0 +1,389 @@
+class android.support.v4.app.NotificationCompatJellybean extends java.lang.Object
+{
+    private static final java.lang.Object sActionsLock;
+    private static java.lang.reflect.Field sExtrasField;
+    private static boolean sExtrasFieldAccessFailed;
+    private static final java.lang.Object sExtrasLock;
+
+    static void <clinit>()
+    {
+        java.lang.Object $r0;
+
+        $r0 = new java.lang.Object;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        <android.support.v4.app.NotificationCompatJellybean: java.lang.Object sExtrasLock> = $r0;
+
+        $r0 = new java.lang.Object;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        <android.support.v4.app.NotificationCompatJellybean: java.lang.Object sActionsLock> = $r0;
+
+        return;
+    }
+
+    public static void addBigPictureStyle(android.support.v4.app.NotificationBuilderWithBuilderAccessor, java.lang.CharSequence, boolean, java.lang.CharSequence, android.graphics.Bitmap, android.graphics.Bitmap, boolean)
+    {
+        android.support.v4.app.NotificationBuilderWithBuilderAccessor $r0;
+        java.lang.CharSequence $r1, $r2;
+        boolean $z0, $z1;
+        android.graphics.Bitmap $r3, $r4;
+        android.app.Notification$BigPictureStyle $r5;
+        android.app.Notification$Builder $r6;
+
+        $r0 := @parameter0: android.support.v4.app.NotificationBuilderWithBuilderAccessor;
+
+        $r1 := @parameter1: java.lang.CharSequence;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 := @parameter3: java.lang.CharSequence;
+
+        $r3 := @parameter4: android.graphics.Bitmap;
+
+        $r4 := @parameter5: android.graphics.Bitmap;
+
+        $z1 := @parameter6: boolean;
+
+        $r5 = new android.app.Notification$BigPictureStyle;
+
+        $r6 = interfaceinvoke $r0.<android.support.v4.app.NotificationBuilderWithBuilderAccessor: android.app.Notification$Builder getBuilder()>();
+
+        specialinvoke $r5.<android.app.Notification$BigPictureStyle: void <init>(android.app.Notification$Builder)>($r6);
+
+        $r5 = virtualinvoke $r5.<android.app.Notification$BigPictureStyle: android.app.Notification$BigPictureStyle setBigContentTitle(java.lang.CharSequence)>($r1);
+
+        $r5 = virtualinvoke $r5.<android.app.Notification$BigPictureStyle: android.app.Notification$BigPictureStyle bigPicture(android.graphics.Bitmap)>($r3);
+
+        if $z1 == 0 goto label1;
+
+        virtualinvoke $r5.<android.app.Notification$BigPictureStyle: android.app.Notification$BigPictureStyle bigLargeIcon(android.graphics.Bitmap)>($r4);
+
+     label1:
+        if $z0 == 0 goto label2;
+
+        virtualinvoke $r5.<android.app.Notification$BigPictureStyle: android.app.Notification$BigPictureStyle setSummaryText(java.lang.CharSequence)>($r2);
+
+        return;
+
+     label2:
+        return;
+    }
+
+    public static void addBigTextStyle(android.support.v4.app.NotificationBuilderWithBuilderAccessor, java.lang.CharSequence, boolean, java.lang.CharSequence, java.lang.CharSequence)
+    {
+        android.support.v4.app.NotificationBuilderWithBuilderAccessor $r0;
+        java.lang.CharSequence $r1, $r2, $r3;
+        boolean $z0;
+        android.app.Notification$BigTextStyle $r4;
+        android.app.Notification$Builder $r5;
+
+        $r0 := @parameter0: android.support.v4.app.NotificationBuilderWithBuilderAccessor;
+
+        $r1 := @parameter1: java.lang.CharSequence;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 := @parameter3: java.lang.CharSequence;
+
+        $r3 := @parameter4: java.lang.CharSequence;
+
+        $r4 = new android.app.Notification$BigTextStyle;
+
+        $r5 = interfaceinvoke $r0.<android.support.v4.app.NotificationBuilderWithBuilderAccessor: android.app.Notification$Builder getBuilder()>();
+
+        specialinvoke $r4.<android.app.Notification$BigTextStyle: void <init>(android.app.Notification$Builder)>($r5);
+
+        $r4 = virtualinvoke $r4.<android.app.Notification$BigTextStyle: android.app.Notification$BigTextStyle setBigContentTitle(java.lang.CharSequence)>($r1);
+
+        $r4 = virtualinvoke $r4.<android.app.Notification$BigTextStyle: android.app.Notification$BigTextStyle bigText(java.lang.CharSequence)>($r3);
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r4.<android.app.Notification$BigTextStyle: android.app.Notification$BigTextStyle setSummaryText(java.lang.CharSequence)>($r2);
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public static void addInboxStyle(android.support.v4.app.NotificationBuilderWithBuilderAccessor, java.lang.CharSequence, boolean, java.lang.CharSequence, java.util.ArrayList)
+    {
+        android.support.v4.app.NotificationBuilderWithBuilderAccessor $r0;
+        java.lang.CharSequence $r1, $r2;
+        boolean $z0;
+        java.util.ArrayList $r3;
+        android.app.Notification$InboxStyle $r4;
+        android.app.Notification$Builder $r5;
+        java.util.Iterator $r6;
+        java.lang.Object $r7;
+
+        $r0 := @parameter0: android.support.v4.app.NotificationBuilderWithBuilderAccessor;
+
+        $r1 := @parameter1: java.lang.CharSequence;
+
+        $z0 := @parameter2: boolean;
+
+        $r2 := @parameter3: java.lang.CharSequence;
+
+        $r3 := @parameter4: java.util.ArrayList;
+
+        $r4 = new android.app.Notification$InboxStyle;
+
+        $r5 = interfaceinvoke $r0.<android.support.v4.app.NotificationBuilderWithBuilderAccessor: android.app.Notification$Builder getBuilder()>();
+
+        specialinvoke $r4.<android.app.Notification$InboxStyle: void <init>(android.app.Notification$Builder)>($r5);
+
+        $r4 = virtualinvoke $r4.<android.app.Notification$InboxStyle: android.app.Notification$InboxStyle setBigContentTitle(java.lang.CharSequence)>($r1);
+
+        if $z0 == 0 goto label1;
+
+        virtualinvoke $r4.<android.app.Notification$InboxStyle: android.app.Notification$InboxStyle setSummaryText(java.lang.CharSequence)>($r2);
+
+     label1:
+        $r6 = virtualinvoke $r3.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label2:
+        $z0 = interfaceinvoke $r6.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label3;
+
+        $r7 = interfaceinvoke $r6.<java.util.Iterator: java.lang.Object next()>();
+
+        $r2 = (java.lang.CharSequence) $r7;
+
+        virtualinvoke $r4.<android.app.Notification$InboxStyle: android.app.Notification$InboxStyle addLine(java.lang.CharSequence)>($r2);
+
+        goto label2;
+
+     label3:
+        return;
+    }
+
+    public static android.util.SparseArray buildActionExtrasMap(java.util.List)
+    {
+        java.util.List $r0;
+        android.util.SparseArray $r1;
+        int $i0, $i1;
+        java.lang.Object $r2;
+        android.os.Bundle $r3;
+
+        $r0 := @parameter0: java.util.List;
+
+        $r1 = null;
+
+        $i0 = 0;
+
+        $i1 = interfaceinvoke $r0.<java.util.List: int size()>();
+
+     label1:
+        if $i0 >= $i1 goto label4;
+
+        $r2 = interfaceinvoke $r0.<java.util.List: java.lang.Object get(int)>($i0);
+
+        $r3 = (android.os.Bundle) $r2;
+
+        if $r3 == null goto label3;
+
+        if $r1 != null goto label2;
+
+        $r1 = new android.util.SparseArray;
+
+        specialinvoke $r1.<android.util.SparseArray: void <init>()>();
+
+     label2:
+        virtualinvoke $r1.<android.util.SparseArray: void put(int,java.lang.Object)>($i0, $r3);
+
+     label3:
+        $i0 = $i0 + 1;
+
+        goto label1;
+
+     label4:
+        return $r1;
+    }
+
+    public static android.os.Bundle getExtras(android.app.Notification)
+    {
+        android.app.Notification $r0;
+        java.lang.IllegalAccessException $r1;
+        android.os.Bundle $r2;
+        java.lang.Object $r3, $r7;
+        boolean $z0;
+        java.lang.reflect.Field $r4;
+        java.lang.Class $r5, $r6;
+        java.lang.Throwable $r8;
+        java.lang.NoSuchFieldException $r9;
+
+        $r0 := @parameter0: android.app.Notification;
+
+        $r3 = <android.support.v4.app.NotificationCompatJellybean: java.lang.Object sExtrasLock>;
+
+        entermonitor $r3;
+
+     label01:
+        $z0 = <android.support.v4.app.NotificationCompatJellybean: boolean sExtrasFieldAccessFailed>;
+
+        if $z0 == 0 goto label03;
+
+        exitmonitor $r3;
+
+     label02:
+        return null;
+
+     label03:
+        $r4 = <android.support.v4.app.NotificationCompatJellybean: java.lang.reflect.Field sExtrasField>;
+
+        if $r4 != null goto label10;
+
+        $r5 = class "android/app/Notification";
+
+     label04:
+        $r4 = virtualinvoke $r5.<java.lang.Class: java.lang.reflect.Field getDeclaredField(java.lang.String)>("extras");
+
+        $r5 = class "android/os/Bundle";
+
+        $r6 = virtualinvoke $r4.<java.lang.reflect.Field: java.lang.Class getType()>();
+
+        $z0 = virtualinvoke $r5.<java.lang.Class: boolean isAssignableFrom(java.lang.Class)>($r6);
+
+        if $z0 != 0 goto label08;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("NotificationCompat", "Notification.extras field is not of type Bundle");
+
+     label05:
+        <android.support.v4.app.NotificationCompatJellybean: boolean sExtrasFieldAccessFailed> = 1;
+
+     label06:
+        exitmonitor $r3;
+
+     label07:
+        return null;
+
+     label08:
+        virtualinvoke $r4.<java.lang.reflect.Field: void setAccessible(boolean)>(1);
+
+     label09:
+        <android.support.v4.app.NotificationCompatJellybean: java.lang.reflect.Field sExtrasField> = $r4;
+
+     label10:
+        $r4 = <android.support.v4.app.NotificationCompatJellybean: java.lang.reflect.Field sExtrasField>;
+
+        $r7 = virtualinvoke $r4.<java.lang.reflect.Field: java.lang.Object get(java.lang.Object)>($r0);
+
+     label11:
+        $r2 = (android.os.Bundle) $r7;
+
+        if $r2 != null goto label13;
+
+     label12:
+        $r2 = new android.os.Bundle;
+
+        specialinvoke $r2.<android.os.Bundle: void <init>()>();
+
+        $r4 = <android.support.v4.app.NotificationCompatJellybean: java.lang.reflect.Field sExtrasField>;
+
+        virtualinvoke $r4.<java.lang.reflect.Field: void set(java.lang.Object,java.lang.Object)>($r0, $r2);
+
+     label13:
+        exitmonitor $r3;
+
+     label14:
+        return $r2;
+
+     label15:
+        $r8 := @caughtexception;
+
+        exitmonitor $r3;
+
+     label16:
+        throw $r8;
+
+     label17:
+        $r1 := @caughtexception;
+
+     label18:
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("NotificationCompat", "Unable to access notification extras", $r1);
+
+     label19:
+        <android.support.v4.app.NotificationCompatJellybean: boolean sExtrasFieldAccessFailed> = 1;
+
+        exitmonitor $r3;
+
+     label20:
+        return null;
+
+     label21:
+        $r9 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("NotificationCompat", "Unable to access notification extras", $r9);
+
+     label22:
+        goto label19;
+
+        catch java.lang.Throwable from label01 to label02 with label15;
+        catch java.lang.IllegalAccessException from label04 to label05 with label17;
+        catch java.lang.NoSuchFieldException from label04 to label05 with label21;
+        catch java.lang.Throwable from label03 to label06 with label15;
+        catch java.lang.Throwable from label06 to label07 with label15;
+        catch java.lang.IllegalAccessException from label08 to label09 with label17;
+        catch java.lang.IllegalAccessException from label10 to label11 with label17;
+        catch java.lang.IllegalAccessException from label12 to label13 with label17;
+        catch java.lang.NoSuchFieldException from label08 to label09 with label21;
+        catch java.lang.NoSuchFieldException from label10 to label11 with label21;
+        catch java.lang.NoSuchFieldException from label12 to label13 with label21;
+        catch java.lang.Throwable from label08 to label13 with label15;
+        catch java.lang.Throwable from label13 to label14 with label15;
+        catch java.lang.Throwable from label15 to label16 with label15;
+        catch java.lang.Throwable from label18 to label20 with label15;
+        catch java.lang.Throwable from label21 to label22 with label15;
+    }
+
+    public static android.os.Bundle writeActionAndGetExtras(android.app.Notification$Builder, android.support.v4.app.NotificationCompatBase$Action)
+    {
+        android.app.Notification$Builder $r0;
+        android.support.v4.app.NotificationCompatBase$Action $r1;
+        android.os.Bundle $r2, $r5;
+        int $i0;
+        java.lang.CharSequence $r3;
+        android.app.PendingIntent $r4;
+        android.support.v4.app.RemoteInputCompatBase$RemoteInput[] $r6;
+        android.os.Bundle[] $r7;
+
+        $r0 := @parameter0: android.app.Notification$Builder;
+
+        $r1 := @parameter1: android.support.v4.app.NotificationCompatBase$Action;
+
+        $i0 = virtualinvoke $r1.<android.support.v4.app.NotificationCompatBase$Action: int getIcon()>();
+
+        $r3 = virtualinvoke $r1.<android.support.v4.app.NotificationCompatBase$Action: java.lang.CharSequence getTitle()>();
+
+        $r4 = virtualinvoke $r1.<android.support.v4.app.NotificationCompatBase$Action: android.app.PendingIntent getActionIntent()>();
+
+        virtualinvoke $r0.<android.app.Notification$Builder: android.app.Notification$Builder addAction(int,java.lang.CharSequence,android.app.PendingIntent)>($i0, $r3, $r4);
+
+        $r2 = new android.os.Bundle;
+
+        $r5 = virtualinvoke $r1.<android.support.v4.app.NotificationCompatBase$Action: android.os.Bundle getExtras()>();
+
+        specialinvoke $r2.<android.os.Bundle: void <init>(android.os.Bundle)>($r5);
+
+        $r6 = virtualinvoke $r1.<android.support.v4.app.NotificationCompatBase$Action: android.support.v4.app.RemoteInputCompatBase$RemoteInput[] getRemoteInputs()>();
+
+        if $r6 == null goto label1;
+
+        $r6 = virtualinvoke $r1.<android.support.v4.app.NotificationCompatBase$Action: android.support.v4.app.RemoteInputCompatBase$RemoteInput[] getRemoteInputs()>();
+
+        $r7 = staticinvoke <android.support.v4.app.RemoteInputCompatJellybean: android.os.Bundle[] toBundleArray(android.support.v4.app.RemoteInputCompatBase$RemoteInput[])>($r6);
+
+        virtualinvoke $r2.<android.os.Bundle: void putParcelableArray(java.lang.String,android.os.Parcelable[])>("android.support.remoteInputs", $r7);
+
+        return $r2;
+
+     label1:
+        return $r2;
+    }
+}

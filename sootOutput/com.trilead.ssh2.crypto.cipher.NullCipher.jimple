@@ -1,0 +1,67 @@
+public class com.trilead.ssh2.crypto.cipher.NullCipher extends java.lang.Object implements com.trilead.ssh2.crypto.cipher.BlockCipher
+{
+    private int blockSize;
+
+    public void <init>()
+    {
+        com.trilead.ssh2.crypto.cipher.NullCipher $r0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.NullCipher;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.crypto.cipher.NullCipher: int blockSize> = 8;
+
+        return;
+    }
+
+    public int getBlockSize()
+    {
+        com.trilead.ssh2.crypto.cipher.NullCipher $r0;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.NullCipher;
+
+        $i0 = $r0.<com.trilead.ssh2.crypto.cipher.NullCipher: int blockSize>;
+
+        return $i0;
+    }
+
+    public void init(boolean, byte[])
+    {
+        com.trilead.ssh2.crypto.cipher.NullCipher $r0;
+        boolean $z0;
+        byte[] $r1;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.NullCipher;
+
+        $z0 := @parameter0: boolean;
+
+        $r1 := @parameter1: byte[];
+
+        return;
+    }
+
+    public void transformBlock(byte[], int, byte[], int)
+    {
+        com.trilead.ssh2.crypto.cipher.NullCipher $r0;
+        byte[] $r1, $r2;
+        int $i0, $i1, $i2;
+
+        $r0 := @this: com.trilead.ssh2.crypto.cipher.NullCipher;
+
+        $r1 := @parameter0: byte[];
+
+        $i0 := @parameter1: int;
+
+        $r2 := @parameter2: byte[];
+
+        $i1 := @parameter3: int;
+
+        $i2 = $r0.<com.trilead.ssh2.crypto.cipher.NullCipher: int blockSize>;
+
+        staticinvoke <java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)>($r1, $i0, $r2, $i1, $i2);
+
+        return;
+    }
+}

@@ -1,0 +1,43 @@
+class org.connectbot.HostEditorActivity$2 extends java.lang.Object implements java.lang.Runnable
+{
+    final org.connectbot.HostEditorActivity this$0;
+    final android.preference.ListPreference val$charsetPref;
+
+    void <init>(org.connectbot.HostEditorActivity, android.preference.ListPreference)
+    {
+        org.connectbot.HostEditorActivity$2 $r0;
+        org.connectbot.HostEditorActivity $r1;
+        android.preference.ListPreference $r2;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$2;
+
+        $r1 := @parameter0: org.connectbot.HostEditorActivity;
+
+        $r2 := @parameter1: android.preference.ListPreference;
+
+        $r0.<org.connectbot.HostEditorActivity$2: org.connectbot.HostEditorActivity this$0> = $r1;
+
+        $r0.<org.connectbot.HostEditorActivity$2: android.preference.ListPreference val$charsetPref> = $r2;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.HostEditorActivity$2 $r0;
+        org.connectbot.HostEditorActivity $r1;
+        android.preference.ListPreference $r2;
+
+        $r0 := @this: org.connectbot.HostEditorActivity$2;
+
+        $r1 = $r0.<org.connectbot.HostEditorActivity$2: org.connectbot.HostEditorActivity this$0>;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity$2: android.preference.ListPreference val$charsetPref>;
+
+        staticinvoke <org.connectbot.HostEditorActivity: void access$100(org.connectbot.HostEditorActivity,android.preference.ListPreference)>($r1, $r2);
+
+        return;
+    }
+}

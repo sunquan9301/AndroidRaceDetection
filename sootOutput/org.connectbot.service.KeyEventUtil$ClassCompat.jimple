@@ -1,0 +1,85 @@
+class org.connectbot.service.KeyEventUtil$ClassCompat extends java.lang.Object
+{
+    private static final org.connectbot.service.KeyEventUtil$ClassCompat INSTANCE;
+
+    static void <clinit>()
+    {
+        int $i0;
+        org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer $r0;
+        org.connectbot.service.KeyEventUtil$ClassCompat$HCMR1AndNewer $r1;
+        org.connectbot.service.KeyEventUtil$ClassCompat$GingerbreadAndNewer $r2;
+        org.connectbot.service.KeyEventUtil$ClassCompat $r3;
+
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 13 goto label1;
+
+        $r0 = new org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer;
+
+        specialinvoke $r0.<org.connectbot.service.KeyEventUtil$ClassCompat$HCMR2AndNewer: void <init>(org.connectbot.service.KeyEventUtil$1)>(null);
+
+        <org.connectbot.service.KeyEventUtil$ClassCompat: org.connectbot.service.KeyEventUtil$ClassCompat INSTANCE> = $r0;
+
+        return;
+
+     label1:
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 12 goto label2;
+
+        $r1 = new org.connectbot.service.KeyEventUtil$ClassCompat$HCMR1AndNewer;
+
+        specialinvoke $r1.<org.connectbot.service.KeyEventUtil$ClassCompat$HCMR1AndNewer: void <init>(org.connectbot.service.KeyEventUtil$1)>(null);
+
+        <org.connectbot.service.KeyEventUtil$ClassCompat: org.connectbot.service.KeyEventUtil$ClassCompat INSTANCE> = $r1;
+
+        return;
+
+     label2:
+        $i0 = <android.os.Build$VERSION: int SDK_INT>;
+
+        if $i0 < 9 goto label3;
+
+        $r2 = new org.connectbot.service.KeyEventUtil$ClassCompat$GingerbreadAndNewer;
+
+        specialinvoke $r2.<org.connectbot.service.KeyEventUtil$ClassCompat$GingerbreadAndNewer: void <init>(org.connectbot.service.KeyEventUtil$1)>(null);
+
+        <org.connectbot.service.KeyEventUtil$ClassCompat: org.connectbot.service.KeyEventUtil$ClassCompat INSTANCE> = $r2;
+
+        return;
+
+     label3:
+        $r3 = new org.connectbot.service.KeyEventUtil$ClassCompat;
+
+        specialinvoke $r3.<org.connectbot.service.KeyEventUtil$ClassCompat: void <init>()>();
+
+        <org.connectbot.service.KeyEventUtil$ClassCompat: org.connectbot.service.KeyEventUtil$ClassCompat INSTANCE> = $r3;
+
+        return;
+    }
+
+    private void <init>()
+    {
+        org.connectbot.service.KeyEventUtil$ClassCompat $r0;
+
+        $r0 := @this: org.connectbot.service.KeyEventUtil$ClassCompat;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.service.KeyEventUtil$1)
+    {
+        org.connectbot.service.KeyEventUtil$ClassCompat $r0;
+        org.connectbot.service.KeyEventUtil$1 $r1;
+
+        $r0 := @this: org.connectbot.service.KeyEventUtil$ClassCompat;
+
+        $r1 := @parameter0: org.connectbot.service.KeyEventUtil$1;
+
+        specialinvoke $r0.<org.connectbot.service.KeyEventUtil$ClassCompat: void <init>()>();
+
+        return;
+    }
+}

@@ -1,0 +1,94 @@
+class org.connectbot.PortForwardListActivity$5$1 extends java.lang.Object implements android.content.DialogInterface$OnClickListener
+{
+    final org.connectbot.PortForwardListActivity$5 this$1;
+
+    void <init>(org.connectbot.PortForwardListActivity$5)
+    {
+        org.connectbot.PortForwardListActivity$5$1 $r0;
+        org.connectbot.PortForwardListActivity$5 $r1;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$5$1;
+
+        $r1 := @parameter0: org.connectbot.PortForwardListActivity$5;
+
+        $r0.<org.connectbot.PortForwardListActivity$5$1: org.connectbot.PortForwardListActivity$5 this$1> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.content.DialogInterface, int)
+    {
+        org.connectbot.PortForwardListActivity$5$1 $r0;
+        android.content.DialogInterface $r1;
+        int $i0;
+        java.lang.Exception $r2;
+        org.connectbot.PortForwardListActivity$5 $r3;
+        org.connectbot.PortForwardListActivity $r4;
+        org.connectbot.service.TerminalBridge $r5;
+        org.connectbot.bean.PortForwardBean $r6;
+        org.connectbot.util.HostDatabase $r7;
+        android.os.Handler $r8;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity$5$1;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $i0 := @parameter1: int;
+
+     label1:
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$5$1: org.connectbot.PortForwardListActivity$5 this$1>;
+
+        $r4 = $r3.<org.connectbot.PortForwardListActivity$5: org.connectbot.PortForwardListActivity this$0>;
+
+        $r5 = $r4.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        if $r5 == null goto label2;
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$5$1: org.connectbot.PortForwardListActivity$5 this$1>;
+
+        $r4 = $r3.<org.connectbot.PortForwardListActivity$5: org.connectbot.PortForwardListActivity this$0>;
+
+        $r5 = $r4.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$5$1: org.connectbot.PortForwardListActivity$5 this$1>;
+
+        $r6 = $r3.<org.connectbot.PortForwardListActivity$5: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        virtualinvoke $r5.<org.connectbot.service.TerminalBridge: boolean removePortForward(org.connectbot.bean.PortForwardBean)>($r6);
+
+     label2:
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$5$1: org.connectbot.PortForwardListActivity$5 this$1>;
+
+        $r4 = $r3.<org.connectbot.PortForwardListActivity$5: org.connectbot.PortForwardListActivity this$0>;
+
+        $r7 = $r4.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$5$1: org.connectbot.PortForwardListActivity$5 this$1>;
+
+        $r6 = $r3.<org.connectbot.PortForwardListActivity$5: org.connectbot.bean.PortForwardBean val$pfb>;
+
+        virtualinvoke $r7.<org.connectbot.util.HostDatabase: void deletePortForward(org.connectbot.bean.PortForwardBean)>($r6);
+
+     label3:
+        $r3 = $r0.<org.connectbot.PortForwardListActivity$5$1: org.connectbot.PortForwardListActivity$5 this$1>;
+
+        $r4 = $r3.<org.connectbot.PortForwardListActivity$5: org.connectbot.PortForwardListActivity this$0>;
+
+        $r8 = $r4.<org.connectbot.PortForwardListActivity: android.os.Handler updateHandler>;
+
+        virtualinvoke $r8.<android.os.Handler: boolean sendEmptyMessage(int)>(-1);
+
+        return;
+
+     label4:
+        $r2 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String,java.lang.Throwable)>("CB.PortForwardListAct", "Could not delete port forward", $r2);
+
+        goto label3;
+
+        catch java.lang.Exception from label1 to label3 with label4;
+    }
+}

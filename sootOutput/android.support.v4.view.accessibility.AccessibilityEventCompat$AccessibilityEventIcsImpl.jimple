@@ -1,0 +1,14 @@
+class android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl extends android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventStubImpl
+{
+
+    void <init>()
+    {
+        android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl $r0;
+
+        $r0 := @this: android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl;
+
+        specialinvoke $r0.<android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventStubImpl: void <init>()>();
+
+        return;
+    }
+}

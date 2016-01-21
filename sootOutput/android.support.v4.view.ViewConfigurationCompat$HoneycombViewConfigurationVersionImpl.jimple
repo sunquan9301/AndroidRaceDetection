@@ -1,0 +1,14 @@
+class android.support.v4.view.ViewConfigurationCompat$HoneycombViewConfigurationVersionImpl extends android.support.v4.view.ViewConfigurationCompat$FroyoViewConfigurationVersionImpl
+{
+
+    void <init>()
+    {
+        android.support.v4.view.ViewConfigurationCompat$HoneycombViewConfigurationVersionImpl $r0;
+
+        $r0 := @this: android.support.v4.view.ViewConfigurationCompat$HoneycombViewConfigurationVersionImpl;
+
+        specialinvoke $r0.<android.support.v4.view.ViewConfigurationCompat$FroyoViewConfigurationVersionImpl: void <init>()>();
+
+        return;
+    }
+}

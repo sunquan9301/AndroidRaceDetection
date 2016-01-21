@@ -1,0 +1,62 @@
+public class org.connectbot.SettingsActivity extends android.preference.PreferenceActivity
+{
+
+    public void <init>()
+    {
+        org.connectbot.SettingsActivity $r0;
+
+        $r0 := @this: org.connectbot.SettingsActivity;
+
+        specialinvoke $r0.<android.preference.PreferenceActivity: void <init>()>();
+
+        return;
+    }
+
+    protected void onCreate(android.os.Bundle)
+    {
+        org.connectbot.SettingsActivity $r0;
+        android.os.Bundle $r1;
+        java.lang.ClassCastException $r2;
+        android.content.SharedPreferences $r3;
+        android.content.SharedPreferences$Editor $r4;
+
+        $r0 := @this: org.connectbot.SettingsActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.preference.PreferenceActivity: void onCreate(android.os.Bundle)>($r1);
+
+     label1:
+        virtualinvoke $r0.<org.connectbot.SettingsActivity: void addPreferencesFromResource(int)>(2131034113);
+
+     label2:
+        return;
+
+     label3:
+        $r2 := @caughtexception;
+
+        staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>("CB.Settings", "Shared preferences are corrupt! Resetting to default values.");
+
+        $r3 = staticinvoke <android.preference.PreferenceManager: android.content.SharedPreferences getDefaultSharedPreferences(android.content.Context)>($r0);
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor clear()>();
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        staticinvoke <android.preference.PreferenceManager: void setDefaultValues(android.content.Context,int,boolean)>($r0, 2131034113, 1);
+
+        $r4 = interfaceinvoke $r3.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putBoolean(java.lang.String,boolean)>("eula", 1);
+
+        interfaceinvoke $r4.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        virtualinvoke $r0.<org.connectbot.SettingsActivity: void addPreferencesFromResource(int)>(2131034113);
+
+        return;
+
+        catch java.lang.ClassCastException from label1 to label2 with label3;
+    }
+}

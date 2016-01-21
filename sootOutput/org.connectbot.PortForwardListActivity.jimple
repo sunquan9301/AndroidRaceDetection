@@ -1,0 +1,365 @@
+public class org.connectbot.PortForwardListActivity extends android.app.ListActivity
+{
+    private android.content.ServiceConnection connection;
+    private org.connectbot.bean.HostBean host;
+    protected org.connectbot.service.TerminalBridge hostBridge;
+    protected org.connectbot.util.HostDatabase hostdb;
+    protected android.view.LayoutInflater inflater;
+    private java.util.List portForwards;
+    protected android.os.Handler updateHandler;
+
+    public void <init>()
+    {
+        org.connectbot.PortForwardListActivity $r0;
+        org.connectbot.PortForwardListActivity$6 $r1;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void <init>()>();
+
+        $r0.<org.connectbot.PortForwardListActivity: android.content.ServiceConnection connection> = null;
+
+        $r0.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge> = null;
+
+        $r0.<org.connectbot.PortForwardListActivity: android.view.LayoutInflater inflater> = null;
+
+        $r1 = new org.connectbot.PortForwardListActivity$6;
+
+        specialinvoke $r1.<org.connectbot.PortForwardListActivity$6: void <init>(org.connectbot.PortForwardListActivity)>($r0);
+
+        $r0.<org.connectbot.PortForwardListActivity: android.os.Handler updateHandler> = $r1;
+
+        return;
+    }
+
+    static org.connectbot.bean.HostBean access$000(org.connectbot.PortForwardListActivity)
+    {
+        org.connectbot.PortForwardListActivity $r0;
+        org.connectbot.bean.HostBean $r1;
+
+        $r0 := @parameter0: org.connectbot.PortForwardListActivity;
+
+        $r1 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.bean.HostBean host>;
+
+        return $r1;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        org.connectbot.PortForwardListActivity $r0;
+        android.os.Bundle $r1;
+        java.lang.String $r2;
+        android.content.Intent $r3;
+        long $l0;
+        org.connectbot.util.HostDatabase $r4;
+        org.connectbot.bean.HostBean $r5;
+        android.content.res.Resources $r6;
+        java.lang.Object[] $r7;
+        java.lang.CharSequence $r8;
+        org.connectbot.PortForwardListActivity$1 $r9;
+        android.widget.ListView $r10;
+        org.connectbot.PortForwardListActivity$2 $r11;
+        android.view.LayoutInflater $r12;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.app.ListActivity: void onCreate(android.os.Bundle)>($r1);
+
+        $r3 = virtualinvoke $r0.<org.connectbot.PortForwardListActivity: android.content.Intent getIntent()>();
+
+        $l0 = virtualinvoke $r3.<android.content.Intent: long getLongExtra(java.lang.String,long)>("android.intent.extra.TITLE", -1L);
+
+        virtualinvoke $r0.<org.connectbot.PortForwardListActivity: void setContentView(int)>(2130903046);
+
+        $r4 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r4.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb> = $r4;
+
+        $r4 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        $r5 = virtualinvoke $r4.<org.connectbot.util.HostDatabase: org.connectbot.bean.HostBean findHostById(long)>($l0);
+
+        $r0.<org.connectbot.PortForwardListActivity: org.connectbot.bean.HostBean host> = $r5;
+
+        $r5 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.bean.HostBean host>;
+
+        if $r5 == null goto label3;
+
+        $r5 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.bean.HostBean host>;
+
+        $r2 = virtualinvoke $r5.<org.connectbot.bean.HostBean: java.lang.String getNickname()>();
+
+     label1:
+        $r6 = virtualinvoke $r0.<org.connectbot.PortForwardListActivity: android.content.res.Resources getResources()>();
+
+        if $r2 == null goto label4;
+
+        $r7 = newarray (java.lang.Object)[3];
+
+        $r8 = virtualinvoke $r6.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165411);
+
+        $r7[0] = $r8;
+
+        $r8 = virtualinvoke $r6.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165221);
+
+        $r7[1] = $r8;
+
+        $r7[2] = $r2;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s: %s (%s)", $r7);
+
+        virtualinvoke $r0.<org.connectbot.PortForwardListActivity: void setTitle(java.lang.CharSequence)>($r2);
+
+     label2:
+        $r9 = new org.connectbot.PortForwardListActivity$1;
+
+        specialinvoke $r9.<org.connectbot.PortForwardListActivity$1: void <init>(org.connectbot.PortForwardListActivity)>($r0);
+
+        $r0.<org.connectbot.PortForwardListActivity: android.content.ServiceConnection connection> = $r9;
+
+        virtualinvoke $r0.<org.connectbot.PortForwardListActivity: void updateList()>();
+
+        $r10 = virtualinvoke $r0.<org.connectbot.PortForwardListActivity: android.widget.ListView getListView()>();
+
+        virtualinvoke $r0.<org.connectbot.PortForwardListActivity: void registerForContextMenu(android.view.View)>($r10);
+
+        $r10 = virtualinvoke $r0.<org.connectbot.PortForwardListActivity: android.widget.ListView getListView()>();
+
+        $r11 = new org.connectbot.PortForwardListActivity$2;
+
+        specialinvoke $r11.<org.connectbot.PortForwardListActivity$2: void <init>(org.connectbot.PortForwardListActivity)>($r0);
+
+        virtualinvoke $r10.<android.widget.ListView: void setOnItemClickListener(android.widget.AdapterView$OnItemClickListener)>($r11);
+
+        $r12 = staticinvoke <android.view.LayoutInflater: android.view.LayoutInflater 'from'(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.PortForwardListActivity: android.view.LayoutInflater inflater> = $r12;
+
+        return;
+
+     label3:
+        $r2 = null;
+
+        goto label1;
+
+     label4:
+        $r7 = newarray (java.lang.Object)[2];
+
+        $r8 = virtualinvoke $r6.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165411);
+
+        $r7[0] = $r8;
+
+        $r8 = virtualinvoke $r6.<android.content.res.Resources: java.lang.CharSequence getText(int)>(2131165221);
+
+        $r7[1] = $r8;
+
+        $r2 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("%s: %s", $r7);
+
+        virtualinvoke $r0.<org.connectbot.PortForwardListActivity: void setTitle(java.lang.CharSequence)>($r2);
+
+        goto label2;
+    }
+
+    public void onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu$ContextMenuInfo)
+    {
+        org.connectbot.PortForwardListActivity $r0;
+        android.view.ContextMenu $r1;
+        android.view.View $r2;
+        android.view.ContextMenu$ContextMenuInfo $r3;
+        int $i0;
+        android.widget.ListView $r4;
+        android.widget.AdapterView$AdapterContextMenuInfo $r5;
+        java.lang.Object $r6;
+        org.connectbot.bean.PortForwardBean $r7;
+        java.lang.String $r8;
+        android.view.MenuItem $r9;
+        org.connectbot.PortForwardListActivity$4 $r10;
+        org.connectbot.PortForwardListActivity$5 $r11;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity;
+
+        $r1 := @parameter0: android.view.ContextMenu;
+
+        $r2 := @parameter1: android.view.View;
+
+        $r3 := @parameter2: android.view.ContextMenu$ContextMenuInfo;
+
+        $r5 = (android.widget.AdapterView$AdapterContextMenuInfo) $r3;
+
+        $r4 = virtualinvoke $r0.<org.connectbot.PortForwardListActivity: android.widget.ListView getListView()>();
+
+        $i0 = $r5.<android.widget.AdapterView$AdapterContextMenuInfo: int position>;
+
+        $r6 = virtualinvoke $r4.<android.widget.ListView: java.lang.Object getItemAtPosition(int)>($i0);
+
+        $r7 = (org.connectbot.bean.PortForwardBean) $r6;
+
+        $r8 = virtualinvoke $r7.<org.connectbot.bean.PortForwardBean: java.lang.String getNickname()>();
+
+        interfaceinvoke $r1.<android.view.ContextMenu: android.view.ContextMenu setHeaderTitle(java.lang.CharSequence)>($r8);
+
+        $r9 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165192);
+
+        $r10 = new org.connectbot.PortForwardListActivity$4;
+
+        specialinvoke $r10.<org.connectbot.PortForwardListActivity$4: void <init>(org.connectbot.PortForwardListActivity,org.connectbot.bean.PortForwardBean)>($r0, $r7);
+
+        interfaceinvoke $r9.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r10);
+
+        $r9 = interfaceinvoke $r1.<android.view.ContextMenu: android.view.MenuItem add(int)>(2131165191);
+
+        $r11 = new org.connectbot.PortForwardListActivity$5;
+
+        specialinvoke $r11.<org.connectbot.PortForwardListActivity$5: void <init>(org.connectbot.PortForwardListActivity,org.connectbot.bean.PortForwardBean)>($r0, $r7);
+
+        interfaceinvoke $r9.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r11);
+
+        return;
+    }
+
+    public boolean onCreateOptionsMenu(android.view.Menu)
+    {
+        org.connectbot.PortForwardListActivity $r0;
+        android.view.Menu $r1;
+        android.view.MenuItem $r2;
+        org.connectbot.PortForwardListActivity$3 $r3;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity;
+
+        $r1 := @parameter0: android.view.Menu;
+
+        specialinvoke $r0.<android.app.ListActivity: boolean onCreateOptionsMenu(android.view.Menu)>($r1);
+
+        $r2 = interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int)>(2131165325);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setIcon(int)>(17301555);
+
+        $r3 = new org.connectbot.PortForwardListActivity$3;
+
+        specialinvoke $r3.<org.connectbot.PortForwardListActivity$3: void <init>(org.connectbot.PortForwardListActivity)>($r0);
+
+        interfaceinvoke $r2.<android.view.MenuItem: android.view.MenuItem setOnMenuItemClickListener(android.view.MenuItem$OnMenuItemClickListener)>($r3);
+
+        return 1;
+    }
+
+    public void onStart()
+    {
+        org.connectbot.PortForwardListActivity $r0;
+        android.content.Intent $r1;
+        android.content.ServiceConnection $r2;
+        org.connectbot.util.HostDatabase $r3;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void onStart()>();
+
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/service/TerminalManager");
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity: android.content.ServiceConnection connection>;
+
+        virtualinvoke $r0.<org.connectbot.PortForwardListActivity: boolean bindService(android.content.Intent,android.content.ServiceConnection,int)>($r1, $r2, 1);
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r3 != null goto label1;
+
+        $r3 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r3.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb> = $r3;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void onStop()
+    {
+        org.connectbot.PortForwardListActivity $r0;
+        android.content.ServiceConnection $r1;
+        org.connectbot.util.HostDatabase $r2;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity;
+
+        specialinvoke $r0.<android.app.ListActivity: void onStop()>();
+
+        $r1 = $r0.<org.connectbot.PortForwardListActivity: android.content.ServiceConnection connection>;
+
+        virtualinvoke $r0.<org.connectbot.PortForwardListActivity: void unbindService(android.content.ServiceConnection)>($r1);
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        virtualinvoke $r2.<org.connectbot.util.HostDatabase: void close()>();
+
+        $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb> = null;
+
+        return;
+
+     label1:
+        return;
+    }
+
+    protected void updateList()
+    {
+        org.connectbot.PortForwardListActivity $r0;
+        org.connectbot.PortForwardListActivity$PortForwardAdapter $r1;
+        org.connectbot.service.TerminalBridge $r2;
+        org.connectbot.bean.HostBean $r3;
+        java.util.List $r4;
+        org.connectbot.util.HostDatabase $r5;
+
+        $r0 := @this: org.connectbot.PortForwardListActivity;
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        if $r2 == null goto label2;
+
+        $r2 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        $r4 = virtualinvoke $r2.<org.connectbot.service.TerminalBridge: java.util.List getPortForwards()>();
+
+        $r0.<org.connectbot.PortForwardListActivity: java.util.List portForwards> = $r4;
+
+     label1:
+        $r1 = new org.connectbot.PortForwardListActivity$PortForwardAdapter;
+
+        $r4 = $r0.<org.connectbot.PortForwardListActivity: java.util.List portForwards>;
+
+        specialinvoke $r1.<org.connectbot.PortForwardListActivity$PortForwardAdapter: void <init>(org.connectbot.PortForwardListActivity,android.content.Context,java.util.List)>($r0, $r0, $r4);
+
+        virtualinvoke $r0.<org.connectbot.PortForwardListActivity: void setListAdapter(android.widget.ListAdapter)>($r1);
+
+        return;
+
+     label2:
+        $r5 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r5 == null goto label3;
+
+        $r5 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        $r3 = $r0.<org.connectbot.PortForwardListActivity: org.connectbot.bean.HostBean host>;
+
+        $r4 = virtualinvoke $r5.<org.connectbot.util.HostDatabase: java.util.List getPortForwardsForHost(org.connectbot.bean.HostBean)>($r3);
+
+        $r0.<org.connectbot.PortForwardListActivity: java.util.List portForwards> = $r4;
+
+        goto label1;
+
+     label3:
+        return;
+    }
+}

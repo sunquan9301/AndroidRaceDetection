@@ -1,0 +1,567 @@
+class com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable extends java.lang.Object implements java.lang.Runnable
+{
+    private net.sourceforge.jsocks.server.ServerAuthenticator auth;
+    private java.io.InputStream in;
+    private net.sourceforge.jsocks.ProxyMessage msg;
+    private java.io.OutputStream out;
+    private java.net.Socket sock;
+    final com.trilead.ssh2.channel.DynamicAcceptThread this$0;
+
+    public void <init>(com.trilead.ssh2.channel.DynamicAcceptThread, net.sourceforge.jsocks.server.ServerAuthenticator, java.net.Socket)
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable $r0;
+        com.trilead.ssh2.channel.DynamicAcceptThread $r1;
+        net.sourceforge.jsocks.server.ServerAuthenticator $r2;
+        java.net.Socket $r3;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.DynamicAcceptThread;
+
+        $r2 := @parameter1: net.sourceforge.jsocks.server.ServerAuthenticator;
+
+        $r3 := @parameter2: java.net.Socket;
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: com.trilead.ssh2.channel.DynamicAcceptThread this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth> = $r2;
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.net.Socket sock> = $r3;
+
+        virtualinvoke $r1.<com.trilead.ssh2.channel.DynamicAcceptThread: void setName(java.lang.String)>("DynamicAcceptRunnable");
+
+        return;
+    }
+
+    private void handleRequest(net.sourceforge.jsocks.ProxyMessage) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable $r0;
+        net.sourceforge.jsocks.ProxyMessage $r1;
+        net.sourceforge.jsocks.server.ServerAuthenticator $r2;
+        boolean $z0;
+        net.sourceforge.jsocks.SocksException $r3;
+        int $i0;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable;
+
+        $r1 := @parameter0: net.sourceforge.jsocks.ProxyMessage;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        $z0 = interfaceinvoke $r2.<net.sourceforge.jsocks.server.ServerAuthenticator: boolean checkRequest(net.sourceforge.jsocks.ProxyMessage)>($r1);
+
+        if $z0 != 0 goto label1;
+
+        $r3 = new net.sourceforge.jsocks.SocksException;
+
+        specialinvoke $r3.<net.sourceforge.jsocks.SocksException: void <init>(int)>(1);
+
+        throw $r3;
+
+     label1:
+        $i0 = $r1.<net.sourceforge.jsocks.ProxyMessage: int command>;
+
+        lookupswitch($i0)
+        {
+            case 1: goto label3;
+            default: goto label2;
+        };
+
+     label2:
+        $r3 = new net.sourceforge.jsocks.SocksException;
+
+        specialinvoke $r3.<net.sourceforge.jsocks.SocksException: void <init>(int)>(7);
+
+        throw $r3;
+
+     label3:
+        specialinvoke $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: void onConnect(net.sourceforge.jsocks.ProxyMessage)>($r1);
+
+        return;
+    }
+
+    private void onConnect(net.sourceforge.jsocks.ProxyMessage) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable $r0;
+        net.sourceforge.jsocks.ProxyMessage $r1, $r6;
+        com.trilead.ssh2.channel.StreamForwarder $r2, $r14, r21;
+        boolean $z0;
+        com.trilead.ssh2.channel.ChannelOutputStream $r3;
+        java.lang.String $r4;
+        java.io.IOException $r5, $r16, $r18, $r19;
+        java.io.OutputStream $r7;
+        java.net.InetAddress $r8;
+        com.trilead.ssh2.channel.DynamicAcceptThread $r9;
+        com.trilead.ssh2.channel.ChannelManager $r10;
+        int $i0;
+        com.trilead.ssh2.channel.Channel $r11;
+        java.net.Socket $r12;
+        com.trilead.ssh2.channel.ChannelInputStream $r13;
+        java.io.InputStream $r15;
+        java.lang.StringBuilder $r17, r23;
+        net.sourceforge.jsocks.Socks5Message r20;
+        net.sourceforge.jsocks.Socks4Message r22;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable;
+
+        $r1 := @parameter0: net.sourceforge.jsocks.ProxyMessage;
+
+        $z0 = $r1 instanceof net.sourceforge.jsocks.Socks5Message;
+
+        if $z0 == 0 goto label09;
+
+        r20 = new net.sourceforge.jsocks.Socks5Message;
+
+        $r6 = r20;
+
+        specialinvoke r20.<net.sourceforge.jsocks.Socks5Message: void <init>(int,java.net.InetAddress,int)>(0, null, 0);
+
+     label01:
+        $r7 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.io.OutputStream out>;
+
+        virtualinvoke $r6.<net.sourceforge.jsocks.ProxyMessage: void write(java.io.OutputStream)>($r7);
+
+        $r4 = $r1.<net.sourceforge.jsocks.ProxyMessage: java.lang.String host>;
+
+        $r8 = $r1.<net.sourceforge.jsocks.ProxyMessage: java.net.InetAddress ip>;
+
+        if $r8 == null goto label02;
+
+        $r8 = $r1.<net.sourceforge.jsocks.ProxyMessage: java.net.InetAddress ip>;
+
+        $r4 = virtualinvoke $r8.<java.net.InetAddress: java.lang.String getHostAddress()>();
+
+     label02:
+        $r9 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: com.trilead.ssh2.channel.DynamicAcceptThread this$0>;
+
+     label03:
+        $r10 = staticinvoke <com.trilead.ssh2.channel.DynamicAcceptThread: com.trilead.ssh2.channel.ChannelManager access$000(com.trilead.ssh2.channel.DynamicAcceptThread)>($r9);
+
+        $i0 = $r1.<net.sourceforge.jsocks.ProxyMessage: int port>;
+
+        $r11 = virtualinvoke $r10.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel openDirectTCPIPChannel(java.lang.String,int,java.lang.String,int)>($r4, $i0, "127.0.0.1", 0);
+
+     label04:
+        $r14 = new com.trilead.ssh2.channel.StreamForwarder;
+
+        $r2 = $r14;
+
+        $r12 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.net.Socket sock>;
+
+        $r13 = $r11.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelInputStream stdoutStream>;
+
+        $r7 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.io.OutputStream out>;
+
+     label05:
+        specialinvoke $r14.<com.trilead.ssh2.channel.StreamForwarder: void <init>(com.trilead.ssh2.channel.Channel,com.trilead.ssh2.channel.StreamForwarder,java.net.Socket,java.io.InputStream,java.io.OutputStream,java.lang.String)>($r11, null, $r12, $r13, $r7, "RemoteToLocal");
+
+     label06:
+        r21 = new com.trilead.ssh2.channel.StreamForwarder;
+
+        $r14 = r21;
+
+        $r12 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.net.Socket sock>;
+
+        $r15 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.io.InputStream in>;
+
+        $r3 = $r11.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelOutputStream stdinStream>;
+
+     label07:
+        specialinvoke r21.<com.trilead.ssh2.channel.StreamForwarder: void <init>(com.trilead.ssh2.channel.Channel,com.trilead.ssh2.channel.StreamForwarder,java.net.Socket,java.io.InputStream,java.io.OutputStream,java.lang.String)>($r11, $r2, $r12, $r15, $r3, "LocalToRemote");
+
+     label08:
+        virtualinvoke $r2.<com.trilead.ssh2.channel.StreamForwarder: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r14.<com.trilead.ssh2.channel.StreamForwarder: void setDaemon(boolean)>(1);
+
+        virtualinvoke $r2.<com.trilead.ssh2.channel.StreamForwarder: void start()>();
+
+        virtualinvoke $r14.<com.trilead.ssh2.channel.StreamForwarder: void start()>();
+
+        return;
+
+     label09:
+        r22 = new net.sourceforge.jsocks.Socks4Message;
+
+        $r6 = r22;
+
+        specialinvoke r22.<net.sourceforge.jsocks.Socks4Message: void <init>(int,java.net.InetAddress,int)>(90, null, 0);
+
+        goto label01;
+
+     label10:
+        $r5 := @caughtexception;
+
+        $r12 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.net.Socket sock>;
+
+     label11:
+        virtualinvoke $r12.<java.net.Socket: void close()>();
+
+     label12:
+        return;
+
+     label13:
+        $r16 := @caughtexception;
+
+     label14:
+        $r10 = $r11.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        r23 = new java.lang.StringBuilder;
+
+        $r17 = r23;
+
+     label15:
+        specialinvoke r23.<java.lang.StringBuilder: void <init>()>();
+
+        $r17 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Weird error during creation of StreamForwarder (");
+
+        $r4 = virtualinvoke $r16.<java.io.IOException: java.lang.String getMessage()>();
+
+        $r17 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r4);
+
+        $r17 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r17.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $r10.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r11, $r4, 1);
+
+     label16:
+        return;
+
+     label17:
+        $r18 := @caughtexception;
+
+        return;
+
+     label18:
+        $r16 := @caughtexception;
+
+        goto label14;
+
+     label19:
+        $r19 := @caughtexception;
+
+        return;
+
+        catch java.io.IOException from label03 to label04 with label10;
+        catch java.io.IOException from label05 to label06 with label13;
+        catch java.io.IOException from label07 to label08 with label18;
+        catch java.io.IOException from label11 to label12 with label19;
+        catch java.io.IOException from label15 to label16 with label17;
+    }
+
+    private net.sourceforge.jsocks.ProxyMessage readMsg(java.io.InputStream) throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable $r0;
+        java.io.InputStream $r1;
+        boolean $z0;
+        int $i0;
+        java.io.PushbackInputStream $r3, r6;
+        net.sourceforge.jsocks.Socks5Message r5;
+        net.sourceforge.jsocks.Socks4Message r7;
+        net.sourceforge.jsocks.SocksException r8;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable;
+
+        $r1 := @parameter0: java.io.InputStream;
+
+        $z0 = $r1 instanceof java.io.PushbackInputStream;
+
+        if $z0 == 0 goto label2;
+
+        $r3 = (java.io.PushbackInputStream) $r1;
+
+     label1:
+        $i0 = virtualinvoke $r3.<java.io.PushbackInputStream: int read()>();
+
+        virtualinvoke $r3.<java.io.PushbackInputStream: void unread(int)>($i0);
+
+        if $i0 != 5 goto label3;
+
+        r5 = new net.sourceforge.jsocks.Socks5Message;
+
+        specialinvoke r5.<net.sourceforge.jsocks.Socks5Message: void <init>(java.io.InputStream,boolean)>($r3, 0);
+
+        return r5;
+
+     label2:
+        r6 = new java.io.PushbackInputStream;
+
+        $r3 = r6;
+
+        specialinvoke r6.<java.io.PushbackInputStream: void <init>(java.io.InputStream)>($r1);
+
+        goto label1;
+
+     label3:
+        if $i0 != 4 goto label4;
+
+        r7 = new net.sourceforge.jsocks.Socks4Message;
+
+        specialinvoke r7.<net.sourceforge.jsocks.Socks4Message: void <init>(java.io.InputStream,boolean)>($r3, 0);
+
+        return r7;
+
+     label4:
+        r8 = new net.sourceforge.jsocks.SocksException;
+
+        specialinvoke r8.<net.sourceforge.jsocks.SocksException: void <init>(int)>(1);
+
+        throw r8;
+    }
+
+    private void sendErrorMessage(int)
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable $r0;
+        int $i0;
+        net.sourceforge.jsocks.ProxyMessage $r1;
+        boolean $z0;
+        java.io.OutputStream $r2;
+        java.io.IOException $r3;
+        net.sourceforge.jsocks.Socks4Message r4;
+        net.sourceforge.jsocks.Socks5Message r5;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable;
+
+        $i0 := @parameter0: int;
+
+        $r1 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.ProxyMessage msg>;
+
+        $z0 = $r1 instanceof net.sourceforge.jsocks.Socks4Message;
+
+        if $z0 == 0 goto label4;
+
+        r4 = new net.sourceforge.jsocks.Socks4Message;
+
+        $r1 = r4;
+
+        specialinvoke r4.<net.sourceforge.jsocks.Socks4Message: void <init>(int)>(91);
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.io.OutputStream out>;
+
+     label2:
+        virtualinvoke $r1.<net.sourceforge.jsocks.ProxyMessage: void write(java.io.OutputStream)>($r2);
+
+     label3:
+        return;
+
+     label4:
+        r5 = new net.sourceforge.jsocks.Socks5Message;
+
+        $r1 = r5;
+
+        specialinvoke r5.<net.sourceforge.jsocks.Socks5Message: void <init>(int)>($i0);
+
+        goto label1;
+
+     label5:
+        $r3 := @caughtexception;
+
+        return;
+
+        catch java.io.IOException from label2 to label3 with label5;
+    }
+
+    private void startSession() throws java.io.IOException
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable $r0;
+        java.io.IOException $r1;
+        java.net.Socket $r2;
+        net.sourceforge.jsocks.server.ServerAuthenticator $r3;
+        java.io.PrintStream $r4;
+        java.io.InputStream $r5;
+        java.io.OutputStream $r6;
+        net.sourceforge.jsocks.ProxyMessage $r7;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.net.Socket sock>;
+
+        virtualinvoke $r2.<java.net.Socket: void setSoTimeout(int)>(180000);
+
+        $r3 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.net.Socket sock>;
+
+     label1:
+        $r3 = interfaceinvoke $r3.<net.sourceforge.jsocks.server.ServerAuthenticator: net.sourceforge.jsocks.server.ServerAuthenticator startSession(java.net.Socket)>($r2);
+
+     label2:
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth> = $r3;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        if $r3 != null goto label4;
+
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("SOCKS auth failed");
+
+        return;
+
+     label3:
+        $r1 := @caughtexception;
+
+        $r4 = <java.lang.System: java.io.PrintStream out>;
+
+        virtualinvoke $r4.<java.io.PrintStream: void println(java.lang.String)>("Could not start SOCKS session");
+
+        virtualinvoke $r1.<java.io.IOException: void printStackTrace()>();
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth> = null;
+
+        return;
+
+     label4:
+        $r3 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        $r5 = interfaceinvoke $r3.<net.sourceforge.jsocks.server.ServerAuthenticator: java.io.InputStream getInputStream()>();
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.io.InputStream in> = $r5;
+
+        $r3 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        $r6 = interfaceinvoke $r3.<net.sourceforge.jsocks.server.ServerAuthenticator: java.io.OutputStream getOutputStream()>();
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.io.OutputStream out> = $r6;
+
+        $r5 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: java.io.InputStream in>;
+
+        $r7 = specialinvoke $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.ProxyMessage readMsg(java.io.InputStream)>($r5);
+
+        $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.ProxyMessage msg> = $r7;
+
+        $r7 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.ProxyMessage msg>;
+
+        specialinvoke $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: void handleRequest(net.sourceforge.jsocks.ProxyMessage)>($r7);
+
+        return;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    public void run()
+    {
+        com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable $r0;
+        int $i0;
+        java.io.IOException $r1;
+        net.sourceforge.jsocks.server.ServerAuthenticator $r2;
+        boolean $z0;
+        net.sourceforge.jsocks.SocksException $r3;
+        java.lang.Throwable $r4;
+
+        $r0 := @this: com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable;
+
+     label01:
+        specialinvoke $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: void startSession()>();
+
+     label02:
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        if $r2 == null goto label18;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        interfaceinvoke $r2.<net.sourceforge.jsocks.server.ServerAuthenticator: void endSession()>();
+
+        return;
+
+     label03:
+        $r1 := @caughtexception;
+
+        $i0 = 1;
+
+     label04:
+        $z0 = $r1 instanceof net.sourceforge.jsocks.SocksException;
+
+        if $z0 == 0 goto label10;
+
+        $r3 = (net.sourceforge.jsocks.SocksException) $r1;
+
+        $i0 = $r3.<net.sourceforge.jsocks.SocksException: int errCode>;
+
+     label05:
+        if $i0 > 8 goto label07;
+
+     label06:
+        if $i0 >= 0 goto label08;
+
+     label07:
+        $i0 = 1;
+
+     label08:
+        specialinvoke $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: void sendErrorMessage(int)>($i0);
+
+     label09:
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        if $r2 == null goto label19;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        interfaceinvoke $r2.<net.sourceforge.jsocks.server.ServerAuthenticator: void endSession()>();
+
+        return;
+
+     label10:
+        $z0 = $r1 instanceof java.net.NoRouteToHostException;
+
+        if $z0 == 0 goto label12;
+
+     label11:
+        $i0 = 4;
+
+        goto label05;
+
+     label12:
+        $z0 = $r1 instanceof java.net.ConnectException;
+
+        if $z0 == 0 goto label14;
+
+     label13:
+        $i0 = 5;
+
+        goto label05;
+
+     label14:
+        $z0 = $r1 instanceof java.io.InterruptedIOException;
+
+     label15:
+        if $z0 == 0 goto label05;
+
+        $i0 = 6;
+
+        goto label05;
+
+     label16:
+        $r4 := @caughtexception;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        if $r2 == null goto label17;
+
+        $r2 = $r0.<com.trilead.ssh2.channel.DynamicAcceptThread$DynamicAcceptRunnable: net.sourceforge.jsocks.server.ServerAuthenticator auth>;
+
+        interfaceinvoke $r2.<net.sourceforge.jsocks.server.ServerAuthenticator: void endSession()>();
+
+     label17:
+        throw $r4;
+
+     label18:
+        return;
+
+     label19:
+        return;
+
+        catch java.io.IOException from label01 to label02 with label03;
+        catch java.lang.Throwable from label01 to label02 with label16;
+        catch java.lang.Throwable from label04 to label05 with label16;
+        catch java.lang.Throwable from label06 to label09 with label16;
+        catch java.lang.Throwable from label10 to label11 with label16;
+        catch java.lang.Throwable from label12 to label13 with label16;
+        catch java.lang.Throwable from label14 to label15 with label16;
+    }
+}

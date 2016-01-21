@@ -1,0 +1,509 @@
+public class com.trilead.ssh2.Session extends java.lang.Object
+{
+    com.trilead.ssh2.channel.ChannelManager cm;
+    com.trilead.ssh2.channel.Channel cn;
+    boolean flag_closed;
+    boolean flag_execution_started;
+    boolean flag_pty_requested;
+    boolean flag_x11_requested;
+    final java.security.SecureRandom rnd;
+    java.lang.String x11FakeCookie;
+
+    void <init>(com.trilead.ssh2.channel.ChannelManager, java.security.SecureRandom) throws java.io.IOException
+    {
+        com.trilead.ssh2.Session $r0;
+        com.trilead.ssh2.channel.ChannelManager $r1;
+        java.security.SecureRandom $r2;
+        com.trilead.ssh2.channel.Channel $r3;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        $r1 := @parameter0: com.trilead.ssh2.channel.ChannelManager;
+
+        $r2 := @parameter1: java.security.SecureRandom;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        $r0.<com.trilead.ssh2.Session: boolean flag_pty_requested> = 0;
+
+        $r0.<com.trilead.ssh2.Session: boolean flag_x11_requested> = 0;
+
+        $r0.<com.trilead.ssh2.Session: boolean flag_execution_started> = 0;
+
+        $r0.<com.trilead.ssh2.Session: boolean flag_closed> = 0;
+
+        $r0.<com.trilead.ssh2.Session: java.lang.String x11FakeCookie> = null;
+
+        $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.ChannelManager cm> = $r1;
+
+        $r3 = virtualinvoke $r1.<com.trilead.ssh2.channel.ChannelManager: com.trilead.ssh2.channel.Channel openSessionChannel()>();
+
+        $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn> = $r3;
+
+        $r0.<com.trilead.ssh2.Session: java.security.SecureRandom rnd> = $r2;
+
+        return;
+    }
+
+    public void close()
+    {
+        com.trilead.ssh2.Session $r0;
+        boolean $z0;
+        java.lang.String $r1;
+        com.trilead.ssh2.channel.ChannelManager $r2;
+        com.trilead.ssh2.channel.Channel $r3;
+        java.lang.Throwable $r4;
+        java.io.IOException $r5;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        entermonitor $r0;
+
+     label01:
+        $z0 = $r0.<com.trilead.ssh2.Session: boolean flag_closed>;
+
+        if $z0 == 0 goto label03;
+
+        exitmonitor $r0;
+
+     label02:
+        return;
+
+     label03:
+        $r0.<com.trilead.ssh2.Session: boolean flag_closed> = 1;
+
+        $r1 = $r0.<com.trilead.ssh2.Session: java.lang.String x11FakeCookie>;
+
+        if $r1 == null goto label04;
+
+        $r2 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r1 = $r0.<com.trilead.ssh2.Session: java.lang.String x11FakeCookie>;
+
+        virtualinvoke $r2.<com.trilead.ssh2.channel.ChannelManager: void unRegisterX11Cookie(java.lang.String,boolean)>($r1, 1);
+
+     label04:
+        $r2 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r3 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+     label05:
+        virtualinvoke $r2.<com.trilead.ssh2.channel.ChannelManager: void closeChannel(com.trilead.ssh2.channel.Channel,java.lang.String,boolean)>($r3, "Closed due to user request", 1);
+
+     label06:
+        exitmonitor $r0;
+
+     label07:
+        return;
+
+     label08:
+        $r4 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label09:
+        throw $r4;
+
+     label10:
+        $r5 := @caughtexception;
+
+        goto label06;
+
+        catch java.lang.Throwable from label01 to label02 with label08;
+        catch java.lang.Throwable from label03 to label04 with label08;
+        catch java.io.IOException from label05 to label06 with label10;
+        catch java.lang.Throwable from label04 to label06 with label08;
+        catch java.lang.Throwable from label06 to label07 with label08;
+        catch java.lang.Throwable from label08 to label09 with label08;
+    }
+
+    public java.io.InputStream getStderr()
+    {
+        com.trilead.ssh2.Session $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        com.trilead.ssh2.channel.ChannelInputStream $r2;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        $r1 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelInputStream getStderrStream()>();
+
+        return $r2;
+    }
+
+    public java.io.OutputStream getStdin()
+    {
+        com.trilead.ssh2.Session $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        com.trilead.ssh2.channel.ChannelOutputStream $r2;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        $r1 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelOutputStream getStdinStream()>();
+
+        return $r2;
+    }
+
+    public java.io.InputStream getStdout()
+    {
+        com.trilead.ssh2.Session $r0;
+        com.trilead.ssh2.channel.Channel $r1;
+        com.trilead.ssh2.channel.ChannelInputStream $r2;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        $r1 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+        $r2 = virtualinvoke $r1.<com.trilead.ssh2.channel.Channel: com.trilead.ssh2.channel.ChannelInputStream getStdoutStream()>();
+
+        return $r2;
+    }
+
+    public boolean requestAuthAgentForwarding(com.trilead.ssh2.AuthAgentCallback) throws java.io.IOException
+    {
+        com.trilead.ssh2.Session $r0;
+        com.trilead.ssh2.AuthAgentCallback $r1;
+        boolean $z0;
+        java.io.IOException $r2;
+        java.lang.Throwable $r3, $r4;
+        com.trilead.ssh2.channel.ChannelManager $r5;
+        com.trilead.ssh2.channel.Channel $r6;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        $r1 := @parameter0: com.trilead.ssh2.AuthAgentCallback;
+
+        entermonitor $r0;
+
+     label1:
+        entermonitor $r0;
+
+     label2:
+        $z0 = $r0.<com.trilead.ssh2.Session: boolean flag_closed>;
+
+        if $z0 == 0 goto label6;
+
+        $r2 = new java.io.IOException;
+
+        specialinvoke $r2.<java.io.IOException: void <init>(java.lang.String)>("This session is closed.");
+
+        throw $r2;
+
+     label3:
+        $r3 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label4:
+        throw $r3;
+
+     label5:
+        $r4 := @caughtexception;
+
+        exitmonitor $r0;
+
+        throw $r4;
+
+     label6:
+        exitmonitor $r0;
+
+     label7:
+        $r5 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r6 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+        $z0 = virtualinvoke $r5.<com.trilead.ssh2.channel.ChannelManager: boolean requestChannelAgentForwarding(com.trilead.ssh2.channel.Channel,com.trilead.ssh2.AuthAgentCallback)>($r6, $r1);
+
+     label8:
+        exitmonitor $r0;
+
+        return $z0;
+
+        catch java.lang.Throwable from label1 to label2 with label5;
+        catch java.lang.Throwable from label2 to label4 with label3;
+        catch java.lang.Throwable from label4 to label5 with label5;
+        catch java.lang.Throwable from label6 to label7 with label3;
+        catch java.lang.Throwable from label7 to label8 with label5;
+    }
+
+    public void requestPTY(java.lang.String, int, int, int, int, byte[]) throws java.io.IOException
+    {
+        com.trilead.ssh2.Session $r0;
+        java.lang.String $r1;
+        int $i0, $i1, $i2, $i3, $i4;
+        byte[] $r2;
+        java.lang.IllegalArgumentException $r3;
+        byte $b5;
+        java.io.IOException $r4;
+        boolean $z0;
+        java.lang.Throwable $r5;
+        com.trilead.ssh2.channel.ChannelManager $r6;
+        com.trilead.ssh2.channel.Channel $r7;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $i1 := @parameter2: int;
+
+        $i2 := @parameter3: int;
+
+        $i3 := @parameter4: int;
+
+        $r2 := @parameter5: byte[];
+
+        if $r1 != null goto label01;
+
+        $r3 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r3.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("TERM cannot be null.");
+
+        throw $r3;
+
+     label01:
+        if $r2 == null goto label02;
+
+        $i4 = lengthof $r2;
+
+        if $i4 <= 0 goto label02;
+
+        $i4 = lengthof $r2;
+
+        $i4 = $i4 + -1;
+
+        $b5 = $r2[$i4];
+
+        if $b5 == 0 goto label03;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("Illegal terminal modes description, does not end in zero byte");
+
+        throw $r4;
+
+     label02:
+        $r2 = newarray (byte)[1];
+
+        $r2[0] = 0;
+
+     label03:
+        entermonitor $r0;
+
+     label04:
+        $z0 = $r0.<com.trilead.ssh2.Session: boolean flag_closed>;
+
+        if $z0 == 0 goto label07;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("This session is closed.");
+
+        throw $r4;
+
+     label05:
+        $r5 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label06:
+        throw $r5;
+
+     label07:
+        $z0 = $r0.<com.trilead.ssh2.Session: boolean flag_pty_requested>;
+
+        if $z0 == 0 goto label08;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("A PTY was already requested.");
+
+        throw $r4;
+
+     label08:
+        $z0 = $r0.<com.trilead.ssh2.Session: boolean flag_execution_started>;
+
+        if $z0 == 0 goto label09;
+
+        $r4 = new java.io.IOException;
+
+        specialinvoke $r4.<java.io.IOException: void <init>(java.lang.String)>("Cannot request PTY at this stage anymore, a remote execution has already started.");
+
+        throw $r4;
+
+     label09:
+        $r0.<com.trilead.ssh2.Session: boolean flag_pty_requested> = 1;
+
+        exitmonitor $r0;
+
+     label10:
+        $r6 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r7 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+        virtualinvoke $r6.<com.trilead.ssh2.channel.ChannelManager: void requestPTY(com.trilead.ssh2.channel.Channel,java.lang.String,int,int,int,int,byte[])>($r7, $r1, $i0, $i1, $i2, $i3, $r2);
+
+        return;
+
+        catch java.lang.Throwable from label04 to label06 with label05;
+        catch java.lang.Throwable from label07 to label10 with label05;
+    }
+
+    public void resizePTY(int, int, int, int) throws java.io.IOException
+    {
+        com.trilead.ssh2.Session $r0;
+        int $i0, $i1, $i2, $i3;
+        boolean $z0;
+        java.io.IOException $r1;
+        java.lang.Throwable $r2;
+        com.trilead.ssh2.channel.ChannelManager $r3;
+        com.trilead.ssh2.channel.Channel $r4;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        $i0 := @parameter0: int;
+
+        $i1 := @parameter1: int;
+
+        $i2 := @parameter2: int;
+
+        $i3 := @parameter3: int;
+
+        entermonitor $r0;
+
+     label1:
+        $z0 = $r0.<com.trilead.ssh2.Session: boolean flag_closed>;
+
+        if $z0 == 0 goto label4;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("This session is closed.");
+
+        throw $r1;
+
+     label2:
+        $r2 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label3:
+        throw $r2;
+
+     label4:
+        exitmonitor $r0;
+
+     label5:
+        $r3 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r4 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+        virtualinvoke $r3.<com.trilead.ssh2.channel.ChannelManager: void resizePTY(com.trilead.ssh2.channel.Channel,int,int,int,int)>($r4, $i0, $i1, $i2, $i3);
+
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label2;
+        catch java.lang.Throwable from label4 to label5 with label2;
+    }
+
+    public void startShell() throws java.io.IOException
+    {
+        com.trilead.ssh2.Session $r0;
+        boolean $z0;
+        java.io.IOException $r1;
+        java.lang.Throwable $r2;
+        com.trilead.ssh2.channel.ChannelManager $r3;
+        com.trilead.ssh2.channel.Channel $r4;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        entermonitor $r0;
+
+     label1:
+        $z0 = $r0.<com.trilead.ssh2.Session: boolean flag_closed>;
+
+        if $z0 == 0 goto label4;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("This session is closed.");
+
+        throw $r1;
+
+     label2:
+        $r2 := @caughtexception;
+
+        exitmonitor $r0;
+
+     label3:
+        throw $r2;
+
+     label4:
+        $z0 = $r0.<com.trilead.ssh2.Session: boolean flag_execution_started>;
+
+        if $z0 == 0 goto label5;
+
+        $r1 = new java.io.IOException;
+
+        specialinvoke $r1.<java.io.IOException: void <init>(java.lang.String)>("A remote execution has already started.");
+
+        throw $r1;
+
+     label5:
+        $r0.<com.trilead.ssh2.Session: boolean flag_execution_started> = 1;
+
+        exitmonitor $r0;
+
+     label6:
+        $r3 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r4 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+        virtualinvoke $r3.<com.trilead.ssh2.channel.ChannelManager: void requestShell(com.trilead.ssh2.channel.Channel)>($r4);
+
+        return;
+
+        catch java.lang.Throwable from label1 to label3 with label2;
+        catch java.lang.Throwable from label4 to label6 with label2;
+    }
+
+    public int waitForCondition(int, long)
+    {
+        com.trilead.ssh2.Session $r0;
+        int $i0;
+        long $l1;
+        byte $b2;
+        java.lang.IllegalArgumentException $r1;
+        com.trilead.ssh2.channel.ChannelManager $r2;
+        com.trilead.ssh2.channel.Channel $r3;
+
+        $r0 := @this: com.trilead.ssh2.Session;
+
+        $i0 := @parameter0: int;
+
+        $l1 := @parameter1: long;
+
+        $b2 = $l1 cmp 0L;
+
+        if $b2 >= 0 goto label1;
+
+        $r1 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $r1.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>("timeout must be non-negative!");
+
+        throw $r1;
+
+     label1:
+        $r2 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.ChannelManager cm>;
+
+        $r3 = $r0.<com.trilead.ssh2.Session: com.trilead.ssh2.channel.Channel cn>;
+
+        $i0 = virtualinvoke $r2.<com.trilead.ssh2.channel.ChannelManager: int waitForCondition(com.trilead.ssh2.channel.Channel,long,int)>($r3, $l1, $i0);
+
+        return $i0;
+    }
+}

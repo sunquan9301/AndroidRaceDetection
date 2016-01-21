@@ -1,0 +1,515 @@
+public class org.connectbot.HostEditorActivity extends android.preference.PreferenceActivity implements android.content.SharedPreferences$OnSharedPreferenceChangeListener
+{
+    private android.content.ServiceConnection connection;
+    private org.connectbot.bean.HostBean host;
+    protected org.connectbot.service.TerminalBridge hostBridge;
+    protected org.connectbot.util.HostDatabase hostdb;
+    private org.connectbot.HostEditorActivity$CursorPreferenceHack pref;
+    private org.connectbot.util.PubkeyDatabase pubkeydb;
+
+    public void <init>()
+    {
+        org.connectbot.HostEditorActivity $r0;
+
+        $r0 := @this: org.connectbot.HostEditorActivity;
+
+        specialinvoke $r0.<android.preference.PreferenceActivity: void <init>()>();
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb> = null;
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb> = null;
+
+        return;
+    }
+
+    static org.connectbot.bean.HostBean access$000(org.connectbot.HostEditorActivity)
+    {
+        org.connectbot.HostEditorActivity $r0;
+        org.connectbot.bean.HostBean $r1;
+
+        $r0 := @parameter0: org.connectbot.HostEditorActivity;
+
+        $r1 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.bean.HostBean host>;
+
+        return $r1;
+    }
+
+    static void access$100(org.connectbot.HostEditorActivity, android.preference.ListPreference)
+    {
+        org.connectbot.HostEditorActivity $r0;
+        android.preference.ListPreference $r1;
+
+        $r0 := @parameter0: org.connectbot.HostEditorActivity;
+
+        $r1 := @parameter1: android.preference.ListPreference;
+
+        specialinvoke $r0.<org.connectbot.HostEditorActivity: void initCharsetPref(android.preference.ListPreference)>($r1);
+
+        return;
+    }
+
+    private void initCharsetPref(android.preference.ListPreference)
+    {
+        org.connectbot.HostEditorActivity $r0;
+        android.preference.ListPreference $r1;
+        java.lang.CharSequence[] $r2;
+
+        $r0 := @this: org.connectbot.HostEditorActivity;
+
+        $r1 := @parameter0: android.preference.ListPreference;
+
+        $r2 = staticinvoke <org.connectbot.HostEditorActivity$CharsetHolder: java.lang.CharSequence[] getCharsetIds()>();
+
+        virtualinvoke $r1.<android.preference.ListPreference: void setEntryValues(java.lang.CharSequence[])>($r2);
+
+        $r2 = staticinvoke <org.connectbot.HostEditorActivity$CharsetHolder: java.lang.CharSequence[] getCharsetNames()>();
+
+        virtualinvoke $r1.<android.preference.ListPreference: void setEntries(java.lang.CharSequence[])>($r2);
+
+        return;
+    }
+
+    private void updateSummaries()
+    {
+        org.connectbot.HostEditorActivity $r0;
+        java.lang.CharSequence $r1;
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r2;
+        java.util.Set $r3;
+        java.util.Map $r4;
+        java.util.Iterator $r5;
+        boolean $z0;
+        java.lang.Object $r6;
+        java.lang.String $r7, $r9;
+        android.preference.Preference $r8;
+        int $i0;
+        org.connectbot.util.PubkeyDatabase $r10;
+        long $l1;
+        java.lang.NumberFormatException $r11;
+        byte $b2;
+        android.preference.ListPreference $r12;
+        java.lang.CharSequence[] $r13;
+
+        $r0 := @this: org.connectbot.HostEditorActivity;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.HostEditorActivity$CursorPreferenceHack pref>;
+
+        $r4 = $r2.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.util.Map values>;
+
+        $r3 = interfaceinvoke $r4.<java.util.Map: java.util.Set keySet()>();
+
+        $r5 = interfaceinvoke $r3.<java.util.Set: java.util.Iterator iterator()>();
+
+     label01:
+        $z0 = interfaceinvoke $r5.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label15;
+
+        $r6 = interfaceinvoke $r5.<java.util.Iterator: java.lang.Object next()>();
+
+        $r7 = (java.lang.String) $r6;
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>("postlogin");
+
+        if $z0 != 0 goto label01;
+
+        $r8 = virtualinvoke $r0.<org.connectbot.HostEditorActivity: android.preference.Preference findPreference(java.lang.CharSequence)>($r7);
+
+        if $r8 == null goto label01;
+
+        $z0 = $r8 instanceof android.preference.CheckBoxPreference;
+
+        if $z0 != 0 goto label01;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.HostEditorActivity$CursorPreferenceHack pref>;
+
+        $r9 = virtualinvoke $r2.<org.connectbot.HostEditorActivity$CursorPreferenceHack: java.lang.String getString(java.lang.String,java.lang.String)>($r7, "");
+
+        $r1 = $r9;
+
+        $z0 = virtualinvoke $r7.<java.lang.String: boolean equals(java.lang.Object)>("pubkeyid");
+
+        if $z0 == 0 goto label14;
+
+        $r9 = (java.lang.String) $r9;
+
+     label02:
+        $i0 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($r9);
+
+     label03:
+        if $i0 < 0 goto label08;
+
+        $r10 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+     label04:
+        $l1 = (long) $i0;
+
+        $r9 = virtualinvoke $r10.<org.connectbot.util.PubkeyDatabase: java.lang.String getNickname(long)>($l1);
+
+        virtualinvoke $r8.<android.preference.Preference: void setSummary(java.lang.CharSequence)>($r9);
+
+     label05:
+        goto label01;
+
+     label06:
+        $r11 := @caughtexception;
+
+     label07:
+        virtualinvoke $r8.<android.preference.Preference: void setSummary(java.lang.CharSequence)>($r1);
+
+        goto label01;
+
+     label08:
+        $l1 = (long) $i0;
+
+        $b2 = $l1 cmp -1L;
+
+        if $b2 != 0 goto label11;
+
+     label09:
+        virtualinvoke $r8.<android.preference.Preference: void setSummary(int)>(2131165314);
+
+     label10:
+        goto label01;
+
+     label11:
+        $l1 = (long) $i0;
+
+        $b2 = $l1 cmp -2L;
+
+     label12:
+        if $b2 != 0 goto label01;
+
+        virtualinvoke $r8.<android.preference.Preference: void setSummary(int)>(2131165315);
+
+     label13:
+        goto label01;
+
+     label14:
+        $z0 = $r8 instanceof android.preference.ListPreference;
+
+        if $z0 == 0 goto label07;
+
+        $r12 = (android.preference.ListPreference) $r8;
+
+        $r9 = (java.lang.String) $r9;
+
+        $i0 = virtualinvoke $r12.<android.preference.ListPreference: int findIndexOfValue(java.lang.String)>($r9);
+
+        if $i0 < 0 goto label07;
+
+        $r13 = virtualinvoke $r12.<android.preference.ListPreference: java.lang.CharSequence[] getEntries()>();
+
+        $r1 = $r13[$i0];
+
+        goto label07;
+
+     label15:
+        return;
+
+        catch java.lang.NumberFormatException from label02 to label03 with label06;
+        catch java.lang.NumberFormatException from label04 to label05 with label06;
+        catch java.lang.NumberFormatException from label09 to label10 with label06;
+        catch java.lang.NumberFormatException from label12 to label13 with label06;
+    }
+
+    public android.content.SharedPreferences getSharedPreferences(java.lang.String, int)
+    {
+        org.connectbot.HostEditorActivity $r0;
+        java.lang.String $r1;
+        int $i0;
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r2;
+
+        $r0 := @this: org.connectbot.HostEditorActivity;
+
+        $r1 := @parameter0: java.lang.String;
+
+        $i0 := @parameter1: int;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.HostEditorActivity$CursorPreferenceHack pref>;
+
+        return $r2;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        org.connectbot.HostEditorActivity $r0;
+        android.os.Bundle $r1;
+        java.lang.String[] $r2;
+        java.util.LinkedList $r3;
+        android.content.Intent $r4;
+        long $l0;
+        org.connectbot.util.HostDatabase $r5;
+        org.connectbot.util.PubkeyDatabase $r6;
+        org.connectbot.bean.HostBean $r7;
+        org.connectbot.HostEditorActivity$1 $r8;
+        org.connectbot.HostEditorActivity$CursorPreferenceHack $r9;
+        android.preference.Preference $r10;
+        android.preference.ListPreference $r11;
+        java.lang.CharSequence[] $r12;
+        java.util.List $r13;
+        int $i1;
+        java.lang.Object[] $r14;
+        boolean $z0;
+        java.lang.String $r15;
+        java.lang.Thread $r16;
+        org.connectbot.HostEditorActivity$2 $r17;
+
+        $r0 := @this: org.connectbot.HostEditorActivity;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke $r0.<android.preference.PreferenceActivity: void onCreate(android.os.Bundle)>($r1);
+
+        $r4 = virtualinvoke $r0.<org.connectbot.HostEditorActivity: android.content.Intent getIntent()>();
+
+        $l0 = virtualinvoke $r4.<android.content.Intent: long getLongExtra(java.lang.String,long)>("android.intent.extra.TITLE", -1L);
+
+        $r5 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r5.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb> = $r5;
+
+        $r6 = new org.connectbot.util.PubkeyDatabase;
+
+        specialinvoke $r6.<org.connectbot.util.PubkeyDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb> = $r6;
+
+        $r5 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        $r7 = virtualinvoke $r5.<org.connectbot.util.HostDatabase: org.connectbot.bean.HostBean findHostById(long)>($l0);
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.bean.HostBean host> = $r7;
+
+        $r8 = new org.connectbot.HostEditorActivity$1;
+
+        specialinvoke $r8.<org.connectbot.HostEditorActivity$1: void <init>(org.connectbot.HostEditorActivity)>($r0);
+
+        $r0.<org.connectbot.HostEditorActivity: android.content.ServiceConnection connection> = $r8;
+
+        $r9 = new org.connectbot.HostEditorActivity$CursorPreferenceHack;
+
+        specialinvoke $r9.<org.connectbot.HostEditorActivity$CursorPreferenceHack: void <init>(org.connectbot.HostEditorActivity,java.lang.String,long)>($r0, "hosts", $l0);
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.HostEditorActivity$CursorPreferenceHack pref> = $r9;
+
+        $r9 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.HostEditorActivity$CursorPreferenceHack pref>;
+
+        virtualinvoke $r9.<org.connectbot.HostEditorActivity$CursorPreferenceHack: void registerOnSharedPreferenceChangeListener(android.content.SharedPreferences$OnSharedPreferenceChangeListener)>($r0);
+
+        virtualinvoke $r0.<org.connectbot.HostEditorActivity: void addPreferencesFromResource(int)>(2131034112);
+
+        $r10 = virtualinvoke $r0.<org.connectbot.HostEditorActivity: android.preference.Preference findPreference(java.lang.CharSequence)>("pubkeyid");
+
+        $r11 = (android.preference.ListPreference) $r10;
+
+        $r3 = new java.util.LinkedList;
+
+        $r12 = virtualinvoke $r11.<android.preference.ListPreference: java.lang.CharSequence[] getEntries()>();
+
+        $r13 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r12);
+
+        specialinvoke $r3.<java.util.LinkedList: void <init>(java.util.Collection)>($r13);
+
+        $r6 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        $r13 = virtualinvoke $r6.<org.connectbot.util.PubkeyDatabase: java.util.List allValues(java.lang.String)>("nickname");
+
+        interfaceinvoke $r3.<java.util.List: boolean addAll(java.util.Collection)>($r13);
+
+        $i1 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        $r12 = newarray (java.lang.CharSequence)[$i1];
+
+        $r14 = interfaceinvoke $r3.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r12);
+
+        $r12 = (java.lang.CharSequence[]) $r14;
+
+        virtualinvoke $r11.<android.preference.ListPreference: void setEntries(java.lang.CharSequence[])>($r12);
+
+        $r3 = new java.util.LinkedList;
+
+        $r12 = virtualinvoke $r11.<android.preference.ListPreference: java.lang.CharSequence[] getEntryValues()>();
+
+        $r13 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($r12);
+
+        specialinvoke $r3.<java.util.LinkedList: void <init>(java.util.Collection)>($r13);
+
+        $r6 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        $r13 = virtualinvoke $r6.<org.connectbot.util.PubkeyDatabase: java.util.List allValues(java.lang.String)>("_id");
+
+        interfaceinvoke $r3.<java.util.List: boolean addAll(java.util.Collection)>($r13);
+
+        $i1 = interfaceinvoke $r3.<java.util.List: int size()>();
+
+        $r12 = newarray (java.lang.CharSequence)[$i1];
+
+        $r14 = interfaceinvoke $r3.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($r12);
+
+        $r12 = (java.lang.CharSequence[]) $r14;
+
+        virtualinvoke $r11.<android.preference.ListPreference: void setEntryValues(java.lang.CharSequence[])>($r12);
+
+        $r10 = virtualinvoke $r0.<org.connectbot.HostEditorActivity: android.preference.Preference findPreference(java.lang.CharSequence)>("encoding");
+
+        $r11 = (android.preference.ListPreference) $r10;
+
+        $z0 = staticinvoke <org.connectbot.HostEditorActivity$CharsetHolder: boolean isInitialized()>();
+
+        if $z0 == 0 goto label2;
+
+        specialinvoke $r0.<org.connectbot.HostEditorActivity: void initCharsetPref(android.preference.ListPreference)>($r11);
+
+     label1:
+        specialinvoke $r0.<org.connectbot.HostEditorActivity: void updateSummaries()>();
+
+        return;
+
+     label2:
+        $r2 = newarray (java.lang.String)[1];
+
+        $r15 = virtualinvoke $r11.<android.preference.ListPreference: java.lang.String getValue()>();
+
+        $r2[0] = $r15;
+
+        virtualinvoke $r11.<android.preference.ListPreference: void setEntryValues(java.lang.CharSequence[])>($r2);
+
+        virtualinvoke $r11.<android.preference.ListPreference: void setEntries(java.lang.CharSequence[])>($r2);
+
+        $r16 = new java.lang.Thread;
+
+        $r17 = new org.connectbot.HostEditorActivity$2;
+
+        specialinvoke $r17.<org.connectbot.HostEditorActivity$2: void <init>(org.connectbot.HostEditorActivity,android.preference.ListPreference)>($r0, $r11);
+
+        specialinvoke $r16.<java.lang.Thread: void <init>(java.lang.Runnable)>($r17);
+
+        virtualinvoke $r16.<java.lang.Thread: void start()>();
+
+        goto label1;
+    }
+
+    public void onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
+    {
+        org.connectbot.HostEditorActivity $r0;
+        android.content.SharedPreferences $r1;
+        java.lang.String $r2;
+        org.connectbot.service.TerminalBridge $r3;
+
+        $r0 := @this: org.connectbot.HostEditorActivity;
+
+        $r1 := @parameter0: android.content.SharedPreferences;
+
+        $r2 := @parameter1: java.lang.String;
+
+        specialinvoke $r0.<org.connectbot.HostEditorActivity: void updateSummaries()>();
+
+        $r3 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        if $r3 == null goto label1;
+
+        $r3 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.service.TerminalBridge hostBridge>;
+
+        $r2 = <org.connectbot.util.HostDatabase: java.lang.String ENCODING_DEFAULT>;
+
+        $r2 = interfaceinvoke $r1.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("encoding", $r2);
+
+        virtualinvoke $r3.<org.connectbot.service.TerminalBridge: void setCharset(java.lang.String)>($r2);
+
+        return;
+
+     label1:
+        return;
+    }
+
+    public void onStart()
+    {
+        org.connectbot.HostEditorActivity $r0;
+        android.content.Intent $r1;
+        android.content.ServiceConnection $r2;
+        org.connectbot.util.HostDatabase $r3;
+        org.connectbot.util.PubkeyDatabase $r4;
+
+        $r0 := @this: org.connectbot.HostEditorActivity;
+
+        specialinvoke $r0.<android.preference.PreferenceActivity: void onStart()>();
+
+        $r1 = new android.content.Intent;
+
+        specialinvoke $r1.<android.content.Intent: void <init>(android.content.Context,java.lang.Class)>($r0, class "org/connectbot/service/TerminalManager");
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity: android.content.ServiceConnection connection>;
+
+        virtualinvoke $r0.<org.connectbot.HostEditorActivity: boolean bindService(android.content.Intent,android.content.ServiceConnection,int)>($r1, $r2, 1);
+
+        $r3 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r3 != null goto label1;
+
+        $r3 = new org.connectbot.util.HostDatabase;
+
+        specialinvoke $r3.<org.connectbot.util.HostDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb> = $r3;
+
+     label1:
+        $r4 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        if $r4 != null goto label2;
+
+        $r4 = new org.connectbot.util.PubkeyDatabase;
+
+        specialinvoke $r4.<org.connectbot.util.PubkeyDatabase: void <init>(android.content.Context)>($r0);
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb> = $r4;
+
+        return;
+
+     label2:
+        return;
+    }
+
+    public void onStop()
+    {
+        org.connectbot.HostEditorActivity $r0;
+        android.content.ServiceConnection $r1;
+        org.connectbot.util.HostDatabase $r2;
+        org.connectbot.util.PubkeyDatabase $r3;
+
+        $r0 := @this: org.connectbot.HostEditorActivity;
+
+        specialinvoke $r0.<android.preference.PreferenceActivity: void onStop()>();
+
+        $r1 = $r0.<org.connectbot.HostEditorActivity: android.content.ServiceConnection connection>;
+
+        virtualinvoke $r0.<org.connectbot.HostEditorActivity: void unbindService(android.content.ServiceConnection)>($r1);
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        if $r2 == null goto label1;
+
+        $r2 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb>;
+
+        virtualinvoke $r2.<org.connectbot.util.HostDatabase: void close()>();
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.HostDatabase hostdb> = null;
+
+     label1:
+        $r3 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        if $r3 == null goto label2;
+
+        $r3 = $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb>;
+
+        virtualinvoke $r3.<org.connectbot.util.PubkeyDatabase: void close()>();
+
+        $r0.<org.connectbot.HostEditorActivity: org.connectbot.util.PubkeyDatabase pubkeydb> = null;
+
+        return;
+
+     label2:
+        return;
+    }
+}

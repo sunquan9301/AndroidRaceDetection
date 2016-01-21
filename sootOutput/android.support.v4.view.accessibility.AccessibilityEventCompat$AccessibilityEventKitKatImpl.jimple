@@ -1,0 +1,14 @@
+class android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventKitKatImpl extends android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl
+{
+
+    void <init>()
+    {
+        android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventKitKatImpl $r0;
+
+        $r0 := @this: android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventKitKatImpl;
+
+        specialinvoke $r0.<android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl: void <init>()>();
+
+        return;
+    }
+}

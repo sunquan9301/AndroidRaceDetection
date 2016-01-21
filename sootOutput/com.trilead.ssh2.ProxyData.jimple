@@ -1,0 +1,3 @@
+public interface  com.trilead.ssh2.ProxyData extends java.lang.Object
+{
+}

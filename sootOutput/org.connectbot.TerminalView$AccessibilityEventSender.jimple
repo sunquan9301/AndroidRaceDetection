@@ -1,0 +1,215 @@
+class org.connectbot.TerminalView$AccessibilityEventSender extends java.lang.Object implements java.lang.Runnable
+{
+    final org.connectbot.TerminalView this$0;
+
+    private void <init>(org.connectbot.TerminalView)
+    {
+        org.connectbot.TerminalView$AccessibilityEventSender $r0;
+        org.connectbot.TerminalView $r1;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityEventSender;
+
+        $r1 := @parameter0: org.connectbot.TerminalView;
+
+        $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0> = $r1;
+
+        specialinvoke $r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.connectbot.TerminalView, org.connectbot.TerminalView$1)
+    {
+        org.connectbot.TerminalView$AccessibilityEventSender $r0;
+        org.connectbot.TerminalView $r1;
+        org.connectbot.TerminalView$1 $r2;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityEventSender;
+
+        $r1 := @parameter0: org.connectbot.TerminalView;
+
+        $r2 := @parameter1: org.connectbot.TerminalView$1;
+
+        specialinvoke $r0.<org.connectbot.TerminalView$AccessibilityEventSender: void <init>(org.connectbot.TerminalView)>($r1);
+
+        return;
+    }
+
+    public void run()
+    {
+        org.connectbot.TerminalView$AccessibilityEventSender $r0;
+        int $i0, $i1, $i2;
+        org.connectbot.TerminalView $r1, $r4;
+        java.lang.Object[] $r2;
+        java.util.regex.Matcher $r3;
+        java.util.regex.Pattern $r5;
+        java.lang.StringBuffer $r6;
+        java.lang.String $r7;
+        java.lang.Throwable $r8;
+        android.view.accessibility.AccessibilityEvent $r9;
+        java.util.List $r10;
+
+        $r0 := @this: org.connectbot.TerminalView$AccessibilityEventSender;
+
+        $r1 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r2 = staticinvoke <org.connectbot.TerminalView: java.lang.Object[] access$200(org.connectbot.TerminalView)>($r1);
+
+        entermonitor $r2;
+
+     label01:
+        $r1 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r3 = staticinvoke <org.connectbot.TerminalView: java.util.regex.Matcher access$300(org.connectbot.TerminalView)>($r1);
+
+        if $r3 != null goto label07;
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r1 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r5 = staticinvoke <org.connectbot.TerminalView: java.util.regex.Pattern access$500(org.connectbot.TerminalView)>($r1);
+
+        $r1 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r1);
+
+        $r3 = virtualinvoke $r5.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r6);
+
+        staticinvoke <org.connectbot.TerminalView: java.util.regex.Matcher access$302(org.connectbot.TerminalView,java.util.regex.Matcher)>($r4, $r3);
+
+     label02:
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = new java.lang.StringBuffer;
+
+        $r1 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r3 = staticinvoke <org.connectbot.TerminalView: java.util.regex.Matcher access$300(org.connectbot.TerminalView)>($r1);
+
+        $r7 = virtualinvoke $r3.<java.util.regex.Matcher: java.lang.String replaceAll(java.lang.String)>(" ");
+
+        specialinvoke $r6.<java.lang.StringBuffer: void <init>(java.lang.String)>($r7);
+
+        staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$402(org.connectbot.TerminalView,java.lang.StringBuffer)>($r4, $r6);
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r4);
+
+        $i0 = virtualinvoke $r6.<java.lang.StringBuffer: int indexOf(java.lang.String)>("\\x08\\x1b\\[K");
+
+     label03:
+        if $i0 == -1 goto label11;
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r1 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r1);
+
+     label04:
+        if $i0 != 0 goto label10;
+
+        $i1 = 0;
+
+     label05:
+        $r7 = "\\x08\\x1b\\[K";
+
+        $i2 = virtualinvoke $r7.<java.lang.String: int length()>();
+
+        $i2 = $i2 + $i0;
+
+        $r6 = virtualinvoke $r6.<java.lang.StringBuffer: java.lang.StringBuffer replace(int,int,java.lang.String)>($i1, $i2, "");
+
+        staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$402(org.connectbot.TerminalView,java.lang.StringBuffer)>($r4, $r6);
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r4);
+
+        $i2 = virtualinvoke $r6.<java.lang.StringBuffer: int indexOf(java.lang.String)>("\\x08\\x1b\\[K");
+
+     label06:
+        $i0 = $i2;
+
+        goto label03;
+
+     label07:
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r3 = staticinvoke <org.connectbot.TerminalView: java.util.regex.Matcher access$300(org.connectbot.TerminalView)>($r4);
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r4);
+
+        virtualinvoke $r3.<java.util.regex.Matcher: java.util.regex.Matcher reset(java.lang.CharSequence)>($r6);
+
+        goto label02;
+
+     label08:
+        $r8 := @caughtexception;
+
+        exitmonitor $r2;
+
+     label09:
+        throw $r8;
+
+     label10:
+        $i1 = $i0 + -1;
+
+        goto label05;
+
+     label11:
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r4);
+
+        $i2 = virtualinvoke $r6.<java.lang.StringBuffer: int length()>();
+
+        if $i2 <= 0 goto label12;
+
+        $r9 = staticinvoke <android.view.accessibility.AccessibilityEvent: android.view.accessibility.AccessibilityEvent obtain(int)>(16);
+
+        virtualinvoke $r9.<android.view.accessibility.AccessibilityEvent: void setFromIndex(int)>(0);
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r4);
+
+        $i2 = virtualinvoke $r6.<java.lang.StringBuffer: int length()>();
+
+        virtualinvoke $r9.<android.view.accessibility.AccessibilityEvent: void setAddedCount(int)>($i2);
+
+        $r10 = virtualinvoke $r9.<android.view.accessibility.AccessibilityEvent: java.util.List getText()>();
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r4);
+
+        interfaceinvoke $r10.<java.util.List: boolean add(java.lang.Object)>($r6);
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        virtualinvoke $r4.<org.connectbot.TerminalView: void sendAccessibilityEventUnchecked(android.view.accessibility.AccessibilityEvent)>($r9);
+
+        $r4 = $r0.<org.connectbot.TerminalView$AccessibilityEventSender: org.connectbot.TerminalView this$0>;
+
+        $r6 = staticinvoke <org.connectbot.TerminalView: java.lang.StringBuffer access$400(org.connectbot.TerminalView)>($r4);
+
+        virtualinvoke $r6.<java.lang.StringBuffer: void setLength(int)>(0);
+
+     label12:
+        exitmonitor $r2;
+
+     label13:
+        return;
+
+        catch java.lang.Throwable from label01 to label03 with label08;
+        catch java.lang.Throwable from label03 to label04 with label08;
+        catch java.lang.Throwable from label05 to label06 with label08;
+        catch java.lang.Throwable from label07 to label09 with label08;
+        catch java.lang.Throwable from label11 to label13 with label08;
+    }
+}
